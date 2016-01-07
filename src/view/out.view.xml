@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <TabControl id="tabOut">
+      <Property name="showMenuButton">true</Property>
+      <Property name="style">
+        <Property name="background">white</Property>
+      </Property>
+      <IFrameTab>
+        <Property name="caption">外场保障计划</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -0px -120px</Property>
+        <Property name="path">com.buaa.out.view.Supportprogram.d</Property>
+      </IFrameTab>
+      <IFrameTab>
+        <Property name="caption">保障计划执行</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -0px -120px</Property>
+        <Property name="path">com.buaa.out.view.Supportprogram1.d</Property>
+      </IFrameTab>
+      <IFrameTab>
+        <Property name="path">com.buaa.out.view.Handover.d</Property>
+        <Property name="caption">现场交接管理</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -240px -160px</Property>
+      </IFrameTab>
+      <IFrameTab>
+        <Property name="caption">技术文件记录</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -0px -120px</Property>
+        <Property name="path">com.buaa.out.view.Technicaldocument.d</Property>
+      </IFrameTab>
+      <IFrameTab>
+        <Property name="caption">人员信息统计</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -0px -120px</Property>
+        <Property name="path">com.buaa.out.view.renyuantongji.d</Property>
+      </IFrameTab>
+    </TabControl>
+  </View>
+</ViewConfig>

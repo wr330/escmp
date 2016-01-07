@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">VIEWMAP</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="dataTypeMap">
+      <Property name="matchType">com.bstek.viewmap.domain.ViewMap</Property>
+      <Property name="creationType">com.bstek.viewmap.domain.ViewMap</Property>
+      <PropertyDef name="mapId">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="mapCode">
+        <Property name="dataType">String</Property>
+        <Property name="label">编码</Property>
+        <Property name="required">true</Property>
+        <Validator type="ajax">
+          <ClientEvent name="beforeExecute">var mapEntity = arg.entity;&#xD;
+var mapId = mapEntity.get(&quot;mapId&quot;);&#xD;
+arg.parameter = {id:mapId,validateData:arg.data};</ClientEvent>
+          <Property name="service">viewMapPR#checkMapCode</Property>
+        </Validator>
+      </PropertyDef>
+      <PropertyDef name="mapPath">
+        <Property name="dataType">String</Property>
+        <Property name="label">资源路径</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="nodeCode">
+        <Property name="dataType">String</Property>
+        <Property name="label">节点编码</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="createDate">
+        <Property name="dataType">Date</Property>
+        <Property name="label">创建时间</Property>
+      </PropertyDef>
+      <PropertyDef name="updateDate">
+        <Property name="dataType">Date</Property>
+        <Property name="label">更新时间</Property>
+      </PropertyDef>
+      <PropertyDef name="createUser">
+        <Property name="dataType">String</Property>
+        <Property name="label">创建人</Property>
+      </PropertyDef>
+      <PropertyDef name="updateUser">
+        <Property name="dataType">String</Property>
+        <Property name="label">更新人</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <DataSet id="dataSetMap">
+      <Property name="pageSize">15</Property>
+      <Property name="dataProvider">viewMapPR#findViewMaps</Property>
+      <Property name="dataType">[dataTypeMap]</Property>
+    </DataSet>
+    <ToolBar>
+      <DataPilot>
+        <Property name="dataSet">dataSetMap</Property>
+      </DataPilot>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var dialog = this.get(&quot;#dialogMap&quot;);&#xD;
+var dataSetMap = this.get(&quot;#dataSetMap&quot;);&#xD;
+dataSetMap.getData().insert();&#xD;
+dialog.set(&quot;caption&quot;,&quot;新增&quot;);&#xD;
+dialog.show();&#xD;
+&#xD;
+</ClientEvent>
+        <Property name="caption">新增</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -60px -120px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var dialog = this.get(&quot;#dialogMap&quot;);&#xD;
+dialog.set(&quot;caption&quot;,&quot;修改&quot;);&#xD;
+dialog.show();</ClientEvent>
+        <Property name="caption">修改</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -100px -120px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var updateActionSave = this.get(&quot;#updateActionMap&quot;);&#xD;
+var dataSet = this.get(&quot;#dataSetMap&quot;);&#xD;
+dorado.MessageBox.confirm(&quot;确认是否删除数据项！&quot;, function(){&#xD;
+	dataSet.queryData(&quot;#&quot;).remove();&#xD;
+	updateActionSave.execute();&#xD;
+});</ClientEvent>
+        <Property name="caption">删除</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -80px -120px</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid>
+      <Property name="dataSet">dataSetMap</Property>
+      <Property name="readOnly">true</Property>
+      <DataColumn name="mapCode">
+        <Property name="property">mapCode</Property>
+      </DataColumn>
+      <DataColumn name="mapPath">
+        <Property name="property">mapPath</Property>
+      </DataColumn>
+      <DataColumn name="nodeCode">
+        <Property name="property">nodeCode</Property>
+      </DataColumn>
+      <DataColumn name="createDate">
+        <Property name="property">createDate</Property>
+      </DataColumn>
+      <DataColumn name="updateDate">
+        <Property name="property">updateDate</Property>
+      </DataColumn>
+      <DataColumn name="createUser">
+        <Property name="property">createUser</Property>
+      </DataColumn>
+      <DataColumn name="updateUser">
+        <Property name="property">updateUser</Property>
+      </DataColumn>
+    </DataGrid>
+    <Dialog id="dialogMap">
+      <ClientEvent name="onHide">this.get(&quot;#dataSetMap&quot;).getData().cancel();&#xD;
+</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">600</Property>
+      <Property name="height">200</Property>
+      <Buttons>
+        <Button id="saveButton">
+          <ClientEvent name="onClick">var updateActionSave = this.get(&quot;#updateActionMap&quot;);&#xD;
+var dialog = this.get(&quot;#dialogMap&quot;);&#xD;
+dorado.MessageBox.confirm(&quot;确认是否保存数据项！&quot;, function(){&#xD;
+	updateActionSave.execute(&#xD;
+	{&#xD;
+		callback: function(success, obj){&#xD;
+			if (success) {&#xD;
+			dialog.hide();&#xD;
+			}&#xD;
+		}&#xD;
+	}&#xD;
+);&#xD;
+	&#xD;
+});</ClientEvent>
+          <Property name="caption">保存</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -140px -20px</Property>
+        </Button>
+        <Button id="cancelButton">
+          <ClientEvent name="onClick">this.get(&quot;#dialogMap&quot;).hide();&#xD;
+</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm>
+          <Property name="dataSet">dataSetMap</Property>
+          <Property name="cols">*</Property>
+          <Property name="dataType">dataTypeMap</Property>
+          <AutoFormElement name="autoFormElement1">
+            <Property name="name">mapCode</Property>
+            <Property name="property">mapCode</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="autoFormElement2">
+            <Property name="name">mapPath</Property>
+            <Property name="property">mapPath</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="autoFormElement2">
+            <Property name="name">nodeCode</Property>
+            <Property name="property">nodeCode</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <UpdateAction id="updateActionMap">
+      <ClientEvent name="onSuccess">this.get(&quot;#dataSetMap&quot;).flushAsync();&#xD;
+</ClientEvent>
+      <Property name="dataResolver">viewMapPR#saveAllMaps</Property>
+      <Property name="successMessage">操作成功</Property>
+      <UpdateItem>
+        <Property name="dataSet">dataSetMap</Property>
+      </UpdateItem>
+    </UpdateAction>
+  </View>
+</ViewConfig>

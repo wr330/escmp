@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model>
+  <DataType name="Appendixdocument">
+    <Property name="matchType">com.buaa.comm.domain.Appendixdocument</Property>
+    <PropertyDef name="efile">
+      <Property name="dataType">String</Property>
+      <Property name="label">电子文档</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="btreport">
+      <Property name="dataType">Btreport</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Btreport">
+    <Property name="matchType">com.buaa.comm.domain.Btreport</Property>
+    <PropertyDef name="btperson">
+      <Property name="dataType">String</Property>
+      <Property name="label">出差人</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="remainedproblem">
+      <Property name="dataType">String</Property>
+      <Property name="label">目前仍遗留的重大问题</Property>
+    </PropertyDef>
+    <PropertyDef name="conclusion">
+      <Property name="dataType">String</Property>
+      <Property name="label">结论</Property>
+      <Property name="required">false</Property>
+    </PropertyDef>
+    <PropertyDef name="btplace">
+      <Property name="dataType">String</Property>
+      <Property name="label">出差地点</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="technicalquestion">
+      <Property name="dataType">String</Property>
+      <Property name="label">重大技术问题</Property>
+    </PropertyDef>
+    <PropertyDef name="keyword">
+      <Property name="dataType">String</Property>
+      <Property name="label">关键字</Property>
+    </PropertyDef>
+    <PropertyDef name="gainandadvice">
+      <Property name="dataType">String</Property>
+      <Property name="label">收获与建议</Property>
+    </PropertyDef>
+    <PropertyDef name="jobcontent">
+      <Property name="dataType">String</Property>
+      <Property name="label">主要工作内容</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="bttime">
+      <Property name="dataType">Date</Property>
+      <Property name="label">出差时间</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="bttask">
+      <Property name="dataType">String</Property>
+      <Property name="label">出差任务</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <Reference name="appendixdocument">
+      <Property name="dataProvider">appendixdocumentPR#queryAppendixdocument</Property>
+      <Property name="dataType">[Appendixdocument]</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="btreport">$${this.oid}</Property>
+        </Entity>
+      </Property>
+    </Reference>
+    <PropertyDef name="miji">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">密级</Property>
+      <Property name="defaultValue">1</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">机密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">秘密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">非密</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Resourcedownload">
+    <Property name="matchType">com.buaa.comm.domain.Resourcedownload</Property>
+    <PropertyDef name="efile">
+      <Property name="dataType">String</Property>
+      <Property name="label">电子文件</Property>
+    </PropertyDef>
+    <PropertyDef name="resourcetype">
+      <Property name="dataType">String</Property>
+      <Property name="label">资源类型</Property>
+    </PropertyDef>
+    <PropertyDef name="description">
+      <Property name="dataType">String</Property>
+      <Property name="label">描述</Property>
+    </PropertyDef>
+    <PropertyDef name="filename">
+      <Property name="dataType">String</Property>
+      <Property name="label">文件名称</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="miji">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">密级</Property>
+      <Property name="defaultValue">1</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">机密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">秘密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">非密</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Technicandcontract">
+    <Property name="matchType">com.buaa.comm.domain.Technicandcontract</Property>
+    <PropertyDef name="contractname">
+      <Property name="dataType">String</Property>
+      <Property name="label">合同名称</Property>
+    </PropertyDef>
+    <PropertyDef name="projectnumber">
+      <Property name="dataType">String</Property>
+      <Property name="label">项目编号</Property>
+    </PropertyDef>
+    <PropertyDef name="paymentdate">
+      <Property name="dataType">Date</Property>
+      <Property name="label">付款时间</Property>
+    </PropertyDef>
+    <PropertyDef name="signcontractdate">
+      <Property name="dataType">Date</Property>
+      <Property name="label">具备签订合同时间</Property>
+    </PropertyDef>
+    <PropertyDef name="major">
+      <Property name="dataType">String</Property>
+      <Property name="label">负责专业</Property>
+    </PropertyDef>
+    <PropertyDef name="submitargumentreportdate">
+      <Property name="dataType">Date</Property>
+      <Property name="label">提交论证报告日期</Property>
+    </PropertyDef>
+    <PropertyDef name="contractsubmitedappovedate">
+      <Property name="dataType">Date</Property>
+      <Property name="label">合同文本提交审批时间</Property>
+    </PropertyDef>
+    <PropertyDef name="paymentmethod">
+      <Property name="dataType">String</Property>
+      <Property name="label">付款方式</Property>
+    </PropertyDef>
+    <PropertyDef name="projectname">
+      <Property name="dataType">String</Property>
+      <Property name="label">项目名称</Property>
+    </PropertyDef>
+    <PropertyDef name="contractnumber">
+      <Property name="dataType">String</Property>
+      <Property name="label">合同编号</Property>
+    </PropertyDef>
+    <PropertyDef name="contractmoney">
+      <Property name="dataType">String</Property>
+      <Property name="label">合同金额</Property>
+    </PropertyDef>
+    <PropertyDef name="responsiblepersion">
+      <Property name="dataType">String</Property>
+      <Property name="label">负责人</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="miji">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">密级</Property>
+      <Property name="defaultValue">1</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">机密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">秘密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">非密</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Addressbook">
+    <Property name="matchType">com.buaa.comm.domain.Addressbook</Property>
+    <PropertyDef name="position">
+      <Property name="dataType">String</Property>
+      <Property name="label">职务</Property>
+    </PropertyDef>
+    <PropertyDef name="email">
+      <Property name="dataType">String</Property>
+      <Property name="label">邮件</Property>
+    </PropertyDef>
+    <PropertyDef name="fax">
+      <Property name="dataType">String</Property>
+      <Property name="label">传真</Property>
+    </PropertyDef>
+    <PropertyDef name="name">
+      <Property name="dataType">String</Property>
+      <Property name="label">姓名</Property>
+    </PropertyDef>
+    <PropertyDef name="note">
+      <Property name="dataType">String</Property>
+      <Property name="label">备注</Property>
+    </PropertyDef>
+    <PropertyDef name="telephone">
+      <Property name="dataType">String</Property>
+      <Property name="label">办公室电话</Property>
+    </PropertyDef>
+    <PropertyDef name="mobilephone">
+      <Property name="dataType">String</Property>
+      <Property name="label">手机</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="addressbookdepart">
+      <Property name="dataType">Addressbookdepart</Property>
+    </PropertyDef>
+    <PropertyDef name="miji">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">密级</Property>
+      <Property name="defaultValue">1</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">机密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">秘密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">非密</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Addressbookdepart">
+    <Property name="matchType">com.buaa.comm.domain.Addressbookdepart</Property>
+    <PropertyDef name="parentnode">
+      <Property name="dataType">String</Property>
+      <Property name="label">父节点</Property>
+    </PropertyDef>
+    <PropertyDef name="code">
+      <Property name="dataType">String</Property>
+      <Property name="label">编号</Property>
+    </PropertyDef>
+    <PropertyDef name="address">
+      <Property name="dataType">String</Property>
+      <Property name="label">地址</Property>
+    </PropertyDef>
+    <PropertyDef name="name">
+      <Property name="dataType">String</Property>
+      <Property name="label">名称</Property>
+    </PropertyDef>
+    <PropertyDef name="postcode">
+      <Property name="dataType">String</Property>
+      <Property name="label">邮编</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <Reference name="addressbook">
+      <Property name="dataProvider">addressbookPR#queryAddressbook</Property>
+      <Property name="dataType">[Addressbook]</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="addressbookdepart">$${this.oid}</Property>
+        </Entity>
+      </Property>
+    </Reference>
+  </DataType>
+  <DataType name="Meetingdocument">
+    <Property name="matchType">com.buaa.comm.domain.Meetingdocument</Property>
+    <PropertyDef name="holddepartment">
+      <Property name="dataType">String</Property>
+      <Property name="label">会议主持单位</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="aircrafttype">
+      <Property name="dataType">String</Property>
+      <Property name="label">机型</Property>
+    </PropertyDef>
+    <PropertyDef name="name">
+      <Property name="dataType">String</Property>
+      <Property name="label">会议名称</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="filingperson">
+      <Property name="dataType">String</Property>
+      <Property name="label">归档人</Property>
+      <Property name="readOnly">true</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="efile">
+      <Property name="dataType">String</Property>
+      <Property name="label">电子文件</Property>
+    </PropertyDef>
+    <PropertyDef name="address">
+      <Property name="dataType">String</Property>
+      <Property name="label">会议地点</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="filingdate">
+      <Property name="dataType">DateTime</Property>
+      <Property name="label">归档日期</Property>
+    </PropertyDef>
+    <PropertyDef name="meetingtime">
+      <Property name="dataType">DateTime</Property>
+      <Property name="label">会议时间</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="category">
+      <Property name="dataType">String</Property>
+      <Property name="label">文件分类</Property>
+    </PropertyDef>
+    <PropertyDef name="filename">
+      <Property name="dataType">String</Property>
+      <Property name="label">文件名</Property>
+    </PropertyDef>
+    <PropertyDef name="filenumber">
+      <Property name="dataType">String</Property>
+      <Property name="label">文件编号</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="miji">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">密级</Property>
+      <Property name="defaultValue">1</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">机密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">秘密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">非密</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Jobstatistics">
+    <Property name="creationType">com.buaa.comm.domain.Jobstatistics</Property>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="writingperson">
+      <Property name="dataType">String</Property>
+      <Property name="label">填写人员</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="departname">
+      <Property name="dataType">String</Property>
+      <Property name="label">所属专业室</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="departid">
+      <Property name="dataType">String</Property>
+      <Property name="label">departid</Property>
+    </PropertyDef>
+    <PropertyDef name="projectname">
+      <Property name="dataType">String</Property>
+      <Property name="label">项目名称</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="content">
+      <Property name="dataType">String</Property>
+      <Property name="label">工作内容</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="status">
+      <Property name="dataType">String</Property>
+      <Property name="label">作业状态</Property>
+    </PropertyDef>
+    <PropertyDef name="arrangementdate">
+      <Property name="dataType">Date</Property>
+      <Property name="label">布置时间</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="plancompletedate">
+      <Property name="dataType">Date</Property>
+      <Property name="label">计划完成时间</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="realcompletedate">
+      <Property name="dataType">Date</Property>
+      <Property name="label">实际完成时间</Property>
+    </PropertyDef>
+    <PropertyDef name="sourcepersonname">
+      <Property name="dataType">String</Property>
+      <Property name="label">任务来源人</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="sourcepersonid">
+      <Property name="dataType">String</Property>
+      <Property name="label">sourcepersonid</Property>
+    </PropertyDef>
+    <PropertyDef name="sourceevent">
+      <Property name="dataType">String</Property>
+      <Property name="label">任务来源事件</Property>
+    </PropertyDef>
+    <PropertyDef name="refreshtime">
+      <Property name="dataType">DateTime</Property>
+      <Property name="label">更新时间</Property>
+    </PropertyDef>
+    <PropertyDef name="isfromp6">
+      <Property name="dataType">boolean</Property>
+      <Property name="label">是否来源于P6</Property>
+      <Property name="defaultValue">fasle</Property>
+    </PropertyDef>
+    <PropertyDef name="addp6">
+      <Property name="dataType">Boolean</Property>
+      <Property name="label">加入P6</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">true</Property>
+              <Property name="value">需添加</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">false</Property>
+              <Property name="value">已添加</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+    </PropertyDef>
+    <PropertyDef name="tag">
+      <Property name="dataType">String</Property>
+      <Property name="label">备注</Property>
+    </PropertyDef>
+    <Reference name="joballot">
+      <Property name="dataProvider">joballotPR#queryJoballot</Property>
+      <Property name="dataType">[Joballot]</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="jobstatistics">$${this.oid}</Property>
+        </Entity>
+      </Property>
+    </Reference>
+    <Reference name="jobconcern">
+      <Property name="dataProvider">jobconcernPR#queryJobconcern</Property>
+      <Property name="dataType">[Jobconcern]</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="jobstatistics">$${this.oid}</Property>
+        </Entity>
+      </Property>
+    </Reference>
+    <PropertyDef name="isfocus">
+      <Property name="dataType">boolean</Property>
+    </PropertyDef>
+    <PropertyDef name="miji">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">密级</Property>
+      <Property name="defaultValue">1</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">机密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">秘密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">非密</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Jobconcern">
+    <Property name="creationType">com.buaa.comm.domain.Jobconcern</Property>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="jobstatistics">
+      <Property name="dataType">Jobstatistics</Property>
+      <Property name="label">工作项目</Property>
+    </PropertyDef>
+    <PropertyDef name="personid">
+      <Property name="dataType">String</Property>
+      <Property name="label">personid</Property>
+    </PropertyDef>
+    <PropertyDef name="concerntime">
+      <Property name="dataType">DateTime</Property>
+      <Property name="label">关注时间</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Joballot">
+    <Property name="creationType">com.buaa.comm.domain.Joballot</Property>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="jobstatistics">
+      <Property name="dataType">Jobstatistics</Property>
+      <Property name="label">工作项目</Property>
+    </PropertyDef>
+    <PropertyDef name="personname">
+      <Property name="dataType">String</Property>
+      <Property name="label">负责人</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="personid">
+      <Property name="dataType">String</Property>
+      <Property name="label">职工编号</Property>
+      <Property name="required">true</Property>
+      <Validator type="ajax">
+        <ClientEvent name="beforeExecute">var oid = arg.entity.get(&quot;oid&quot;);&#xD;
+var job = arg.entity.get(&quot;jobstatistics.oid&quot;);&#xD;
+if(!oid)&#xD;
+    oid = null;&#xD;
+var parameter = {&#xD;
+		oid:oid,&#xD;
+		jobstatistics:job,&#xD;
+		person:arg.data&#xD;
+	};&#xD;
+arg.parameter = parameter;</ClientEvent>
+        <Property name="service">joballotManager#personIsExists</Property>
+      </Validator>
+    </PropertyDef>
+    <PropertyDef name="content">
+      <Property name="dataType">String</Property>
+      <Property name="label">分配内容</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="status">
+      <Property name="dataType">boolean</Property>
+      <Property name="label">完成状态</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">false</Property>
+              <Property name="value">未完成</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">true</Property>
+              <Property name="value">已完成</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="finishtime">
+      <Property name="dataType">DateTime</Property>
+      <Property name="label">完成时间</Property>
+    </PropertyDef>
+    <PropertyDef name="miji">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">密级</Property>
+      <Property name="defaultValue">1</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">机密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">秘密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">非密</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+    </PropertyDef>
+  </DataType>
+</Model>

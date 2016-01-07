@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Supportprogram</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <DataSet id="dsDictionaryAdrs">
+      <Property name="parameter">
+        <Entity>
+          <Property name="dictype">Dic_Outfield</Property>
+          <Property name="status">0</Property>
+        </Entity>
+      </Property>
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+      <Property name="dataType">[Dictionary]</Property>
+    </DataSet>
+    <DataSet id="dsRenyuantongji">
+      <Property name="dataProvider">supportprogramPR#queryRenyuan</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="address"></Property>
+        </Entity>
+      </Property>
+      <Property name="dataType">[Supportitem]</Property>
+    </DataSet>
+    <SplitPanel>
+      <Property name="position">208</Property>
+      <Property name="height">50%</Property>
+      <MainControl>
+        <DataGrid id="dgRenyuan">
+          <Property name="dataSet">dsRenyuantongji</Property>
+          <Property name="filterMode">serverSide</Property>
+          <Property name="readOnly">true</Property>
+          <RowNumColumn/>
+          <DataColumn>
+            <Property name="property">registrationexecutor</Property>
+            <Property name="width">160</Property>
+            <Property name="name">registrationexecutor</Property>
+          </DataColumn>
+          <DataColumn>
+            <Property name="property">startexecutiontime</Property>
+            <Property name="width">300</Property>
+            <Property name="name">startexecutiontime</Property>
+          </DataColumn>
+          <DataColumn>
+            <Property name="property">endexecutiontime</Property>
+            <Property name="width">160</Property>
+            <Property name="name">endexecutiontime</Property>
+          </DataColumn>
+          <DataColumn>
+            <Property name="property">supportprogram.supporttype</Property>
+            <Editor/>
+          </DataColumn>
+          <DataColumn>
+            <Property name="property">supportprogram.troop</Property>
+            <Editor/>
+          </DataColumn>
+          <DataColumn>
+            <Property name="property">supportprogram.staffrequirement</Property>
+            <Editor/>
+          </DataColumn>
+          <DataColumn>
+            <Property name="property">supportprogram.changeperiod</Property>
+            <Editor/>
+          </DataColumn>
+          <DataColumn>
+            <Property name="property">supportprogram.worktime</Property>
+            <Editor/>
+          </DataColumn>
+        </DataGrid>
+      </MainControl>
+      <SideControl>
+        <DataGrid id="dgOutfield">
+          <ClientEvent name="onDataRowClick">var dsRenyuantongji=view.id('dsRenyuantongji');&#xD;
+var cur = view.id('dsDictionaryAdrs').getData(&quot;#&quot;).get(&quot;name&quot;);&#xD;
+dsRenyuantongji.set(&quot;parameter&quot;,{&#xD;
+	address:cur&#xD;
+});&#xD;
+dsRenyuantongji.flushAsync();&#xD;
+</ClientEvent>
+          <Property name="dataSet">dsDictionaryAdrs</Property>
+          <Property name="filterMode">serverSide</Property>
+          <Property name="readOnly">true</Property>
+          <Property name="height">300</Property>
+          <Property name="width">200</Property>
+          <DataColumn name="name">
+            <Property name="property">name</Property>
+            <Property name="width">200</Property>
+            <Property name="caption">地点</Property>
+          </DataColumn>
+        </DataGrid>
+      </SideControl>
+    </SplitPanel>
+    <Chart id="chartA">
+      <Axes>
+        <CategoryAxis>
+          <Property name="dataSet">statisticRenyuan</Property>
+          <Property name="properties">mouth</Property>
+        </CategoryAxis>
+        <NumbericAxis>
+          <Property name="min">0</Property>
+          <Property name="title">人数</Property>
+        </NumbericAxis>
+      </Axes>
+      <Series>
+        <Line>
+          <Property name="dataSet">statisticRenyuan</Property>
+          <Property name="title">人员需求</Property>
+          <Property name="bindingConfig">
+            <Property name="yProperty">num</Property>
+          </Property>
+        </Line>
+      </Series>
+    </Chart>
+    <DataSet id="statisticRenyuan">
+      <Property name="dataProvider">supportitemPR#statisticRenyuan</Property>
+      <Property name="parameter"></Property>
+    </DataSet>
+  </View>
+</ViewConfig>

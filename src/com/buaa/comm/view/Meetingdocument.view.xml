@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Meetingdocument</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <DataSet id="dsMeetingdocument">
+      <Property name="dataType">[Meetingdocument]</Property>
+      <Property name="dataProvider">meetingdocumentPR#queryMeetingdocument</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <DataSet id="dsDictionaryMeetDocumentType">
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="dictype">Dic_MeetDocumentType</Property>
+          <Property name="status">0</Property>
+        </Entity>
+      </Property>
+    </DataSet>
+    <DataSet id="dsDictionaryAircraftType">
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="dictype">Dic_AircraftType</Property>
+          <Property name="status">0</Property>
+        </Entity>
+      </Property>
+    </DataSet>
+    <UpdateAction id="uaMeetingdocument">
+      <Property name="dataResolver">meetingdocumentPR#saveMeetingdocument</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsMeetingdocument</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <ToolBar>
+      <DataPilot>
+        <Property name="itemCodes">pages</Property>
+        <Property name="dataSet">dsMeetingdocument</Property>
+        <Property name="dataPath"></Property>
+      </DataPilot>
+      <ToolBarButton>
+        <ClientEvent name="onClick">
+	view.id('dsMeetingdocument').getData().insert();
+	//新增 根据用户角色 用户角色loginUsername
+	var cur=view.id('dsMeetingdocument').getData('#');
+	var loginUsername=&quot;${loginUser.getUsername()}&quot;;//客户端EL表达式获取登录信息
+	//var loginDepts=&quot;${loginUser.getDepts().get(0).getName()}&quot;;//list类型
+	var dateNow = new Date();
+	cur.set(&quot;filingdate&quot;,dateNow);
+    cur.set(&quot;filingperson&quot;,&quot;${loginUser.getCname()}&quot;);
+	view.id('diaMeetingdocument').show();
+	
+	/*
+ 	 * 对用户新增操作进行记录，在用户操作日志表中新增一条记录。
+     */
+	var myDate = new Date();
+	view.id('dsUserOperationLog').getData().insert({
+		logOperationType:&quot;0&quot;,
+		operationPerson: &quot;${loginUsername}&quot;,
+		operationContent:&quot;对会议材料管理表新增一条记录&quot;,
+		operationTime:myDate
+	});
+	view.id('uaUserOperationLog').execute();
+	</ClientEvent>
+        <Property name="caption">新增</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">
+	var cur=view.id('dsMeetingdocument').getData('#');
+	if (cur) {
+		view.id('diaMeetingdocument').show();
+	}
+	
+	/*
+ 	 * 对用户修改操作进行记录，在用户操作日志表中新增一条记录。
+ 	 */
+	var myDate = new Date();
+	view.id('dsUserOperationLog').getData().insert({
+		logOperationType:&quot;1&quot;,
+		operationPerson: &quot;${loginUsername}&quot;,
+		operationContent:&quot;对会议材料管理表修改选定记录&quot;,
+		operationTime:myDate
+	});
+	view.id('uaUserOperationLog').execute();
+	</ClientEvent>
+        <Property name="caption">修改</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsMeetingdocument').getData('#');
+	var ua=view.id('uaMeetingdocument')
+	if(cur){
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+			
+			/*
+ 			 * 对用户删除操作进行记录，在用户操作日志表中新增一条记录。
+ 			 */
+			var myDate = new Date();
+			view.id('dsUserOperationLog').getData().insert({
+				logOperationType:&quot;2&quot;,
+				operationPerson: &quot;${loginUsername}&quot;,
+				operationContent:&quot;对会议材料管理表删除所选记录&quot;,
+				operationTime:myDate
+			});
+			view.id('uaUserOperationLog').execute();
+			
+			cur.remove();
+			ua.execute();
+				}); 
+			} 
+	</ClientEvent>
+        <Property name="caption">删除</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid id="dgMeetingdocument">
+      <Property name="readOnly">true</Property>
+      <Property name="dataSet">dsMeetingdocument</Property>
+      <Property name="dataPath"></Property>
+      <Property name="filterMode">clientSide</Property>
+      <Property name="showFilterBar">false</Property>
+      <Property name="rowHeight">22</Property>
+      <RowNumColumn/>
+      <DataColumn name="aircrafttype">
+        <Property name="property">aircrafttype</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="name">
+        <Property name="property">name</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="address">
+        <Property name="property">address</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="holddepartment">
+        <Property name="property">holddepartment</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="meetingtime">
+        <Property name="property">meetingtime</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="filename">
+        <Property name="property">filename</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="filenumber">
+        <Property name="property">filenumber</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="filingdate">
+        <Property name="property">filingdate</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="filingperson">
+        <Property name="property">filingperson</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="category">
+        <Property name="property">category</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="efile">
+        <ClientEvent name="onRenderCell">jQuery(arg.dom).empty();&#xD;
+var file = arg.data.get(&quot;efile&quot;);&#xD;
+var oid = arg.data.get(&quot;oid&quot;);&#xD;
+var href = &quot;/escmp/upload/Comm_MeetingDocument/&quot; + oid + &quot;/&quot; + file;&#xD;
+jQuery(arg.dom).xCreate({&#xD;
+	tagName:&quot;A&quot;,&#xD;
+	href:href,&#xD;
+	content:arg.data.get(&quot;efile&quot;)&#xD;
+});</ClientEvent>
+        <Property name="property">efile</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">miji</Property>
+        <Property name="width">120</Property>
+        <Property name="name">miji</Property>
+      </DataColumn>
+    </DataGrid>
+    <Dialog id="diaMeetingdocument">
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">800</Property>
+      <Property name="caption">会议材料</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaMeetingdocument').execute(function(){
+               view.id('diaMeetingdocument').hide();
+           });
+         </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsMeetingdocument').getData('#');
+				cur.cancel();
+				view.id('diaMeetingdocument').hide();
+				
+	/*
+	 * 删除当前用户操作日志记录并保存
+	 */
+	view.id('dsUserOperationLog').getData().remove()
+	view.id('uaUserOperationLog').execute();
+	         
+	         </ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <DataSetDropDown id="dataSetDropDownAircraftType">
+          <Property name="autoOpen">true</Property>
+          <Property name="dataSet">dsDictionaryAircraftType</Property>
+          <Property name="displayProperty">name</Property>
+          <Property name="editable">false</Property>
+          <Property name="property">name</Property>
+          <Property name="useEmptyItem">true</Property>
+        </DataSetDropDown>
+        <AutoForm id="afMeetingdocument">
+          <Property name="cols">*,*</Property>
+          <Property name="dataSet">dsMeetingdocument</Property>
+          <Property name="dataPath">#</Property>
+          <AutoFormElement>
+            <Property name="name">name</Property>
+            <Property name="property">name</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">AircraftType</Property>
+            <Property name="property">aircrafttype</Property>
+            <Property name="trigger">dataSetDropDownAircraftType</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">HoldDepartment</Property>
+            <Property name="property">holddepartment</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">Address</Property>
+            <Property name="property">address</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">MeetingTime</Property>
+            <Property name="property">meetingtime</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">FileName</Property>
+            <Property name="property">filename</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">FileNumber</Property>
+            <Property name="property">filenumber</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">Category</Property>
+            <Property name="property">category</Property>
+            <Property name="trigger">dataSetDropDownMeetDocumentType</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">FilingPerson</Property>
+            <Property name="property">filingperson</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">FilingDate</Property>
+            <Property name="property">filingdate</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">EFile</Property>
+            <Property name="property">efile</Property>
+            <Editor>
+              <Container>
+                <Link id="lefile" layoutConstraint="center">
+                  <Property name="dataSet">dsMeetingdocument</Property>
+                  <Property name="property">efile</Property>
+                </Link>
+                <Button layoutConstraint="right">
+                  <Property name="caption">删除</Property>
+                  <Property name="action">deleteFileAction</Property>
+                </Button>
+                <Button layoutConstraint="right ">
+                  <Property name="caption">上传</Property>
+                  <Property name="action">uaUpload</Property>
+                </Button>
+              </Container>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+          </AutoFormElement>
+        </AutoForm>
+        <DataSetDropDown id="dataSetDropDownMeetDocumentType">
+          <Property name="autoOpen">true</Property>
+          <Property name="dataSet">dsDictionaryMeetDocumentType</Property>
+          <Property name="displayProperty">name</Property>
+          <Property name="editable">false</Property>
+          <Property name="property">name</Property>
+          <Property name="useEmptyItem">true</Property>
+        </DataSetDropDown>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <UploadAction id="uaUpload">
+      <ClientEvent name="onFilesAdded">var cur=view.id('dsMeetingdocument').getData('#');&#xD;
+var value = &quot;/Comm_MeetingDocument/&quot; + cur.get(&quot;oid&quot;) + &quot;/&quot;;&#xD;
+self.set(&quot;multipartParams&quot;, {record: value});</ClientEvent>
+      <ClientEvent name="onFileUploaded">var returnValue = arg.file.name;&#xD;
+var cur=view.id('dsMeetingdocument').getData('#');&#xD;
+cur.set(&quot;efile&quot;,returnValue);&#xD;
+var link = view.id(&quot;lefile&quot;);&#xD;
+if(returnValue){&#xD;
+	&#xD;
+	var oid = cur.get(&quot;oid&quot;);&#xD;
+    var href = &quot;/escmp/upload/Comm_MeetingDocument/&quot; + oid + &quot;/&quot; + returnValue;&#xD;
+    link.set({&#xD;
+		href: href,&#xD;
+		visible: true&#xD;
+	});&#xD;
+	                 &#xD;
+}&#xD;
+else{&#xD;
+    link.set(&quot;visible&quot;,false);&#xD;
+}</ClientEvent>
+      <ClientEvent name="onError">	var error = arg.error;&#xD;
+	dorado.MessageBox.show({&#xD;
+		title:error.message,&#xD;
+		message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
+		icon: &quot;WARNING&quot;,&#xD;
+		buttons: [&quot;ok&quot;]&#xD;
+	});</ClientEvent>
+      <Property name="url">>dorado/uploader/fileupload</Property>
+      <Property name="maxFileSize">100MB</Property>
+      <Filters/>
+    </UploadAction>
+    <AjaxAction id="deleteFileAction">
+      <ClientEvent name="beforeExecute">var cur=view.id('dsMeetingdocument').getData('#');&#xD;
+var value = &quot;/Comm_MeetingDocument/&quot; + cur.get(&quot;oid&quot;) + &quot;/&quot;;&#xD;
+var file = cur.get(&quot;efile&quot;);&#xD;
+self.set(&quot;parameter&quot;,{&#xD;
+	record: value,&#xD;
+	filename: file&#xD;
+});&#xD;
+cur.set(&quot;efile&quot;,null);&#xD;
+var link = view.id(&quot;lefile&quot;);&#xD;
+link.set(&quot;visible&quot;,false);</ClientEvent>
+      <Property name="service">defaultUploadProcessor#deleteFile</Property>
+    </AjaxAction>
+    <DataSet id="dsUserOperationLog">
+      <Property name="dataProvider">userOperationLogPR#queryUserOperationLog</Property>
+      <Property name="dataType">[UserOperationLog]</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <UpdateAction id="uaUserOperationLog">
+      <Property name="dataResolver">userOperationLogPR#saveUserOperationLog</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsUserOperationLog</Property>
+      </UpdateItem>
+    </UpdateAction>
+  </View>
+</ViewConfig>

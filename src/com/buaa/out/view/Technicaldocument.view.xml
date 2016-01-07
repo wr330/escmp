@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Technicaldocument</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <DataSet id="dsTechnicaldocument">
+      <Property name="dataType">[Technicaldocument]</Property>
+      <Property name="dataProvider">technicaldocumentPR#queryTechnicaldocument</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <DataSet id="dsUsers">
+      <Property name="dataProvider">bdf2.userMaintain#loadUsers</Property>
+      <Property name="dataType">[User]</Property>
+      <Property name="pageSize">200</Property>
+    </DataSet>
+    <DataSet id="dsDictionaryD">
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="dictype">Dic_OutDocumentType</Property>
+          <Property name="status">0</Property>
+        </Entity>
+      </Property>
+    </DataSet>
+    <DataSet id="dsDictionaryM">
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="dictype">Dic_Major</Property>
+          <Property name="status">0</Property>
+        </Entity>
+      </Property>
+    </DataSet>
+    <DataSet id="dsDictionaryE">
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="dictype">Dic_OutExecution</Property>
+          <Property name="status">0</Property>
+        </Entity>
+      </Property>
+    </DataSet>
+    <DataSet id="dsUserOperationLog">
+      <Property name="dataProvider">userOperationLogPR#queryUserOperationLog</Property>
+      <Property name="dataType">[UserOperationLog]</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <UpdateAction id="uaTechnicaldocument">
+      <Property name="dataResolver">technicaldocumentPR#saveTechnicaldocument</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsTechnicaldocument</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <UpdateAction id="uaUserOperationLog">
+      <Property name="dataResolver">userOperationLogPR#saveUserOperationLog</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsUserOperationLog</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <ToolBar>
+      <DataPilot>
+        <Property name="itemCodes">pages</Property>
+        <Property name="dataSet">dsTechnicaldocument</Property>
+        <Property name="dataPath"></Property>
+      </DataPilot>
+      <ToolBarButton>
+        <ClientEvent name="onClick">
+	view.id('dsTechnicaldocument').getData().insert();
+	var cur=view.id('dsTechnicaldocument').getData('#');
+	var dateNow = new Date();
+	cur.set(&quot;issuedate&quot;,dateNow);
+	var guid = &quot;&quot;;
+	for(var i=1;i&lt;=32;i++){
+		var n = Math.floor(Math.random()*16.0).toString(16);
+		guid += n;
+		if((i==8)||(i==12)||(i==16)||(i==20))
+		   guid += &quot;-&quot;;
+	}
+	cur.set(&quot;oid&quot;,guid);
+	view.id('diaTechnicaldocument').show();
+	var link = view.id(&quot;lefile&quot;);
+    link.set(&quot;visible&quot;,false);
+	
+	/*
+ 	 * 对用户新增操作进行记录，在用户操作日志表中新增一条记录。
+     */
+	var myDate = new Date();
+	view.id('dsUserOperationLog').getData().insert({
+		logOperationType:&quot;0&quot;,
+		operationPerson: &quot;${loginUsername}&quot;,
+		operationContent:&quot;对技术文件记录表新增一条记录&quot;,
+		operationTime:myDate
+	});
+	view.id('uaUserOperationLog').execute();
+	
+	
+	</ClientEvent>
+        <Property name="caption">新增</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">
+	var cur=view.id('dsTechnicaldocument').getData('#');
+	if (cur) {
+		view.id('diaTechnicaldocument').show();
+	}
+	var file = cur.get(&quot;efile&quot;);
+var link = view.id(&quot;lefile&quot;);
+if(file){
+var oid = cur.get(&quot;oid&quot;);
+var href = &quot;/escmp/upload/Out_Technicaldocument/&quot; + oid + &quot;/&quot; + file;
+link.set({
+	href: href,
+	visible: true
+});
+}
+else{
+link.set(&quot;visible&quot;,false);
+}
+
+	/*
+ 	 * 对用户修改操作进行记录，在用户操作日志表中新增一条记录。
+ 	 */
+	var myDate = new Date();
+	view.id('dsUserOperationLog').getData().insert({
+		logOperationType:&quot;1&quot;,
+		operationPerson: &quot;${loginUsername}&quot;,
+		operationContent:&quot;对技术文件记录表修改选定记录&quot;,
+		operationTime:myDate
+	});
+	view.id('uaUserOperationLog').execute();</ClientEvent>
+        <Property name="caption">修改</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsTechnicaldocument').getData('#');
+	var ua=view.id('uaTechnicaldocument')
+	if(cur){
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+			
+			/*
+ 			 * 对用户删除操作进行记录，在用户操作日志表中新增一条记录。
+ 			 */
+			var myDate = new Date();
+			view.id('dsUserOperationLog').getData().insert({
+				logOperationType:&quot;2&quot;,
+				operationPerson: &quot;${loginUsername}&quot;,
+				operationContent:&quot;对技术文件记录表删除所选记录&quot;,
+				operationTime:myDate
+			});
+			view.id('uaUserOperationLog').execute();
+			
+			cur.remove();
+			ua.execute();
+				}); 
+			} 
+	</ClientEvent>
+        <Property name="caption">删除</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid id="dgTechnicaldocument">
+      <Property name="readOnly">true</Property>
+      <Property name="dataSet">dsTechnicaldocument</Property>
+      <Property name="dataPath"></Property>
+      <Property name="filterMode">clientSide</Property>
+      <Property name="showFilterBar">false</Property>
+      <Property name="rowHeight">22</Property>
+      <Property name="fixedColumnCount">3</Property>
+      <RowNumColumn/>
+      <DataColumn name="documenttype">
+        <Property name="property">documenttype</Property>
+        <Property name="width">160</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">aircrafttype</Property>
+        <Property name="width">120</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn name="number">
+        <Property name="property">number</Property>
+        <Property name="width">200</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="width">200</Property>
+        <Property name="property">title</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="width">200</Property>
+        <Property name="property">efile</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="width">200</Property>
+        <Property name="property">contentabstract</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">contenttype</Property>
+        <Property name="width">120</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">transceivertype</Property>
+        <Property name="width">120</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn name="major">
+        <Property name="property">major</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="responsibleperson">
+        <Property name="property">responsibleperson</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="issuedate">
+        <Property name="property">issuedate</Property>
+        <Property name="width">120</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">recipient</Property>
+        <Property name="width">120</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn name="execution">
+        <Property name="property">execution</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="width">200</Property>
+        <Property name="property">miji</Property>
+        <Property name="name">miji</Property>
+        <Editor/>
+      </DataColumn>
+    </DataGrid>
+    <Dialog id="diaTechnicaldocument">
+      <ClientEvent name="onClose">var cur=view.id('dsTechnicaldocument').getData('#');&#xD;
+				cur.cancel();&#xD;
+				view.id('diaTechnicaldocument').hide();</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">500</Property>
+      <Property name="caption">技术文件记录</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaTechnicaldocument').execute(function(){
+               view.id('diaTechnicaldocument').hide();
+           });
+         </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsTechnicaldocument').getData('#');
+				cur.cancel();
+				view.id('diaTechnicaldocument').hide();
+				
+	/*
+	 * 删除当前用户操作日志记录并保存
+	 */
+	view.id('dsUserOperationLog').getData().remove()
+	view.id('uaUserOperationLog').execute();
+	         
+	         </ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <CustomDropDown id="customDropDown1">
+          <Property name="editable">false</Property>
+          <Property name="autoOpen">true</Property>
+          <DataGrid>
+            <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
+var user=view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;);&#xD;
+if (user) {&#xD;
+	dropDown.close(user.get(&quot;cname&quot;));&#xD;
+}</ClientEvent>
+            <Property name="showFilterBar">true</Property>
+            <Property name="rowHeight">22</Property>
+            <Property name="dataSet">dsUsers</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="height">300</Property>
+            <RowNumColumn/>
+            <DataColumn>
+              <Property name="name">username</Property>
+              <Property name="property">username</Property>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">cname</Property>
+              <Property name="property">cname</Property>
+            </DataColumn>
+            <DataColumn name="depts">
+              <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;depts&quot;);&#xD;
+var name = [];&#xD;
+if (entitylist) {&#xD;
+	entitylist.each(function(item){&#xD;
+		name.push(item.get(&quot;name&quot;));&#xD;
+	});&#xD;
+}&#xD;
+arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
+              <Property name="property">depts</Property>
+            </DataColumn>
+          </DataGrid>
+        </CustomDropDown>
+        <DataSetDropDown id="dataSetDropDownD">
+          <Property name="autoOpen">true</Property>
+          <Property name="dataSet">dsDictionaryD</Property>
+          <Property name="property">name</Property>
+          <Property name="displayProperty">name</Property>
+          <Property name="editable">false</Property>
+        </DataSetDropDown>
+        <DataSetDropDown id="dataSetDropDownM">
+          <Property name="autoOpen">true</Property>
+          <Property name="dataSet">dsDictionaryM</Property>
+          <Property name="property">name</Property>
+          <Property name="displayProperty">name</Property>
+          <Property name="editable">false</Property>
+          <Property name="useEmptyItem">true</Property>
+        </DataSetDropDown>
+        <DataSetDropDown id="dataSetDropDownE">
+          <Property name="autoOpen">true</Property>
+          <Property name="dataSet">dsDictionaryE</Property>
+          <Property name="property">name</Property>
+          <Property name="displayProperty">name</Property>
+          <Property name="editable">false</Property>
+          <Property name="useEmptyItem">true</Property>
+        </DataSetDropDown>
+        <AutoForm id="afTechnicaldocument">
+          <Property name="cols">*</Property>
+          <Property name="dataSet">dsTechnicaldocument</Property>
+          <Property name="dataPath">#</Property>
+          <Property name="labelWidth">90</Property>
+          <Property name="dataType">Technicaldocument</Property>
+          <AutoFormElement>
+            <Property name="name">DocumentType</Property>
+            <Property name="property">documenttype</Property>
+            <Property name="trigger">dataSetDropDownD</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">aircrafttype</Property>
+            <Property name="property">aircrafttype</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">Number</Property>
+            <Property name="property">number</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">Title</Property>
+            <Property name="property">title</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">EFile</Property>
+            <Property name="property">efile</Property>
+            <Editor>
+              <Container>
+                <Link id="lefile" layoutConstraint="center">
+                  <Property name="dataSet">dsTechnicaldocument</Property>
+                  <Property name="property">efile</Property>
+                </Link>
+                <Button layoutConstraint="right">
+                  <Property name="caption">删除</Property>
+                  <Property name="action">deleteFileAction</Property>
+                </Button>
+                <Button layoutConstraint="right ">
+                  <Property name="caption">上传</Property>
+                  <Property name="action">uaUpload</Property>
+                </Button>
+              </Container>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">contentabstract</Property>
+            <Property name="property">contentabstract</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">100</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">contenttype</Property>
+            <Property name="property">contenttype</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">transceivertype</Property>
+            <Property name="property">transceivertype</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">Major</Property>
+            <Property name="property">major</Property>
+            <Property name="trigger">dataSetDropDownM</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">ResponsiblePerson</Property>
+            <Property name="property">responsibleperson</Property>
+            <Property name="trigger">customDropDown1</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">IssueDate</Property>
+            <Property name="property">issuedate</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">recipient</Property>
+            <Property name="property">recipient</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">Execution</Property>
+            <Property name="property">execution</Property>
+            <Property name="trigger">dataSetDropDownE</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <UploadAction id="uaUpload">
+      <ClientEvent name="onFilesAdded">var cur=view.id('dsTechnicaldocument').getData('#');&#xD;
+var value = &quot;/Out_Technicaldocument/&quot; + cur.get(&quot;oid&quot;) + &quot;/&quot;;&#xD;
+self.set(&quot;multipartParams&quot;, {record: value});</ClientEvent>
+      <ClientEvent name="onFileUploaded">var returnValue = arg.file.name;&#xD;
+var cur=view.id('dsTechnicaldocument').getData('#');&#xD;
+cur.set(&quot;efile&quot;,returnValue);&#xD;
+var link = view.id(&quot;lefile&quot;);&#xD;
+if(returnValue){&#xD;
+	var oid = cur.get(&quot;oid&quot;);&#xD;
+    var href = &quot;/escmp/upload/Out_Technicaldocument/&quot; + oid + &quot;/&quot; + returnValue;&#xD;
+    link.set({&#xD;
+		href: href,&#xD;
+		visible: true&#xD;
+	});&#xD;
+}&#xD;
+else{&#xD;
+    link.set(&quot;visible&quot;,false);&#xD;
+}</ClientEvent>
+      <ClientEvent name="onError">	var error = arg.error;&#xD;
+	dorado.MessageBox.show({&#xD;
+		title:error.message,&#xD;
+		message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
+		icon: &quot;WARNING&quot;,&#xD;
+		buttons: [&quot;ok&quot;]&#xD;
+	});</ClientEvent>
+      <Property name="url">>dorado/uploader/fileupload</Property>
+      <Property name="maxFileSize">100MB</Property>
+      <Filters/>
+    </UploadAction>
+    <AjaxAction id="deleteFileAction">
+      <ClientEvent name="beforeExecute">var cur=view.id('dsTechnicaldocument').getData('#');&#xD;
+var value = &quot;/Out_Technicaldocument/&quot; + cur.get(&quot;oid&quot;) + &quot;/&quot;;&#xD;
+var file = cur.get(&quot;efile&quot;);&#xD;
+self.set(&quot;parameter&quot;,{&#xD;
+	record: value,&#xD;
+	filename: file&#xD;
+});&#xD;
+cur.set(&quot;efile&quot;,null);&#xD;
+var link = view.id(&quot;lefile&quot;);&#xD;
+link.set(&quot;visible&quot;,false);</ClientEvent>
+      <Property name="service">defaultUploadProcessor#deleteFile</Property>
+    </AjaxAction>
+    <Import id="sendMessage" src="bdf2.core.view.frame.main.register.message.SendMessage#$dialogSendMessage"/>
+    <Import id="dataSetMessageForSend" src="bdf2.core.view.frame.main.register.message.SendMessage#$dataSetMessageForSend"/>
+    <Import id="updateActionSendMessage" src="bdf2.core.view.frame.main.register.message.SendMessage#$updateActionSendMessage"/>
+  </View>
+</ViewConfig>

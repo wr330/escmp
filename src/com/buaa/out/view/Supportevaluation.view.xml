@@ -1,0 +1,69 @@
+
+
+
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Supportevaluation</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model>
+    </Model>
+  <View>
+  
+<DataSet id="dsSupportevaluation">
+	  <Property name="dataType">[Supportevaluation]</Property>
+	  <Property name="dataProvider">supportevaluationPR#querySupportevaluation</Property>
+	  <Property name="pageSize">20</Property>
+	  </DataSet><UpdateAction id="uaSupportevaluation">
+  <Property name="dataResolver">supportevaluationPR#saveSupportevaluation</Property>
+  <UpdateItem>
+     <Property name="dataSet">dsSupportevaluation</Property>
+  </UpdateItem>
+</UpdateAction>
+<ToolBar>
+<DataPilot>
+
+	<Property name="itemCodes">pages,+,-,x</Property>
+	<Property name="dataSet">dsSupportevaluation</Property>
+	<Property name="dataPath"></Property>
+</DataPilot>
+
+
+<ToolBarButton>
+  <Property name="caption">数据保存</Property>
+  <Property name="action">uaSupportevaluation</Property>
+  <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+</ToolBarButton> 
+</ToolBar>
+<DataGrid id="dgSupportevaluation">
+	<RowNumColumn/>
+	<DataColumn name="oid">
+	<Property name="property">oid</Property>
+               	</DataColumn>
+	<DataColumn name="supportgrade">
+	<Property name="property">supportgrade</Property>
+               	</DataColumn>
+	<DataColumn name="supportendtime">
+	<Property name="property">supportendtime</Property>
+               	</DataColumn>
+	<DataColumn name="supportaddress">
+	<Property name="property">supportaddress</Property>
+               	</DataColumn>
+	<DataColumn name="feedbackquestion">
+	<Property name="property">feedbackquestion</Property>
+               	</DataColumn>
+	<DataColumn name="supportstarttime">
+	<Property name="property">supportstarttime</Property>
+               	</DataColumn>
+	<DataColumn name="customersatisfactionsurvey">
+	<Property name="property">customersatisfactionsurvey</Property>
+               	</DataColumn>
+	<Property name="dataSet">dsSupportevaluation</Property>
+	<Property name="dataPath"></Property>
+	  	<Property name="filterMode">serverSide</Property>
+	<Property name="showFilterBar">true</Property>
+  	<Property name="rowHeight">22</Property>
+	</DataGrid>   
+     </View>
+</ViewConfig>

@@ -1,0 +1,991 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Supportprogram</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="Supportprogram">
+      <Property name="matchType">com.buaa.out.domain.Supportprogram</Property>
+      <Property name="creationType">com.buaa.out.domain.Supportprogram</Property>
+      <PropertyDef name="troop">
+        <Property name="dataType">String</Property>
+        <Property name="label">部队</Property>
+      </PropertyDef>
+      <PropertyDef name="staffrequirement">
+        <Property name="dataType">String</Property>
+        <Property name="label">人员需求</Property>
+      </PropertyDef>
+      <PropertyDef name="supporttype">
+        <Property name="dataType">String</Property>
+        <Property name="label">保障类型</Property>
+      </PropertyDef>
+      <PropertyDef name="changeperiod">
+        <Property name="dataType">String</Property>
+        <Property name="label">更换周期</Property>
+      </PropertyDef>
+      <PropertyDef name="workaddress">
+        <Property name="dataType">String</Property>
+        <Property name="label">地点</Property>
+        <Property name="mapping">
+          <Property name="mapValues"></Property>
+        </Property>
+      </PropertyDef>
+      <PropertyDef name="worktime">
+        <Property name="dataType">DateTime</Property>
+        <Property name="label">制定时间</Property>
+      </PropertyDef>
+      <PropertyDef name="oid">
+        <Property name="dataType">String</Property>
+        <Property name="label">oid</Property>
+        <Property name="visible">false</Property>
+      </PropertyDef>
+      <Reference name="supportitem">
+        <Property name="dataProvider">supportitemPR#querySupportitem</Property>
+        <Property name="dataType">[Supportitem]</Property>
+        <Property name="pageSize">20</Property>
+        <Property name="parameter">
+          <Entity>
+            <Property name="oid">$${this.oid}</Property>
+          </Entity>
+        </Property>
+      </Reference>
+      <PropertyDef name="miji">
+        <Property name="dataType">Integer</Property>
+        <Property name="label">密级</Property>
+        <Property name="mapping">
+          <Property name="mapValues">
+            <Collection>
+              <Entity>
+                <Property name="key">2</Property>
+                <Property name="value">机密</Property>
+              </Entity>
+              <Entity>
+                <Property name="key">1</Property>
+                <Property name="value">秘密</Property>
+              </Entity>
+              <Entity>
+                <Property name="key">0</Property>
+                <Property name="value">非密</Property>
+              </Entity>
+            </Collection>
+          </Property>
+        </Property>
+        <Property name="defaultValue">1</Property>
+      </PropertyDef>
+      <PropertyDef name="parentnode">
+        <Property name="dataType">String</Property>
+        <Property name="label">parentnode</Property>
+        <Property name="visible">false</Property>
+      </PropertyDef>
+      <Reference name="children">
+        <Property name="dataProvider">supportprogramPR#querySupportprogram</Property>
+        <Property name="dataType">[Supportprogram]</Property>
+        <Property name="pageSize">20</Property>
+        <Property name="parameter">
+          <Entity>
+            <Property name="oid">$${this.oid}</Property>
+            <Property name="parentnode">$${this.oid}</Property>
+          </Entity>
+        </Property>
+      </Reference>
+    </DataType>
+  </Model>
+  <View>
+    <DataSet id="dsSupportprogram">
+      <Property name="dataType">[Supportprogram]</Property>
+      <Property name="dataProvider">supportprogramPR#querySupportprogram</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <DataSet id="dsUsers">
+      <Property name="dataProvider">bdf2.userMaintain#loadUsers2</Property>
+      <Property name="dataType">[User]</Property>
+    </DataSet>
+    <DataSet id="dsDictionary">
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="dictype">Dic_Outfield</Property>
+          <Property name="status">0</Property>
+        </Entity>
+      </Property>
+    </DataSet>
+    <DataSet id="dsCurrentTree">
+      <Property name="dataType">[Supportprogram]</Property>
+      <Property name="dataProvider">supportprogramPR#currentTree</Property>
+    </DataSet>
+    <DataSet id="dsUserOperationLog">
+      <Property name="dataProvider">userOperationLogPR#queryUserOperationLog</Property>
+      <Property name="dataType">[UserOperationLog]</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <UpdateAction id="uaSupportprogram">
+      <Property name="dataResolver">supportprogramPR#saveSupportprogram</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsCurrentTree</Property>
+        <Property name="dataPath">!DIRTY_TREE</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <SplitPanel>
+      <Property name="position">200</Property>
+      <MainControl>
+        <CardBook id="cbSupport">
+          <Property name="currentIndex">0</Property>
+          <Panel>
+            <Property name="caption">保障计划</Property>
+            <Buttons/>
+            <Children>
+              <AutoForm>
+                <Property name="dataSet">dsCurrentTree</Property>
+                <Property name="dataPath">!CURRENT_TYPE</Property>
+                <Property name="dataType">Supportprogram</Property>
+                <Property name="readOnly">true</Property>
+                <AutoFormElement>
+                  <Property name="name">troop</Property>
+                  <Property name="property">troop</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">staffrequirement</Property>
+                  <Property name="property">staffrequirement</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">supporttype</Property>
+                  <Property name="property">supporttype</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">changeperiod</Property>
+                  <Property name="property">changeperiod</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">workaddress</Property>
+                  <Property name="property">workaddress</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">worktime</Property>
+                  <Property name="property">worktime</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">miji</Property>
+                  <Property name="property">miji</Property>
+                  <Editor/>
+                </AutoFormElement>
+              </AutoForm>
+              <ToolBar>
+                <DataPilot>
+                  <Property name="itemCodes">pages</Property>
+                  <Property name="dataSet">dsCurrentTree</Property>
+                  <Property name="dataPath">!CURRENT_TYPE.supportitem</Property>
+                </DataPilot>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id('dsCurrentTree').getData(&quot;!CURRENT_TYPE&quot;);&#xD;
+view.id('dsCurrentTree').getData(&quot;!CURRENT_TYPE.supportitem&quot;).insert({supportprogram:{oid:cur.get(&quot;oid&quot;)}});&#xD;
+view.id('diaSupportitem').show();&#xD;
+view.id('elementfsupporttype').set('readOnly',true);&#xD;
+&#xD;
+	/*&#xD;
+ 	 * 对用户新增操作进行记录，在用户操作日志表中新增一条记录。&#xD;
+     */&#xD;
+	var myDate = new Date();&#xD;
+	view.id('dsUserOperationLog').getData().insert({&#xD;
+		logOperationType:&quot;0&quot;,&#xD;
+		operationPerson: &quot;${loginUsername}&quot;,&#xD;
+		operationContent:&quot;对保障计划表的子表保障条目表新增一条记录&quot;,&#xD;
+		operationTime:myDate&#xD;
+	});&#xD;
+	view.id('uaUserOperationLog').execute();</ClientEvent>
+                  <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                  <Property name="caption">新增条目</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id('dsCurrentTree').getData('!CURRENT_TYPE.#supportitem');&#xD;
+if (cur) {&#xD;
+	view.id('diaSupportitem').show();&#xD;
+	view.id('elementfsupporttype').set('readOnly',true);&#xD;
+}&#xD;
+&#xD;
+	/*&#xD;
+ 	 * 对用户修改操作进行记录，在用户操作日志表中新增一条记录。&#xD;
+ 	 */&#xD;
+	var myDate = new Date();&#xD;
+	view.id('dsUserOperationLog').getData().insert({&#xD;
+		logOperationType:&quot;1&quot;,&#xD;
+		operationPerson: &quot;${loginUsername}&quot;,&#xD;
+		operationContent:&quot;对保障计划表的子表保障条目表修改选定记录&quot;,&#xD;
+		operationTime:myDate&#xD;
+	});&#xD;
+	view.id('uaUserOperationLog').execute();</ClientEvent>
+                  <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+                  <Property name="caption">修改</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur = view.id('dsCurrentTree').getData('!CURRENT_TYPE.#supportitem');&#xD;
+var uaSupportprogram = view.id('uaSupportprogram');&#xD;
+var handover = cur.get(&quot;handover&quot;);&#xD;
+if(handover.entityCount)&#xD;
+	dorado.MessageBox.alert(&quot;请先删除子节点!&quot;);&#xD;
+else&#xD;
+	if(cur){&#xD;
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){&#xD;
+		&#xD;
+		/*&#xD;
+ 		 * 对用户删除操作进行记录，在用户操作日志表中新增一条记录。&#xD;
+ 		 */&#xD;
+	    var myDate = new Date();&#xD;
+		view.id('dsUserOperationLog').getData().insert({&#xD;
+			logOperationType:&quot;2&quot;,&#xD;
+			operationPerson: &quot;${loginUsername}&quot;,&#xD;
+			operationContent:&quot;对保障计划表的子表保障条目表删除所选记录&quot;,&#xD;
+			operationTime:myDate&#xD;
+		});&#xD;
+		view.id('uaUserOperationLog').execute();&#xD;
+		&#xD;
+		cur.remove();&#xD;
+		uaSupportprogram.execute();	&#xD;
+			}); &#xD;
+		}</ClientEvent>
+                  <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                  <Property name="caption">删除</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid id="GridSupportitem">
+                <Property name="dataPath">!CURRENT_TYPE.supportitem</Property>
+                <Property name="dataSet">dsCurrentTree</Property>
+                <Property name="dataType">Supportitem</Property>
+                <Property name="readOnly">true</Property>
+                <Property name="filterMode">serverSide</Property>
+                <DataColumn name="registrationexecutor">
+                  <Property name="property">registrationexecutor</Property>
+                </DataColumn>
+                <DataColumn name="startexecutiontime">
+                  <Property name="property">startexecutiontime</Property>
+                </DataColumn>
+                <DataColumn name="endexecutiontime">
+                  <Property name="property">endexecutiontime</Property>
+                </DataColumn>
+              </DataGrid>
+            </Children>
+            <Tools/>
+          </Panel>
+          <Panel>
+            <Property name="caption">保障条目</Property>
+            <Buttons/>
+            <Children>
+              <AutoForm>
+                <Property name="dataPath">!CURRENT_ITEM</Property>
+                <Property name="dataSet">dsCurrentTree</Property>
+                <Property name="readOnly">true</Property>
+                <AutoFormElement>
+                  <Property name="name">startexecutiontime</Property>
+                  <Property name="property">startexecutiontime</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">endexecutiontime</Property>
+                  <Property name="property">endexecutiontime</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">registrationexecutor</Property>
+                  <Property name="property">registrationexecutor</Property>
+                  <Editor/>
+                </AutoFormElement>
+              </AutoForm>
+              <ToolBar>
+                <DataPilot>
+                  <Property name="itemCodes">pages</Property>
+                  <Property name="dataSet">dsCurrentTree</Property>
+                  <Property name="dataPath">!CURRENT_ITEM.handover</Property>
+                </DataPilot>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id('dsCurrentTree').getData('!CURRENT_ITEM');&#xD;
+var myDate = new Date();&#xD;
+var mytime= myDate.toLocaleTimeString();&#xD;
+var a=mytime.split(&quot;:&quot;);&#xD;
+var hour=myDate.getHours();&#xD;
+var tempId = hour*60*60*1000+a[1]*60*1000+a[2]*1000;//当前时间的毫秒数作为临时ID&#xD;
+view.id('dsCurrentTree').getData('!CURRENT_ITEM.handover').insert({supportitem:{id:cur.get(&quot;id&quot;)},oid:tempId});&#xD;
+view.id('dgHandover').show();&#xD;
+&#xD;
+	/*&#xD;
+ 	 * 对用户新增操作进行记录，在用户操作日志表中新增一条记录。&#xD;
+     */&#xD;
+	var myDate = new Date();&#xD;
+	view.id('dsUserOperationLog').getData().insert({&#xD;
+		logOperationType:&quot;0&quot;,&#xD;
+		operationPerson: &quot;${loginUsername}&quot;,&#xD;
+		operationContent:&quot;对保障条目表的子表交接信息表新增一条记录&quot;,&#xD;
+		operationTime:myDate&#xD;
+	});&#xD;
+	view.id('uaUserOperationLog').execute();</ClientEvent>
+                  <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                  <Property name="caption">新增交接信息</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id('dsCurrentTree').getData('!CURRENT_ITEM.#handover');&#xD;
+if (cur) {&#xD;
+	view.id('dgHandover').show();&#xD;
+}&#xD;
+&#xD;
+	/*&#xD;
+ 	 * 对用户修改操作进行记录，在用户操作日志表中新增一条记录。&#xD;
+ 	 */&#xD;
+	var myDate = new Date();&#xD;
+	view.id('dsUserOperationLog').getData().insert({&#xD;
+		logOperationType:&quot;1&quot;,&#xD;
+		operationPerson: &quot;${loginUsername}&quot;,&#xD;
+		operationContent:&quot;对保障条目表的子表交接信息表修改选定记录&quot;,&#xD;
+		operationTime:myDate&#xD;
+	});&#xD;
+	view.id('uaUserOperationLog').execute();</ClientEvent>
+                  <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+                  <Property name="caption">修改</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur = view.id('dsCurrentTree').getData('!CURRENT_ITEM.#handover');&#xD;
+var uaSupportprogram = view.id('uaSupportprogram');&#xD;
+if(cur){&#xD;
+	dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){&#xD;
+	&#xD;
+	/*&#xD;
+ 	 * 对用户删除操作进行记录，在用户操作日志表中新增一条记录。&#xD;
+ 	 */&#xD;
+	var myDate = new Date();&#xD;
+	view.id('dsUserOperationLog').getData().insert({&#xD;
+	logOperationType:&quot;2&quot;,&#xD;
+		operationPerson: &quot;${loginUsername}&quot;,&#xD;
+		operationContent:&quot;对保障条目表的子表交接信息表删除所选记录&quot;,&#xD;
+		operationTime:myDate&#xD;
+	});&#xD;
+	view.id('uaUserOperationLog').execute();&#xD;
+	&#xD;
+	cur.remove();&#xD;
+	uaSupportprogram.execute();	&#xD;
+		}); &#xD;
+	}</ClientEvent>
+                  <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                  <Property name="caption">删除</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid id="GridHandover">
+                <Property name="dataPath">!CURRENT_ITEM.handover</Property>
+                <Property name="dataSet">dsCurrentTree</Property>
+                <Property name="dataType">Handover</Property>
+                <Property name="readOnly">true</Property>
+                <Property name="filterMode">serverSide</Property>
+                <DataColumn name="outfield">
+                  <Property name="property">outfield</Property>
+                </DataColumn>
+                <DataColumn name="efile">
+                  <Property name="property">efile</Property>
+                </DataColumn>
+                <DataColumn name="filename">
+                  <Property name="property">filename</Property>
+                </DataColumn>
+                <DataColumn name="personto">
+                  <Property name="property">personto</Property>
+                </DataColumn>
+                <DataColumn name="filenumber">
+                  <Property name="property">filenumber</Property>
+                </DataColumn>
+                <DataColumn name="personfrom">
+                  <Property name="property">personfrom</Property>
+                </DataColumn>
+                <DataColumn name="handovertime">
+                  <Property name="property">handovertime</Property>
+                </DataColumn>
+                <DataColumn name="miji">
+                  <Property name="property">miji</Property>
+                </DataColumn>
+              </DataGrid>
+            </Children>
+            <Tools/>
+          </Panel>
+          <Panel>
+            <Property name="caption">交接信息</Property>
+            <Buttons/>
+            <Children>
+              <ToolBar>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id(&quot;dsCurrentTree&quot;).getData(&quot;!CURRENT_HAND&quot;);&#xD;
+/*if(cur &amp;&amp; cur.get(&quot;filename&quot;)){&#xD;
+    view.id(&quot;ajaxActionDownloadFile&quot;).set(&quot;parameter&quot;,{&#xD;
+		oid: cur.get(&quot;oid&quot;),&#xD;
+		fname: cur.get(&quot;efile&quot;)&#xD;
+	}).execute();&#xD;
+}*/&#xD;
+if(cur &amp;&amp; cur.get(&quot;efile&quot;)){&#xD;
+//alert(cur.get(&quot;efile&quot;));&#xD;
+var fileURL='Out_Handover/'+ cur.get(&quot;oid&quot;) + '/' + cur.get(&quot;efile&quot;);&#xD;
+	var url = encodeURI(fileURL);&#xD;
+	window.open('ServletDownload?filename='+ url);&#xD;
+    &#xD;
+}&#xD;
+&#xD;
+	/*&#xD;
+ 	 * 对用户下载操作进行记录，在用户操作日志表中新增一条记录。&#xD;
+ 	 */&#xD;
+	var myDate = new Date();&#xD;
+	view.id('dsUserOperationLog').getData().insert({&#xD;
+		logOperationType:&quot;3&quot;,&#xD;
+		operationPerson: &quot;${loginUsername}&quot;,&#xD;
+		operationContent:&quot;对保障条目表的子表交接信息表下载所选记录的附件&quot;,&#xD;
+		operationTime:myDate&#xD;
+	});&#xD;
+	view.id('uaUserOperationLog').execute();</ClientEvent>
+                  <Property name="icon">url(>skin>common/icons.gif) -140px -280px</Property>
+                  <Property name="caption">下载文件</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <AutoForm>
+                <Property name="dataSet">dsCurrentTree</Property>
+                <Property name="dataPath">!CURRENT_HAND</Property>
+                <Property name="dataType">Handover</Property>
+                <Property name="readOnly">true</Property>
+                <AutoFormElement>
+                  <Property name="name">outfield</Property>
+                  <Property name="property">outfield</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">efile</Property>
+                  <Property name="property">efile</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">filename</Property>
+                  <Property name="property">filename</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">personto</Property>
+                  <Property name="property">personto</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">filenumber</Property>
+                  <Property name="property">filenumber</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">personfrom</Property>
+                  <Property name="property">personfrom</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">handovertime</Property>
+                  <Property name="property">handovertime</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">miji</Property>
+                  <Property name="property">miji</Property>
+                  <Editor/>
+                </AutoFormElement>
+              </AutoForm>
+            </Children>
+            <Tools/>
+          </Panel>
+        </CardBook>
+      </MainControl>
+      <SideControl>
+        <Container>
+          <FieldSet>
+            <Property name="caption">保障计划</Property>
+            <Buttons/>
+            <Children>
+              <ToolBar>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">view.id('dsCurrentTree').getData().insert({parentnode:&quot;1&quot;});&#xD;
+view.id('dgSupportprogram').show();&#xD;
+&#xD;
+	var myDate = new Date();&#xD;
+	view.id('dsUserOperationLog').getData().insert({&#xD;
+		logOperationType:&quot;0&quot;,&#xD;
+		operationPerson: &quot;${loginUsername}&quot;,&#xD;
+		operationContent:&quot;对保障计划表新增一条记录&quot;,&#xD;
+		operationTime:myDate&#xD;
+	});&#xD;
+	view.id('uaUserOperationLog').execute();</ClientEvent>
+                  <Property name="caption">新增</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                  <Property name="width">57</Property>
+                  <Property name="tags">onCurrentNode</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id('dsCurrentTree').getData('!CURRENT_TYPE');&#xD;
+if (cur) {&#xD;
+	view.id('dgSupportprogram').show();&#xD;
+}&#xD;
+&#xD;
+	var myDate = new Date();&#xD;
+	view.id('dsUserOperationLog').getData().insert({&#xD;
+		logOperationType:&quot;1&quot;,&#xD;
+		operationPerson: &quot;${loginUsername}&quot;,&#xD;
+		operationContent:&quot;对保障计划表修改选定记录&quot;,&#xD;
+		operationTime:myDate&#xD;
+	});&#xD;
+	view.id('uaUserOperationLog').execute();</ClientEvent>
+                  <Property name="caption">修改</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+                  <Property name="width">57</Property>
+                  <Property name="tags">onDirtyNode</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var dataTree1 = this.get(&quot;#dTFtypes&quot;);&#xD;
+var haschild = dataTree1.get(&quot;currentNode.hasChild&quot;);&#xD;
+if(haschild == false){&#xD;
+var cur = view.id('dsCurrentTree').getData('!CURRENT_TYPE');&#xD;
+var uaSupportprogram = view.id('uaSupportprogram');&#xD;
+if(cur){&#xD;
+	dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){&#xD;
+	&#xD;
+	var myDate = new Date();&#xD;
+	view.id('dsUserOperationLog').getData().insert({&#xD;
+		logOperationType:&quot;2&quot;,&#xD;
+		operationPerson: &quot;${loginUsername}&quot;,&#xD;
+		operationContent:&quot;对保障计划表删除所选记录&quot;,&#xD;
+		operationTime:myDate&#xD;
+	});&#xD;
+	view.id('uaUserOperationLog').execute();&#xD;
+	&#xD;
+	cur.remove();&#xD;
+	uaSupportprogram.execute();	&#xD;
+		}); &#xD;
+	}&#xD;
+}</ClientEvent>
+                  <Property name="caption">删除</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                  <Property name="width">57</Property>
+                  <Property name="tags">onDirtyNode</Property>
+                </ToolBarButton>
+              </ToolBar>
+            </Children>
+          </FieldSet>
+          <DataTree id="dTFtypes">
+            <ClientEvent name="onCurrentChange">var dataTree1 = this.get(&quot;#dTFtypes&quot;);&#xD;
+var NodeType = dataTree1.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+var book=view.id(&quot;cbSupport&quot;);&#xD;
+var index = 0;&#xD;
+if(NodeType==&quot;name&quot;){&#xD;
+var supporttype = dataTree1.get(&quot;currentNode.data&quot;).get(&quot;supporttype&quot;);&#xD;
+	if(supporttype=='保障计划'){&#xD;
+			view.set({&#xD;
+		&quot;^onDirtyNode.disabled&quot; : true,&#xD;
+		&quot;^onCurrentNode.disabled&quot;:false});&#xD;
+	}else{&#xD;
+		view.set({&#xD;
+		&quot;^onDirtyNode.disabled&quot; : false,&#xD;
+		&quot;^onCurrentNode.disabled&quot;:true});&#xD;
+	}&#xD;
+&#xD;
+}&#xD;
+if(NodeType==&quot;pname&quot;){&#xD;
+	index = 1;&#xD;
+	view.set({&#xD;
+		&quot;^onDirtyNode.disabled&quot; : true,&#xD;
+		&quot;^onCurrentNode.disabled&quot;:true});&#xD;
+	&#xD;
+}&#xD;
+if(NodeType==&quot;flight&quot;){&#xD;
+	//var piciname = dataTree1.get(&quot;currentNode.data&quot;).get(&quot;piciname&quot;);&#xD;
+	index = 2;&#xD;
+	view.set({&#xD;
+		&quot;^onDirtyNode.disabled&quot; : true,&#xD;
+		&quot;^onCurrentNode.disabled&quot;:true});&#xD;
+}&#xD;
+book.set(&quot;currentIndex&quot;, index);&#xD;
+&#xD;
+</ClientEvent>
+            <ClientEvent name="onReady">var ProductTree = view.get(&quot;@Supportprogram&quot;);&#xD;
+var Item = view.get(&quot;@Supportitem&quot;);&#xD;
+var Handover = view.get(&quot;@Handover&quot;);&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_TYPE&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == ProductTree) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return ProductTree;&#xD;
+	});&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_ITEM&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == Item) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return Item;&#xD;
+	});&#xD;
+	dorado.DataPath.registerInterceptor(&quot;CURRENT_HAND&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == Handover) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return Handover;&#xD;
+	});&#xD;
+</ClientEvent>
+            <ClientEvent name="onContextMenu">var menuTree = this.get(&quot;#tMenu&quot;);&#xD;
+menuTree.show({&#xD;
+		position : {&#xD;
+			left : arg.event.pageX,&#xD;
+			top : arg.event.pageY&#xD;
+		}&#xD;
+	});</ClientEvent>
+            <Property name="dataSet">dsCurrentTree</Property>
+            <Property name="currentNodeDataPath">CURRENT_NODE</Property>
+            <BindingConfigs>
+              <BindingConfig>
+                <Property name="labelProperty">supporttype</Property>
+                <Property name="name">name</Property>
+                <Property name="recursive">true</Property>
+                <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+                <Property name="childrenProperty">children</Property>
+                <Property name="expandLevel">2</Property>
+                <BindingConfig>
+                  <Property name="labelProperty">registrationexecutor</Property>
+                  <Property name="name">pname</Property>
+                  <Property name="childrenProperty">supportitem</Property>
+                  <Property name="expandLevel">1</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -160px -100px</Property>
+                  <BindingConfig>
+                    <Property name="childrenProperty">handover</Property>
+                    <Property name="name">flight</Property>
+                    <Property name="labelProperty">filename</Property>
+                    <Property name="icon"> url(>skin>common/icons.gif) -240px -0px</Property>
+                  </BindingConfig>
+                </BindingConfig>
+              </BindingConfig>
+            </BindingConfigs>
+          </DataTree>
+        </Container>
+      </SideControl>
+    </SplitPanel>
+    <Dialog id="dgSupportprogram">
+      <Property name="height">300</Property>
+      <Property name="width">450</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaSupportprogram').execute(function(){&#xD;
+               view.id('dgSupportprogram').hide();&#xD;
+           });&#xD;
+//var dsCurrentTree = this.get(&quot;#dsCurrentTree&quot;);&#xD;
+//dsCurrentTree.flushAsync();</ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsCurrentTree').getData('!CURRENT_TYPE');&#xD;
+cur.cancel();&#xD;
+view.id('dgSupportprogram').hide();&#xD;
+&#xD;
+&#xD;
+	/*&#xD;
+	 * 删除当前用户操作日志记录并保存&#xD;
+	 */&#xD;
+	view.id('dsUserOperationLog').getData().remove()&#xD;
+	view.id('uaUserOperationLog').execute();</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afSupportprogram">
+          <Property name="dataSet">dsCurrentTree</Property>
+          <Property name="cols">*</Property>
+          <Property name="dataPath">!CURRENT_TYPE</Property>
+          <AutoFormElement>
+            <Property name="name">troop</Property>
+            <Property name="property">troop</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">staffrequirement</Property>
+            <Property name="property">staffrequirement</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">supporttype</Property>
+            <Property name="property">supporttype</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">changeperiod</Property>
+            <Property name="property">changeperiod</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">workaddress</Property>
+            <Property name="property">workaddress</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">worktime</Property>
+            <Property name="property">worktime</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaSupportitem">
+      <ClientEvent name="onClose">view.id('elementfsupporttype').set('readOnly',false);&#xD;
+</ClientEvent>
+      <Property name="width">60%</Property>
+      <Property name="height">40%</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaSupportprogram').execute(function(){&#xD;
+               view.id('diaSupportitem').hide();&#xD;
+			   view.id('elementfsupporttype').set('readOnly',false);&#xD;
+           });&#xD;
+</ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsCurrentTree').getData('!CURRENT_TYPE.#supportitem');&#xD;
+cur.cancel();&#xD;
+view.id('diaSupportitem').hide();&#xD;
+view.id('elementfsupporttype').set('readOnly',false);&#xD;
+&#xD;
+	/*&#xD;
+	 * 删除当前用户操作日志记录并保存&#xD;
+	 */&#xD;
+	view.id('dsUserOperationLog').getData().remove()&#xD;
+	view.id('uaUserOperationLog').execute();</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afSupportitem">
+          <Property name="cols">*</Property>
+          <Property name="dataSet">dsCurrentTree</Property>
+          <Property name="dataPath">!CURRENT_TYPE.#supportitem</Property>
+          <Property name="dataType">Supportitem</Property>
+          <AutoFormElement>
+            <Property name="name">startexecutiontime</Property>
+            <Property name="property">startexecutiontime</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">endexecutiontime</Property>
+            <Property name="property">endexecutiontime</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">registrationexecutor</Property>
+            <Property name="property">registrationexecutor</Property>
+            <Property name="trigger">customDropDownUser2</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement id="elementfsupporttype">
+            <Property name="name">supportprogram</Property>
+            <Property name="property">supportprogram.supporttype</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="dgHandover">
+      <Property name="width">60%</Property>
+      <Property name="height">80%</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaSupportprogram').execute(function(){&#xD;
+               view.id('dgHandover').hide();&#xD;
+           });</ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsCurrentTree').getData('!CURRENT_ITEM.#handover');&#xD;
+cur.cancel();&#xD;
+view.id('dgHandover').hide();&#xD;
+&#xD;
+	/*&#xD;
+	 * 删除当前用户操作日志记录并保存&#xD;
+	 */&#xD;
+	view.id('dsUserOperationLog').getData().remove()&#xD;
+	view.id('uaUserOperationLog').execute();</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afHandover">
+          <Property name="cols">*</Property>
+          <Property name="dataSet">dsCurrentTree</Property>
+          <Property name="dataPath">!CURRENT_ITEM.#handover</Property>
+          <AutoFormElement>
+            <Property name="name">Outfield</Property>
+            <Property name="property">outfield</Property>
+            <Property name="trigger">dataSetDropDown1</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">HandoverTime</Property>
+            <Property name="property">handovertime</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">PersonFrom</Property>
+            <Property name="property">personfrom</Property>
+            <Property name="trigger">customDropDownUser2</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">PersonTo</Property>
+            <Property name="property">personto</Property>
+            <Property name="trigger">customDropDownUser2</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">FileName</Property>
+            <Property name="property">filename</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">FileNumber</Property>
+            <Property name="property">filenumber</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">EFile</Property>
+            <Property name="property">efile</Property>
+            <Editor>
+              <Container>
+                <Link id="lefile" layoutConstraint="center">
+                  <Property name="dataSet">dsCurrentTree</Property>
+                  <Property name="property">efile</Property>
+                  <Property name="dataPath">!CURRENT_ITEM.#handover</Property>
+                </Link>
+                <Button layoutConstraint="right">
+                  <Property name="caption">删除</Property>
+                  <Property name="action">deleteFileAction</Property>
+                </Button>
+                <Button layoutConstraint="right ">
+                  <Property name="caption">上传</Property>
+                  <Property name="action">uaUpload</Property>
+                </Button>
+              </Container>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+          </AutoFormElement>
+        </AutoForm>
+        <UploadAction id="uaUpload">
+          <ClientEvent name="onFilesAdded">var cur=view.id('dsCurrentTree').getData('!CURRENT_ITEM.#handover');&#xD;
+var value = &quot;/Out_Handover/&quot; + cur.get(&quot;oid&quot;) + &quot;/&quot;;&#xD;
+self.set(&quot;multipartParams&quot;, {record: value});</ClientEvent>
+          <ClientEvent name="onFileUploaded">var returnValue = arg.file.name;&#xD;
+var cur=view.id('dsCurrentTree').getData('!CURRENT_ITEM.#handover');&#xD;
+cur.set(&quot;efile&quot;,returnValue);&#xD;
+var link = view.id(&quot;lefile&quot;);&#xD;
+if(returnValue){&#xD;
+	var oid = cur.get(&quot;oid&quot;);&#xD;
+    var href = &quot;/escmp/upload/Out_Handover/&quot; + oid + &quot;/&quot; + returnValue;&#xD;
+    link.set({&#xD;
+		href: href,&#xD;
+		visible: true&#xD;
+	});&#xD;
+}&#xD;
+else{&#xD;
+    link.set(&quot;visible&quot;,false);&#xD;
+}</ClientEvent>
+          <ClientEvent name="onError">	var error = arg.error;&#xD;
+	dorado.MessageBox.show({&#xD;
+		title:error.message,&#xD;
+		message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
+		icon: &quot;WARNING&quot;,&#xD;
+		buttons: [&quot;ok&quot;]&#xD;
+	});</ClientEvent>
+          <Property name="url">>dorado/uploader/fileupload</Property>
+          <Property name="maxFileSize">100MB</Property>
+          <Filters/>
+        </UploadAction>
+        <AjaxAction id="deleteFileAction">
+          <ClientEvent name="beforeExecute">var cur=view.id('dsCurrentTree').getData('!CURRENT_ITEM.#handover');&#xD;
+var value = &quot;/Out_Handover/&quot; + cur.get(&quot;oid&quot;) + &quot;/&quot;;&#xD;
+var file = cur.get(&quot;efile&quot;);&#xD;
+self.set(&quot;parameter&quot;,{&#xD;
+	record: value,&#xD;
+	filename: file&#xD;
+});&#xD;
+cur.set(&quot;efile&quot;,null);&#xD;
+var link = view.id(&quot;lefile&quot;);&#xD;
+link.set(&quot;visible&quot;,false);</ClientEvent>
+          <Property name="service">defaultUploadProcessor#deleteFile</Property>
+        </AjaxAction>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <CustomDropDown id="customDropDownUser2">
+      <Property name="editable">false</Property>
+      <Property name="autoOpen">true</Property>
+      <DataGrid>
+        <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
+var user=view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;);&#xD;
+if (user) {&#xD;
+	dropDown.close(user.get(&quot;cname&quot;));&#xD;
+	var cur=view.id('dsCurrentTree').getData('!CURRENT_TYPE.#supportitem');&#xD;
+    cur.set(&quot;registrationexecutor&quot;,user.get(&quot;cname&quot;));&#xD;
+}&#xD;
+&#xD;
+</ClientEvent>
+        <Property name="showFilterBar">true</Property>
+        <Property name="rowHeight">22</Property>
+        <Property name="dataSet">dsUsers</Property>
+        <Property name="readOnly">true</Property>
+        <Property name="height">300</Property>
+        <RowNumColumn/>
+        <DataColumn>
+          <Property name="name">username</Property>
+          <Property name="property">username</Property>
+        </DataColumn>
+        <DataColumn>
+          <Property name="name">cname</Property>
+          <Property name="property">cname</Property>
+        </DataColumn>
+        <DataColumn name="depts">
+          <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;depts&quot;);&#xD;
+var name = [];&#xD;
+if (entitylist) {&#xD;
+	entitylist.each(function(item){&#xD;
+		name.push(item.get(&quot;name&quot;));&#xD;
+	});&#xD;
+}&#xD;
+arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
+          <Property name="property">depts</Property>
+        </DataColumn>
+      </DataGrid>
+    </CustomDropDown>
+    <DataSetDropDown id="dataSetDropDown1">
+      <Property name="autoOpen">true</Property>
+      <Property name="dataSet">dsDictionary</Property>
+      <Property name="property">name</Property>
+      <Property name="displayProperty">name</Property>
+      <Property name="editable">false</Property>
+    </DataSetDropDown>
+    <AjaxAction id="ajaxActionDownloadFile">
+      <ClientEvent name="onSuccess">var cur=view.id(&quot;dsCurrentTree&quot;).getData(&quot;!CURRENT_HAND&quot;);&#xD;
+window.open('upload/Out_Handover/'+ cur.get(&quot;oid&quot;) + '/' + arg.result);</ClientEvent>
+      <Property name="service">handoverManager#downloadFile</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="oid"></Property>
+          <Property name="fname"></Property>
+        </Entity>
+      </Property>
+    </AjaxAction>
+    <UpdateAction id="uaUserOperationLog">
+      <Property name="dataResolver">userOperationLogPR#saveUserOperationLog</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsUserOperationLog</Property>
+      </UpdateItem>
+    </UpdateAction>
+  </View>
+</ViewConfig>

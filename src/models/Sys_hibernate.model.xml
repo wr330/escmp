@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model>
+  <DataType name="User">
+    <Property name="creationType">com.bstek.bdf2.core.model.DefaultUser</Property>
+    <PropertyDef name="username">
+      <Property name="dataType">String</Property>
+      <Property name="label">用户名</Property>
+    </PropertyDef>
+    <PropertyDef name="cname">
+      <Property name="dataType">String</Property>
+      <Property name="label">姓名</Property>
+    </PropertyDef>
+    <PropertyDef name="administrator">
+      <Property name="dataType">boolean</Property>
+    </PropertyDef>
+    <PropertyDef name="birthday">
+      <Property name="dataType">Date</Property>
+    </PropertyDef>
+    <PropertyDef name="companyId">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="enabled">
+      <Property name="dataType">boolean</Property>
+    </PropertyDef>
+    <PropertyDef name="male">
+      <Property name="dataType">boolean</Property>
+    </PropertyDef>
+    <PropertyDef name="password">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="salt">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="leagueMember">
+      <Property name="dataType">boolean</Property>
+    </PropertyDef>
+    <PropertyDef name="partyMember">
+      <Property name="dataType">boolean</Property>
+    </PropertyDef>
+    <PropertyDef name="technicalLevel">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <Reference name="depts">
+      <Property name="dataType">[$dataTypeDept]</Property>
+      <Property name="parameter">$${this.username}</Property>
+      <Property name="label">部门</Property>
+      <Property name="dataProvider">bdf2.userMaintain#loadUserDepts</Property>
+    </Reference>
+  </DataType>
+  <DataType name="Dictionary" meta="x:150;y:0">
+    <Property name="matchType">com.buaa.sys.domain.Dictionary</Property>
+    <PropertyDef name="status">
+      <Property name="dataType">Integer</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="label">有效</Property>
+              <Property name="value">0</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">无效</Property>
+              <Property name="value">1</Property>
+            </Entity>
+          </Collection>
+        </Property>
+        <Property name="keyProperty">value</Property>
+        <Property name="valueProperty">label</Property>
+      </Property>
+      <Property name="label">状态</Property>
+      <Property name="required">true</Property>
+      <Property name="defaultValue">0</Property>
+    </PropertyDef>
+    <PropertyDef name="name">
+      <Property name="dataType">String</Property>
+      <Property name="label">名称</Property>
+      <Property name="required">true</Property>
+      <Validator type="ajax">
+        <ClientEvent name="beforeExecute">var dictype = arg.entity.get(&quot;dictype&quot;);&#xD;
+var oid = arg.entity.get(&quot;oid&quot;);&#xD;
+if(!oid)&#xD;
+    oid = null;&#xD;
+var parameter = {&#xD;
+	    oid:oid,&#xD;
+		name:arg.data,&#xD;
+		dictype:dictype&#xD;
+	};&#xD;
+arg.parameter = parameter;</ClientEvent>
+        <Property name="service">dictionaryManager#dictionaryIsExists</Property>
+      </Validator>
+    </PropertyDef>
+    <PropertyDef name="dictype">
+      <Property name="dataType">String</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="label">外场地点</Property>
+              <Property name="value">Dic_Outfield</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">所属专业</Property>
+              <Property name="value">Dic_Major</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">外场执行情况</Property>
+              <Property name="value">Dic_OutExecution</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">文档类型</Property>
+              <Property name="value">Dic_OutDocumentType</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">试飞测试参数类型</Property>
+              <Property name="value">Dic_ParaType</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">试飞大纲完成状态</Property>
+              <Property name="value">Dic_CompleteState</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">试飞大纲剩余状态</Property>
+              <Property name="value">Dic_RemainState</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">机型代号</Property>
+              <Property name="value">Dic_AircraftType</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">试飞任务单执行情况</Property>
+              <Property name="value">Dic_TaskExecution</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">作业状态</Property>
+              <Property name="value">Dic_JobState</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">资源类型</Property>
+              <Property name="value">Dic_ResourceType</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">会议文件类型</Property>
+              <Property name="value">Dic_MeetDocumentType</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">会议室</Property>
+              <Property name="value">Dic_MeetRoom</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">试飞地点</Property>
+              <Property name="value">Dic_ShiFeiAdrs</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">信息来源</Property>
+              <Property name="value">Dic_Laiyuan</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">处理状态</Property>
+              <Property name="value">Dic_DealStatus</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">责任/相关部门</Property>
+              <Property name="value">Dic_Department</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">问题责任</Property>
+              <Property name="value">Dic_DutyType</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">责任/相关专业</Property>
+              <Property name="value">Dic_MajorSystem</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">跟踪方式</Property>
+              <Property name="value">Dic_Gzfs</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">试飞科目</Property>
+              <Property name="value">Dic_Majorsubject</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">任务完成情况</Property>
+              <Property name="value">Dic_Result</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">试飞状态</Property>
+              <Property name="value">Dic_TestStatus</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">引擎状态</Property>
+              <Property name="value">Dic_EngineState</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">保障计划类型</Property>
+              <Property name="value">Dic_Plantype</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">发现时机</Property>
+              <Property name="value">Dic_FoundOpp</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">更换周期</Property>
+              <Property name="value">Dic_Changetime</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">故障后果</Property>
+              <Property name="value">Dic_Effect</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">判明方式</Property>
+              <Property name="value">Dic_Type</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">问题来源</Property>
+              <Property name="value">Dic_Origin</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">现场处理方式</Property>
+              <Property name="value">Dic_Deal</Property>
+            </Entity>
+          </Collection>
+        </Property>
+        <Property name="keyProperty">value</Property>
+        <Property name="valueProperty">label</Property>
+      </Property>
+      <Property name="label">类型</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="description">
+      <Property name="dataType">String</Property>
+      <Property name="label">描述</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="UserOperationLog" meta="x:150;y:255">
+    <Property name="matchType">com.buaa.sys.domain.UserOperationLog</Property>
+    <PropertyDef name="oid">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="logOperationType">
+      <Property name="dataType">int</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">4</Property>
+              <Property name="value">导入</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">3</Property>
+              <Property name="value">下载</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">删除</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">修改</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">新增</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+      <Property name="label">日志操作类型</Property>
+    </PropertyDef>
+    <PropertyDef name="operationPerson">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">操作人</Property>
+    </PropertyDef>
+    <PropertyDef name="operationWorkType">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">操作的业务类型</Property>
+    </PropertyDef>
+    <PropertyDef name="operationContent">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">操作内容</Property>
+    </PropertyDef>
+    <PropertyDef name="operationReason">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">操作原因</Property>
+    </PropertyDef>
+    <PropertyDef name="operationTime">
+      <Property name="dataType">DateTime</Property>
+      <Property name="label">操作时间</Property>
+    </PropertyDef>
+    <PropertyDef name="propertyDef1"/>
+  </DataType>
+  <DataType name="AuditLog" meta="x:345;y:150">
+    <Property name="matchType">com.buaa.sys.domain.AuditLog</Property>
+    <PropertyDef name="oid">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="operationPerson">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">操作人</Property>
+    </PropertyDef>
+    <PropertyDef name="operationTime">
+      <Property name="dataType">DateTime</Property>
+      <Property name="label">操作时间</Property>
+    </PropertyDef>
+    <PropertyDef name="operationContent">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">操作内容</Property>
+    </PropertyDef>
+    <PropertyDef name="operationType">
+      <Property name="dataType">int</Property>
+      <Property name="label">操作类型</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">新增</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">修改</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">删除</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">3</Property>
+              <Property name="value">重置密码</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">4</Property>
+              <Property name="value">导入</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">5</Property>
+              <Property name="value">导出</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">6</Property>
+              <Property name="value">解锁</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">7</Property>
+              <Property name="value">其他</Property>
+            </Entity>
+          </Collection>
+        </Property>
+        <Collection/>
+      </Property>
+    </PropertyDef>
+  </DataType>
+</Model>

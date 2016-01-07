@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Shifeirequestacc</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <DataSet id="dsShifeirequestacc">
+      <Property name="dataType">[Shifeirequestacc]</Property>
+      <Property name="dataProvider">shifeirequestaccPR#queryShifeirequestacc</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <DataSet id="dsDictionaryAircraftType">
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="dictype">Dic_AircraftType</Property>
+          <Property name="status">0</Property>
+        </Entity>
+      </Property>
+    </DataSet>
+    <DataSet id="dsUserOperationLog">
+      <Property name="dataProvider">userOperationLogPR#queryUserOperationLog</Property>
+      <Property name="dataType">[UserOperationLog]</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <UpdateAction id="uaShifeirequestacc">
+      <Property name="dataResolver">shifeirequestaccPR#saveShifeirequestacc</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsShifeirequestacc</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <UpdateAction id="uaUserOperationLog">
+      <Property name="dataResolver">userOperationLogPR#saveUserOperationLog</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsUserOperationLog</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <ToolBar>
+      <FormElement id="formElement1">
+        <Property name="property">name</Property>
+        <Property name="trigger">chooseAircraftType</Property>
+        <Property name="label">选择机型:</Property>
+        <Editor/>
+      </FormElement>
+      <DataPilot>
+        <Property name="itemCodes">pages</Property>
+        <Property name="dataSet">dsShifeirequestacc</Property>
+        <Property name="dataPath"></Property>
+      </DataPilot>
+      <ToolBarButton>
+        <ClientEvent name="onClick">	var myDate = new Date();
+    var mytime= myDate.toLocaleTimeString();
+    var a=mytime.split(&quot;:&quot;);
+   var hour=myDate.getHours();
+    var tempId = hour*60*60*1000+a[1]*60*1000+a[2]*1000;//当前时间的毫秒数作为临时ID
+    var ftype = view.id(&quot;formElement1&quot;).get(&quot;value&quot;);
+	view.id('dsShifeirequestacc').getData().insert({ftype: ftype,id: tempId});
+	view.id('diaShifeirequestacc').show();
+	
+	/*
+ 	 * 对用户新增操作进行记录，在用户操作日志表中新增一条记录。
+     */
+	var myDate = new Date();
+	view.id('dsUserOperationLog').getData().insert({
+		logOperationType:&quot;0&quot;,
+		operationPerson: &quot;${loginUsername}&quot;,
+		operationContent:&quot;对试飞文件管理表新增一条记录&quot;,
+		operationTime:myDate
+	});
+	view.id('uaUserOperationLog').execute();</ClientEvent>
+        <Property name="caption">新增</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">
+	var cur=view.id('dsShifeirequestacc').getData('#');
+	if (cur) {
+		view.id('diaShifeirequestacc').show();
+	}
+	
+	
+	/*
+ 	 * 对用户修改操作进行记录，在用户操作日志表中新增一条记录。
+ 	 */
+	var myDate = new Date();
+	view.id('dsUserOperationLog').getData().insert({
+		logOperationType:&quot;1&quot;,
+		operationPerson: &quot;${loginUsername}&quot;,
+		operationContent:&quot;对试飞文件管理表修改选定记录&quot;,
+		operationTime:myDate
+	});
+	view.id('uaUserOperationLog').execute();</ClientEvent>
+        <Property name="caption">修改</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsShifeirequestacc').getData('#');
+	var ua=view.id('uaShifeirequestacc');
+	if(cur){
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+			
+			/*
+ 			 * 对用户删除操作进行记录，在用户操作日志表中新增一条记录。
+ 			 */
+			var myDate = new Date();
+			view.id('dsUserOperationLog').getData().insert({
+				logOperationType:&quot;2&quot;,
+				operationPerson: &quot;${loginUsername}&quot;,
+				operationContent:&quot;对试飞文件管理表删除所选记录&quot;,
+				operationTime:myDate
+			});
+			view.id('uaUserOperationLog').execute();
+			
+			cur.remove();
+			ua.execute();
+				}); 
+			} 
+	</ClientEvent>
+        <Property name="caption">删除</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id(&quot;dsShifeirequestacc&quot;).getData(&quot;#&quot;);&#xD;
+if(cur &amp;&amp; cur.get(&quot;filename&quot;)){&#xD;
+    /*view.id(&quot;ajaxActionDownloadFile&quot;).set(&quot;parameter&quot;,{&#xD;
+		id: cur.get(&quot;id&quot;),&#xD;
+		fname: cur.get(&quot;filename&quot;)&#xD;
+	}).execute();*/&#xD;
+	var fileURL='Fly_Shifeirequestacc/'+ cur.get(&quot;id&quot;) + '/' + cur.get(&quot;filename&quot;);&#xD;
+	var url = encodeURI(fileURL);&#xD;
+	window.open('ServletDownload?filename='+ url);&#xD;
+}&#xD;
+	/*&#xD;
+ 	 * 对用户下载操作进行记录，在用户操作日志表中新增一条记录。&#xD;
+ 	 */&#xD;
+	var myDate = new Date();&#xD;
+	view.id('dsUserOperationLog').getData().insert({&#xD;
+		logOperationType:&quot;3&quot;,&#xD;
+		operationPerson: &quot;${loginUsername}&quot;,&#xD;
+		operationContent:&quot;对试飞任务单管理表下载所选记录的附件&quot;,&#xD;
+		operationTime:myDate&#xD;
+	});&#xD;
+	view.id('uaUserOperationLog').execute();</ClientEvent>
+        <Property name="caption">下载</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -140px -280px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick"> 	var iframe=view.id(&quot;iframe&quot;);//upload/Fly_Shifeirequestacc/
+	var fileURL=&quot;upload/Fly_Shifeirequestacc/&quot;+view.id('dsShifeirequestacc').getData(&quot;#&quot;).get(&quot;id&quot;)+&quot;/&quot;+view.id('dsShifeirequestacc').getData(&quot;#&quot;).get(&quot;filename&quot;);
+	var url = encodeURI(fileURL);
+	var path=&quot;a.jsp?url='&quot;+ url +&quot;'&quot;;
+	//alert(path);		
+	open(path,&quot;_blank&quot;);
+//	var path=&quot;a.jsp?url='&quot;+fileURL+&quot;'&quot;;
+//		alert(path);
+//	iframe.set(&quot;path&quot;,path);
+//	view.id('diaWord').show();</ClientEvent>
+        <Property name="caption">查看文档</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -120px -140px</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid id="dgShifeirequestacc">
+      <Property name="readOnly">true</Property>
+      <Property name="dataSet">dsShifeirequestacc</Property>
+      <Property name="dataPath"></Property>
+      <Property name="filterMode">clientSide</Property>
+      <Property name="showFilterBar">false</Property>
+      <Property name="rowHeight">22</Property>
+      <RowNumColumn/>
+      <DataColumn name="fileno">
+        <Property name="property">fileno</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="ftype">
+        <Property name="property">ftype</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="date">
+        <Property name="property">date</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="author">
+        <Property name="property">author</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="type">
+        <Property name="property">type</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="filename">
+        <Property name="property">filename</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="width">120</Property>
+        <Property name="property">miji</Property>
+        <Editor/>
+      </DataColumn>
+    </DataGrid>
+    <Dialog id="diaShifeirequestacc">
+      <ClientEvent name="onClose">var cur=view.id('dsShifeirequestacc').getData('#');&#xD;
+				cur.cancel();&#xD;
+				view.id('diaShifeirequestacc').hide();&#xD;
+	         </ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">500</Property>
+      <Property name="caption">试飞文件</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaShifeirequestacc').execute(function(){
+               view.id('diaShifeirequestacc').hide();
+           });
+         </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsShifeirequestacc').getData('#');
+				cur.cancel();
+				view.id('diaShifeirequestacc').hide();
+				
+	/*
+	 * 删除当前用户操作日志记录并保存
+	 */
+	view.id('dsUserOperationLog').getData().remove()
+	view.id('uaUserOperationLog').execute();
+	         </ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afShifeirequestacc">
+          <Property name="cols">*</Property>
+          <Property name="dataSet">dsShifeirequestacc</Property>
+          <Property name="dataPath">#</Property>
+          <AutoFormElement>
+            <Property name="name">ftype</Property>
+            <Property name="property">ftype</Property>
+            <Property name="trigger">chooseAircraftType</Property>
+            <Property name="editable">false</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">FileNo</Property>
+            <Property name="property">fileno</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">type</Property>
+            <Property name="property">type</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">author</Property>
+            <Property name="property">author</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">date</Property>
+            <Property name="property">date</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">filename</Property>
+            <Property name="property">filename</Property>
+            <Editor>
+              <Container>
+                <TextEditor layoutConstraint="center">
+                  <Property name="dataSet">dsShifeirequestacc</Property>
+                  <Property name="dataPath">#</Property>
+                  <Property name="property">filename</Property>
+                  <Property name="readOnly">true</Property>
+                </TextEditor>
+                <Button layoutConstraint="right padding:0,10,0,10">
+                  <Property name="caption">编辑</Property>
+                  <Property name="action">uaUpload</Property>
+                </Button>
+              </Container>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+        <DataSetDropDown id="dataSetDropDownAircraftType">
+          <Property name="autoOpen">true</Property>
+          <Property name="dataSet">dsDictionaryAircraftType</Property>
+          <Property name="displayProperty">name</Property>
+          <Property name="editable">false</Property>
+          <Property name="property">name</Property>
+          <Property name="reloadDataOnOpen">true</Property>
+        </DataSetDropDown>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <AjaxAction id="ajaxActionDownloadFile">
+      <ClientEvent name="onSuccess">var cur=view.id(&quot;dsShifeirequestacc&quot;).getData(&quot;#&quot;);&#xD;
+window.open('/escmp/upload/Fly_Shifeirequestacc/'+ cur.get(&quot;id&quot;) + '/' + arg.result);</ClientEvent>
+      <Property name="service">shifeirequestaccManager#downloadFile</Property>
+    </AjaxAction>
+    <UploadAction id="uaUpload">
+      <ClientEvent name="onFilesAdded">var cur=view.id('dsShifeirequestacc').getData('#');&#xD;
+var value = &quot;/Fly_Shifeirequestacc/&quot; + cur.get(&quot;id&quot;) + &quot;/&quot;;&#xD;
+self.set(&quot;multipartParams&quot;, {record: value});</ClientEvent>
+      <ClientEvent name="onFileUploaded">var returnValue = arg.file.name;&#xD;
+var cur=view.id('dsShifeirequestacc').getData('#');&#xD;
+cur.set(&quot;filename&quot;,returnValue);</ClientEvent>
+      <ClientEvent name="onError">	var error = arg.error;&#xD;
+	dorado.MessageBox.show({&#xD;
+		title:error.message,&#xD;
+		message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
+		icon: &quot;WARNING&quot;,&#xD;
+		buttons: [&quot;ok&quot;]&#xD;
+	});</ClientEvent>
+      <Property name="url">>dorado/uploader/fileupload</Property>
+      <Property name="maxFileSize">100MB</Property>
+      <Filters/>
+    </UploadAction>
+    <Dialog id="diaWord">
+      <Property name="width">70%</Property>
+      <Property name="height">80%</Property>
+      <Buttons/>
+      <Children>
+        <IFrame id="iframe"/>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <DataSet id="dsFtypes">
+      <Property name="dataType">[Ftypes]</Property>
+      <Property name="dataProvider">ftypesPR#queryFtypes</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="loadMode">onReady</Property>
+    </DataSet>
+    <DataSetDropDown id="chooseAircraftType">
+      <ClientEvent name="onValueSelect">var dsDailyacc = this.get(&quot;#dsShifeirequestacc&quot;);&#xD;
+dsDailyacc.set(&quot;parameter&quot;, {&#xD;
+	ftype: arg.selectedValue&#xD;
+});&#xD;
+dsDailyacc.flushAsync();</ClientEvent>
+      <Property name="autoOpen">true</Property>
+      <Property name="dataSet">dsFtypes</Property>
+      <Property name="displayProperty">ftypename</Property>
+      <Property name="editable">false</Property>
+      <Property name="property">ftypename</Property>
+      <Property name="reloadDataOnOpen">true</Property>
+    </DataSetDropDown>
+  </View>
+</ViewConfig>

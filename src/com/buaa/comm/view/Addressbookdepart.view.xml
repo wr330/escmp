@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Addressbookdepart</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="dataType" parent="Addressbookdepart">
+      <Reference name="children">
+        <Property name="parameter">$${this.oid}</Property>
+        <Property name="dataProvider">addressbookdepartPR#queryAddressbookdepart</Property>
+        <Property name="dataType">[SELF]</Property>
+      </Reference>
+    </DataType>
+    <DataType name="dtAddressbook" parent="Addressbook"/>
+  </Model>
+  <View>
+    <DataSet id="dsAddressbookdepart">
+      <Property name="dataProvider">addressbookdepartPR#queryAddressbookdepart</Property>
+      <Property name="dataType">[dataType]</Property>
+    </DataSet>
+    <DataSet id="dsAddressbook">
+      <Property name="dataType">[dtAddressbook]</Property>
+      <Property name="dataProvider">addressbookPR#queryAddressbook</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <UpdateAction id="uaAddressbookdepart">
+      <Property name="dataResolver">addressbookdepartPR#saveAddressbookdepart</Property>
+      <Property name="successMessage">数据已保存</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsAddressbookdepart</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <UpdateAction id="uaAddressbook">
+      <Property name="dataResolver">addressbookPR#saveAddressbook</Property>
+      <Property name="successMessage">数据已保存</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsAddressbook</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <SplitPanel>
+      <Property name="position">330</Property>
+      <MainControl>
+        <Panel>
+          <Buttons/>
+          <Children>
+            <ToolBar>
+              <DataPilot>
+                <ClientEvent name="onSubControlAction">switch (arg.code) {&#xD;
+	case &quot;+&quot;:&#xD;
+		view.id(&quot;dsAddressbook&quot;).getData().insert();&#xD;
+		view.id(&quot;dialogPhone&quot;).show();&#xD;
+		arg.processDefault = false;&#xD;
+		&#xD;
+		/*&#xD;
+ 	 	 * 对用户新增操作进行记录，在用户操作日志表中新增一条记录。&#xD;
+     	 */&#xD;
+		var myDate = new Date();&#xD;
+		view.id('dsUserOperationLog').getData().insert({&#xD;
+			logOperationType:&quot;0&quot;,&#xD;
+			operationPerson: &quot;${loginUsername}&quot;,&#xD;
+			operationContent:&quot;对部门通讯录联系方式表新增一条记录&quot;,&#xD;
+			operationTime:myDate&#xD;
+		});&#xD;
+		view.id('uaUserOperationLog').execute();&#xD;
+		&#xD;
+		break;&#xD;
+	case &quot;-&quot;:&#xD;
+		dorado.MessageBox.confirm(&quot;你确定要删除这条记录？&quot;,function(){&#xD;
+	    var entity = view.id(&quot;dsAddressbook&quot;).getData(&quot;#&quot;);&#xD;
+		&#xD;
+		/*&#xD;
+ 		 * 对用户删除操作进行记录，在用户操作日志表中新增一条记录。&#xD;
+ 		 */&#xD;
+		var myDate = new Date();&#xD;
+		view.id('dsUserOperationLog').getData().insert({&#xD;
+			logOperationType:&quot;2&quot;,&#xD;
+			operationPerson: &quot;${loginUsername}&quot;,&#xD;
+			operationContent:&quot;对部门通讯录联系方式表删除所选记录&quot;,&#xD;
+			operationTime:myDate&#xD;
+		});&#xD;
+		view.id('uaUserOperationLog').execute();&#xD;
+		&#xD;
+		entity.remove();&#xD;
+		view.id('uaAddressbook').execute();&#xD;
+	});	&#xD;
+	    &#xD;
+	   arg.processDefault = false;&#xD;
+		break;&#xD;
+	default:&#xD;
+		arg.processDefault = true;&#xD;
+}</ClientEvent>
+                <Property name="dataSet">dsAddressbook</Property>
+                <Property name="itemCodes">+,-,pages</Property>
+              </DataPilot>
+              <ToolBarButton>
+                <ClientEvent name="onClick">
+	var cur=view.id('dsAddressbook').getData('#');
+	if (cur) {
+		view.id('dialogPhone').show();
+	}
+	
+	/*
+ 	 * 对用户修改操作进行记录，在用户操作日志表中新增一条记录。
+ 	 */
+	var myDate = new Date();
+	view.id('dsUserOperationLog').getData().insert({
+		logOperationType:&quot;1&quot;,
+		operationPerson: &quot;${loginUsername}&quot;,
+		operationContent:&quot;对部门通讯录联系方式表修改选定记录&quot;,
+		operationTime:myDate
+	});
+	view.id('uaUserOperationLog').execute();
+	</ClientEvent>
+                <Property name="caption">修改</Property>
+                <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+              </ToolBarButton>
+              <ToolBarButton>
+                <ClientEvent name="onClick">var importExcelAction=view.get(&quot;#importExcelActionDemo&quot;);&#xD;
+importExcelAction.set(&quot;excelModelId&quot;,&quot;0002&quot;);&#xD;
+importExcelAction.execute(function(arg){&#xD;
+	dorado.MessageBox.alert(&quot;成功解析导入[&quot; + arg + &quot;]数据！&quot;);&#xD;
+	view.get(&quot;#dsAddressbookdepart&quot;).flushAsync();&#xD;
+});&#xD;
+&#xD;
+	/*&#xD;
+ 	 * 对用户导入操作进行记录，在用户操作日志表中新增一条记录。&#xD;
+ 	 */&#xD;
+	var myDate = new Date();&#xD;
+	view.id('dsUserOperationLog').getData().insert({&#xD;
+		logOperationType:&quot;4&quot;,&#xD;
+		operationPerson: &quot;${loginUsername}&quot;,&#xD;
+		operationContent:&quot;对部门通讯录联系方式表批量导入Excel&quot;,&#xD;
+		operationTime:myDate&#xD;
+	});&#xD;
+	view.id('uaUserOperationLog').execute();&#xD;
+</ClientEvent>
+                <Property name="caption">批量导入</Property>
+                <Property name="icon">dorado/res/com/bstek/bdf2/importexcel/view/icons/page_excel.png</Property>
+              </ToolBarButton>
+            </ToolBar>
+            <DataGrid id="dgAddressBook">
+              <Property name="dataSet">dsAddressbook</Property>
+              <Property name="readOnly">true</Property>
+              <DataColumn name="name">
+                <Property name="property">name</Property>
+                <Property name="editable">false</Property>
+              </DataColumn>
+              <DataColumn name="position">
+                <Property name="property">position</Property>
+                <Property name="editable">false</Property>
+              </DataColumn>
+              <DataColumn name="mobilephone">
+                <Property name="property">mobilephone</Property>
+                <Property name="editable">false</Property>
+              </DataColumn>
+              <DataColumn name="telephone">
+                <Property name="property">telephone</Property>
+                <Property name="editable">false</Property>
+              </DataColumn>
+              <DataColumn name="email">
+                <Property name="property">email</Property>
+                <Property name="editable">false</Property>
+              </DataColumn>
+              <DataColumn name="fax">
+                <Property name="property">fax</Property>
+                <Property name="editable">false</Property>
+              </DataColumn>
+              <DataColumn name="note">
+                <Property name="property">note</Property>
+                <Property name="editable">false</Property>
+              </DataColumn>
+              <DataColumn>
+                <Property name="property">miji</Property>
+                <Property name="editable">false</Property>
+                <Property name="name">miji</Property>
+              </DataColumn>
+            </DataGrid>
+          </Children>
+          <Tools/>
+        </Panel>
+      </MainControl>
+      <SideControl>
+        <Container>
+          <FieldSet layoutConstraint="top">
+            <Property name="caption">通讯录</Property>
+            <Buttons/>
+            <Children>
+              <ToolBar>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var data=view.id(&quot;dsAddressbookdepart&quot;).getData();&#xD;
+&#xD;
+var newEntity=data.insert();&#xD;
+view.id(&quot;dataTree&quot;).set(&quot;currentEntity&quot;,newEntity);&#xD;
+&#xD;
+var dialog=view.id(&quot;dialogDepart&quot;);&#xD;
+dialog.show();&#xD;
+&#xD;
+	var myDate = new Date();&#xD;
+	view.id('dsUserOperationLog').getData().insert({&#xD;
+		logOperationType:&quot;0&quot;,&#xD;
+		operationPerson: &quot;${loginUsername}&quot;,&#xD;
+		operationContent:&quot;对部门通讯录部门表新增一个根节点记录&quot;,&#xD;
+		operationTime:myDate&#xD;
+	});&#xD;
+	view.id('uaUserOperationLog').execute();</ClientEvent>
+                  <Property name="caption">添加根节点</Property>
+                  <Property name="icon">url(skin>common/icons.gif) -280px -100px</Property>
+                  <Property name="width">95</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var tree=view.id(&quot;dataTree&quot;);&#xD;
+var currentNode=tree.get(&quot;currentNode&quot;);&#xD;
+if(!currentNode){&#xD;
+	dorado.MessageBox.alert(&quot;请先选中一个父节点!&quot;);&#xD;
+	return;&#xD;
+}&#xD;
+&#xD;
+var currentEntity=currentNode.get(&quot;data&quot;);&#xD;
+var newEntity=currentEntity.createChild(&quot;children&quot;,{&#xD;
+	parentnode:currentEntity.get(&quot;oid&quot;)&#xD;
+	&#xD;
+});&#xD;
+currentNode.expand();&#xD;
+tree.set(&quot;currentEntity&quot;,newEntity);&#xD;
+var dialog=view.id(&quot;dialogDepart&quot;);&#xD;
+dialog.show();&#xD;
+&#xD;
+	var myDate = new Date();&#xD;
+	view.id('dsUserOperationLog').getData().insert({&#xD;
+		logOperationType:&quot;0&quot;,&#xD;
+		operationPerson: &quot;${loginUsername}&quot;,&#xD;
+		operationContent:&quot;对部门通讯录部门表新增一个子节点记录&quot;,&#xD;
+		operationTime:myDate&#xD;
+	});&#xD;
+	view.id('uaUserOperationLog').execute();</ClientEvent>
+                  <Property name="icon">url(skin>common/icons.gif) -120px 0px</Property>
+                  <Property name="caption">添加子节点</Property>
+                  <Property name="width">95</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var tree=view.id(&quot;dataTree&quot;);&#xD;
+var entity=tree.get(&quot;currentEntity&quot;);&#xD;
+if(entity){&#xD;
+	view.id(&quot;ajaxActionCheckChildren&quot;).set(&quot;parameter&quot;, entity.get(&quot;oid&quot;)).execute(function(count){&#xD;
+		if (count>0){&#xD;
+			dorado.MessageBox.alert(&quot;请先删除子节点&quot;);&#xD;
+		} &#xD;
+		else if(view.id(&quot;dsAddressbook&quot;).getData(&quot;#&quot;)){&#xD;
+				dorado.MessageBox.alert(&quot;请先删除联系人！&quot;);&#xD;
+				}&#xD;
+				else{&#xD;
+			    dorado.MessageBox.confirm(&quot;真的要删除当前节点？&quot;,function(){&#xD;
+				 &#xD;
+				 var myDate = new Date();&#xD;
+				 view.id('dsUserOperationLog').getData().insert({&#xD;
+					 logOperationType:&quot;2&quot;,&#xD;
+					 operationPerson: &quot;${loginUsername}&quot;,&#xD;
+					 operationContent:&quot;对部门通讯录部门表删除所选节点记录&quot;,&#xD;
+					 operationTime:myDate&#xD;
+				 });&#xD;
+				 view.id('uaUserOperationLog').execute();&#xD;
+				 &#xD;
+				 entity.remove();&#xD;
+				 var firstNode=tree.get(&quot;firstNode&quot;);&#xD;
+				 if(firstNode){&#xD;
+					tree.set(&quot;currentNode&quot;,firstNode);&#xD;
+				 }&#xD;
+			    });&#xD;
+		      }&#xD;
+	});&#xD;
+}else{&#xD;
+	dorado.MessageBox.alert(&quot;当前没有节点可供删除！&quot;);&#xD;
+}&#xD;
+</ClientEvent>
+                  <Property name="icon">url(skin>common/icons.gif) -140px 0px</Property>
+                  <Property name="caption">删除</Property>
+                  <Property name="width">57</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var dialog=view.id(&quot;dialogDepart&quot;);&#xD;
+dialog.show();&#xD;
+&#xD;
+	var myDate = new Date();&#xD;
+	view.id('dsUserOperationLog').getData().insert({&#xD;
+		logOperationType:&quot;1&quot;,&#xD;
+		operationPerson: &quot;${loginUsername}&quot;,&#xD;
+		operationContent:&quot;对部门通讯录部门表修改选定节点记录&quot;,&#xD;
+		operationTime:myDate&#xD;
+	});&#xD;
+	view.id('uaUserOperationLog').execute();&#xD;
+</ClientEvent>
+                  <Property name="icon">url(skin>common/icons.gif) -280px -100px</Property>
+                  <Property name="caption">修改</Property>
+                  <Property name="width">57</Property>
+                </ToolBarButton>
+              </ToolBar>
+            </Children>
+          </FieldSet>
+          <DataTree id="dataTree">
+            <ClientEvent name="beforeCurrentChange">var node=arg.oldCurrent;&#xD;
+if(node){&#xD;
+	var data=node.get(&quot;data&quot;);&#xD;
+	if(data &amp;&amp; data.state!=dorado.Entity.STATE_NONE){&#xD;
+		view.id(&quot;uaAddressbookdepart&quot;).execute();&#xD;
+		if(data.validate()!=&quot;ok&quot;){&#xD;
+			arg.processDefault=false;&#xD;
+		}&#xD;
+	}&#xD;
+}&#xD;
+</ClientEvent>
+            <ClientEvent name="onDraggingSourceDrop">var draggingInfo=arg.draggingInfo;&#xD;
+if(!draggingInfo){&#xD;
+	return true;&#xD;
+}&#xD;
+&#xD;
+var parentNode=draggingInfo.get(&quot;targetObject&quot;);&#xD;
+if(!parentNode){&#xD;
+	return true;&#xD;
+}&#xD;
+var parentId=parentNode.get(&quot;data.oid&quot;);&#xD;
+&#xD;
+parentNode.get(&quot;nodes&quot;).each(function(node){&#xD;
+	var data=node.get(&quot;data&quot;);&#xD;
+	data.set(&quot;parentnode&quot;,parentId);&#xD;
+});&#xD;
+&#xD;
+view.id(&quot;uaAddressbookdepart&quot;).execute();&#xD;
+&#xD;
+</ClientEvent>
+            <ClientEvent name="onContextMenu">view.id(&quot;menuOperate&quot;).show({&#xD;
+	position: {&#xD;
+		left: arg.event.pageX,&#xD;
+		top: arg.event.pageY&#xD;
+	}&#xD;
+});&#xD;
+</ClientEvent>
+            <ClientEvent name="onCurrentChange">var nodeType = self.get(&quot;currentNode.bindingConfig.name&quot;)&#xD;
+var dataset = view.id(&quot;dsAddressbook&quot;);&#xD;
+if(nodeType == &quot;depart&quot;){&#xD;
+   var sys = this.id(&quot;dsAddressbookdepart&quot;).getData(&quot;!currentSubject&quot;);//根据路径取出数据集封装的数据&#xD;
+ &#xD;
+&#xD;
+&#xD;
+dataset.set(&quot;parameter&quot;,{&#xD;
+	addressbookdepart:sys.get(&quot;oid&quot;)&#xD;
+	}).flushAsync();	//给dataset 的parameter赋值&#xD;
+}</ClientEvent>
+            <Property name="dataSet">dsAddressbookdepart</Property>
+            <Property name="currentNodeDataPath">currentSubject</Property>
+            <Property name="draggable">true</Property>
+            <Property name="dragTags">Subject</Property>
+            <Property name="droppable">true</Property>
+            <Property name="droppableTags">Subject</Property>
+            <Property name="dropMode">onOrInsertItems</Property>
+            <BindingConfigs>
+              <BindingConfig>
+                <Property name="labelProperty">name</Property>
+                <Property name="recursive">true</Property>
+                <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
+                <Property name="expandLevel">3</Property>
+                <Property name="childrenProperty">children</Property>
+                <Property name="name">depart</Property>
+              </BindingConfig>
+            </BindingConfigs>
+          </DataTree>
+        </Container>
+      </SideControl>
+    </SplitPanel>
+    <Menu id="menuOperate">
+      <Property name="visible">false</Property>
+      <MenuItem>
+        <ClientEvent name="onClick">var data=view.id(&quot;dsAddressbookdepart&quot;).getData();&#xD;
+&#xD;
+var newEntity=data.insert();&#xD;
+view.id(&quot;dataTree&quot;).set(&quot;currentEntity&quot;,newEntity);&#xD;
+&#xD;
+var dialog=view.id(&quot;dialogDepart&quot;);&#xD;
+dialog.show();&#xD;
+&#xD;
+	var myDate = new Date();&#xD;
+	view.id('dsUserOperationLog').getData().insert({&#xD;
+		logOperationType:&quot;0&quot;,&#xD;
+		operationPerson: &quot;${loginUsername}&quot;,&#xD;
+		operationContent:&quot;对部门通讯录部门表新增一个根节点记录&quot;,&#xD;
+		operationTime:myDate&#xD;
+	});&#xD;
+	view.id('uaUserOperationLog').execute();&#xD;
+&#xD;
+</ClientEvent>
+        <Property name="name">addRoot</Property>
+        <Property name="caption">添加根节点</Property>
+        <Property name="icon">url(skin>common/icons.gif) -280px -100px</Property>
+        <Property name="visible">true</Property>
+      </MenuItem>
+      <MenuItem>
+        <ClientEvent name="onClick">var tree=view.id(&quot;dataTree&quot;);&#xD;
+var currentNode=tree.get(&quot;currentNode&quot;);&#xD;
+if(!currentNode){&#xD;
+	dorado.MessageBox.alert(&quot;请先选中一个父节点!&quot;);&#xD;
+	return;&#xD;
+}&#xD;
+&#xD;
+var currentEntity=currentNode.get(&quot;data&quot;);&#xD;
+var newEntity=currentEntity.createChild(&quot;children&quot;,{&#xD;
+	parentnode:currentEntity.get(&quot;oid&quot;)&#xD;
+	&#xD;
+});&#xD;
+currentNode.expand();&#xD;
+tree.set(&quot;currentEntity&quot;,newEntity);&#xD;
+var dialog=view.id(&quot;dialogDepart&quot;);&#xD;
+dialog.show();&#xD;
+&#xD;
+	var myDate = new Date();&#xD;
+	view.id('dsUserOperationLog').getData().insert({&#xD;
+		logOperationType:&quot;0&quot;,&#xD;
+		operationPerson: &quot;${loginUsername}&quot;,&#xD;
+		operationContent:&quot;对部门通讯录部门表新增一个子节点记录&quot;,&#xD;
+		operationTime:myDate&#xD;
+	});&#xD;
+	view.id('uaUserOperationLog').execute();</ClientEvent>
+        <Property name="caption">添加子节点</Property>
+        <Property name="name">addSub</Property>
+        <Property name="icon">url(skin>common/icons.gif) -120px 0px</Property>
+        <Property name="visible">true</Property>
+      </MenuItem>
+      <MenuItem>
+        <ClientEvent name="onClick">var tree=view.id(&quot;dataTree&quot;);&#xD;
+var entity=tree.get(&quot;currentEntity&quot;);&#xD;
+if(entity){&#xD;
+	view.id(&quot;ajaxActionCheckChildren&quot;).set(&quot;parameter&quot;, entity.get(&quot;oid&quot;)).execute(function(count){&#xD;
+		if (count>0){&#xD;
+			dorado.MessageBox.alert(&quot;请先删除子节点&quot;);&#xD;
+		} &#xD;
+		else if(view.id(&quot;dsAddressbook&quot;).getData(&quot;#&quot;)){&#xD;
+				dorado.MessageBox.alert(&quot;请先删除联系人！&quot;);&#xD;
+				}&#xD;
+				else{&#xD;
+			    dorado.MessageBox.confirm(&quot;真的要删除当前节点？&quot;,function(){&#xD;
+				 &#xD;
+				 var myDate = new Date();&#xD;
+				 view.id('dsUserOperationLog').getData().insert({&#xD;
+					 logOperationType:&quot;2&quot;,&#xD;
+					 operationPerson: &quot;${loginUsername}&quot;,&#xD;
+					 operationContent:&quot;对部门通讯录部门表删除所选节点记录&quot;,&#xD;
+					 operationTime:myDate&#xD;
+				 });&#xD;
+				 view.id('uaUserOperationLog').execute();&#xD;
+				 &#xD;
+				 entity.remove();&#xD;
+				 var firstNode=tree.get(&quot;firstNode&quot;);&#xD;
+				 if(firstNode){&#xD;
+					tree.set(&quot;currentNode&quot;,firstNode);&#xD;
+				 }&#xD;
+			    });&#xD;
+		      }&#xD;
+	});&#xD;
+}else{&#xD;
+	dorado.MessageBox.alert(&quot;当前没有节点可供删除！&quot;);&#xD;
+}&#xD;
+</ClientEvent>
+        <Property name="name">del</Property>
+        <Property name="caption">删除</Property>
+        <Property name="icon">url(skin>common/icons.gif) -140px 0px</Property>
+        <Property name="visible">true</Property>
+      </MenuItem>
+      <MenuItem>
+        <ClientEvent name="onClick">var dialog=view.id(&quot;dialogDepart&quot;);&#xD;
+dialog.show();&#xD;
+&#xD;
+	var myDate = new Date();&#xD;
+	view.id('dsUserOperationLog').getData().insert({&#xD;
+		logOperationType:&quot;1&quot;,&#xD;
+		operationPerson: &quot;${loginUsername}&quot;,&#xD;
+		operationContent:&quot;对部门通讯录部门表修改选定节点记录&quot;,&#xD;
+		operationTime:myDate&#xD;
+	});&#xD;
+	view.id('uaUserOperationLog').execute();&#xD;
+</ClientEvent>
+        <Property name="name">modify</Property>
+        <Property name="caption">修改</Property>
+        <Property name="icon">url(skin>common/icons.gif) -280px -100px</Property>
+        <Property name="visible">true</Property>
+      </MenuItem>
+    </Menu>
+    <Dialog id="dialogDepart">
+      <Property name="caption">联系人单位</Property>
+      <Buttons>
+        <Button layoutConstraint="right:30">
+          <ClientEvent name="onClick">&#xD;
+view.id('uaAddressbookdepart').execute(function(){&#xD;
+               view.id('dialogDepart').hide();&#xD;
+           });&#xD;
+         </ClientEvent>
+          <Property name="icon">url(skin>common/icons.gif) -140px -20px</Property>
+          <Property name="style">
+            <Property name="margin-right">30</Property>
+          </Property>
+          <Property name="caption">确定</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsAddressbookdepart').getData('#');&#xD;
+cur.cancel();&#xD;
+view.id('dialogDepart').hide();&#xD;
+&#xD;
+	/*&#xD;
+	 * 删除当前用户操作日志记录并保存&#xD;
+	 */&#xD;
+	view.id('dsUserOperationLog').getData().remove()&#xD;
+	view.id('uaUserOperationLog').execute();&#xD;
+	         &#xD;
+	         </ClientEvent>
+          <Property name="caption">取消</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm layoutConstraint="center">
+          <Property name="cols">*</Property>
+          <Property name="dataSet">dsAddressbookdepart</Property>
+          <Property name="dataPath">!currentSubject</Property>
+          <AutoFormElement>
+            <Property name="name">name</Property>
+            <Property name="property">name</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">code</Property>
+            <Property name="property">code</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">address</Property>
+            <Property name="property">address</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">postcode</Property>
+            <Property name="property">postcode</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="dialogPhone">
+      <Property name="width">800</Property>
+      <Property name="caption">联系人信息</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">var entity = this.id(&quot;dsAddressbookdepart&quot;).getData(&quot;!currentSubject&quot;);&#xD;
+var entity1=this.id(&quot;dsAddressbook&quot;).getData(&quot;#&quot;);&#xD;
+entity1.set(&quot;addressbookdepart&quot;,entity.toJSON());//&#xD;
+view.id('uaAddressbook').execute(function(){&#xD;
+               view.id('dialogPhone').hide();&#xD;
+           });</ClientEvent>
+          <Property name="caption">确定</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsAddressbook').getData('#');&#xD;
+				cur.cancel();&#xD;
+				view.id('dialogPhone').hide();&#xD;
+	/*&#xD;
+	 * 删除当前用户操作日志记录并保存&#xD;
+	 */&#xD;
+	view.id('dsUserOperationLog').getData().remove()&#xD;
+	view.id('uaUserOperationLog').execute();&#xD;
+	         </ClientEvent>
+          <Property name="caption">取消</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm>
+          <Property name="dataSet">dsAddressbook</Property>
+          <Property name="cols">*,*</Property>
+          <AutoFormElement>
+            <Property name="name">name</Property>
+            <Property name="property">name</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">position</Property>
+            <Property name="property">position</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">mobilephone</Property>
+            <Property name="property">mobilephone</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">telephone</Property>
+            <Property name="property">telephone</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">email</Property>
+            <Property name="property">email</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">fax</Property>
+            <Property name="property">fax</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">note</Property>
+            <Property name="property">note</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <ImportExcelAction id="importExcelActionDemo">
+      <Property name="showImportData">true</Property>
+      <Property name="bigData">true</Property>
+      <Property name="startRow">2</Property>
+    </ImportExcelAction>
+    <AjaxAction id="ajaxActionCheckChildren">
+      <Property name="service">addressbookdepartPR#countChildren</Property>
+    </AjaxAction>
+    <DataSet id="dsUserOperationLog">
+      <Property name="dataProvider">userOperationLogPR#queryUserOperationLog</Property>
+      <Property name="dataType">[UserOperationLog]</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <UpdateAction id="uaUserOperationLog">
+      <Property name="dataResolver">userOperationLogPR#saveUserOperationLog</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsUserOperationLog</Property>
+      </UpdateItem>
+    </UpdateAction>
+  </View>
+</ViewConfig>

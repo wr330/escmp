@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<title>$!{title}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="$!{resourcesPath}resource/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="$!{resourcesPath}resource/js/jquery.min.js"></script>
+<script type="text/javascript" src="$!{resourcesPath}resource/js/jcarousellite_1.0.1.min.js"></script>
+#[[<script type="text/javascript" charset="utf-8">
+$(function() {
+    $(".menu").jCarouselLite({
+        btnNext: ".next",
+        btnPrev: ".prev",
+        circular: false,
+        visible: 6
+    });
+});
+   </script>]]#
+</head>
+<body>
+ <div class="main">
+  #parse("top.vm")
+  <div class="slider2">
+    <div class="slice12">
+      <h2>$!{parentNode.getNodeTitle()}</h2>
+    </div>
+  </div>
+  <div class="clr"></div>
+  <div class="body">
+    <div class="body_resize">
+      <div class="News" >
+      	 <ul>
+      	 	#foreach($!{category} in $!{categorys})
+      	 	<li><a href ="$!{basePath}$!{parentPath}/$!{category.getNodeCode()}"  title="$!{category.getNodeTitle()}">$!{category.getNodeTitle()}</a></li>	
+	 	    #end
+ 	     </ul>
+      </div>
+      <style>
+     .News{
+        width:164px;
+        _margin:5px 7px;
+        }
+     .Welcome{
+        width:696px;
+        _margin:5px 7px;
+        }
+     .welcome_detail{
+      font-family: 'Microsoft YaHei',Verdana,Arial,Sans-Serif;
+	  text-align: left;
+	  line-height: 180%;
+	  display: block;
+	  font-size: 14px;
+      	}
+      	
+     .welcome_detail_title{
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      	}
+      .welcome_detail_content{
+      line-height: 250%;
+	  font-family: 'Microsoft YaHei',Verdana,Arial,Sans-Serif;
+      font-size: 14px;
+      text-align: left;
+      	}
+      .welcome_list_top{
+        display: block;
+	    height: 24px;
+	    margin-bottom: 19px;
+	    font-family: 'Microsoft YaHei',Verdana,Arial,Sans-Serif;
+      	}
+      .welcome_list_top_title{
+        font-family: 'Microsoft YaHei',Verdana,Arial,Sans-Serif;
+      	float: left;
+	    font-size: 20px;
+	    font-weight: bold;
+      	}
+      .welcome_list_detail{
+      	display: block;
+	    text-align: left;
+	    font-size:14px;
+	    font-family: 'Microsoft YaHei',Verdana,Arial,Sans-Serif;
+      	}
+      .welcome_list_detail ul li.list{
+      	font-size: 13px;
+	    margin-bottom: 15px;
+	    font-family: 'Microsoft YaHei',Verdana,Arial,Sans-Serif;
+      	}
+      ul li {
+        list-style: none outside none;
+        margin: 0;
+        padding: 0;
+        }
+     .welcome_detail_content p{
+	font:normal 14px 'Microsoft YaHei',Verdana,Arial,Sans-Serif;
+	}
+      </style>
+      </style>
+      <div class="Welcome" >
+      			#if($!{isList} == false)
+					#if($!{childNode})				
+						<div class="welcome_detail">
+                              <div class="welcome_detail_title" style=" margin-top: 25px;">$!{childNode.getNodeTitle()}</div>
+                              <hr style="border:1px #cccccc dotted;"/>
+                              <div class="welcome_detail_content" style ="font:normal 14px 'Microsoft YaHei',Verdana,Arial,Sans-Serif;">	
+                              $!{childNode.getNodeContent()}
+                              </div>
+				        </div>
+					#else
+				#parse("$!{includeView}") 
+				    #end
+				#else
+				    #if($!{childNode})
+				<div class="welcome_list_top">
+					<div class="bak"></div>
+					<div class="welcome_list_top_title">$!{childNode.getNodeTitle()}</div>
+				</div>
+				<div class="welcome_list_detail" style="height: 690px">
+					<ul>
+						#foreach($!{news} in $!{newsList})
+					<li class="list"><a  href ="$!{basePath}$!{parentPath}/$!{currentNode.getNodeCode()}/$!{news.getNodeCode()}" title="$!{news.getNodeTitle()}">$!{news.getNodeTitle()}</a></li>												
+						#end
+					</ul>
+				</div>
+				#parse("navpage.vm")   	
+    				#else
+				<div class="welcome_list_top">
+					<div class="bak"></div>
+					<div class="welcome_list_top_title">$!{currentNode.getNodeTitle()}</div>
+				</div>
+				<div class="welcome_list_detail" style="height: 690px">
+					<ul>
+						#foreach($!{news} in $!{newsList})
+					<li class="list"><a href ="$!{basePath}$!{parentPath}/$!{currentNode.getNodeCode()}/$!{news.getNodeCode()}" title="$!{news.getNodeTitle()}" >$!{news.getNodeTitle()}</a></li>													
+						#end
+					</ul>
+				</div>
+			   #parse("navpage2.vm")
+				  #end
+				#end
+      	</div> 
+    <div class="clr"></div>
+    </div>
+  <div class="clr"></div>
+  </div>
+  #parse("footer.vm")
+ </div>
+</body>
+</html>

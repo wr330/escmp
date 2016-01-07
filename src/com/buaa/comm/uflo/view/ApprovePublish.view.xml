@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="News">
+      <Property name="creationType">com.bstek.newstree.domain.NewsTree</Property>
+      <PropertyDef name="nodeId">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="nodeTitle">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="nodeContent">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="parentId">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="createDate">
+        <Property name="dataType">Date</Property>
+      </PropertyDef>
+      <PropertyDef name="updateDate">
+        <Property name="dataType">Date</Property>
+      </PropertyDef>
+      <PropertyDef name="createUser">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="updateUser">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="statu">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="isleaf">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="orderDate">
+        <Property name="dataType">Date</Property>
+      </PropertyDef>
+      <PropertyDef name="icon">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="nodeCode">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="dataTypeHistoryTask">
+      <Property name="creationType">com.bstek.uflo.model.HistoryTask</Property>
+      <PropertyDef name="id">
+        <Property name="dataType">long</Property>
+      </PropertyDef>
+      <PropertyDef name="nodeName">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="description">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="processId">
+        <Property name="dataType">long</Property>
+      </PropertyDef>
+      <PropertyDef name="taskName">
+        <Property name="dataType">String</Property>
+        <Property name="label">任务名称</Property>
+      </PropertyDef>
+      <PropertyDef name="createDate">
+        <Property name="dataType">Date</Property>
+      </PropertyDef>
+      <PropertyDef name="endDate">
+        <Property name="dataType">Date</Property>
+        <Property name="label">审批日期</Property>
+      </PropertyDef>
+      <PropertyDef name="owner">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="assignee">
+        <Property name="dataType">String</Property>
+        <Property name="label">处理人</Property>
+      </PropertyDef>
+      <PropertyDef name="duedate">
+        <Property name="dataType">Date</Property>
+      </PropertyDef>
+      <PropertyDef name="historyProcessInstanceId">
+        <Property name="dataType">long</Property>
+      </PropertyDef>
+      <PropertyDef name="processInstanceId">
+        <Property name="dataType">long</Property>
+      </PropertyDef>
+      <PropertyDef name="rootProcessInstanceId">
+        <Property name="dataType">long</Property>
+      </PropertyDef>
+      <PropertyDef name="taskId">
+        <Property name="dataType">long</Property>
+      </PropertyDef>
+      <PropertyDef name="opinion">
+        <Property name="dataType">String</Property>
+        <Property name="label">审批意见</Property>
+      </PropertyDef>
+      <PropertyDef name="url">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="businessId">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <UfloProcessDiagram id="ufloProcessDiagram1">
+      <Property name="requestParameterType">taskId</Property>
+      <Property name="requestParameterValue">${request.getParameter(&quot;taskId&quot;)}</Property>
+    </UfloProcessDiagram>
+    <DataSet id="dataSetNews">
+      <Property name="parameter">${request.getParameter(&quot;businessId&quot;)}</Property>
+      <Property name="dataProvider">newsPublishService#loadNews</Property>
+      <Property name="dataType">News</Property>
+    </DataSet>
+    <DataSet id="dataSetHistoryTask">
+      <Property name="dataType">[dataTypeHistoryTask]</Property>
+      <Property name="dataProvider">newsPublishService#loadHistoryTask</Property>
+      <Property name="parameter">${request.getParameter(&quot;taskId&quot;)}</Property>
+    </DataSet>
+    <AutoForm>
+      <ToolBar layoutConstraint="colSpan:2">
+        <Button>
+          <Property name="caption">驳回</Property>
+          <Property name="action">RejectAction</Property>
+          <Property name="icon"> url(>skin>common/icons.gif) -0px -240px</Property>
+        </Button>
+        <Button>
+          <Property name="caption">通过</Property>
+          <Property name="action">PassAction</Property>
+          <Property name="icon"> url(>skin>common/icons.gif) -20px -240px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">view.id(&quot;ufloProcessDiagram1&quot;).show();&#xD;
+</ClientEvent>
+          <Property name="caption">查看流程图</Property>
+          <Property name="icon"> url(>skin>common/icons.gif) -100px -100px</Property>
+        </Button>
+      </ToolBar>
+      <AutoFormElement id="autoFormElement1" layoutConstraint="colSpan:2">
+        <Property name="label">审批意见</Property>
+        <Property name="name">opinion</Property>
+        <Property name="editorType">TextEditor</Property>
+        <Editor/>
+      </AutoFormElement>
+    </AutoForm>
+    <TabControl>
+      <ControlTab>
+        <Property name="caption">新闻详情</Property>
+        <AutoForm id="autoForm1" layoutConstraint="center">
+          <Property name="dataSet">dataSetNews</Property>
+          <Property name="dataType">News</Property>
+          <AutoFormElement layoutConstraint="colSpan:2">
+            <Property name="property">nodeTitle</Property>
+            <Property name="dataSet">dataSetNews</Property>
+            <Property name="label">标题</Property>
+            <Property name="editorType">TextEditor</Property>
+            <Property name="name">nodeTitle</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement layoutConstraint="colSpan:2">
+            <Property name="property">nodeContent</Property>
+            <Property name="dataSet">dataSetNews</Property>
+            <Property name="label">内容</Property>
+            <Property name="name">nodeContent</Property>
+            <Editor>
+              <UEditor id="uEditor1">
+                <Property name="dataSet">dataSetNews</Property>
+                <Property name="property">nodeContent</Property>
+                <Property name="height">600</Property>
+              </UEditor>
+            </Editor>
+          </AutoFormElement>
+        </AutoForm>
+      </ControlTab>
+      <ControlTab>
+        <Property name="caption">审批历史</Property>
+        <DataGrid>
+          <Property name="dataSet">dataSetHistoryTask</Property>
+          <Property name="readOnly">true</Property>
+          <DataColumn name="taskName">
+            <Property name="property">taskName</Property>
+            <Property name="width">80</Property>
+          </DataColumn>
+          <DataColumn name="assignee">
+            <Property name="property">assignee</Property>
+            <Property name="width">80</Property>
+          </DataColumn>
+          <DataColumn name="opinion">
+            <Property name="property">opinion</Property>
+          </DataColumn>
+          <DataColumn name="endDate">
+            <Property name="property">endDate</Property>
+            <Property name="width">120</Property>
+            <Property name="displayFormat">Y-m-d H:i:s</Property>
+          </DataColumn>
+        </DataGrid>
+      </ControlTab>
+    </TabControl>
+    <AjaxAction id="PassAction">
+      <ClientEvent name="beforeExecute">var entity = this.id(&quot;dataSetNews&quot;).getData(&quot;#&quot;);&#xD;
+var value = entity.getText(&quot;nodeId&quot;,&quot;always&quot;);&#xD;
+//var opinion = view.id(&quot;autoFormOpinion&quot;).get(&quot;entity&quot;).opinion;&#xD;
+var opinion = view.id(&quot;autoFormElement1&quot;).get(&quot;value&quot;);&#xD;
+var title = entity.getText(&quot;nodeTitle&quot;,&quot;always&quot;);&#xD;
+var content = entity.getText(&quot;nodeContent&quot;,&quot;always&quot;);&#xD;
+var parameter = {&#xD;
+	taskId:&quot;${request.getParameter(&quot;taskId&quot;)}&quot;,&#xD;
+	opinion:opinion,&#xD;
+	newsId:value,&#xD;
+	result:&quot;通过&quot;,&#xD;
+	title:title,&#xD;
+	content:content&#xD;
+};&#xD;
+self.set(&quot;parameter&quot;,parameter);&#xD;
+</ClientEvent>
+      <ClientEvent name="onSuccess">var isSuccess = self.get(&quot;returnValue&quot;);&#xD;
+if(isSuccess)&#xD;
+    window.parent.closeProcessDialog(&quot;${request.getparameter(&quot;type&quot;)}&quot;);&#xD;
+else&#xD;
+    dorado.MessageBox.alert(&quot;未找到审批部长，请通知管理员在角色{部长}下指定部长！&quot;);</ClientEvent>
+      <Property name="service">newsPublishService#approvePublish</Property>
+      <Property name="parameter"></Property>
+    </AjaxAction>
+    <AjaxAction id="RejectAction">
+      <ClientEvent name="beforeExecute">var entity = this.id(&quot;dataSetNews&quot;).getData(&quot;#&quot;);&#xD;
+var value = entity.getText(&quot;nodeId&quot;,&quot;always&quot;);&#xD;
+//var opinion = view.id(&quot;autoFormOpinion&quot;).get(&quot;entity&quot;).opinion;&#xD;
+var opinion = view.id(&quot;autoFormElement1&quot;).get(&quot;value&quot;);&#xD;
+var title = entity.getText(&quot;nodeTitle&quot;,&quot;always&quot;);&#xD;
+var content = entity.getText(&quot;nodeContent&quot;,&quot;always&quot;);&#xD;
+var parameter = {&#xD;
+	taskId:&quot;${request.getParameter(&quot;taskId&quot;)}&quot;,&#xD;
+	opinion:opinion,&#xD;
+	newsId:value,&#xD;
+	result:&quot;驳回&quot;,&#xD;
+	title:title,&#xD;
+	content:content&#xD;
+};&#xD;
+self.set(&quot;parameter&quot;,parameter);&#xD;
+</ClientEvent>
+      <ClientEvent name="onSuccess">window.parent.closeProcessDialog(&quot;${request.getparameter(&quot;type&quot;)}&quot;);</ClientEvent>
+      <Property name="service">newsPublishService#approvePublish</Property>
+      <Property name="parameter"></Property>
+      <Property name="successMessage">操作成功！</Property>
+    </AjaxAction>
+  </View>
+</ViewConfig>

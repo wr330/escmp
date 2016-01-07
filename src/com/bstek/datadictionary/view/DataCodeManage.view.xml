@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">dataCodeManage</Property>
+  </Property>
+  <Arguments>
+    <Argument name="parentId">
+      <Property name="value">${request.getParameter(&quot;parentId&quot;)}</Property>
+    </Argument>
+  </Arguments>
+  <Context>
+    <Attribute name="parentId">
+      <Property name="value">${request.getParameter(&quot;parentId&quot;)}</Property>
+    </Attribute>
+  </Context>
+  <Model/>
+  <View>
+    <DataSet id="dataSetDataCode">
+      <Property name="pageSize">10</Property>
+      <Property name="dataProvider">dataCodePR#findDataCode</Property>
+      <Property name="dataType">[DataCode]</Property>
+      <Property name="parameter"></Property>
+    </DataSet>
+    <ToolBar>
+      <DataPilot>
+        <Property name="dataSet">dataSetDataCode</Property>
+      </DataPilot>
+      <ToolBarButton>
+        <ClientEvent name="onClick">this.id(&quot;dataSetDataCode&quot;).getData().insert();&#xD;
+this.id(&quot;dialogDataCode&quot;).show();</ClientEvent>
+        <Property name="caption">新增</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -120px 0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">this.id(&quot;dialogDataCode&quot;).show();</ClientEvent>
+        <Property name="caption">修改</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -200px 0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var updateActionSave = this.get(&quot;#updateActionSave&quot;);&#xD;
+var dataSet = this.get(&quot;#dataSetDataCode&quot;);&#xD;
+dorado.MessageBox.confirm(&quot;确认是否删除数据项！&quot;, function(){&#xD;
+	dataSet.queryData(&quot;#&quot;).remove();&#xD;
+	updateActionSave.execute();&#xD;
+});</ClientEvent>
+        <Property name="caption">删除</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -40px 0px</Property>
+      </ToolBarButton>
+      <ToolBarButton id="toolBarButtonBack">
+        <ClientEvent name="onClick">if(window.document.referrer){&#xD;
+	window.location.href = window.document.referrer;&#xD;
+}</ClientEvent>
+        <ClientEvent name="onReady">if(&quot;${request.getParameter(&quot;parentId&quot;)}&quot;==&quot;root&quot;){&#xD;
+	this.set(&quot;#toolBarButtonBack.visible&quot;, false);&#xD;
+}</ClientEvent>
+        <Property name="caption">返回</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -160px -280px</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid id="dataGridDataCode">
+      <Property name="dataSet">dataSetDataCode</Property>
+      <Property name="readOnly">true</Property>
+      <DataColumn name="dataName">
+        <ClientEvent name="onRenderCell">arg.dom.innerHTML = &quot;&lt;a href='bstek.datadictionary.view.DataCodeManage.d?parentId=&quot; + arg.data.get(&quot;dcId&quot;) + &quot;'>&quot; + arg.data.get(&quot;dataName&quot;) + &quot;&lt;/a>&quot;;&#xD;
+arg.processDefault = false;&#xD;
+return false;</ClientEvent>
+        <Property name="property">dataName</Property>
+      </DataColumn>
+      <DataColumn name="dataCode">
+        <Property name="property">dataCode</Property>
+      </DataColumn>
+      <DataColumn name="dataSimpleName">
+        <Property name="property">dataSimpleName</Property>
+      </DataColumn>
+      <DataColumn name="dataOrderNo">
+        <Property name="property">dataOrderNo</Property>
+      </DataColumn>
+      <DataColumn name="bakOne">
+        <Property name="property">bakOne</Property>
+      </DataColumn>
+      <DataColumn name="bakTwo">
+        <Property name="property">bakTwo</Property>
+      </DataColumn>
+    </DataGrid>
+    <Dialog id="dialogDataCode">
+      <Property name="caption">数据项信息</Property>
+      <Property name="width">500</Property>
+      <Property name="height">300</Property>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">var updateActionSave = this.get(&quot;#updateActionSave&quot;);&#xD;
+var dialog = this.get(&quot;#dialogDataCode&quot;);&#xD;
+dorado.MessageBox.confirm(&quot;确认是否保存数据项！&quot;, function(){&#xD;
+	updateActionSave.execute();&#xD;
+	dialog.hide();&#xD;
+});</ClientEvent>
+          <Property name="caption">保存</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -140px -20px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">this.get(&quot;#dataSetDataCode&quot;).getData().cancel();&#xD;
+this.get(&quot;#dialogDataCode&quot;).hide();</ClientEvent>
+          <Property name="caption">关闭</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm>
+          <Property name="dataSet">dataSetDataCode</Property>
+          <Property name="dataPath">#</Property>
+          <Property name="cols">*</Property>
+          <AutoFormElement name="autoFormElement1">
+            <Property name="name">dataName</Property>
+            <Property name="property">dataName</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="autoFormElement2">
+            <Property name="name">dataCode</Property>
+            <Property name="property">dataCode</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="autoFormElement2">
+            <Property name="name">dataSimpleName</Property>
+            <Property name="property">dataSimpleName</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="autoFormElement2">
+            <Property name="name">dataOrderNo</Property>
+            <Property name="property">dataOrderNo</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="autoFormElement2">
+            <Property name="name">bakOne</Property>
+            <Property name="property">bakOne</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement name="autoFormElement2">
+            <Property name="name">bakTwo</Property>
+            <Property name="property">bakTwo</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <UpdateAction id="updateActionSave">
+      <ClientEvent name="onSuccess">this.get(&quot;#dataSetDataCode&quot;).flushAsync();</ClientEvent>
+      <Property name="dataResolver">dataCodePR#saveAll</Property>
+      <Property name="successMessage">操作成功！</Property>
+      <UpdateItem>
+        <Property name="dataSet">dataSetDataCode</Property>
+      </UpdateItem>
+    </UpdateAction>
+  </View>
+</ViewConfig>

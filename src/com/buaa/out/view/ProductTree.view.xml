@@ -1,0 +1,2020 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="ProductTree" parent="Producttree">
+      <ClientEvent name="onStateChange">if (arg.oldState == dorado.Entity.STATE_NONE) {&#xD;
+		dirtyEntityNum++;&#xD;
+	} else if (arg.newState == dorado.Entity.STATE_NONE) {&#xD;
+		dirtyEntityNum--;&#xD;
+	} else if (arg.oldState == dorado.Entity.STATE_NEW&#xD;
+			&amp;&amp; arg.newState == dorado.Entity.STATE_DELETED) {&#xD;
+		dirtyEntityNum--;&#xD;
+	}&#xD;
+	refreshActions();&#xD;
+	function refreshActions() {&#xD;
+	var node = view.get(&quot;#productTree.currentNode&quot;);&#xD;
+	view.set({&#xD;
+		&quot;^onCurrentNode.disabled&quot; : node == null,&#xD;
+		&quot;^onCurrentCategory.disabled&quot; : (node == null || node&#xD;
+				.get(&quot;bindingConfig.name&quot;) != &quot;Category&quot;),&#xD;
+		&quot;^onCurrentExample.disabled&quot; : (node == null || node&#xD;
+				.get(&quot;bindingConfig.name&quot;) != &quot;Equipment&quot;)&#xD;
+	});&#xD;
+&#xD;
+	var disabled = true;&#xD;
+	if (node != null) {&#xD;
+		var entity = node.get(&quot;data&quot;);&#xD;
+		disabled = !entity.isDirty();&#xD;
+	}&#xD;
+	view.set({&#xD;
+		&quot;^onDirtyNode.disabled&quot; : disabled,&#xD;
+		&quot;^onDirty.disabled&quot; : dirtyEntityNum == 0&#xD;
+	});&#xD;
+}</ClientEvent>
+      <Reference name="categories">
+        <Property name="dataType">[ProductTree]</Property>
+        <Property name="parameter">$${this.oid}</Property>
+        <Property name="dataProvider">producttreePR#getCategories</Property>
+      </Reference>
+    </DataType>
+    <DataType name="TestProject" parent="Testproject">
+      <ClientEvent name="onStateChange">if (arg.oldState == dorado.Entity.STATE_NONE) {&#xD;
+		dirtyEntityNum++;&#xD;
+	} else if (arg.newState == dorado.Entity.STATE_NONE) {&#xD;
+		dirtyEntityNum--;&#xD;
+	} else if (arg.oldState == dorado.Entity.STATE_NEW&#xD;
+			&amp;&amp; arg.newState == dorado.Entity.STATE_DELETED) {&#xD;
+		dirtyEntityNum--;&#xD;
+	}&#xD;
+	refreshActions();&#xD;
+	function refreshActions() {&#xD;
+	var node = view.get(&quot;#testProjectTree.currentNode&quot;);&#xD;
+	view.set({&#xD;
+		&quot;^onCurrentNode.disabled&quot; : node == null,&#xD;
+		&quot;^onCurrentCategory.disabled&quot; : (node == null || node&#xD;
+				.get(&quot;bindingConfig.name&quot;) != &quot;Category&quot;),&#xD;
+		&quot;^onCurrentExample.disabled&quot; : (node == null || node&#xD;
+				.get(&quot;bindingConfig.name&quot;) != &quot;subProject&quot;)&#xD;
+	});&#xD;
+&#xD;
+	var disabled = true;&#xD;
+	if (node != null) {&#xD;
+		var entity = node.get(&quot;data&quot;);&#xD;
+		disabled = !entity.isDirty();&#xD;
+	}&#xD;
+	view.set({&#xD;
+		&quot;^onDirtyNode.disabled&quot; : disabled,&#xD;
+		&quot;^onDirty.disabled&quot; : dirtyEntityNum == 0&#xD;
+	});&#xD;
+}</ClientEvent>
+      <Reference name="categories">
+        <Property name="dataType">[TestProject]</Property>
+        <Property name="parameter">$${this.oid}</Property>
+        <Property name="dataProvider">testprojectPR#getCategories</Property>
+      </Reference>
+    </DataType>
+  </Model>
+  <View>
+    <Property name="packages">common</Property>
+    <GroupStart id="mainContent"/>
+    <DataSet id="dsRootNode">
+      <Property name="dataType">[ProductTree]</Property>
+      <Property name="dataProvider">producttreePR#queryRootNode</Property>
+      <Property name="loadMode">lazy</Property>
+    </DataSet>
+    <DataSet id="dsCurrentTree">
+      <Property name="dataType">[ProductTree]</Property>
+      <Property name="loadMode">onReady</Property>
+      <Property name="dataProvider">producttreePR#queryCurrentTree</Property>
+    </DataSet>
+    <DataSet id="dsDictionaryStatus">
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="dictype">Dic_ProductStatus</Property>
+          <Property name="status">0</Property>
+        </Entity>
+      </Property>
+      <Property name="dataType">[Dictionary]</Property>
+    </DataSet>
+    <DataSet id="dsDictionaryStage">
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="dictype">Dic_ProductStage</Property>
+          <Property name="status">0</Property>
+        </Entity>
+      </Property>
+      <Property name="dataType">[Dictionary]</Property>
+    </DataSet>
+    <Action id="actionAddCategory" icon=">images/folder.gif">
+      <ClientEvent name="onExecute">	var dsCurrentTree = this.get(&quot;#dsCurrentTree&quot;);&#xD;
+	var productTree = this.get(&quot;#productTree&quot;);&#xD;
+	var parentCategory = dsCurrentTree.getData(&quot;!CURRENT_CATEGORY&quot;);&#xD;
+	var guid = &quot;&quot;;&#xD;
+	for(var i=1;i&lt;=32;i++){&#xD;
+	    var n = Math.floor(Math.random()*16.0).toString(16);&#xD;
+	    guid += n;&#xD;
+		if((i==8)||(i==12)||(i==16)||(i==20))&#xD;
+		    guid += &quot;-&quot;;&#xD;
+	}&#xD;
+	if (parentCategory) {&#xD;
+		var data1 = {&#xD;
+		    oid:guid,&#xD;
+		    parentnode : parentCategory.get(&quot;oid&quot;)&#xD;
+	    };&#xD;
+		parentCategory.createChild(&quot;categories&quot;, data1);&#xD;
+	} &#xD;
+	/*else {&#xD;
+			var data2 = {&#xD;
+				   oid:guid,&#xD;
+		           name : &quot;&lt;新产品树>&quot;&#xD;
+	        };&#xD;
+		    dsCurrentTree.getData().createChild(data2);&#xD;
+			var guid2 = &quot;&quot;;&#xD;
+			for(var i=1;i&lt;=32;i++){&#xD;
+		       var n = Math.floor(Math.random()*16.0).toString(16);&#xD;
+		       guid2 += n;&#xD;
+		       if((i==8)||(i==12)||(i==16)||(i==20))&#xD;
+		       guid2 += &quot;-&quot;;&#xD;
+	        }&#xD;
+			var data3 = {&#xD;
+				   producttree: {&#xD;
+				   	oid: guid&#xD;
+				   },&#xD;
+		           testproject: {&#xD;
+				   	oid: guid2&#xD;
+				   }&#xD;
+	        };&#xD;
+			dsCurrentTree.getData(&quot;#.netproductprojectrelation&quot;).insert(data3);&#xD;
+	}*/&#xD;
+	var currentNode = productTree.get(&quot;currentNode&quot;);&#xD;
+	if (currentNode) {&#xD;
+		currentNode.expandAsync();&#xD;
+	}</ClientEvent>
+      <Property name="caption">添加分类</Property>
+    </Action>
+    <Action id="actionAddEquipment" disabled="true" icon=">images/file.gif" tags="onCurrentNode">
+      <ClientEvent name="onExecute">	var dsCurrentTree = this.get(&quot;#dsCurrentTree&quot;);&#xD;
+	var productTree = this.get(&quot;#productTree&quot;);&#xD;
+	var parentCategory = dsCurrentTree.getData(&quot;!CURRENT_CATEGORY&quot;);&#xD;
+	var guid = &quot;&quot;;&#xD;
+	for(var i=1;i&lt;=32;i++){&#xD;
+	    var n = Math.floor(Math.random()*16.0).toString(16);&#xD;
+	    guid += n;&#xD;
+		if((i==8)||(i==12)||(i==16)||(i==20))&#xD;
+		    guid += &quot;-&quot;;&#xD;
+	}&#xD;
+	var data = {&#xD;
+		oid:guid,&#xD;
+		producttree : parentCategory.toJSON()&#xD;
+	};&#xD;
+	if (parentCategory) {&#xD;
+		if(parentCategory.get('parentnode') != null)&#xD;
+		{&#xD;
+			parentCategory.createChild(&quot;equipment&quot;,data);&#xD;
+			&#xD;
+			var currentNode = productTree.get(&quot;currentNode&quot;);&#xD;
+			if (currentNode) {&#xD;
+				currentNode.expandAsync();&#xD;
+			}		&#xD;
+		}&#xD;
+	} else {&#xD;
+		var currentExample = dsCurrentTree.getData(&quot;!CURRENT_EXAMPLE&quot;);&#xD;
+		if (currentExample) {&#xD;
+			currentExample.createBrother(data);&#xD;
+		}&#xD;
+	}</ClientEvent>
+      <Property name="caption">添加设备</Property>
+    </Action>
+    <Action id="actionDrag">
+      <ClientEvent name="onExecute">var productTree = view.get(&quot;#productTree&quot;);&#xD;
+var dragAction = view.get(&quot;#actionDrag&quot;);&#xD;
+if(productTree.get(&quot;draggable&quot;) != true)&#xD;
+{&#xD;
+	productTree.set(&quot;draggable&quot;, true);&#xD;
+	productTree.set(&quot;droppable&quot;, true);&#xD;
+	dragAction.set(&quot;caption&quot;, &quot;禁止拖拽&quot;);&#xD;
+}&#xD;
+else{&#xD;
+	productTree.set(&quot;draggable&quot;, false);&#xD;
+	productTree.set(&quot;droppable&quot;, false);&#xD;
+	dragAction.set(&quot;caption&quot;, &quot;允许拖拽&quot;);&#xD;
+}&#xD;
+</ClientEvent>
+      <Property name="async">true</Property>
+      <Property name="caption">允许拖拽</Property>
+      <Property name="disabled">false</Property>
+      <Property name="icon">>images/file.gif</Property>
+    </Action>
+    <Action id="actionExpand">
+      <ClientEvent name="onExecute">var productTree = this.get(&quot;#productTree&quot;);&#xD;
+var Nodes = productTree.get(&quot;nodes&quot;);&#xD;
+Nodes.each(function(Node){&#xD;
+	Node.expandAsync();&#xD;
+}&#xD;
+);&#xD;
+</ClientEvent>
+      <Property name="caption">全部展开</Property>
+      <Property name="disabled">false</Property>
+    </Action>
+    <Action id="actionCollapse">
+      <ClientEvent name="onExecute">var productTree = this.get(&quot;#productTree&quot;);&#xD;
+var Nodes = productTree.get(&quot;nodes&quot;);&#xD;
+Nodes.each(function(Node){&#xD;
+	Node.collapse();&#xD;
+}&#xD;
+);</ClientEvent>
+      <Property name="caption">全部收起</Property>
+      <Property name="disabled">false</Property>
+    </Action>
+    <Action id="actionRemove" caption="删除" disabled="true" icon="url(>skin>common/icons.gif) -141px 0" tags="onCurrentNode">
+      <ClientEvent name="onExecute">	var dsCurrentTree = this.get(&quot;#dsCurrentTree&quot;);&#xD;
+	var entity = dsCurrentTree.getData(&quot;!CURRENT_NODE&quot;);&#xD;
+	if (entity) {&#xD;
+		entity.remove();&#xD;
+	}</ClientEvent>
+      <ClientEvent name="beforeExecute">var dsCurrentTree = this.get(&quot;#dsCurrentTree&quot;);&#xD;
+var nodeType = view.id(&quot;productTree&quot;).get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+if(nodeType == &quot;Category&quot;){&#xD;
+	var currentCategory = dsCurrentTree.getData(&quot;!CURRENT_CATEGORY&quot;);&#xD;
+	if(currentCategory.get(&quot;parentnode&quot;) == null &amp;&amp; !currentCategory.get(&quot;netproductprojectrelation&quot;).isEmpty()){&#xD;
+	    dorado.MessageBox.alert(&quot;请先删除与产品树对应的试验工程！&quot;);&#xD;
+	    arg.processDefault = false;&#xD;
+	}&#xD;
+	else if(!currentCategory.get(&quot;equipment&quot;).isEmpty() || !currentCategory.get(&quot;categories&quot;).isEmpty()){&#xD;
+	    dorado.MessageBox.alert(&quot;请先删除该分类下的所有子分类及设备！&quot;);&#xD;
+	    arg.processDefault = false;&#xD;
+	}&#xD;
+}    &#xD;
+else if(nodeType == &quot;Equipment&quot;){&#xD;
+	var currentExample = dsCurrentTree.getData(&quot;!CURRENT_EXAMPLE&quot;);&#xD;
+	if(!currentExample.get(&quot;software&quot;).isEmpty()){&#xD;
+	    dorado.MessageBox.alert(&quot;请先删除该设备的软件信息！&quot;);&#xD;
+	    arg.processDefault = false;&#xD;
+	}&#xD;
+}&#xD;
+</ClientEvent>
+      <Property name="confirmMessage">确认要删除当前(分类或设备)吗？</Property>
+    </Action>
+    <Action id="actionCancel" caption="取消" disabled="true" icon="url(>skin>common/icons.gif) -280px -220px" tags="onDirtyNode">
+      <ClientEvent name="onExecute">	var dsCurrentTree = this.get(&quot;#dsCurrentTree&quot;);&#xD;
+	var entity = dsCurrentTree.getData(&quot;!CURRENT_NODE&quot;);&#xD;
+	if (entity) {&#xD;
+		entity.cancel();&#xD;
+	}</ClientEvent>
+    </Action>
+    <UpdateAction id="actionSave" caption="全部保存" icon="url(>skin>common/icons.gif) -140px -20px">
+      <ClientEvent name="onSuccess">	dirtyEntityNum = 0;&#xD;
+	refreshActions();&#xD;
+	function refreshActions() {&#xD;
+	var node = view.get(&quot;#productTree.currentNode&quot;);&#xD;
+	view.set({&#xD;
+		&quot;^onCurrentNode.disabled&quot; : node == null,&#xD;
+		&quot;^onCurrentCategory.disabled&quot; : (node == null || node&#xD;
+				.get(&quot;bindingConfig.name&quot;) != &quot;Category&quot;),&#xD;
+		&quot;^onCurrentExample.disabled&quot; : (node == null || node&#xD;
+				.get(&quot;bindingConfig.name&quot;) != &quot;Equipment&quot;)&#xD;
+	});&#xD;
+&#xD;
+	var disabled = true;&#xD;
+	if (node != null) {&#xD;
+		var entity = node.get(&quot;data&quot;);&#xD;
+		disabled = !entity.isDirty();&#xD;
+	}&#xD;
+	view.set({&#xD;
+		&quot;^onDirtyNode.disabled&quot; : disabled,&#xD;
+		&quot;^onDirty.disabled&quot; : dirtyEntityNum == 0&#xD;
+	});&#xD;
+}</ClientEvent>
+      <Property name="successMessage">数据保存成功。</Property>
+      <Property name="hotkey">ctrl+s</Property>
+      <Property name="dataResolver">producttreePR#saveProducttree</Property>
+      <Property name="disabled">false</Property>
+      <UpdateItem>
+        <Property name="dataPath">!DIRTY_TREE</Property>
+        <Property name="dataSet">dsCurrentTree</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <DataSetDropDown id="rootNode">
+      <ClientEvent name="onValueSelect">var dsCurrentTree = this.get(&quot;#dsCurrentTree&quot;);&#xD;
+var dsRootNode = this.get(&quot;#dsRootNode&quot;);&#xD;
+var currentRootNode = dsRootNode.getData(&quot;#&quot;);&#xD;
+dsCurrentTree.set(&quot;parameter&quot;, currentRootNode.get(&quot;oid&quot;));&#xD;
+dsCurrentTree.flushAsync();</ClientEvent>
+      <Property name="dataSet">dsRootNode</Property>
+      <Property name="property">name</Property>
+      <Property name="displayProperty">name</Property>
+      <Property name="useEmptyItem">true</Property>
+      <Property name="reloadDataOnOpen">true</Property>
+      <Property name="editable">false</Property>
+      <Property name="autoOpen">true</Property>
+    </DataSetDropDown>
+    <Menu id="menuTree">
+      <MenuItem action="actionAddCategory">
+        <Property name="caption">添加分类</Property>
+      </MenuItem>
+      <MenuItem>
+        <Property name="action">actionAddEquipment</Property>
+        <Property name="caption">添加设备</Property>
+      </MenuItem>
+      <Separator/>
+      <MenuItem action="actionRemove">
+        <Property name="caption">删除</Property>
+      </MenuItem>
+    </Menu>
+    <ToolBar layoutConstraint="top">
+      <FormElement id="formElement1">
+        <Property name="property">name</Property>
+        <Property name="trigger">rootNode</Property>
+        <Property name="width">300</Property>
+        <Property name="label">选择产品树:</Property>
+        <Property name="labelWidth">100</Property>
+        <Editor/>
+      </FormElement>
+      <ToolBarButton id="toolBarButton1" action="actionAddCategory">
+        <Property name="caption">添加分类</Property>
+      </ToolBarButton>
+      <ToolBarButton id="toolBarButton2">
+        <Property name="action">actionAddEquipment</Property>
+        <Property name="caption">添加设备</Property>
+      </ToolBarButton>
+      <Separator/>
+      <ToolBarButton id="toolBarButton3">
+        <Property name="action">actionDrag</Property>
+        <Property name="caption">允许拖拽</Property>
+      </ToolBarButton>
+      <ToolBarButton id="toolBarButton4">
+        <Property name="action">actionExpand</Property>
+        <Property name="caption">全部展开</Property>
+      </ToolBarButton>
+      <ToolBarButton id="toolBarButton5">
+        <Property name="action">actionCollapse</Property>
+        <Property name="caption">全部收起</Property>
+      </ToolBarButton>
+      <Separator/>
+      <ToolBarButton id="toolBarButton6" action="actionRemove">
+        <Property name="caption">删除</Property>
+      </ToolBarButton>
+      <ToolBarButton id="toolBarButton7" action="actionCancel">
+        <Property name="caption">取消</Property>
+      </ToolBarButton>
+      <Separator/>
+      <ToolBarButton id="toolBarButton8" action="actionSave">
+        <Property name="caption">全部保存</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <SplitPanel position="260">
+      <MainControl>
+        <CardBook id="cardbook">
+          <Panel layout="anchor">
+            <Children>
+              <Label layoutConstraint="left:50%; top:50%" style="whiteSpace:noWrap" text="请在左侧树中选择一个节点..."/>
+            </Children>
+          </Panel>
+          <Panel layout="padding:16">
+            <Children>
+              <AutoForm cols="*" dataPath="!CURRENT_CATEGORY">
+                <Property name="dataSet">dsCurrentTree</Property>
+                <AutoFormElement>
+                  <Property name="name">name</Property>
+                  <Property name="property">name</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">description</Property>
+                  <Property name="property">description</Property>
+                  <Property name="editorType">TextArea</Property>
+                  <Editor/>
+                </AutoFormElement>
+              </AutoForm>
+            </Children>
+          </Panel>
+          <Panel layout="regionPadding:16" contentOverflow="hidden">
+            <Children>
+              <DataSetDropDown id="dataSetDropDownStatus">
+                <Property name="dataSet">dsDictionaryStatus</Property>
+                <Property name="editable">false</Property>
+                <Property name="autoOpen">true</Property>
+                <Property name="property">name</Property>
+                <Property name="displayProperty">name</Property>
+                <Property name="useEmptyItem">true</Property>
+              </DataSetDropDown>
+              <DataSetDropDown id="dataSetDropDownStage">
+                <Property name="dataSet">dsDictionaryStage</Property>
+                <Property name="displayProperty">name</Property>
+                <Property name="property">name</Property>
+                <Property name="useEmptyItem">true</Property>
+                <Property name="autoOpen">true</Property>
+                <Property name="editable">false</Property>
+              </DataSetDropDown>
+              <AutoForm dataPath="!CURRENT_EXAMPLE" layoutConstraint="top">
+                <Property name="cols">*,*</Property>
+                <Property name="dataSet">dsCurrentTree</Property>
+                <Property name="dataType">Equipment</Property>
+                <AutoFormElement>
+                  <Property name="name">name</Property>
+                  <Property name="property">name</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">model</Property>
+                  <Property name="property">model</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">hardwaresn</Property>
+                  <Property name="property">hardwaresn</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">manufacturer</Property>
+                  <Property name="property">manufacturer</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">softwarecount</Property>
+                  <Property name="property">softwarecount</Property>
+                  <Editor>
+                    <NumberSpinner>
+                      <Property name="min">1</Property>
+                    </NumberSpinner>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">status</Property>
+                  <Property name="property">status</Property>
+                  <Property name="trigger">dataSetDropDownStatus</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">stage</Property>
+                  <Property name="property">stage</Property>
+                  <Property name="trigger">dataSetDropDownStage</Property>
+                  <Editor/>
+                </AutoFormElement>
+              </AutoForm>
+              <Container>
+                <TabControl>
+                  <ControlTab>
+                    <Property name="caption">设备软件信息</Property>
+                    <Property name="height">1000</Property>
+                    <SplitPanel>
+                      <Property name="direction">top</Property>
+                      <Property name="position">150</Property>
+                      <MainControl>
+                        <Container>
+                          <ToolBar>
+                            <DataPilot>
+                              <Property name="dataSet">dsCurrentTree</Property>
+                              <Property name="itemCodes">pages</Property>
+                              <Property name="dataPath">!CURRENT_EXAMPLE.#software.softwareversion</Property>
+                            </DataPilot>
+                          </ToolBar>
+                          <DataGrid>
+                            <Property name="dataSet">dsCurrentTree</Property>
+                            <Property name="dataPath">!CURRENT_EXAMPLE.#software.softwareversion</Property>
+                            <Property name="dataType">Softwareversion</Property>
+                            <Property name="readOnly">true</Property>
+                            <DataColumn name="version">
+                              <Property name="property">version</Property>
+                              <Property name="caption">软件版本</Property>
+                            </DataColumn>
+                            <DataColumn name="updatedate">
+                              <Property name="property">updatedate</Property>
+                              <Property name="caption">更新日期</Property>
+                            </DataColumn>
+                          </DataGrid>
+                        </Container>
+                      </MainControl>
+                      <SideControl>
+                        <Container>
+                          <ToolBar>
+                            <DataPilot>
+                              <Property name="dataSet">dsCurrentTree</Property>
+                              <Property name="itemCodes">pages</Property>
+                              <Property name="dataPath">!CURRENT_EXAMPLE.software</Property>
+                            </DataPilot>
+                            <ToolBarButton id="toolBarButton9">
+                              <ClientEvent name="onClick">var dsCurrentTree = this.get(&quot;#dsCurrentTree&quot;);
+var currentExample = dsCurrentTree.getData(&quot;!CURRENT_EXAMPLE&quot;);
+view.id('dsCurrentTree').getData('!CURRENT_EXAMPLE.software').insert({equipment: currentExample.toJSON()});
+var guid = &quot;&quot;;
+	        for(var i=1;i&lt;=32;i++){
+		       var n = Math.floor(Math.random()*16.0).toString(16);
+		       guid += n;
+		       if((i==8)||(i==12)||(i==16)||(i==20))
+		       guid += &quot;-&quot;;
+	        }
+view.id('dsCurrentTree').getData('!CURRENT_EXAMPLE.#software').set(&quot;oid&quot;,guid);
+view.id('version').set(&quot;readOnly&quot;,false);
+view.id('DiaSoftware').show();</ClientEvent>
+                              <Property name="caption">新增</Property>
+                              <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                            </ToolBarButton>
+                            <ToolBarButton id="toolBarButton10">
+                              <ClientEvent name="onClick">
+	var cur=view.id('dsCurrentTree').getData('!CURRENT_EXAMPLE.#software');
+	if (cur) {
+		view.id('version').set(&quot;readOnly&quot;,true);
+		view.id('DiaSoftware').show();
+	}
+	</ClientEvent>
+                              <Property name="caption">修改</Property>
+                              <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+                            </ToolBarButton>
+                            <ToolBarButton id="toolBarButton11">
+                              <ClientEvent name="onClick">var cur=view.id('dsCurrentTree').getData('!CURRENT_EXAMPLE.#software');
+	var ua=view.id('actionSave')
+	if(cur){
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+			cur.remove();
+			var entities = cur.get(&quot;softwareversion&quot;);
+			entities.each(function(entity) {
+		         entity.remove();
+		    });
+			ua.execute();
+				}); 
+			} 
+	</ClientEvent>
+                              <Property name="caption">删除</Property>
+                              <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                            </ToolBarButton>
+                            <ToolBarButton>
+                              <ClientEvent name="onClick">view.id(&quot;dsCurrentTree&quot;).getData(&quot;!CURRENT_EXAMPLE&quot;).reset(&quot;software&quot;);</ClientEvent>
+                              <Property name="caption">刷新</Property>
+                              <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+                            </ToolBarButton>
+                          </ToolBar>
+                          <DataGrid>
+                            <Property name="dataSet">dsCurrentTree</Property>
+                            <Property name="dataPath">!CURRENT_EXAMPLE.software</Property>
+                            <Property name="dataType">Software</Property>
+                            <Property name="readOnly">true</Property>
+                            <Property name="filterMode">serverSide</Property>
+                            <Property name="showFilterBar">true</Property>
+                            <DataColumn name="name">
+                              <Property name="property">name</Property>
+                              <Property name="caption">设备软件名称</Property>
+                            </DataColumn>
+                            <DataColumn name="currentversion">
+                              <Property name="property">currentversion</Property>
+                              <Property name="caption">软件当前版本</Property>
+                            </DataColumn>
+                          </DataGrid>
+                          <Dialog id="DiaSoftware">
+                            <ClientEvent name="onClose">var cur=view.id('dsCurrentTree').getData('!CURRENT_EXAMPLE.#software');&#xD;
+cur.cancel();</ClientEvent>
+                            <Property name="center">true</Property>
+                            <Property name="modal">true</Property>
+                            <Property name="width">500</Property>
+                            <Property name="caption">设备软件信息</Property>
+                            <Buttons>
+                              <Button>
+                                <ClientEvent name="onClick">var software = view.id('dsCurrentTree').getData('!CURRENT_EXAMPLE.#software');
+if(software.get(&quot;softwareversion&quot;).isEmpty())
+    view.id('dsCurrentTree').getData('!CURRENT_EXAMPLE.#software.softwareversion').insert({software: software.toJSON(), version: software.get('currentversion'),updatedate:new Date()});
+view.id('actionSave').execute(function(){
+			   view.id('DiaSoftware').hide();
+           });
+         </ClientEvent>
+                                <Property name="caption">确定</Property>
+                                <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+                              </Button>
+                              <Button>
+                                <ClientEvent name="onClick">var cur=view.id('dsCurrentTree').getData('!CURRENT_EXAMPLE.#software');
+				cur.cancel();
+				view.id('DiaSoftware').hide();
+	         </ClientEvent>
+                                <Property name="caption">取消</Property>
+                                <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+                              </Button>
+                            </Buttons>
+                            <Children>
+                              <AutoForm id="afSoftware">
+                                <Property name="cols">*</Property>
+                                <Property name="dataSet">dsCurrentTree</Property>
+                                <Property name="dataPath">!CURRENT_EXAMPLE.#software</Property>
+                                <Property name="dataType">Software</Property>
+                                <AutoFormElement>
+                                  <Property name="name">name</Property>
+                                  <Property name="property">name</Property>
+                                  <Property name="labelWidth">100</Property>
+                                  <Editor/>
+                                </AutoFormElement>
+                                <AutoFormElement id="version">
+                                  <Property name="name">currentversion</Property>
+                                  <Property name="property">currentversion</Property>
+                                  <Property name="labelWidth">100</Property>
+                                  <Editor/>
+                                </AutoFormElement>
+                              </AutoForm>
+                            </Children>
+                            <Tools/>
+                          </Dialog>
+                        </Container>
+                      </SideControl>
+                    </SplitPanel>
+                  </ControlTab>
+                  <ControlTab>
+                    <Property name="caption">故障列表</Property>
+                    <Container>
+                      <ToolBar>
+                        <DataPilot>
+                          <Property name="dataPath">!CURRENT_EXAMPLE.testfault</Property>
+                          <Property name="dataSet">dsCurrentTree</Property>
+                        </DataPilot>
+                        <ToolBarButton>
+                          <ClientEvent name="onClick">var cur=view.id('dsCurrentTree').getData('!CURRENT_EXAMPLE.#testfault');&#xD;
+if (cur) {&#xD;
+    view.id('diaFaultList').show();&#xD;
+}</ClientEvent>
+                          <Property name="caption">查看故障</Property>
+                          <Property name="icon">url(>skin>common/icons.gif) -220px -80px</Property>
+                        </ToolBarButton>
+                        <ToolBarButton>
+                          <ClientEvent name="onClick">view.id(&quot;dsCurrentTree&quot;).getData(&quot;!CURRENT_EXAMPLE&quot;).reset(&quot;testfault&quot;);</ClientEvent>
+                          <Property name="caption">刷新</Property>
+                          <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+                        </ToolBarButton>
+                      </ToolBar>
+                      <DataGrid>
+                        <Property name="dataSet">dsCurrentTree</Property>
+                        <Property name="dataPath">!CURRENT_EXAMPLE.testfault</Property>
+                        <Property name="dataType">Testfault</Property>
+                        <Property name="readOnly">true</Property>
+                        <Property name="filterMode">serverSide</Property>
+                        <Property name="showFilterBar">true</Property>
+                        <DataColumn>
+                          <Property name="property">number</Property>
+                          <Property name="name">number</Property>
+                          <Editor/>
+                        </DataColumn>
+                        <DataColumn name="faulttype">
+                          <Property name="property">faulttype</Property>
+                        </DataColumn>
+                        <DataColumn name="faultreasons">
+                          <Property name="property">faultreasons</Property>
+                        </DataColumn>
+                      </DataGrid>
+                      <Dialog id="diaFaultList">
+                        <ClientEvent name="onReady">view.set({&#xD;
+	&quot;^tag1.readOnly&quot; : true,&#xD;
+	&quot;^tag2.disabled&quot; : true,&#xD;
+	&quot;^tag3.readOnly&quot; : true,&#xD;
+	&quot;^tag4.readOnly&quot; : true,&#xD;
+	&quot;^tag5.disabled&quot; : true,&#xD;
+	&quot;^tag6.readOnly&quot; : true&#xD;
+});</ClientEvent>
+                        <Property name="center">true</Property>
+                        <Property name="modal">true</Property>
+                        <Property name="width">850</Property>
+                        <Property name="caption">故障单</Property>
+                        <Property name="maximizeable">true</Property>
+                        <Buttons/>
+                        <Children>
+                          <AutoForm id="afFault">
+                            <Property name="dataType">Testfault</Property>
+                            <Property name="dataSet">dsCurrentTree</Property>
+                            <Property name="cols">*</Property>
+                            <Property name="labelWidth">100</Property>
+                            <Property name="dataPath">!CURRENT_EXAMPLE.#testfault</Property>
+                            <FieldSet>
+                              <Property name="caption">试验员创建故障单</Property>
+                              <Buttons/>
+                              <Children>
+                                <DataSetDropDown id="dataSetDropDownRelated">
+                                  <ClientEvent name="onValueSelect">var cur = view.id(&quot;dsCurrentTree&quot;).getData(&quot;!CURRENT_EXAMPLE.#testfault&quot;);&#xD;
+var listOld = cur.get(&quot;logicalpath&quot;);&#xD;
+listOld.each(function(entity) {entity.remove();});&#xD;
+var listNew = view.id(&quot;dsCurrentTree&quot;).getData(&quot;!CURRENT_EXAMPLE.#testfault.#relatedfault.logicalpath&quot;);&#xD;
+listNew.each(function(entity) {&#xD;
+    var guid = &quot;&quot;;&#xD;
+	for(var i=1;i&lt;=32;i++){&#xD;
+		var n = Math.floor(Math.random()*16.0).toString(16);&#xD;
+		guid += n;&#xD;
+		if((i==8)||(i==12)||(i==16)||(i==20))&#xD;
+		   guid += &quot;-&quot;;&#xD;
+	}&#xD;
+	listOld.insert({&#xD;
+		oid:guid,&#xD;
+		testfault:{oid:cur.get('oid')},&#xD;
+		equipment:entity.get('equipment'),&#xD;
+		sequence:entity.get('sequence')&#xD;
+	});&#xD;
+});</ClientEvent>
+                                  <Property name="autoOpen">true</Property>
+                                  <Property name="dataSet">dsCurrentTree</Property>
+                                  <Property name="displayProperty">number</Property>
+                                  <Property name="editable">false</Property>
+                                  <Property name="dataPath">!CURRENT_EXAMPLE.#testfault.relatedfault</Property>
+                                  <Property name="property">number</Property>
+                                </DataSetDropDown>
+                                <DataSetDropDown id="dataSetDropDownLevel">
+                                  <Property name="autoOpen">true</Property>
+                                  <Property name="dataSet">dsDictionaryLevel</Property>
+                                  <Property name="displayProperty">name</Property>
+                                  <Property name="editable">false</Property>
+                                  <Property name="useEmptyItem">true</Property>
+                                  <Property name="property">name</Property>
+                                </DataSetDropDown>
+                                <DataSetDropDown id="dataSetDropDownEffect">
+                                  <Property name="autoOpen">true</Property>
+                                  <Property name="dataSet">dsDictionaryEffect</Property>
+                                  <Property name="displayProperty">name</Property>
+                                  <Property name="editable">false</Property>
+                                  <Property name="useEmptyItem">true</Property>
+                                  <Property name="property">name</Property>
+                                </DataSetDropDown>
+                                <DataSetDropDown id="dataSetDropDownType">
+                                  <Property name="autoOpen">true</Property>
+                                  <Property name="displayProperty">name</Property>
+                                  <Property name="editable">false</Property>
+                                  <Property name="useEmptyItem">true</Property>
+                                  <Property name="property">name</Property>
+                                  <Property name="dataSet">dsDictionaryType</Property>
+                                </DataSetDropDown>
+                                <DataSetDropDown id="dataSetDropDownDeal">
+                                  <Property name="autoOpen">true</Property>
+                                  <Property name="displayProperty">name</Property>
+                                  <Property name="editable">false</Property>
+                                  <Property name="useEmptyItem">true</Property>
+                                  <Property name="property">name</Property>
+                                  <Property name="dataSet">dsDictionaryDeal</Property>
+                                </DataSetDropDown>
+                                <CustomDropDown id="customDropDownProduct">
+                                  <Property name="autoOpen">true</Property>
+                                  <Property name="editable">false</Property>
+                                  <DataGrid id="dgSelectProduct">
+                                    <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
+var equipment=view.id(&quot;dsCurrentTree&quot;).getData(&quot;!CURRENT_EXAMPLE.#testequipmentrelation&quot;);&#xD;
+if (equipment){&#xD;
+	dropDown.close(equipment.get(&quot;equipment.name&quot;));&#xD;
+	var entity = view.id(&quot;dsCurrentTree&quot;).getData(&quot;!CURRENT_EXAMPLE.#testfault&quot;);&#xD;
+	entity.set({&#xD;
+		productmodel:equipment.get(&quot;equipment.model&quot;),&#xD;
+		manufacturer:equipment.get(&quot;equipment.manufacturer&quot;),&#xD;
+		productnumber:equipment.get(&quot;equipment.hardwaresn&quot;),&#xD;
+		stage:equipment.get(&quot;equipment.stage&quot;)&#xD;
+	});&#xD;
+}</ClientEvent>
+                                    <Property name="dataSet">dsCurrentTree</Property>
+                                    <Property name="dataPath">!CURRENT_EXAMPLE.testequipmentrelation</Property>
+                                    <Property name="dataType">Equipment</Property>
+                                    <Property name="readOnly">true</Property>
+                                    <Property name="highlightHoverRow">true</Property>
+                                    <Property name="height">200</Property>
+                                    <Property name="width">300</Property>
+                                    <DataColumn>
+                                      <Property name="property">equipment.name</Property>
+                                      <Property name="name">equipmentName</Property>
+                                    </DataColumn>
+                                    <DataColumn>
+                                      <Property name="property">equipment.model</Property>
+                                      <Property name="name">equipmentModel</Property>
+                                    </DataColumn>
+                                  </DataGrid>
+                                </CustomDropDown>
+                                <CustomDropDown id="customDropDownCategory">
+                                  <Property name="autoOpen">true</Property>
+                                  <Property name="editable">false</Property>
+                                  <Container>
+                                    <Property name="height">200</Property>
+                                    <DataTree id="dataTreeDictreeC" layoutConstraint="left">
+                                      <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
+var node = self.get(&quot;currentNode&quot;);&#xD;
+if (node)&#xD;
+	dropDown.close(node.get(&quot;data.name&quot;));</ClientEvent>
+                                      <Property name="dataSet">dataSetDictreeCategory</Property>
+                                      <Property name="width">100%</Property>
+                                      <Property name="currentNodeDataPath">currentDictree</Property>
+                                      <BindingConfigs>
+                                        <BindingConfig>
+                                          <Property name="childrenProperty">children</Property>
+                                          <Property name="tipProperty">description</Property>
+                                          <Property name="labelProperty">name</Property>
+                                          <Property name="expandLevel">3</Property>
+                                          <Property name="recursive">true</Property>
+                                          <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
+                                        </BindingConfig>
+                                      </BindingConfigs>
+                                    </DataTree>
+                                  </Container>
+                                </CustomDropDown>
+                                <AutoForm id="afFault8">
+                                  <Property name="dataType">Testfault</Property>
+                                  <Property name="dataSet">dsCurrentTree</Property>
+                                  <Property name="cols">*,*,*</Property>
+                                  <Property name="labelWidth">90</Property>
+                                  <Property name="dataPath">!CURRENT_EXAMPLE.#testfault</Property>
+                                  <Property name="tags">tag1</Property>
+                                  <AutoFormElement>
+                                    <Property name="name">number</Property>
+                                    <Property name="property">number</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                  <AutoFormElement>
+                                    <Property name="name">faultlevel</Property>
+                                    <Property name="property">faultlevel</Property>
+                                    <Property name="trigger">dataSetDropDownLevel</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                  <AutoFormElement>
+                                    <Property name="name">testsubproject</Property>
+                                    <Property name="property">name</Property>
+                                    <Property name="dataPath">!CURRENT_EXAMPLE.#testfault.testsubproject</Property>
+                                    <Property name="readOnly">true</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                  <AutoFormElement>
+                                    <Property name="name">productname</Property>
+                                    <Property name="property">productname</Property>
+                                    <Property name="trigger">customDropDownProduct</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                  <AutoFormElement>
+                                    <Property name="name">productmodel</Property>
+                                    <Property name="property">productmodel</Property>
+                                    <Property name="readOnly">true</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                  <AutoFormElement>
+                                    <Property name="name">manufacturer</Property>
+                                    <Property name="property">manufacturer</Property>
+                                    <Property name="editable">true</Property>
+                                    <Property name="readOnly">true</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                  <AutoFormElement>
+                                    <Property name="name">productnumber</Property>
+                                    <Property name="property">productnumber</Property>
+                                    <Property name="readOnly">true</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                  <AutoFormElement>
+                                    <Property name="name">system</Property>
+                                    <Property name="property">system</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                  <AutoFormElement>
+                                    <Property name="name">faultdate</Property>
+                                    <Property name="property">faultdate</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                  <AutoFormElement>
+                                    <Property name="name">startdate</Property>
+                                    <Property name="property">startdate</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                  <AutoFormElement>
+                                    <Property name="name">enddate</Property>
+                                    <Property name="property">enddate</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                  <AutoFormElement>
+                                    <Property name="name">testdepartment</Property>
+                                    <Property name="property">testdepartment</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                  <AutoFormElement>
+                                    <Property name="name">stage</Property>
+                                    <Property name="property">stage</Property>
+                                    <Property name="trigger">dataSetDropDownStage</Property>
+                                    <Property name="readOnly">true</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                  <AutoFormElement>
+                                    <Property name="name">testtype</Property>
+                                    <Property name="property">testtype</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                  <AutoFormElement>
+                                    <Property name="name">thistesttime</Property>
+                                    <Property name="property">thistesttime</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                  <AutoFormElement>
+                                    <Property name="property">relatedfaultflag</Property>
+                                    <Property name="name">relatedfaultflag</Property>
+                                    <Property name="trigger">dataSetDropDownRelated</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                  <FieldSet layoutConstraint="colSpan:3">
+                                    <Property name="caption">试验应力条件</Property>
+                                    <Buttons/>
+                                    <Children>
+                                      <SplitPanel>
+                                        <Property name="position">50%</Property>
+                                        <Property name="height">160</Property>
+                                        <Property name="collapseable">false</Property>
+                                        <MainControl>
+                                          <Panel>
+                                            <Property name="showCaptionBar">true</Property>
+                                            <Property name="caption">应力施加设备</Property>
+                                            <Buttons/>
+                                            <Children>
+                                              <ToolBar>
+                                                <ToolBarButton>
+                                                  <ClientEvent name="onClick">view.id('diaEquipment1').show();</ClientEvent>
+                                                  <Property name="caption">新增</Property>
+                                                  <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                                                  <Property name="tags">tag2</Property>
+                                                </ToolBarButton>
+                                                <ToolBarButton>
+                                                  <ClientEvent name="onClick">var cur=view.id('dsCurrentTree').getData('!CURRENT_EXAMPLE.#testfault.#stressequipment');
+	if(cur){
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+			cur.remove();
+				}); 
+			} 
+	</ClientEvent>
+                                                  <Property name="caption">删除</Property>
+                                                  <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                                                  <Property name="tags">tag2</Property>
+                                                </ToolBarButton>
+                                              </ToolBar>
+                                              <DataGrid id="dgStressEquipment">
+                                                <Property name="dataPath">!CURRENT_EXAMPLE.#testfault.stressequipment</Property>
+                                                <Property name="dataSet">dsCurrentTree</Property>
+                                                <Property name="dataType">Stressequipment</Property>
+                                                <Property name="readOnly">true</Property>
+                                                <DataColumn>
+                                                  <Property name="property">equipment.name</Property>
+                                                  <Property name="name">equipmentName</Property>
+                                                </DataColumn>
+                                                <DataColumn>
+                                                  <Property name="property">equipment.model</Property>
+                                                  <Property name="name">equipmentModel</Property>
+                                                </DataColumn>
+                                              </DataGrid>
+                                            </Children>
+                                            <Tools/>
+                                          </Panel>
+                                        </MainControl>
+                                        <SideControl>
+                                          <Panel>
+                                            <Property name="showCaptionBar">true</Property>
+                                            <Property name="caption">业务路径</Property>
+                                            <Buttons/>
+                                            <Children>
+                                              <ToolBar>
+                                                <ToolBarButton>
+                                                  <ClientEvent name="onClick">view.id('diaEquipment').show();</ClientEvent>
+                                                  <Property name="caption">新增</Property>
+                                                  <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                                                  <Property name="tags">tag2</Property>
+                                                </ToolBarButton>
+                                                <ToolBarButton>
+                                                  <ClientEvent name="onClick">var cur=view.id('dsCurrentTree').getData('!CURRENT_EXAMPLE.#testfault.#logicalpath');
+	if(cur){
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+			cur.remove();
+				}); 
+			} 
+	</ClientEvent>
+                                                  <Property name="caption">删除</Property>
+                                                  <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                                                  <Property name="tags">tag2</Property>
+                                                </ToolBarButton>
+                                              </ToolBar>
+                                              <DataGrid id="dgPath">
+                                                <Property name="dataSet">dsCurrentTree</Property>
+                                                <Property name="dataPath">!CURRENT_EXAMPLE.#testfault.logicalpath</Property>
+                                                <Property name="dataType">Logicalpath</Property>
+                                                <Property name="readOnly">true</Property>
+                                                <DataColumn name="sequence">
+                                                  <Property name="property">sequence</Property>
+                                                  <Property name="align">left</Property>
+                                                  <Property name="width">50</Property>
+                                                </DataColumn>
+                                                <DataColumn>
+                                                  <Property name="property">equipment.name</Property>
+                                                  <Property name="name">equipmentName</Property>
+                                                  <Property name="readOnly">true</Property>
+                                                </DataColumn>
+                                                <DataColumn>
+                                                  <Property name="property">equipment.model</Property>
+                                                  <Property name="name">equipmentModel</Property>
+                                                  <Property name="readOnly">true</Property>
+                                                </DataColumn>
+                                              </DataGrid>
+                                            </Children>
+                                            <Tools/>
+                                          </Panel>
+                                        </SideControl>
+                                      </SplitPanel>
+                                      <AutoForm id="afFault1">
+                                        <Property name="dataType">Testfault</Property>
+                                        <Property name="dataSet">dsCurrentTree</Property>
+                                        <Property name="labelWidth">100</Property>
+                                        <Property name="cols">*</Property>
+                                        <Property name="tags">tag1</Property>
+                                        <Property name="dataPath">!CURRENT_EXAMPLE.#testfault</Property>
+                                        <AutoFormElement>
+                                          <Property name="name">teststresscondition</Property>
+                                          <Property name="property">teststresscondition</Property>
+                                          <Property name="editorType">TextArea</Property>
+                                          <Property name="height">100</Property>
+                                          <Editor/>
+                                        </AutoFormElement>
+                                      </AutoForm>
+                                      <Dialog id="diaEquipment">
+                                        <Property name="caption">选择业务路径</Property>
+                                        <Buttons>
+                                          <Button>
+                                            <ClientEvent name="onClick">var selections = view.get(&quot;#dgSelectEquipment&quot;).get(&quot;selection&quot;);&#xD;
+var dsCurrentTree = view.get(&quot;#dsCurrentTree&quot;);&#xD;
+var testFault = dsCurrentTree.getData(&quot;!CURRENT_EXAMPLE.#testfault&quot;);&#xD;
+var logicalPaths = dsCurrentTree.getData(&quot;!CURRENT_EXAMPLE.#testfault.logicalpath&quot;); &#xD;
+selections.each(function(entity)&#xD;
+{&#xD;
+	var equipment = entity.get(&quot;equipment&quot;);&#xD;
+	var path = &quot;!CURRENT_EXAMPLE.#testfault.logicalpath[@.get('equipment.oid') == '&quot;+ equipment.get('oid') + &quot;']&quot;;&#xD;
+	var entity1=view.id('dsCurrentTree').getData(path);&#xD;
+	if(!entity1){&#xD;
+	    var sequence = logicalPaths.entityCount + 1;&#xD;
+	    logicalPaths.insert({equipment: equipment.toJSON(), testfault: testFault.toJSON(),sequence:sequence});&#xD;
+	}&#xD;
+	else&#xD;
+	    dorado.MessageBox.alert(equipment.get(&quot;name&quot;) + &quot; 已添加！&quot;);&#xD;
+}); &#xD;
+view.get(&quot;#diaEquipment&quot;).hide();</ClientEvent>
+                                            <Property name="caption">确定</Property>
+                                            <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+                                          </Button>
+                                          <Button>
+                                            <ClientEvent name="onClick">view.get(&quot;#diaEquipment&quot;).hide();	         </ClientEvent>
+                                            <Property name="caption">取消</Property>
+                                            <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+                                          </Button>
+                                        </Buttons>
+                                        <Children>
+                                          <ToolBar>
+                                            <DataPilot>
+                                              <Property name="dataSet">dsCurrentTree</Property>
+                                              <Property name="dataPath">!CURRENT_EXAMPLE.testequipmentrelation</Property>
+                                            </DataPilot>
+                                          </ToolBar>
+                                          <DataGrid id="dgSelectEquipment">
+                                            <Property name="dataSet">dsCurrentTree</Property>
+                                            <Property name="dataPath">!CURRENT_EXAMPLE.testequipmentrelation</Property>
+                                            <Property name="dataType">Equipment</Property>
+                                            <Property name="readOnly">true</Property>
+                                            <Property name="selectionMode">multiRows</Property>
+                                            <Property name="height">400</Property>
+                                            <Property name="highlightHoverRow">true</Property>
+                                            <RowSelectorColumn>
+                                              <Property name="supportsOptionMenu">true</Property>
+                                            </RowSelectorColumn>
+                                            <DataColumn>
+                                              <Property name="property">equipment.name</Property>
+                                              <Property name="name">equipmentName</Property>
+                                            </DataColumn>
+                                            <DataColumn>
+                                              <Property name="property">equipment.model</Property>
+                                              <Property name="name">equipmentModel</Property>
+                                            </DataColumn>
+                                          </DataGrid>
+                                        </Children>
+                                        <Tools/>
+                                      </Dialog>
+                                      <Dialog id="diaEquipment1">
+                                        <Property name="caption">选择应力施加设备</Property>
+                                        <Buttons>
+                                          <Button>
+                                            <ClientEvent name="onClick">var selections = view.get(&quot;#dgSelectEquipment1&quot;).get(&quot;selection&quot;);&#xD;
+var dsCurrentTree = view.get(&quot;#dsCurrentTree&quot;);&#xD;
+var testFault = dsCurrentTree.getData(&quot;!CURRENT_EXAMPLE.#testfault&quot;);&#xD;
+var stressequipments = dsCurrentTree.getData(&quot;!CURRENT_EXAMPLE.#testfault.stressequipment&quot;); &#xD;
+selections.each(function(entity)&#xD;
+{&#xD;
+	var equipment = entity.get(&quot;equipment&quot;);&#xD;
+		var path = &quot;!CURRENT_EXAMPLE.#testfault.stressequipment[@.get('equipment.oid') == '&quot;+ equipment.get('oid') + &quot;']&quot;;&#xD;
+	var entity1=view.id('dsCurrentTree').getData(path);&#xD;
+	if(!entity1)&#xD;
+	    stressequipments.insert({equipment: equipment.toJSON(), testfault: testFault.toJSON()});&#xD;
+	else&#xD;
+	    dorado.MessageBox.alert(equipment.get(&quot;name&quot;) + &quot; 已添加！&quot;);&#xD;
+}); &#xD;
+view.get(&quot;#diaEquipment1&quot;).hide();&#xD;
+</ClientEvent>
+                                            <Property name="caption">确定</Property>
+                                            <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+                                          </Button>
+                                          <Button>
+                                            <ClientEvent name="onClick">view.get(&quot;#diaEquipment1&quot;).hide();	         </ClientEvent>
+                                            <Property name="caption">取消</Property>
+                                            <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+                                          </Button>
+                                        </Buttons>
+                                        <Children>
+                                          <ToolBar>
+                                            <DataPilot>
+                                              <Property name="dataSet">dsCurrentTree</Property>
+                                              <Property name="dataPath">!CURRENT_EXAMPLE.testequipmentrelation</Property>
+                                            </DataPilot>
+                                          </ToolBar>
+                                          <DataGrid id="dgSelectEquipment1">
+                                            <Property name="dataSet">dsCurrentTree</Property>
+                                            <Property name="dataPath">!CURRENT_EXAMPLE.testequipmentrelation</Property>
+                                            <Property name="dataType">Equipment</Property>
+                                            <Property name="readOnly">true</Property>
+                                            <Property name="selectionMode">multiRows</Property>
+                                            <Property name="height">400</Property>
+                                            <RowSelectorColumn/>
+                                            <DataColumn>
+                                              <Property name="property">equipment.name</Property>
+                                              <Property name="name">equipmentName</Property>
+                                            </DataColumn>
+                                            <DataColumn>
+                                              <Property name="property">equipment.model</Property>
+                                              <Property name="name">equipmentModel</Property>
+                                            </DataColumn>
+                                          </DataGrid>
+                                        </Children>
+                                        <Tools/>
+                                      </Dialog>
+                                    </Children>
+                                  </FieldSet>
+                                  <FieldSet layoutConstraint="colSpan:3">
+                                    <Property name="caption">故障现象</Property>
+                                    <Buttons/>
+                                    <Children>
+                                      <Panel>
+                                        <Property name="showCaptionBar">true</Property>
+                                        <Property name="caption">现象发生设备</Property>
+                                        <Buttons/>
+                                        <Children>
+                                          <ToolBar>
+                                            <ToolBarButton>
+                                              <ClientEvent name="onClick">view.id('diaEquipmentSoftware').show();</ClientEvent>
+                                              <Property name="caption">新增</Property>
+                                              <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                                              <Property name="tags">tag2</Property>
+                                            </ToolBarButton>
+                                            <ToolBarButton>
+                                              <ClientEvent name="onClick">var cur=view.id('dsCurrentTree').getData('!CURRENT_EXAMPLE.#testfault.#phenomenonequipment');
+	if(cur){
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+			cur.remove();
+				}); 
+			} 
+	</ClientEvent>
+                                              <Property name="caption">删除</Property>
+                                              <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                                              <Property name="tags">tag2</Property>
+                                            </ToolBarButton>
+                                          </ToolBar>
+                                          <DataGrid id="dgEquipment">
+                                            <Property name="dataSet">dsCurrentTree</Property>
+                                            <Property name="dataPath">!CURRENT_EXAMPLE.#testfault.phenomenonequipment</Property>
+                                            <Property name="dataType">Phenomenonequipment</Property>
+                                            <Property name="height">100</Property>
+                                            <Property name="readOnly">true</Property>
+                                            <DataColumn>
+                                              <Property name="name">equipment</Property>
+                                              <Property name="property">softwareversion.software.equipment.name</Property>
+                                              <Editor/>
+                                            </DataColumn>
+                                            <DataColumn>
+                                              <Property name="name">software</Property>
+                                              <Property name="property">softwareversion.software.name</Property>
+                                              <Editor/>
+                                            </DataColumn>
+                                            <DataColumn>
+                                              <Property name="name">version</Property>
+                                              <Property name="property">softwareversion.version</Property>
+                                              <Editor/>
+                                            </DataColumn>
+                                          </DataGrid>
+                                        </Children>
+                                        <Tools/>
+                                      </Panel>
+                                      <AutoForm id="afFault2">
+                                        <Property name="dataType">Testfault</Property>
+                                        <Property name="dataSet">dsCurrentTree</Property>
+                                        <Property name="labelWidth">100</Property>
+                                        <Property name="tags">tag1</Property>
+                                        <Property name="dataPath">!CURRENT_EXAMPLE.#testfault</Property>
+                                        <AutoFormElement layoutConstraint="colSpan:2">
+                                          <Property name="name">faultcategory</Property>
+                                          <Property name="property">faultcategory</Property>
+                                          <Property name="trigger">customDropDownCategory</Property>
+                                          <Editor/>
+                                        </AutoFormElement>
+                                        <AutoFormElement layoutConstraint="colSpan:2">
+                                          <Property name="name">faultphenomenon</Property>
+                                          <Property name="property">faultphenomenon</Property>
+                                          <Property name="editorType">TextArea</Property>
+                                          <Property name="height">100</Property>
+                                          <Editor/>
+                                        </AutoFormElement>
+                                      </AutoForm>
+                                      <Dialog id="diaEquipmentSoftware">
+                                        <Property name="height">600</Property>
+                                        <Property name="width">600</Property>
+                                        <Property name="caption">选择现象发生设备</Property>
+                                        <Buttons>
+                                          <Button>
+                                            <ClientEvent name="onClick">var dsCurrentTree = view.get(&quot;#dsCurrentTree&quot;);&#xD;
+var testFault = dsCurrentTree.getData(&quot;!CURRENT_EXAMPLE.#testfault&quot;);&#xD;
+var softwareversion = dsCurrentTree.getData(&quot;!CURRENT_EXAMPLE.#testequipmentrelation.equipment.#software.#softwareversion&quot;); &#xD;
+var path = &quot;!CURRENT_EXAMPLE.#testfault.phenomenonequipment[@.get('softwareversion.software.oid') == '&quot;+ softwareversion.get('software.oid') + &quot;']&quot;;&#xD;
+var entity1=view.id('dsCurrentTree').getData(path);&#xD;
+if(!entity1){&#xD;
+	var phenomenonSoftware = dsCurrentTree.getData(&quot;!CURRENT_EXAMPLE.#testfault.phenomenonequipment&quot;);&#xD;
+	phenomenonSoftware.insert({softwareversion: softwareversion.toJSON(), testfault: testFault.toJSON()});&#xD;
+}&#xD;
+else&#xD;
+	dorado.MessageBox.alert(softwareversion.get(&quot;software.name&quot;) + &quot; 已添加！&quot;);&#xD;
+view.get(&quot;#diaEquipmentSoftware&quot;).hide();</ClientEvent>
+                                            <Property name="caption">确定</Property>
+                                            <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+                                          </Button>
+                                          <Button>
+                                            <ClientEvent name="onClick">view.get(&quot;#diaEquipmentSoftware&quot;).hide();	         </ClientEvent>
+                                            <Property name="caption">取消</Property>
+                                            <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+                                          </Button>
+                                        </Buttons>
+                                        <Children>
+                                          <SplitPanel>
+                                            <Property name="direction">top</Property>
+                                            <Property name="position">40%</Property>
+                                            <MainControl>
+                                              <Container>
+                                                <Property name="height">300</Property>
+                                                <SplitPanel>
+                                                  <Property name="direction">top</Property>
+                                                  <Property name="position">50%</Property>
+                                                  <MainControl>
+                                                    <ToolBar>
+                                                      <DataPilot>
+                                                        <Property name="dataSet">dsCurrentTree</Property>
+                                                        <Property name="itemCodes">pages</Property>
+                                                        <Property name="dataPath">!CURRENT_EXAMPLE.#testequipmentrelation.equipment.#software.softwareversion</Property>
+                                                      </DataPilot>
+                                                    </ToolBar>
+                                                    <DataGrid>
+                                                      <Property name="dataSet">dsCurrentTree</Property>
+                                                      <Property name="dataPath">!CURRENT_EXAMPLE.#testequipmentrelation.equipment.#software.softwareversion</Property>
+                                                      <Property name="dataType">Softwareversion</Property>
+                                                      <Property name="readOnly">true</Property>
+                                                      <DataColumn name="version">
+                                                        <Property name="property">version</Property>
+                                                      </DataColumn>
+                                                      <DataColumn name="updatedate">
+                                                        <Property name="property">updatedate</Property>
+                                                      </DataColumn>
+                                                    </DataGrid>
+                                                  </MainControl>
+                                                  <SideControl>
+                                                    <ToolBar>
+                                                      <DataPilot>
+                                                        <Property name="dataSet">dsCurrentTree</Property>
+                                                        <Property name="itemCodes">pages</Property>
+                                                        <Property name="dataPath">!CURRENT_EXAMPLE.#testequipmentrelation.equipment.software</Property>
+                                                      </DataPilot>
+                                                    </ToolBar>
+                                                    <DataGrid>
+                                                      <Property name="dataSet">dsCurrentTree</Property>
+                                                      <Property name="dataPath">!CURRENT_EXAMPLE.#testequipmentrelation.equipment.software</Property>
+                                                      <Property name="dataType">Software</Property>
+                                                      <Property name="readOnly">true</Property>
+                                                      <DataColumn name="name">
+                                                        <Property name="property">name</Property>
+                                                      </DataColumn>
+                                                      <DataColumn name="currentversion">
+                                                        <Property name="property">currentversion</Property>
+                                                      </DataColumn>
+                                                    </DataGrid>
+                                                  </SideControl>
+                                                </SplitPanel>
+                                              </Container>
+                                            </MainControl>
+                                            <SideControl>
+                                              <Container>
+                                                <Property name="height">300</Property>
+                                                <ToolBar>
+                                                  <DataPilot>
+                                                    <Property name="dataSet">dsCurrentTree</Property>
+                                                    <Property name="itemCodes">pages</Property>
+                                                    <Property name="dataPath">!CURRENT_EXAMPLE.testequipmentrelation</Property>
+                                                  </DataPilot>
+                                                </ToolBar>
+                                                <DataGrid>
+                                                  <Property name="dataSet">dsCurrentTree</Property>
+                                                  <Property name="dataPath">!CURRENT_EXAMPLE.testequipmentrelation</Property>
+                                                  <Property name="dataType">Equipment</Property>
+                                                  <Property name="readOnly">true</Property>
+                                                  <DataColumn>
+                                                    <Property name="property">equipment.name</Property>
+                                                    <Property name="name">equipmentName</Property>
+                                                  </DataColumn>
+                                                  <DataColumn>
+                                                    <Property name="property">equipment.model</Property>
+                                                    <Property name="name">equipmentModel</Property>
+                                                  </DataColumn>
+                                                </DataGrid>
+                                              </Container>
+                                            </SideControl>
+                                          </SplitPanel>
+                                        </Children>
+                                        <Tools/>
+                                      </Dialog>
+                                    </Children>
+                                  </FieldSet>
+                                  <AutoFormElement>
+                                    <Property name="name">faulteffect</Property>
+                                    <Property name="property">faulteffect</Property>
+                                    <Property name="trigger">dataSetDropDownEffect</Property>
+                                    <Property name="editorWidth">150</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                  <AutoFormElement>
+                                    <Property name="name">faulttype</Property>
+                                    <Property name="property">faulttype</Property>
+                                    <Property name="trigger">dataSetDropDownType</Property>
+                                    <Property name="editorWidth">150</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                  <AutoFormElement>
+                                    <Property name="name">faultdeal</Property>
+                                    <Property name="property">faultdeal</Property>
+                                    <Property name="trigger">dataSetDropDownDeal</Property>
+                                    <Property name="editorWidth">150</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                  <AutoFormElement layoutConstraint="colSpan:3">
+                                    <Property name="name">analysisandsuggestion</Property>
+                                    <Property name="property">analysisandsuggestion</Property>
+                                    <Property name="editorType">TextArea</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                  <AutoFormElement>
+                                    <Property name="name">tester</Property>
+                                    <Property name="property">tester</Property>
+                                    <Property name="readOnly">true</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                </AutoForm>
+                              </Children>
+                            </FieldSet>
+                            <FieldSet>
+                              <Property name="caption">试验负责人审核</Property>
+                              <Property name="collapsed">false</Property>
+                              <Buttons/>
+                              <Children>
+                                <AutoForm id="afFault3">
+                                  <Property name="dataType">Testfault</Property>
+                                  <Property name="dataSet">dsCurrentTree</Property>
+                                  <Property name="dataPath">!CURRENT_EXAMPLE.#testfault</Property>
+                                  <Property name="labelWidth">100</Property>
+                                  <Property name="cols">*,*,*</Property>
+                                  <Property name="tags">tag3</Property>
+                                  <AutoFormElement layoutConstraint="colSpan:3">
+                                    <Property name="name">tag</Property>
+                                    <Property name="property">tag</Property>
+                                    <Property name="editorType">TextArea</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                  <AutoFormElement>
+                                    <Property name="property">testresponsibleperson</Property>
+                                    <Property name="name">testresponsibleperson</Property>
+                                    <Property name="readOnly">true</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                </AutoForm>
+                              </Children>
+                            </FieldSet>
+                            <FieldSet>
+                              <Property name="caption">设计主管分析排故</Property>
+                              <Property name="collapsed">false</Property>
+                              <Buttons/>
+                              <Children>
+                                <AutoForm id="afFault4">
+                                  <Property name="dataType">Testfault</Property>
+                                  <Property name="dataSet">dsCurrentTree</Property>
+                                  <Property name="dataPath">!CURRENT_EXAMPLE.#testfault</Property>
+                                  <Property name="labelWidth">100</Property>
+                                  <FieldSet layoutConstraint="colSpan:3">
+                                    <Property name="caption">故障分析</Property>
+                                    <Property name="collapsed">false</Property>
+                                    <Buttons/>
+                                    <Children>
+                                      <DataSetDropDown id="dataSetDropDownAnalyse">
+                                        <Property name="autoOpen">true</Property>
+                                        <Property name="dataSet">dsDictionaryAnalyse</Property>
+                                        <Property name="displayProperty">name</Property>
+                                        <Property name="editable">false</Property>
+                                        <Property name="useEmptyItem">true</Property>
+                                        <Property name="property">name</Property>
+                                      </DataSetDropDown>
+                                      <DataSetDropDown id="dataSetDropDownCheck">
+                                        <Property name="autoOpen">true</Property>
+                                        <Property name="dataSet">dsDictionaryCheck</Property>
+                                        <Property name="displayProperty">name</Property>
+                                        <Property name="editable">false</Property>
+                                        <Property name="useEmptyItem">true</Property>
+                                        <Property name="property">name</Property>
+                                      </DataSetDropDown>
+                                      <CustomDropDown id="customDropDownPattern">
+                                        <Property name="autoOpen">true</Property>
+                                        <Property name="editable">false</Property>
+                                        <Container>
+                                          <Property name="height">200</Property>
+                                          <DataTree id="dataTreeDictreeP" layoutConstraint="left">
+                                            <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
+var node = self.get(&quot;currentNode&quot;);&#xD;
+if (node )&#xD;
+	dropDown.close(node.get(&quot;data.name&quot;));</ClientEvent>
+                                            <Property name="dataSet">dataSetDictreePattern</Property>
+                                            <Property name="width">100%</Property>
+                                            <Property name="currentNodeDataPath">currentDictree</Property>
+                                            <BindingConfigs>
+                                              <BindingConfig>
+                                                <Property name="childrenProperty">children</Property>
+                                                <Property name="tipProperty">description</Property>
+                                                <Property name="labelProperty">name</Property>
+                                                <Property name="expandLevel">3</Property>
+                                                <Property name="recursive">true</Property>
+                                                <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
+                                              </BindingConfig>
+                                            </BindingConfigs>
+                                          </DataTree>
+                                        </Container>
+                                      </CustomDropDown>
+                                      <CustomDropDown id="customDropDownReasons">
+                                        <Property name="editable">false</Property>
+                                        <Property name="autoOpen">true</Property>
+                                        <Container>
+                                          <Property name="height">200</Property>
+                                          <DataTree id="dataTreeDictreeR" layoutConstraint="left">
+                                            <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
+var node = self.get(&quot;currentNode&quot;);&#xD;
+if (node)&#xD;
+	dropDown.close(node.get(&quot;data.name&quot;));&#xD;
+</ClientEvent>
+                                            <Property name="dataSet">dataSetDictreeReasons</Property>
+                                            <Property name="width">100%</Property>
+                                            <Property name="currentNodeDataPath">currentDictree</Property>
+                                            <BindingConfigs>
+                                              <BindingConfig>
+                                                <Property name="childrenProperty">children</Property>
+                                                <Property name="tipProperty">description</Property>
+                                                <Property name="labelProperty">name</Property>
+                                                <Property name="expandLevel">3</Property>
+                                                <Property name="recursive">true</Property>
+                                                <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
+                                              </BindingConfig>
+                                            </BindingConfigs>
+                                          </DataTree>
+                                        </Container>
+                                      </CustomDropDown>
+                                      <Panel>
+                                        <Property name="caption">故障原因设备</Property>
+                                        <Property name="showCaptionBar">true</Property>
+                                        <Buttons/>
+                                        <Children>
+                                          <ToolBar>
+                                            <ToolBarButton>
+                                              <ClientEvent name="onClick">view.id('diaFaultSoftware').show();</ClientEvent>
+                                              <Property name="caption">新增</Property>
+                                              <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                                              <Property name="tags">tag5</Property>
+                                            </ToolBarButton>
+                                            <ToolBarButton>
+                                              <ClientEvent name="onClick">var cur=view.id('dsCurrentTree').getData('!CURRENT_EXAMPLE.#testfault.#faultequipment');
+	if(cur){
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+			cur.remove();
+				}); 
+			} 
+	</ClientEvent>
+                                              <Property name="caption">删除</Property>
+                                              <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                                              <Property name="tags">tag5</Property>
+                                            </ToolBarButton>
+                                          </ToolBar>
+                                          <DataGrid id="dgFaultEquipment">
+                                            <Property name="dataSet">dsCurrentTree</Property>
+                                            <Property name="dataPath">!CURRENT_EXAMPLE.#testfault.faultequipment</Property>
+                                            <Property name="dataType">Faultequipment</Property>
+                                            <Property name="height">100</Property>
+                                            <Property name="readOnly">true</Property>
+                                            <DataColumn>
+                                              <Property name="name">equipment</Property>
+                                              <Property name="property">softwareversion.software.equipment.name</Property>
+                                              <Editor/>
+                                            </DataColumn>
+                                            <DataColumn>
+                                              <Property name="name">software</Property>
+                                              <Property name="property">softwareversion.software.name</Property>
+                                              <Editor/>
+                                            </DataColumn>
+                                            <DataColumn>
+                                              <Property name="name">version</Property>
+                                              <Property name="property">softwareversion.version</Property>
+                                              <Editor/>
+                                            </DataColumn>
+                                          </DataGrid>
+                                        </Children>
+                                        <Tools/>
+                                      </Panel>
+                                      <AutoForm id="afFault5">
+                                        <Property name="dataType">Testfault</Property>
+                                        <Property name="dataSet">dsCurrentTree</Property>
+                                        <Property name="dataPath">!CURRENT_EXAMPLE.#testfault</Property>
+                                        <Property name="labelWidth">100</Property>
+                                        <Property name="hideMode">visibility</Property>
+                                        <Property name="tags">tag4</Property>
+                                        <AutoFormElement>
+                                          <Property name="name">analysecategory</Property>
+                                          <Property name="property">analysecategory</Property>
+                                          <Property name="trigger">dataSetDropDownAnalyse</Property>
+                                          <Editor/>
+                                        </AutoFormElement>
+                                        <AutoFormElement>
+                                          <Property name="name">faultcheck</Property>
+                                          <Property name="property">faultcheck</Property>
+                                          <Property name="trigger">dataSetDropDownCheck</Property>
+                                          <Editor/>
+                                        </AutoFormElement>
+                                        <AutoFormElement>
+                                          <Property name="name">faultreasons</Property>
+                                          <Property name="property">faultreasons</Property>
+                                          <Property name="trigger">customDropDownReasons</Property>
+                                          <Editor/>
+                                        </AutoFormElement>
+                                        <AutoFormElement>
+                                          <Property name="name">faultpattern</Property>
+                                          <Property name="property">faultpattern</Property>
+                                          <Property name="trigger">customDropDownPattern</Property>
+                                          <Editor/>
+                                        </AutoFormElement>
+                                        <AutoFormElement layoutConstraint="colSpan:2">
+                                          <Property name="name">faultanalyse</Property>
+                                          <Property name="property">faultanalyse</Property>
+                                          <Property name="editorType">TextArea</Property>
+                                          <Editor/>
+                                        </AutoFormElement>
+                                        <AutoFormElement layoutConstraint="colSpan:2">
+                                          <Property name="name">faultduty</Property>
+                                          <Property name="property">faultduty</Property>
+                                          <Editor/>
+                                        </AutoFormElement>
+                                        <AutoFormElement>
+                                          <Property name="name">faultanalysefillformperson</Property>
+                                          <Property name="property">faultanalysefillformperson</Property>
+                                          <Editor/>
+                                        </AutoFormElement>
+                                        <AutoFormElement>
+                                          <Property name="name">faultanalysedate</Property>
+                                          <Property name="property">faultanalysedate</Property>
+                                          <Property name="readOnly">true</Property>
+                                          <Editor/>
+                                        </AutoFormElement>
+                                      </AutoForm>
+                                      <Dialog id="diaFaultSoftware">
+                                        <Property name="height">600</Property>
+                                        <Property name="width">600</Property>
+                                        <Property name="caption">选择故障原因设备</Property>
+                                        <Buttons>
+                                          <Button>
+                                            <ClientEvent name="onClick">var dsCurrentTree = view.get(&quot;#dsCurrentTree&quot;);&#xD;
+var testFault = dsCurrentTree.getData(&quot;!CURRENT_EXAMPLE.#testfault&quot;);&#xD;
+var softwareversion = dsCurrentTree.getData(&quot;!CURRENT_EXAMPLE.#testequipmentrelation.equipment.#software.#softwareversion&quot;); &#xD;
+var path = &quot;!CURRENT_EXAMPLE.#testfault.faultequipment[@.get('softwareversion.software.oid') == '&quot;+ softwareversion.get('software.oid') + &quot;']&quot;;&#xD;
+var entity1=view.id('dsCurrentTree').getData(path);&#xD;
+if(!entity1){&#xD;
+    var faultSoftware = dsCurrentTree.getData(&quot;!CURRENT_EXAMPLE.#testfault.faultequipment&quot;);&#xD;
+    faultSoftware.insert({softwareversion: softwareversion.toJSON(), testfault: testFault.toJSON()});&#xD;
+}&#xD;
+else&#xD;
+	dorado.MessageBox.alert(softwareversion.get(&quot;software.name&quot;) + &quot; 已添加！&quot;);&#xD;
+view.get(&quot;#diaFaultSoftware&quot;).hide();</ClientEvent>
+                                            <Property name="caption">确定</Property>
+                                            <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+                                          </Button>
+                                          <Button>
+                                            <ClientEvent name="onClick">view.get(&quot;#diaFaultSoftware&quot;).hide();	         </ClientEvent>
+                                            <Property name="caption">取消</Property>
+                                            <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+                                          </Button>
+                                        </Buttons>
+                                        <Children>
+                                          <SplitPanel>
+                                            <Property name="direction">top</Property>
+                                            <Property name="position">40%</Property>
+                                            <MainControl>
+                                              <Container>
+                                                <Property name="height">300</Property>
+                                                <SplitPanel>
+                                                  <Property name="direction">top</Property>
+                                                  <Property name="position">50%</Property>
+                                                  <MainControl>
+                                                    <ToolBar>
+                                                      <DataPilot>
+                                                        <Property name="dataSet">dsCurrentTree</Property>
+                                                        <Property name="itemCodes">pages</Property>
+                                                        <Property name="dataPath">!CURRENT_EXAMPLE.#testequipmentrelation.equipment.#software.softwareversion</Property>
+                                                      </DataPilot>
+                                                    </ToolBar>
+                                                    <DataGrid>
+                                                      <Property name="dataSet">dsCurrentTree</Property>
+                                                      <Property name="dataPath">!CURRENT_EXAMPLE.#testequipmentrelation.equipment.#software.softwareversion</Property>
+                                                      <Property name="dataType">Softwareversion</Property>
+                                                      <Property name="readOnly">true</Property>
+                                                      <DataColumn name="version">
+                                                        <Property name="property">version</Property>
+                                                      </DataColumn>
+                                                      <DataColumn name="updatedate">
+                                                        <Property name="property">updatedate</Property>
+                                                      </DataColumn>
+                                                    </DataGrid>
+                                                  </MainControl>
+                                                  <SideControl>
+                                                    <ToolBar>
+                                                      <DataPilot>
+                                                        <Property name="dataSet">dsCurrentTree</Property>
+                                                        <Property name="itemCodes">pages</Property>
+                                                        <Property name="dataPath">!CURRENT_EXAMPLE.#testequipmentrelation.equipment.software</Property>
+                                                      </DataPilot>
+                                                    </ToolBar>
+                                                    <DataGrid>
+                                                      <Property name="dataSet">dsCurrentTree</Property>
+                                                      <Property name="dataPath">!CURRENT_EXAMPLE.#testequipmentrelation.equipment.software</Property>
+                                                      <Property name="dataType">Software</Property>
+                                                      <Property name="readOnly">true</Property>
+                                                      <DataColumn name="name">
+                                                        <Property name="property">name</Property>
+                                                      </DataColumn>
+                                                      <DataColumn name="currentversion">
+                                                        <Property name="property">currentversion</Property>
+                                                      </DataColumn>
+                                                    </DataGrid>
+                                                  </SideControl>
+                                                </SplitPanel>
+                                              </Container>
+                                            </MainControl>
+                                            <SideControl>
+                                              <Container>
+                                                <Property name="height">300</Property>
+                                                <ToolBar>
+                                                  <DataPilot>
+                                                    <Property name="dataSet">dsCurrentTree</Property>
+                                                    <Property name="itemCodes">pages</Property>
+                                                    <Property name="dataPath">!CURRENT_EXAMPLE.testequipmentrelation</Property>
+                                                  </DataPilot>
+                                                </ToolBar>
+                                                <DataGrid>
+                                                  <Property name="dataSet">dsCurrentTree</Property>
+                                                  <Property name="dataPath">!CURRENT_EXAMPLE.testequipmentrelation</Property>
+                                                  <Property name="dataType">Equipment</Property>
+                                                  <Property name="readOnly">true</Property>
+                                                  <DataColumn>
+                                                    <Property name="property">equipment.name</Property>
+                                                    <Property name="name">equipmentName</Property>
+                                                  </DataColumn>
+                                                  <DataColumn>
+                                                    <Property name="property">equipment.model</Property>
+                                                    <Property name="name">equipmentModel</Property>
+                                                  </DataColumn>
+                                                </DataGrid>
+                                              </Container>
+                                            </SideControl>
+                                          </SplitPanel>
+                                        </Children>
+                                        <Tools/>
+                                      </Dialog>
+                                    </Children>
+                                  </FieldSet>
+                                  <FieldSet layoutConstraint="colSpan:3">
+                                    <Property name="caption">故障纠正措施</Property>
+                                    <Property name="collapsed">false</Property>
+                                    <Buttons/>
+                                    <Children>
+                                      <DataSetDropDown id="dataSetDropDownMeasure">
+                                        <Property name="autoOpen">true</Property>
+                                        <Property name="dataSet">dsDictionaryMeasure</Property>
+                                        <Property name="displayProperty">name</Property>
+                                        <Property name="editable">false</Property>
+                                        <Property name="useEmptyItem">true</Property>
+                                        <Property name="property">name</Property>
+                                      </DataSetDropDown>
+                                      <AutoForm id="afFault6">
+                                        <Property name="dataType">Testfault</Property>
+                                        <Property name="dataSet">dsCurrentTree</Property>
+                                        <Property name="dataPath">!CURRENT_EXAMPLE.#testfault</Property>
+                                        <Property name="labelWidth">120</Property>
+                                        <Property name="cols">*,*</Property>
+                                        <Property name="tags">tag4</Property>
+                                        <AutoFormElement>
+                                          <Property name="name">measurecategory</Property>
+                                          <Property name="property">measurecategory</Property>
+                                          <Property name="trigger">dataSetDropDownMeasure</Property>
+                                          <Editor/>
+                                        </AutoFormElement>
+                                        <AutoFormElement>
+                                          <Property name="name">implementnumber</Property>
+                                          <Property name="property">implementnumber</Property>
+                                          <Editor/>
+                                        </AutoFormElement>
+                                        <AutoFormElement layoutConstraint="colSpan:2">
+                                          <Property name="name">faultmeasure</Property>
+                                          <Property name="property">faultmeasure</Property>
+                                          <Property name="editorType">TextArea</Property>
+                                          <Editor/>
+                                        </AutoFormElement>
+                                        <AutoFormElement>
+                                          <Property name="name">measureperson</Property>
+                                          <Property name="property">measureperson</Property>
+                                          <Editor/>
+                                        </AutoFormElement>
+                                      </AutoForm>
+                                    </Children>
+                                  </FieldSet>
+                                </AutoForm>
+                              </Children>
+                            </FieldSet>
+                            <FieldSet>
+                              <Property name="caption">试验员验证</Property>
+                              <Property name="collapsed">false</Property>
+                              <Buttons/>
+                              <Children>
+                                <AutoForm id="afFault7">
+                                  <Property name="dataType">Testfault</Property>
+                                  <Property name="dataSet">dsCurrentTree</Property>
+                                  <Property name="dataPath">!CURRENT_EXAMPLE.#testfault</Property>
+                                  <Property name="labelWidth">100</Property>
+                                  <Property name="tags">tag6</Property>
+                                  <AutoFormElement layoutConstraint="colSpan:3">
+                                    <Property name="name">faultcheckresult</Property>
+                                    <Property name="property">faultcheckresult</Property>
+                                    <Property name="editorType">TextArea</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                  <AutoFormElement>
+                                    <Property name="name">checkperson</Property>
+                                    <Property name="property">checkperson</Property>
+                                    <Property name="readOnly">true</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                  <AutoFormElement>
+                                    <Property name="property">faultcheckdate</Property>
+                                    <Property name="name">faultcheckdate</Property>
+                                    <Property name="readOnly">true</Property>
+                                    <Editor/>
+                                  </AutoFormElement>
+                                </AutoForm>
+                              </Children>
+                            </FieldSet>
+                          </AutoForm>
+                        </Children>
+                        <Tools/>
+                      </Dialog>
+                    </Container>
+                  </ControlTab>
+                  <ControlTab>
+                    <Property name="caption">试验设计文件列表</Property>
+                    <Container>
+                      <ToolBar>
+                        <DataPilot>
+                          <Property name="dataSet">dsCurrentTree</Property>
+                          <Property name="dataPath">!CURRENT_EXAMPLE.testdocument</Property>
+                        </DataPilot>
+                        <ToolBarButton>
+                          <ClientEvent name="onClick">view.id(&quot;dsCurrentTree&quot;).getData(&quot;!CURRENT_EXAMPLE&quot;).reset(&quot;testdocument&quot;);</ClientEvent>
+                          <Property name="caption">刷新</Property>
+                          <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+                        </ToolBarButton>
+                      </ToolBar>
+                      <DataGrid>
+                        <Property name="dataSet">dsCurrentTree</Property>
+                        <Property name="dataPath">!CURRENT_EXAMPLE.testdocument</Property>
+                        <Property name="dataType">Testdocument</Property>
+                        <Property name="readOnly">true</Property>
+                        <Property name="filterMode">serverSide</Property>
+                        <Property name="showFilterBar">true</Property>
+                        <RowNumColumn/>
+                        <DataColumn name="name">
+                          <Property name="property">name</Property>
+                          <Property name="width">200</Property>
+                        </DataColumn>
+                        <DataColumn name="documenttype">
+                          <Property name="property">documenttype</Property>
+                          <Property name="width">120</Property>
+                        </DataColumn>
+                        <DataColumn name="createdate">
+                          <Property name="property">createdate</Property>
+                          <Property name="width">120</Property>
+                        </DataColumn>
+                        <DataColumn name="efile">
+                          <ClientEvent name="onRenderCell">jQuery(arg.dom).empty();&#xD;
+var file = arg.data.get(&quot;efile&quot;);&#xD;
+var oid = arg.data.get(&quot;oid&quot;);&#xD;
+var href = &quot;/AFAS/upload/Con_TestDocument/&quot; + oid + &quot;/&quot; + file;&#xD;
+jQuery(arg.dom).xCreate({&#xD;
+	tagName:&quot;A&quot;,&#xD;
+	href:href,&#xD;
+	content:arg.data.get(&quot;efile&quot;)&#xD;
+});</ClientEvent>
+                          <Property name="property">efile</Property>
+                          <Property name="width">250</Property>
+                        </DataColumn>
+                        <DataColumn>
+                          <Property name="property">source</Property>
+                          <Property name="width">150</Property>
+                          <Property name="name">source</Property>
+                        </DataColumn>
+                      </DataGrid>
+                    </Container>
+                  </ControlTab>
+                </TabControl>
+              </Container>
+            </Children>
+          </Panel>
+          <Panel layout="padding:16">
+            <Children>
+              <AutoForm cols="*" dataPath="!CURRENT_CATEGORY">
+                <Property name="dataSet">dsCurrentTree</Property>
+                <AutoFormElement>
+                  <Property name="name">name</Property>
+                  <Property name="property">name</Property>
+                  <Property name="labelWidth">90</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">description</Property>
+                  <Property name="property">description</Property>
+                  <Property name="labelWidth">90</Property>
+                  <Property name="editorType">TextArea</Property>
+                  <Editor/>
+                </AutoFormElement>
+              </AutoForm>
+              <AutoForm>
+                <Property name="dataSet">dsCurrentTree</Property>
+                <Property name="dataType">TestProject</Property>
+                <Property name="cols">*</Property>
+                <Property name="labelWidth">90</Property>
+                <Property name="dataPath">!CURRENT_CATEGORY.#netproductprojectrelation.testproject</Property>
+                <Property name="readOnly">true</Property>
+                <AutoFormElement>
+                  <Property name="name">name</Property>
+                  <Property name="property">name</Property>
+                  <Property name="label">试验工程名称</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="name">description</Property>
+                  <Property name="property">description</Property>
+                  <Property name="label">试验工程描述</Property>
+                  <Property name="editorType">TextArea</Property>
+                  <Editor/>
+                </AutoFormElement>
+              </AutoForm>
+            </Children>
+          </Panel>
+        </CardBook>
+      </MainControl>
+      <SideControl>
+        <DataTree id="productTree" currentNodeDataPath="CURRENT_NODE" dragTags="node" dropMode="onOrInsertItems" droppableTags="node">
+          <ClientEvent name="onReady">var ProductTree = view.get(&quot;@ProductTree&quot;);&#xD;
+var Equipment = view.get(&quot;@Equipment&quot;);&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_CATEGORY&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == ProductTree) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return ProductTree;&#xD;
+	});&#xD;
+	dorado.DataPath.registerInterceptor(&quot;CURRENT_EXAMPLE&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == Equipment) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return Equipment;&#xD;
+	});</ClientEvent>
+          <ClientEvent name="onCurrentChange">var cardbook = view.get(&quot;#cardbook&quot;);&#xD;
+refreshActions();&#xD;
+	var nodeType = self.get(&quot;currentNode.bindingConfig.name&quot;), index = 0;&#xD;
+	if (nodeType) {&#xD;
+		index = (nodeType == &quot;Category&quot;) ? 1 : 2;&#xD;
+	}&#xD;
+	var dsCurrentTree = this.get(&quot;#dsCurrentTree&quot;);&#xD;
+	var parentCategory = dsCurrentTree.getData(&quot;!CURRENT_CATEGORY&quot;);&#xD;
+	if(parentCategory)&#xD;
+	{&#xD;
+		if(parentCategory.get(&quot;parentnode&quot;) == null)&#xD;
+		{&#xD;
+			index = 3;&#xD;
+		}&#xD;
+	}&#xD;
+cardbook.set(&quot;currentControl&quot;, index);&#xD;
+function refreshActions() {&#xD;
+	var node = view.get(&quot;#productTree.currentNode&quot;);&#xD;
+	view.set({&#xD;
+		&quot;^onCurrentNode.disabled&quot; : node == null,&#xD;
+		&quot;^onCurrentCategory.disabled&quot; : (node == null || node&#xD;
+				.get(&quot;bindingConfig.name&quot;) != &quot;Category&quot;),&#xD;
+		&quot;^onCurrentExample.disabled&quot; : (node == null || node&#xD;
+				.get(&quot;bindingConfig.name&quot;) != &quot;Equipment&quot;)&#xD;
+	});&#xD;
+&#xD;
+	var disabled = true;&#xD;
+	if (node != null) {&#xD;
+		var entity = node.get(&quot;data&quot;);&#xD;
+		disabled = !entity.isDirty();&#xD;
+	}&#xD;
+	view.set({&#xD;
+		&quot;^onDirtyNode.disabled&quot; : disabled,&#xD;
+		&quot;^onDirty.disabled&quot; : dirtyEntityNum == 0&#xD;
+	});&#xD;
+}</ClientEvent>
+          <ClientEvent name="onRenderNode">var entity = arg.node.get(&quot;data&quot;);&#xD;
+	if (entity.isDirty()) {&#xD;
+		var img = &quot;>images/&quot;&#xD;
+				+ ((entity.state == dorado.Entity.STATE_NEW) ? &quot;new-node.gif&quot;&#xD;
+						: &quot;modified-node.gif&quot;);&#xD;
+		arg.dom.innerHTML = arg.node.get(&quot;label&quot;) + &quot;&amp;nbsp;&lt;img src=\&quot;&quot;&#xD;
+				+ $url(img) + &quot;\&quot;>&quot;;&#xD;
+		arg.processDefault = false;&#xD;
+	} else {&#xD;
+		arg.processDefault = true;&#xD;
+	}</ClientEvent>
+          <ClientEvent name="onDataNodeCreate">var entity = arg.data;&#xD;
+	if (entity.state == dorado.Entity.STATE_NEW) {&#xD;
+		setTimeout(function() {&#xD;
+			self.set(&quot;currentNode&quot;, arg.node);&#xD;
+		}, 50);&#xD;
+	}</ClientEvent>
+          <ClientEvent name="onContextMenu">var menuTree = view.get(&quot;#menuTree&quot;);&#xD;
+menuTree.show({&#xD;
+		position : {&#xD;
+			left : arg.event.pageX,&#xD;
+			top : arg.event.pageY&#xD;
+		}&#xD;
+	});</ClientEvent>
+          <ClientEvent name="onDraggingSourceMove">var draggingInfo = arg.draggingInfo;&#xD;
+	var sourceNode = draggingInfo.get(&quot;object&quot;);&#xD;
+	var sourceType = sourceNode.get(&quot;bindingConfig.name&quot;);&#xD;
+&#xD;
+	var targetNode = draggingInfo.get(&quot;targetObject&quot;);&#xD;
+	if (targetNode) {&#xD;
+		var accept;&#xD;
+		if (sourceType == &quot;Category&quot;) {&#xD;
+			accept = (targetNode.get(&quot;bindingConfig.name&quot;) != &quot;Equipment&quot;);&#xD;
+		} else {&#xD;
+			accept = (targetNode.get(&quot;bindingConfig.name&quot;) == &quot;Category&quot;);&#xD;
+		}&#xD;
+		draggingInfo.set(&quot;accept&quot;, accept);&#xD;
+	}&#xD;
+</ClientEvent>
+          <ClientEvent name="onDraggingSourceDrop">var draggingInfo=arg.draggingInfo;&#xD;
+if(!draggingInfo){&#xD;
+	return true;&#xD;
+}&#xD;
+var parentNode=draggingInfo.get(&quot;targetObject&quot;);&#xD;
+if(!parentNode){&#xD;
+	return true;&#xD;
+}&#xD;
+var sourceNode = draggingInfo.get(&quot;object&quot;);&#xD;
+var sourceType = sourceNode.get(&quot;bindingConfig.name&quot;);&#xD;
+var parentId=parentNode.get(&quot;data.oid&quot;);&#xD;
+if (sourceType == &quot;Category&quot;) {&#xD;
+	parentNode.get(&quot;nodes&quot;).each(function(node){&#xD;
+	if(node.get(&quot;bindingConfig.name&quot;) == &quot;Category&quot;)&#xD;
+	{&#xD;
+		var data = node.get(&quot;data&quot;);&#xD;
+		data.set(&quot;parentnode&quot;,parentId);&#xD;
+	}&#xD;
+});&#xD;
+}&#xD;
+else if (sourceType == &quot;Equipment&quot;){&#xD;
+	parentNode.get(&quot;nodes&quot;).each(function(node){&#xD;
+	var data=node.get(&quot;data&quot;);&#xD;
+	data.set(&quot;producttree&quot;,parentNode.get(&quot;data&quot;).toJSON());&#xD;
+});&#xD;
+}</ClientEvent>
+          <Property name="dataSet">dsCurrentTree</Property>
+          <Property name="droppable">false</Property>
+          <Property name="draggable">false</Property>
+          <Property name="allowNoCurrent">false</Property>
+          <BindingConfigs>
+            <BindingConfig icon=">images/folder.gif" name="Category" recursive="true">
+              <Property name="labelProperty">name</Property>
+              <Property name="childrenProperty">categories</Property>
+              <Property name="expandLevel">4</Property>
+              <BindingConfig icon=">images/file.gif">
+                <Property name="labelProperty">name</Property>
+                <Property name="name">Equipment</Property>
+                <Property name="childrenProperty">equipment</Property>
+              </BindingConfig>
+            </BindingConfig>
+          </BindingConfigs>
+        </DataTree>
+      </SideControl>
+    </SplitPanel>
+    <GroupEnd/>
+  </View>
+</ViewConfig>

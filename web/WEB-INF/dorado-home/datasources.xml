@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	<bean id="bdf2.jdbcTransactionManager" class="com.bstek.bdf2.core.orm.transaction.JdbcTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<tx:annotation-driven proxy-target-class="true" transaction-manager="bdf2.jdbcTransactionManager" />
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="url" value="jdbc:sqlserver://192.168.0.55:1433;databaseName=escmp" />
+		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+		<property name="username" value="sa" />
+		<property name="password" value="sql2008" />
+		<property name="minIdle" value="10" />
+		<property name="maxActive" value="20" />
+		<property name="maxWait" value="100000" />
+		<property name="removeAbandonedTimeout" value="600" />
+		<property name="removeAbandoned" value="true" />
+		<property name="logAbandoned" value="true" />
+	</bean>
+	<bean parent="bdf2.dataSourceRegister">
+		<property name="dataSource" ref="dataSource" />
+		<property name="name" value="hsql" />
+		<property name="asDefault" value="true" />
+	</bean>
+	<bean id="sessionFactory" parent="bdf2.sessionFactory">
+		<property name="dataSourceName" value="hsql" />
+		<property name="entityInterceptor" ref="bdf2.unByteCodeProxyInterceptor" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+		<property name="mappingResources">
+			<list></list>
+		</property>
+		<property name = "packagesToScan">
+		   <list>
+		         <value>com.buaa.sys.domain</value>
+		         <value>com.buaa.out.domain</value>
+		         <value>com.buaa.fly.domain</value>
+		         <value>com.buaa.comm.domain</value>
+		   </list>
+		</property>
+	</bean>
+		<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="bdf2.TestRetrivePreAuthenticatedUser" class="com.bstek.bdf2.core.security.Loginbyremote.TestRetrivePreAuthenticatedUser"/>
+	<bean class="configs.TestJobDataService"/>
+	<bean id= "authorityToSomeone" class="configs.AuthorityToSomeone"/>
+
+<!-- 	<bdf:anonymous-url urlPattern="/index.jsp"/> -->
+	<context:component-scan base-package="com.bstek,com.buaa"></context:component-scan>
+</beans>

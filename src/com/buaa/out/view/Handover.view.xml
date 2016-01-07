@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Handover</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <DataSet id="dsHandover">
+      <Property name="dataType">[Handover]</Property>
+      <Property name="dataProvider">handoverPR#queryHandover</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <DataSet id="dsUsers">
+      <Property name="dataProvider">bdf2.userMaintain#loadUsers</Property>
+      <Property name="dataType">[User]</Property>
+      <Property name="pageSize">200</Property>
+    </DataSet>
+    <DataSet id="dsDictionary">
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="dictype">Dic_Outfield</Property>
+          <Property name="status">0</Property>
+        </Entity>
+      </Property>
+    </DataSet>
+    <DataSet id="dsUserOperationLog">
+      <Property name="dataProvider">userOperationLogPR#queryUserOperationLog</Property>
+      <Property name="dataType">[UserOperationLog]</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <UpdateAction id="uaHandover">
+      <Property name="dataResolver">handoverPR#saveHandover</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsHandover</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <UpdateAction id="uaUserOperationLog">
+      <Property name="dataResolver">userOperationLogPR#saveUserOperationLog</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsUserOperationLog</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <ToolBar>
+      <DataPilot>
+        <Property name="itemCodes">pages</Property>
+        <Property name="dataSet">dsHandover</Property>
+        <Property name="dataPath"></Property>
+      </DataPilot>
+      <ToolBarButton>
+        <ClientEvent name="onClick">
+	view.id('dsHandover').getData().insert();
+	var cur=view.id('dsHandover').getData('#');
+	var dateNow = new Date();
+	cur.set(&quot;handovertime&quot;,dateNow);
+	var guid = &quot;&quot;;
+	for(var i=1;i&lt;=32;i++){
+		var n = Math.floor(Math.random()*16.0).toString(16);
+		guid += n;
+		if((i==8)||(i==12)||(i==16)||(i==20))
+		   guid += &quot;-&quot;;
+	}
+	cur.set(&quot;oid&quot;,guid);
+	view.id('diaHandover').show();
+	var link = view.id(&quot;lefile&quot;);
+    link.set(&quot;visible&quot;,false);
+	
+	/*
+ 	 * 对用户新增操作进行记录，在用户操作日志表中新增一条记录。
+     */
+	var myDate = new Date();
+	view.id('dsUserOperationLog').getData().insert({
+		logOperationType:&quot;0&quot;,
+		operationPerson: &quot;${loginUsername}&quot;,
+		operationContent:&quot;对现场交接管理表新增一条记录&quot;,
+		operationTime:myDate
+	});
+	view.id('uaUserOperationLog').execute();
+	</ClientEvent>
+        <Property name="caption">新增</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">
+	var cur=view.id('dsHandover').getData('#');
+	if (cur) {
+		view.id('diaHandover').show();
+	}
+		var file = cur.get(&quot;efile&quot;);
+var link = view.id(&quot;lefile&quot;);
+if(file){
+var oid = cur.get(&quot;oid&quot;);
+var href = &quot;/escmp/upload/Out_Handover/&quot; + oid + &quot;/&quot; + file;
+link.set({
+	href: href,
+	visible: true
+});
+}
+else{
+link.set(&quot;visible&quot;,false);
+}
+
+	/*
+ 	 * 对用户修改操作进行记录，在用户操作日志表中新增一条记录。
+ 	 */
+	var myDate = new Date();
+	view.id('dsUserOperationLog').getData().insert({
+		logOperationType:&quot;1&quot;,
+		operationPerson: &quot;${loginUsername}&quot;,
+		operationContent:&quot;对现场交接管理表修改选定记录&quot;,
+		operationTime:myDate
+	});
+	view.id('uaUserOperationLog').execute();</ClientEvent>
+        <Property name="caption">修改</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsHandover').getData('#');
+	var ua=view.id('uaHandover')
+	if(cur){
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+			
+			/*
+ 			 * 对用户删除操作进行记录，在用户操作日志表中新增一条记录。
+ 			 */
+			var myDate = new Date();
+			view.id('dsUserOperationLog').getData().insert({
+				logOperationType:&quot;2&quot;,
+				operationPerson: &quot;${loginUsername}&quot;,
+				operationContent:&quot;对现场交接管理表删除所选记录&quot;,
+				operationTime:myDate
+			});
+			view.id('uaUserOperationLog').execute();
+			
+			cur.remove();
+			ua.execute();
+				}); 
+			} 
+	</ClientEvent>
+        <Property name="caption">删除</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid id="dgHandover">
+      <Property name="readOnly">true</Property>
+      <Property name="dataSet">dsHandover</Property>
+      <Property name="dataPath"></Property>
+      <Property name="filterMode">clientSide</Property>
+      <Property name="showFilterBar">false</Property>
+      <Property name="rowHeight">22</Property>
+      <Property name="fixedColumnCount">3</Property>
+      <RowNumColumn/>
+      <DataColumn name="outfield">
+        <Property name="property">outfield</Property>
+        <Property name="width">160</Property>
+      </DataColumn>
+      <DataColumn name="handovertime">
+        <Property name="property">handovertime</Property>
+        <Property name="width">160</Property>
+      </DataColumn>
+      <DataColumn name="personfrom">
+        <Property name="property">personfrom</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="personto">
+        <Property name="property">personto</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="filename">
+        <Property name="property">filename</Property>
+        <Property name="width">200</Property>
+      </DataColumn>
+      <DataColumn name="filenumber">
+        <Property name="property">filenumber</Property>
+        <Property name="width">200</Property>
+      </DataColumn>
+      <DataColumn name="efile">
+        <ClientEvent name="onRenderCell">jQuery(arg.dom).empty();&#xD;
+var file = arg.data.get(&quot;efile&quot;);&#xD;
+var oid = arg.data.get(&quot;oid&quot;);&#xD;
+var href = &quot;/escmp/upload/Out_Handover/&quot; + oid + &quot;/&quot; + file;&#xD;
+jQuery(arg.dom).xCreate({&#xD;
+	tagName:&quot;A&quot;,&#xD;
+	href:href,&#xD;
+	content:arg.data.get(&quot;efile&quot;)&#xD;
+});</ClientEvent>
+        <Property name="property">efile</Property>
+        <Property name="width">240</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">miji</Property>
+        <Property name="width">160</Property>
+        <Property name="name">miji</Property>
+      </DataColumn>
+    </DataGrid>
+    <Dialog id="diaHandover">
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="caption">现场交接管理</Property>
+      <Property name="width">500</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaHandover').execute(function(){
+               view.id('diaHandover').hide();
+           });
+         </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsHandover').getData('#');
+				cur.cancel();
+				view.id('diaHandover').hide();
+	/*
+	 * 删除当前用户操作日志记录并保存
+	 */
+	view.id('dsUserOperationLog').getData().remove()
+	view.id('uaUserOperationLog').execute();</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <CustomDropDown id="customDropDown1">
+          <Property name="editable">false</Property>
+          <Property name="autoOpen">true</Property>
+          <DataGrid>
+            <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
+var user=view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;);&#xD;
+if (user) {&#xD;
+	dropDown.close(user.get(&quot;cname&quot;));&#xD;
+}</ClientEvent>
+            <Property name="showFilterBar">true</Property>
+            <Property name="rowHeight">22</Property>
+            <Property name="dataSet">dsUsers</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="height">300</Property>
+            <RowNumColumn/>
+            <DataColumn>
+              <Property name="name">username</Property>
+              <Property name="property">username</Property>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">cname</Property>
+              <Property name="property">cname</Property>
+            </DataColumn>
+            <DataColumn name="depts">
+              <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;depts&quot;);&#xD;
+var name = [];&#xD;
+if (entitylist) {&#xD;
+	entitylist.each(function(item){&#xD;
+		name.push(item.get(&quot;name&quot;));&#xD;
+	});&#xD;
+}&#xD;
+arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
+              <Property name="property">depts</Property>
+            </DataColumn>
+          </DataGrid>
+        </CustomDropDown>
+        <DataSetDropDown id="dataSetDropDown1">
+          <Property name="autoOpen">true</Property>
+          <Property name="dataSet">dsDictionary</Property>
+          <Property name="property">name</Property>
+          <Property name="displayProperty">name</Property>
+          <Property name="editable">false</Property>
+        </DataSetDropDown>
+        <AutoForm id="afHandover">
+          <Property name="cols">*</Property>
+          <Property name="dataSet">dsHandover</Property>
+          <Property name="dataPath">#</Property>
+          <AutoFormElement>
+            <Property name="name">Outfield</Property>
+            <Property name="property">outfield</Property>
+            <Property name="trigger">dataSetDropDown1</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">HandoverTime</Property>
+            <Property name="property">handovertime</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">PersonFrom</Property>
+            <Property name="property">personfrom</Property>
+            <Property name="trigger">customDropDown1</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">PersonTo</Property>
+            <Property name="property">personto</Property>
+            <Property name="trigger">customDropDown1</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">FileName</Property>
+            <Property name="property">filename</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">FileNumber</Property>
+            <Property name="property">filenumber</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">EFile</Property>
+            <Property name="property">efile</Property>
+            <Editor>
+              <Container>
+                <Link id="lefile" layoutConstraint="center">
+                  <Property name="dataSet">dsHandover</Property>
+                  <Property name="property">efile</Property>
+                </Link>
+                <Button layoutConstraint="right">
+                  <Property name="caption">删除</Property>
+                  <Property name="action">deleteFileAction</Property>
+                </Button>
+                <Button layoutConstraint="right ">
+                  <Property name="caption">上传</Property>
+                  <Property name="action">uaUpload</Property>
+                </Button>
+              </Container>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <UploadAction id="uaUpload">
+      <ClientEvent name="onFilesAdded">var cur=view.id('dsHandover').getData('#');&#xD;
+var value = &quot;/Out_Handover/&quot; + cur.get(&quot;oid&quot;) + &quot;/&quot;;&#xD;
+self.set(&quot;multipartParams&quot;, {record: value});</ClientEvent>
+      <ClientEvent name="onFileUploaded">var returnValue = arg.file.name;&#xD;
+var cur=view.id('dsHandover').getData('#');&#xD;
+cur.set(&quot;efile&quot;,returnValue);&#xD;
+var link = view.id(&quot;lefile&quot;);&#xD;
+if(returnValue){&#xD;
+	var oid = cur.get(&quot;oid&quot;);&#xD;
+    var href = &quot;/escmp/upload/Out_Handover/&quot; + oid + &quot;/&quot; + returnValue;&#xD;
+    link.set({&#xD;
+		href: href,&#xD;
+		visible: true&#xD;
+	});&#xD;
+}&#xD;
+else{&#xD;
+    link.set(&quot;visible&quot;,false);&#xD;
+}</ClientEvent>
+      <ClientEvent name="onError">	var error = arg.error;&#xD;
+	dorado.MessageBox.show({&#xD;
+		title:error.message,&#xD;
+		message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
+		icon: &quot;WARNING&quot;,&#xD;
+		buttons: [&quot;ok&quot;]&#xD;
+	});</ClientEvent>
+      <Property name="url">>dorado/uploader/fileupload</Property>
+      <Property name="maxFileSize">100MB</Property>
+      <Filters/>
+    </UploadAction>
+    <AjaxAction id="deleteFileAction">
+      <ClientEvent name="beforeExecute">var cur=view.id('dsHandover').getData('#');&#xD;
+var value = &quot;/Out_Handover/&quot; + cur.get(&quot;oid&quot;) + &quot;/&quot;;&#xD;
+var file = cur.get(&quot;efile&quot;);&#xD;
+self.set(&quot;parameter&quot;,{&#xD;
+	record: value,&#xD;
+	filename: file&#xD;
+});&#xD;
+cur.set(&quot;efile&quot;,null);&#xD;
+var link = view.id(&quot;lefile&quot;);&#xD;
+link.set(&quot;visible&quot;,false);</ClientEvent>
+      <Property name="service">defaultUploadProcessor#deleteFile</Property>
+    </AjaxAction>
+  </View>
+</ViewConfig>

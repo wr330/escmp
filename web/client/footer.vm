@@ -1,0 +1,9 @@
+﻿  <div class="footer">
+    <div class="resize">
+      <div>
+        <p class="footer_left">Copyright © 1996 - 2013 BUAA A503. All Rights Reserved</p>
+       ## <p><a href="$!{base}/bdf2.core.view.frame.main.MainFrame1.d" target="_blank">进入系统</a></p>
+      </div>
+    </div>
+    <p class="clr"></p>
+  </div>

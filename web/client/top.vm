@@ -1,0 +1,23 @@
+﻿  <div class="header">
+    <div class="block_header">
+      ##<div class="logo"><a href="$!{base}" title="openNRS"></a></div>
+      #*<div class="telephone">服务热线：010-82338336&nbsp;&nbsp;&nbsp;&nbsp;
+      <a class="rss" style ="color:mediumblue;" href="$!{base}/bdf2.core.view.frame.main.MainFrame1.d" target="_blank">进入系统</a>&nbsp;&nbsp;
+      </div>
+      <div class="clr"></div>*#
+      <div class="prev menuBar" style="float:left;overflow:hidden;"><div style="padding:17px 0px; color:#FFFFFF;"><</div></div>  
+      <div class="menu" style="overflow:hidden;float:left;">
+        <ul >
+         #foreach($menu in $!{menuList})
+         	#if($!{parentNode.getNodeCode().equals($!{menu.getNodeCode()})})
+          <li ><a class ="active" href="$!{basePath}$!{menu.getNodeCode()}" title="$!{menu.getNodeTitle()}">$!{menu.getNodeTitle()}</a></li>		
+	        #else
+          <li ><a href="$!{basePath}$!{menu.getNodeCode()}" title="$!{menu.getNodeTitle()}">$!{menu.getNodeTitle()}</a></li>
+            #end
+         #end
+        </ul>
+      </div>
+       <div class="next menuBar" style="float:left;overflow:hidden;"><div style="padding:17px 0px; color:#FFFFFF;">></div></div>
+      <div class="clr"></div>
+    </div>
+  </div>

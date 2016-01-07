@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">newsTreeQuery</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="dataTypeTree" parent="dataTypeNews">
+      <Reference name="subNode">
+        <Property name="parameter">$${this.nodeId}</Property>
+        <Property name="dataType">[SELF]</Property>
+        <Property name="dataProvider">newsTreePR#findCategoryTree</Property>
+      </Reference>
+      <Reference name="subNewsList">
+        <Property name="dataType">[SELF]</Property>
+        <Property name="pageSize">10</Property>
+        <Property name="dataProvider">newsTreePR#findPaginationNews</Property>
+        <Property name="parameter">$${this.nodeId}</Property>
+      </Reference>
+    </DataType>
+  </Model>
+  <View>
+    <DataSet id="dataSetTree">
+      <Property name="dataType">[dataTypeTree]</Property>
+      <Property name="dataProvider">newsTreePR#findCategoryTree</Property>
+    </DataSet>
+    <SplitPanel>
+      <Property name="position">300</Property>
+      <MainControl>
+        <Panel>
+          <Property name="caption">新闻</Property>
+          <Buttons/>
+          <Children>
+            <ToolBar>
+              <DataPilot>
+                <Property name="dataSet">dataSetTree</Property>
+                <Property name="dataPath">!CURRENT_NODE.subNewsList</Property>
+              </DataPilot>
+            </ToolBar>
+            <DataGrid>
+              <Property name="dataSet">dataSetTree</Property>
+              <Property name="dataPath">!CURRENT_NODE.subNewsList</Property>
+              <Property name="dataType">dataTypeTree</Property>
+              <Property name="readOnly">true</Property>
+              <DataColumn name="nodeTitle">
+                <Property name="property">nodeTitle</Property>
+              </DataColumn>
+              <DataColumn name="nodeContent">
+                <Property name="property">nodeContent</Property>
+              </DataColumn>
+              <DataColumn name="createDate">
+                <Property name="property">createDate</Property>
+              </DataColumn>
+              <DataColumn name="updateDate">
+                <Property name="property">updateDate</Property>
+              </DataColumn>
+              <DataColumn name="createUser">
+                <Property name="property">createUser</Property>
+              </DataColumn>
+              <DataColumn name="updateUser">
+                <Property name="property">updateUser</Property>
+              </DataColumn>
+              <DataColumn name="statu">
+                <Property name="property">statu</Property>
+              </DataColumn>
+              <DataColumn name="orderDate">
+                <Property name="property">orderDate</Property>
+              </DataColumn>
+              <DataColumn name="nodeCode">
+                <Property name="property">nodeCode</Property>
+              </DataColumn>
+            </DataGrid>
+          </Children>
+          <Tools/>
+        </Panel>
+      </MainControl>
+      <SideControl>
+        <Panel>
+          <Property name="caption">分类目录</Property>
+          <Buttons/>
+          <Children>
+            <DataTree id="dataTreeCategory">
+              <Property name="dataSet">dataSetTree</Property>
+              <Property name="currentNodeDataPath">CURRENT_NODE</Property>
+              <BindingConfigs>
+                <BindingConfig>
+                  <Property name="expandLevel">1</Property>
+                  <Property name="childrenProperty">subNode</Property>
+                  <Property name="iconProperty">icon</Property>
+                  <Property name="labelProperty">nodeTitle</Property>
+                  <Property name="recursive">true</Property>
+                </BindingConfig>
+              </BindingConfigs>
+            </DataTree>
+          </Children>
+          <Tools/>
+        </Panel>
+      </SideControl>
+    </SplitPanel>
+  </View>
+</ViewConfig>

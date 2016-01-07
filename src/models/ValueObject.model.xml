@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model>
+  <DataType name="dataTypeNews">
+    <Property name="matchType">com.bstek.newstree.domain.NewsTree</Property>
+    <PropertyDef name="nodeId">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="nodeTitle">
+      <Property name="dataType">String</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="nodeContent">
+      <Property name="dataType">String</Property>
+      <Property name="required">false</Property>
+    </PropertyDef>
+    <PropertyDef name="parentId">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="createDate">
+      <Property name="dataType">Date</Property>
+    </PropertyDef>
+    <PropertyDef name="updateDate">
+      <Property name="dataType">Date</Property>
+    </PropertyDef>
+    <PropertyDef name="createUser">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="updateUser">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="statu">
+      <Property name="dataType">String</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="label">待审批</Property>
+              <Property name="value">save</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">主任审批</Property>
+              <Property name="value">managerApproving</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">部长审批</Property>
+              <Property name="value">ministerApproving</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">驳回修改</Property>
+              <Property name="value">reject</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">发布</Property>
+              <Property name="value">publish</Property>
+            </Entity>
+          </Collection>
+        </Property>
+        <Property name="keyProperty">value</Property>
+        <Property name="valueProperty">label</Property>
+      </Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="isleaf">
+      <Property name="dataType">String</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="label">分类</Property>
+              <Property name="value">false</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">新闻</Property>
+              <Property name="value">true</Property>
+            </Entity>
+          </Collection>
+        </Property>
+        <Property name="keyProperty">value</Property>
+        <Property name="valueProperty">label</Property>
+      </Property>
+    </PropertyDef>
+    <PropertyDef name="orderDate">
+      <Property name="dataType">DateTime</Property>
+      <Property name="displayFormat">Y-m-d H:i:s</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="icon">
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="nodeCode">
+      <Property name="dataType">String</Property>
+      <Property name="required">true</Property>
+      <Validator type="ajax">
+        <ClientEvent name="beforeExecute">var newsEntity = arg.entity;&#xD;
+var newsId = newsEntity.get(&quot;nodeId&quot;);&#xD;
+arg.parameter = {id:newsId,validateData:arg.data};</ClientEvent>
+        <Property name="service">newsTreePR#checkNodeCode</Property>
+      </Validator>
+    </PropertyDef>
+    <PropertyDef name="propertyDef1"/>
+  </DataType>
+  <DataType name="DataCode" meta="x:135;y:-1">
+    <Property name="matchType">com.bstek.datadictionary.domain.DataCode</Property>
+    <PropertyDef name="dcId">
+      <Property name="dataType">String</Property>
+      <Property name="label">标识</Property>
+    </PropertyDef>
+    <PropertyDef name="dataName">
+      <Property name="dataType">String</Property>
+      <Property name="label">数据项名称</Property>
+    </PropertyDef>
+    <PropertyDef name="dataCode">
+      <Property name="dataType">String</Property>
+      <Property name="label">数据项代码</Property>
+    </PropertyDef>
+    <PropertyDef name="dataSimpleName">
+      <Property name="dataType">String</Property>
+      <Property name="label">数据项简称</Property>
+    </PropertyDef>
+    <PropertyDef name="dataOrderNo">
+      <Property name="dataType">int</Property>
+      <Property name="label">排序序号</Property>
+    </PropertyDef>
+    <PropertyDef name="dataParentId">
+      <Property name="dataType">String</Property>
+      <Property name="label">父节点标识</Property>
+    </PropertyDef>
+    <PropertyDef name="bakOne">
+      <Property name="dataType">String</Property>
+      <Property name="label">备用一</Property>
+    </PropertyDef>
+    <PropertyDef name="bakTwo">
+      <Property name="dataType">String</Property>
+      <Property name="label">备用二</Property>
+    </PropertyDef>
+    <PropertyDef name="createTime">
+      <Property name="dataType">Date</Property>
+      <Property name="label">创建时间</Property>
+    </PropertyDef>
+    <PropertyDef name="createUsername">
+      <Property name="dataType">String</Property>
+      <Property name="label">创建人</Property>
+    </PropertyDef>
+    <PropertyDef name="updateTime">
+      <Property name="dataType">Date</Property>
+      <Property name="label">更新时间</Property>
+    </PropertyDef>
+    <PropertyDef name="updateUsername">
+      <Property name="dataType">String</Property>
+      <Property name="label">更新人</Property>
+    </PropertyDef>
+    <Reference name="childDataCodes">
+      <Property name="dataType">[DataCode]</Property>
+    </Reference>
+  </DataType>
+</Model>

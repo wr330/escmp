@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <DataSet id="dsAuditLog">
+      <Property name="dataProvider">auditLogPR#queryAuditLog</Property>
+      <Property name="dataType">[AuditLog]</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <UpdateAction id="uaAuditLog">
+      <Property name="dataResolver">auditLogPR#saveAuditLog</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsAuditLog</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <ToolBar>
+      <DataPilot/>
+      <ToolBarButton>
+        <ClientEvent name="onClick">view.id('dsAuditLog').getData().insert();&#xD;
+view.id('diaAuditLog').show();</ClientEvent>
+        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+        <Property name="caption">新增</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsAuditLog').getData('#');&#xD;
+if (cur) {&#xD;
+	view.id('diaAuditLog').show();&#xD;
+}</ClientEvent>
+        <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+        <Property name="caption">修改</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsAuditLog').getData('#');&#xD;
+	var ua=view.id('uaAuditLog')&#xD;
+	if(cur){&#xD;
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){&#xD;
+			cur.remove();&#xD;
+			ua.execute();&#xD;
+			}); &#xD;
+		} </ClientEvent>
+        <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+        <Property name="caption">删除</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <FieldSet>
+      <Property name="caption">查询条件</Property>
+      <Buttons/>
+      <Children>
+        <ToolBar>
+          <Label>
+            <Property name="text">日志类型</Property>
+            <Property name="width">70</Property>
+          </Label>
+          <TextEditor id="textEditor1">
+            <Property name="mapping">
+              <Property name="mapValues">
+                <Collection>
+                  <Entity>
+                    <Property name="key">0</Property>
+                    <Property name="value">新增</Property>
+                  </Entity>
+                  <Entity>
+                    <Property name="key">1</Property>
+                    <Property name="value">修改</Property>
+                  </Entity>
+                  <Entity>
+                    <Property name="key">2</Property>
+                    <Property name="value">删除</Property>
+                  </Entity>
+                  <Entity>
+                    <Property name="key">3</Property>
+                    <Property name="value">下载</Property>
+                  </Entity>
+                  <Entity>
+                    <Property name="key">4</Property>
+                    <Property name="value">导入</Property>
+                  </Entity>
+                  <Entity>
+                    <Property name="key">5</Property>
+                    <Property name="value">导出</Property>
+                  </Entity>
+                  <Entity>
+                    <Property name="key">6</Property>
+                    <Property name="value">解锁</Property>
+                  </Entity>
+                  <Entity>
+                    <Property name="key">7</Property>
+                    <Property name="value">其他</Property>
+                  </Entity>
+                </Collection>
+              </Property>
+            </Property>
+            <Property name="trigger">mmm</Property>
+            <Property name="tags">操作类型</Property>
+            <Property name="width">150</Property>
+          </TextEditor>
+          <FormElement id="formElement2">
+            <Property name="editorWidth">150</Property>
+            <Property name="label">操作人</Property>
+            <Property name="trigger">dataSetDropDown1</Property>
+            <Property name="labelAlign">right</Property>
+            <Editor/>
+          </FormElement>
+          <FormElement id="formElement3">
+            <Property name="editorWidth">150</Property>
+            <Property name="label">日期（起）</Property>
+            <Property name="labelAlign">right</Property>
+            <Editor>
+              <DateTimeSpinner>
+                <Property name="trigger">dateDropDown1</Property>
+                <Property name="type">date</Property>
+              </DateTimeSpinner>
+            </Editor>
+          </FormElement>
+          <FormElement id="formElement4">
+            <Property name="label">日期（至）</Property>
+            <Property name="editorWidth">150</Property>
+            <Property name="labelAlign">right</Property>
+            <Editor>
+              <DateTimeSpinner>
+                <Property name="trigger">dateDropDown2</Property>
+                <Property name="type">date</Property>
+              </DateTimeSpinner>
+            </Editor>
+          </FormElement>
+          <Button>
+            <ClientEvent name="onClick">var dsAuditLog = this.get(&quot;#dsAuditLog&quot;);&#xD;
+dsAuditLog.set(&quot;parameter&quot;, {&#xD;
+	operationType: view.id('textEditor1').get(&quot;value&quot;),&#xD;
+	operationTime1: view.id('formElement3').get(&quot;value&quot;),&#xD;
+	operationTime2: view.id('formElement4').get(&quot;value&quot;),&#xD;
+	operationPerson: view.id('formElement2').get(&quot;value&quot;),&#xD;
+	&#xD;
+});&#xD;
+dsAuditLog.flushAsync();&#xD;
+</ClientEvent>
+            <Property name="caption">按条件查询</Property>
+            <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
+          </Button>
+        </ToolBar>
+      </Children>
+    </FieldSet>
+    <DataGrid>
+      <Property name="dataSet">dsAuditLog</Property>
+      <Property name="readOnly">true</Property>
+      <Property name="rowHeight">22</Property>
+      <DataColumn name="operationPerson">
+        <Property name="property">operationPerson</Property>
+      </DataColumn>
+      <DataColumn name="operationTime">
+        <Property name="property">operationTime</Property>
+      </DataColumn>
+      <DataColumn name="operationContent">
+        <Property name="property">operationContent</Property>
+      </DataColumn>
+      <DataColumn name="operationType">
+        <Property name="property">operationType</Property>
+      </DataColumn>
+    </DataGrid>
+    <Dialog id="diaAuditLog">
+      <Property name="width">600</Property>
+      <Property name="height">400</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaAuditLog').execute(function(){&#xD;
+               view.id('diaAuditLog').hide();&#xD;
+           });</ClientEvent>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+          <Property name="caption">确定</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">	var cur=view.id('dsUserOperationLog').getData('#');&#xD;
+	cur.cancel();&#xD;
+	view.id('diaUserOperationLog').hide();</ClientEvent>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+          <Property name="caption">取消</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afAuditLog">
+          <Property name="cols">*</Property>
+          <Property name="dataSet">dsAuditLog</Property>
+          <Property name="dataPath">#</Property>
+          <AutoFormElement>
+            <Property name="property">operationPerson</Property>
+            <Property name="trigger">customDDUser</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">operationContent</Property>
+            <Property name="editorType">TextArea</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">operationTime</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">operationType</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <DataSet id="dsUsers">
+      <Property name="dataType">[User]</Property>
+      <Property name="dataProvider">bdf2.userMaintain#loadUsers2</Property>
+    </DataSet>
+    <CustomDropDown id="customDDUser">
+      <Property name="autoOpen">true</Property>
+      <Property name="editable">false</Property>
+      <DataGrid>
+        <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
+var user=view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;);&#xD;
+if (user) {&#xD;
+	dropDown.close(user.get(&quot;username&quot;));&#xD;
+	var cur=view.id('dsUserOperationLog').getData(&quot;#&quot;);&#xD;
+    cur.set(&quot;operationPerson&quot;,user.get(&quot;username&quot;));&#xD;
+}</ClientEvent>
+        <Property name="dataSet">dsUsers</Property>
+        <Property name="readOnly">true</Property>
+        <Property name="rowHeight">22</Property>
+        <Property name="showFilterBar">true</Property>
+        <Property name="height">300</Property>
+        <DataColumn name="username">
+          <Property name="property">username</Property>
+        </DataColumn>
+        <DataColumn name="cname">
+          <Property name="property">cname</Property>
+        </DataColumn>
+        <DataColumn name="depts">
+          <Property name="property">depts</Property>
+        </DataColumn>
+      </DataGrid>
+    </CustomDropDown>
+    <DataSetDropDown id="dataSetDropDown1">
+      <ClientEvent name="onValueSelect">var dsAuditLog = this.get(&quot;#dsAuditLog&quot;);&#xD;
+dsAuditLog.set(&quot;parameter&quot;, {&#xD;
+	operationPerson: arg.selectedValue&#xD;
+});&#xD;
+dsAuditLog.flushAsync();</ClientEvent>
+      <Property name="property">username</Property>
+      <Property name="dataSet">dsUsers</Property>
+      <Property name="useEmptyItem">true</Property>
+      <Property name="editable">false</Property>
+    </DataSetDropDown>
+    <AutoMappingDropDown id="mmm">
+      <ClientEvent name="onValueSelect">var dsAuditLog = this.get(&quot;#dsAuditLog&quot;);&#xD;
+dsAuditLog.set(&quot;parameter&quot;, {&#xD;
+	operationType: arg.selectedValue&#xD;
+});&#xD;
+dsAuditLog.flushAsync();</ClientEvent>
+      <Property name="useEmptyItem">true</Property>
+    </AutoMappingDropDown>
+    <DateDropDown id="dateDropDown1"/>
+    <DateDropDown id="dateDropDown2"/>
+  </View>
+</ViewConfig>

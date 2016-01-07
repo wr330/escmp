@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <TabControl id="tabComm">
+      <Property name="showMenuButton">true</Property>
+      <Property name="style">
+        <Property name="background">white</Property>
+      </Property>
+      <IFrameTab>
+        <Property name="caption">待办任务</Property>
+        <Property name="icon">dorado/res/uflo/icons/uflo-logo16.png</Property>
+        <Property name="path">com.buaa.comm.view.TodoTaskMaintain.d</Property>
+      </IFrameTab>
+      <IFrameTab>
+        <Property name="caption">新闻管理</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -0px -160px</Property>
+        <Property name="path">com.bstek.newstree.view.news.d</Property>
+      </IFrameTab>
+      <IFrameTab>
+        <Property name="caption">部门通讯录</Property>
+        <Property name="path">com.buaa.comm.view.Addressbookdepart.d</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -300px -60px</Property>
+      </IFrameTab>
+      <IFrameTab>
+        <Property name="caption">出差报告</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -120px -60px</Property>
+        <Property name="path">com.buaa.comm.view.Btreport.d</Property>
+      </IFrameTab>
+      <IFrameTab>
+        <Property name="caption">工作项目管理</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -280px -40px</Property>
+        <Property name="path">com.buaa.comm.view.Jobstatistics.d</Property>
+      </IFrameTab>
+      <IFrameTab>
+        <Property name="caption">常用资源下载</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -140px -240px</Property>
+        <Property name="path">com.buaa.comm.view.Resourcedownload.d</Property>
+      </IFrameTab>
+      <IFrameTab>
+        <Property name="caption">会议材料管理</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -0px -120px</Property>
+        <Property name="path">com.buaa.comm.view.Meetingdocument.d</Property>
+      </IFrameTab>
+    </TabControl>
+  </View>
+</ViewConfig>

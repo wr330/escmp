@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Servicepersonnel</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <DataSet id="dsDictionary">
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="dictype">Dic_Outfield</Property>
+          <Property name="status">0</Property>
+        </Entity>
+      </Property>
+    </DataSet>
+    <DataSet id="dsUserOperationLog">
+      <Property name="dataProvider">userOperationLogPR#queryUserOperationLog</Property>
+      <Property name="dataType">[UserOperationLog]</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <DataSetDropDown id="dataSetDropDown1">
+      <Property name="autoOpen">true</Property>
+      <Property name="dataSet">dsDictionary</Property>
+      <Property name="property">name</Property>
+      <Property name="displayProperty">name</Property>
+      <Property name="editable">false</Property>
+    </DataSetDropDown>
+    <DataSet id="dsServicepersonnel">
+      <Property name="dataType">[Servicepersonnel]</Property>
+      <Property name="dataProvider">servicepersonnelPR#queryServicepersonnel</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <UpdateAction id="uaServicepersonnel">
+      <Property name="dataResolver">servicepersonnelPR#saveServicepersonnel</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsServicepersonnel</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <UpdateAction id="uaUserOperationLog">
+      <Property name="dataResolver">userOperationLogPR#saveUserOperationLog</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsUserOperationLog</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <ToolBar>
+      <DataPilot>
+        <Property name="itemCodes">pages</Property>
+        <Property name="dataSet">dsServicepersonnel</Property>
+        <Property name="dataPath"></Property>
+      </DataPilot>
+      <ToolBarButton>
+        <ClientEvent name="onClick">
+	view.id('dsServicepersonnel').getData().insert();
+	view.id('diaServicepersonnel').show();
+	
+	/*
+ 	 * 对用户新增操作进行记录，在用户操作日志表中新增一条记录。
+     */
+	var myDate = new Date();
+	view.id('dsUserOperationLog').getData().insert({
+		logOperationType:&quot;0&quot;,
+		operationPerson: &quot;${loginUsername}&quot;,
+		operationContent:&quot;对外场人员管理表新增一条记录&quot;,
+		operationTime:myDate
+	});
+	view.id('uaUserOperationLog').execute();
+	</ClientEvent>
+        <Property name="caption">新增</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">
+	var cur=view.id('dsServicepersonnel').getData('#');
+	if (cur) {
+		view.id('diaServicepersonnel').show();
+	}
+	
+	/*
+ 	 * 对用户修改操作进行记录，在用户操作日志表中新增一条记录。
+ 	 */
+	var myDate = new Date();
+	view.id('dsUserOperationLog').getData().insert({
+		logOperationType:&quot;1&quot;,
+		operationPerson: &quot;${loginUsername}&quot;,
+		operationContent:&quot;对外场人员管理表修改选定记录&quot;,
+		operationTime:myDate
+	});
+	view.id('uaUserOperationLog').execute();
+	</ClientEvent>
+        <Property name="caption">修改</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsServicepersonnel').getData('#');
+	var ua=view.id('uaServicepersonnel')
+	if(cur){
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+			
+			/*
+ 			 * 对用户删除操作进行记录，在用户操作日志表中新增一条记录。
+ 			 */
+			var myDate = new Date();
+			view.id('dsUserOperationLog').getData().insert({
+				logOperationType:&quot;2&quot;,
+				operationPerson: &quot;${loginUsername}&quot;,
+				operationContent:&quot;对外场人员管理表删除所选记录&quot;,
+				operationTime:myDate
+			});
+			view.id('uaUserOperationLog').execute();
+			
+			cur.remove();
+			ua.execute();
+				}); 
+			} 
+	</ClientEvent>
+        <Property name="caption">删除</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid id="dgServicepersonnel">
+      <Property name="readOnly">true</Property>
+      <Property name="dataSet">dsServicepersonnel</Property>
+      <Property name="dataPath"></Property>
+      <Property name="filterMode">serverSide</Property>
+      <Property name="showFilterBar">true</Property>
+      <Property name="rowHeight">22</Property>
+      <RowNumColumn/>
+      <DataColumn name="outfield">
+        <Property name="property">outfield</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="job">
+        <Property name="property">job</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="datefrom">
+        <Property name="property">datefrom</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="dateto">
+        <Property name="property">dateto</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="name">
+        <Property name="property">name</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="staffnumber">
+        <Property name="property">staffnumber</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">miji</Property>
+        <Property name="width">120</Property>
+        <Property name="name">miji</Property>
+      </DataColumn>
+    </DataGrid>
+    <Dialog id="diaServicepersonnel">
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">800</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaServicepersonnel').execute(function(){
+               view.id('diaServicepersonnel').hide();
+           });
+         </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsServicepersonnel').getData('#');
+				cur.cancel();
+				view.id('diaServicepersonnel').hide();
+				
+	/*
+	 * 删除当前用户操作日志记录并保存
+	 */
+	view.id('dsUserOperationLog').getData().remove()
+	view.id('uaUserOperationLog').execute();
+	         
+	         </ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afServicepersonnel">
+          <Property name="cols">*,*</Property>
+          <Property name="dataSet">dsServicepersonnel</Property>
+          <Property name="dataPath">#</Property>
+          <AutoFormElement>
+            <Property name="name">Outfield</Property>
+            <Property name="property">outfield</Property>
+            <Property name="trigger">dataSetDropDown1</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">Job</Property>
+            <Property name="property">job</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">DateFrom</Property>
+            <Property name="property">datefrom</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">DateTo</Property>
+            <Property name="property">dateto</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">Name</Property>
+            <Property name="property">name</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">StaffNumber</Property>
+            <Property name="property">staffnumber</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+  </View>
+</ViewConfig>

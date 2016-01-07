@@ -1,0 +1,62 @@
+﻿<div class="navPage pagebar" style="margin-right: 20px">
+					<ul style="list-style-type: ">
+						#set($index = 0)
+						#set($num = 0)
+						#set($index = ${pagination.getPageNo()})					
+						#if($!{index} !=0 && $!{index}<$!{pageSize})	
+							#set($next = $!{index} + 1)					
+						<li><a
+							href="$!{basePath}$!{parentPath}/$!{currentNode.getNodeCode()}/$!{childNode.getNodeCode()}?page=$!{next}"
+							title="下一页"
+							style="background: url($!{resourcesPath}resource/images/next.png) no-repeat top center; width: 45px; height: 14px; margin-top: 4px;"></a>
+						</li>
+						#else
+						<li><a title="下一页"
+							style="background: url($!{resourcesPath}resource/images/next.png) no-repeat top center; width: 45px; height: 14px; margin-top: 4px;"></a>
+						</li>
+						#end
+						#if($!{index}>6)
+						#set($cTemp = $!{index}+4)
+							#if($!{cTemp}>$!{pageSize})
+								#set($num = $!{pageSize})
+								#else
+								#set($num = $!{index}+4)
+							#end
+						#elseif($!{index}>0 && $!{index}<7)
+							#if($!{pageSize}>10)
+								#set($num = 10)
+							    #else
+								#set($num = $!{pageSize})
+							#end
+							
+						#end
+						
+						#foreach($a in [1..10])
+							#if($!{num}>0 && $!{num}<=$!{pageSize})
+								#if($!{index} == $!{num}) 
+									#set($current="pagebarCurrent")
+									#else
+									#set($current="")		
+								#end				
+						<li><a
+							href="$!{basePath}$!{parentPath}/$!{currentNode.getNodeCode()}/$!{childNode.getNodeCode()}?page=$!{num}"
+							class="$!{current}"
+							title="第$!{num}页">$!{num}</a></li>
+						
+							#end
+							#set($num = $!{num} - 1)
+						#end
+						#if($!{index}>1)
+							#set($prev = $!{index} - 1)				
+						<li><a 
+						    href="$!{basePath}$!{parentPath}/$!{currentNode.getNodeCode()}/$!{childNode.getNodeCode()}?page=$!{prev}"
+							title="上一页"
+							style="background: url($!{resourcesPath}resource/images/prev.png) no-repeat top center; width: 45px; height: 14px; margin-top: 4px;"></a>
+						</li>
+						#else
+						<li><a title="上一页"
+							style="background: url($!{resourcesPath}resource/images/prev.png) no-repeat top center; width: 45px; height: 14px; margin-top: 4px;"></a>
+						</li>
+						#end
+					</ul>
+</div>

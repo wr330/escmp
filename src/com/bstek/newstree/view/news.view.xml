@@ -1,0 +1,1016 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">NEWSTREE</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="dataTypeNews" parent="global:dataTypeNews">
+      <ClientEvent name="onInsert">if (this.$CurrentOperation == &quot;DragTreeNode&quot;) {&#xD;
+	this.$CurrentOperation  = null;&#xD;
+	var action = this.id(&quot;updateActionDragTree&quot;);&#xD;
+	action.execute();&#xD;
+}</ClientEvent>
+      <Reference name="subNews">
+        <Property name="dataType">[dataTypeNews]</Property>
+        <Property name="dataProvider">newsTreePR#findPaginationNewsTree</Property>
+        <Property name="parameter">$${this.nodeId}</Property>
+        <Property name="pageSize">10</Property>
+        <Property name="activeOnNewEntity">true</Property>
+      </Reference>
+    </DataType>
+    <DataType name="dataTypeUsers">
+      <Property name="creationType">com.bstek.bdf2.core.model.DefaultUser</Property>
+      <PropertyDef name="username">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="cname">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="administrator">
+        <Property name="dataType">boolean</Property>
+      </PropertyDef>
+      <PropertyDef name="birthday">
+        <Property name="dataType">Date</Property>
+      </PropertyDef>
+      <PropertyDef name="companyId">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="enabled">
+        <Property name="dataType">boolean</Property>
+      </PropertyDef>
+      <PropertyDef name="male">
+        <Property name="dataType">boolean</Property>
+      </PropertyDef>
+      <PropertyDef name="password">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="salt">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="leagueMember">
+        <Property name="dataType">boolean</Property>
+      </PropertyDef>
+      <PropertyDef name="partyMember">
+        <Property name="dataType">boolean</Property>
+      </PropertyDef>
+      <PropertyDef name="technicalLevel">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <ClientEvent name="onCreate">this.$CurrentOperation;&#xD;
+dorado.ueditor.registerMode(&quot;custom&quot;, [&#xD;
+'Undo','Redo','Bold','Italic','Underline','StrikeThrough','Superscript','Subscript'&#xD;
+,'PastePlain','Indent','Outdent','Horizontal'&#xD;
+]);&#xD;
+window.Hashtable = function Hashtable()  &#xD;
+{ &#xD;
+  this._hash = {}; &#xD;
+  this._count = 0; &#xD;
+   this.add = function(key, value)  &#xD;
+   { &#xD;
+      if (this._hash.hasOwnProperty(key)) return false; &#xD;
+      else { this._hash[key] = value; this._count++; return true; } &#xD;
+  } &#xD;
+   this.remove = function(key) { delete this._hash[key]; this._count--; } &#xD;
+   this.count = function() { return this._count; } &#xD;
+   this.items = function(key) { if (this.contains(key)) return this._hash[key]; } &#xD;
+   this.contains = function(key) { return this._hash.hasOwnProperty(key); } &#xD;
+  this.clear = function() { this._hash = {}; this._count = 0; } &#xD;
+ }&#xD;
+window.checkNewsForm = function(){&#xD;
+	    var dataSetNews = self.get(&quot;#dataSetNews&quot;);&#xD;
+		var newsEntity = dataSetNews.getData(&quot;!CURRENT_NODE&quot;)&#xD;
+		if (newsEntity.get(&quot;isleaf&quot;) == &quot;true&quot;) {	&#xD;
+			var contentValue = newsEntity.get(&quot;nodeContent&quot;);&#xD;
+			var cpContentValue = contentValue;&#xD;
+			cpContentValue = cpContentValue.replace(/&lt;p>/ig, &quot;&quot;);&#xD;
+			cpContentValue = cpContentValue.replace(/&lt;\/p>/ig, &quot;&quot;);&#xD;
+			cpContentValue = cpContentValue.replace(/&lt;br \/>/ig, &quot;&quot;);&#xD;
+			cpContentValue = cpContentValue.replace(/&amp;nbsp;/ig, &quot;&quot;);&#xD;
+			if (cpContentValue == null || jQuery.trim(cpContentValue) == &quot;&quot;) {&#xD;
+				throw new dorado.Exception(&quot;内容不能为空&quot;);&#xD;
+			}&#xD;
+		}&#xD;
+  &#xD;
+}&#xD;
+window.removeChildNode = function(indexArg){&#xD;
+    var ajaxActionPagination = self.get(&quot;#newsTreePaginationAjaxAction&quot;);&#xD;
+    var newsDataSet = self.get(&quot;#dataSetNews&quot;);&#xD;
+	var categoryDataTree = self.get(&quot;#dataTreeNews&quot;);&#xD;
+	var currentNode = categoryDataTree.get(&quot;currentNode&quot;);&#xD;
+	var currentEntity = currentNode.get(&quot;data&quot;);&#xD;
+	var dataTypeNews = new dorado.EntityDataType(&quot;dataTypeNews&quot;);&#xD;
+	ajaxActionPagination.set(&quot;parameter&quot;,{&#xD;
+		nodeId: currentEntity.get(&quot;nodeId&quot;),&#xD;
+		index:indexArg,&#xD;
+		pageSize:newsDataSet.get(&quot;pageSize&quot;)&#xD;
+		&#xD;
+	});&#xD;
+	ajaxActionPagination.execute(function(){&#xD;
+		var result = ajaxActionPagination.get(&quot;returnValue&quot;);&#xD;
+		var newsEntityList =  newsDataSet.getData(&quot;!CURRENT_NODE&quot;).get(&quot;subNews&quot;);&#xD;
+		newsEntityList.each(&#xD;
+		function(entity){	&#xD;
+			entity.remove();&#xD;
+		});&#xD;
+		for(var i=0;i&lt;result.length;i++){&#xD;
+		var newEntity = new dorado.Entity(result[i],null,null);&#xD;
+		var returnEntity = currentEntity.createChild(&quot;subNews&quot;,newEntity);&#xD;
+		returnEntity.setState(dorado.Entity.STATE_NONE);	&#xD;
+		}&#xD;
+		$(&quot;#&quot;+currentEntity.get(&quot;nodeCode&quot;)+&quot;index&quot;).html(indexArg);&#xD;
+	});&#xD;
+			&#xD;
+}&#xD;
+</ClientEvent>
+    <DataSet id="dataSetNews">
+      <Property name="dataType">[dataTypeNews]</Property>
+      <Property name="loadMode">lazy</Property>
+      <Property name="dataProvider">newsTreePR#findPaginationNewsTree</Property>
+      <Property name="pageSize">10</Property>
+    </DataSet>
+    <DataSet id="dataSetUsers">
+      <Property name="dataType">[$dataTypeUser]</Property>
+      <Property name="loadMode">lazy</Property>
+      <Property name="dataProvider">newsPublishService#loadUsers</Property>
+      <Property name="parameter">${request.getParameter(&quot;userName&quot;)}</Property>
+    </DataSet>
+    <UfloProcessDiagram id="ufloProcessDiagram1">
+      <Property name="requestParameterType">taskId</Property>
+    </UfloProcessDiagram>
+    <ToolBar>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var hashTable = new window.Hashtable();&#xD;
+hashTable.add(&quot;389ffd3c-634e-4985-bc0a-bfba172cdccd&quot;,&quot;公司简介&quot;);&#xD;
+hashTable.add(&quot;d45f63ea-e4c9-4c28-b9ce-13b4d08a1810&quot;,&quot;人才&quot;);&#xD;
+hashTable.add(&quot;e7c99680-873d-49ac-9388-8ed3bc0d2350&quot;,&quot;成功案例&quot;);&#xD;
+var newsDataTree = this.get(&quot;#dataTreeNews&quot;);&#xD;
+var currentNode = newsDataTree.get(&quot;currentNode&quot;);&#xD;
+if (currentNode) {&#xD;
+	var nodeId = currentNode.get(&quot;data&quot;).get(&quot;nodeId&quot;);&#xD;
+	if (nodeId != 0) {&#xD;
+		if (hashTable.contains(nodeId)) {&#xD;
+		dorado.MessageBox.alert(&quot;不能创建与&quot;+hashTable.items(nodeId)+&quot;平级的目录&quot;)&#xD;
+		}&#xD;
+		else {&#xD;
+			//var categoryDialog = this.get(&quot;#dialogCategory&quot;);&#xD;
+			//categoryDialog.set(&quot;caption&quot;, &quot;创建平级分类&quot;);&#xD;
+			//categoryDialog.show();&#xD;
+		&#xD;
+			var parentEntity = currentNode.get(&quot;parent&quot;).get(&quot;data&quot;);&#xD;
+			var newEntity = parentEntity.createChild(&quot;subNews&quot;, {&#xD;
+				icon: '',&#xD;
+				nodeTitle: '',&#xD;
+				nodeId: '-1',&#xD;
+				isleaf: 'false',&#xD;
+				orderDate: new Date(),&#xD;
+				statu:'publish',&#xD;
+				parentId: parentEntity.get(&quot;nodeId&quot;)&#xD;
+			&#xD;
+			})&#xD;
+			newsDataTree.set(&quot;currentEntity&quot;, newEntity);&#xD;
+		this.set(&quot;#autoformNodeTitle2.readOnly&quot;, false);&#xD;
+		this.set(&quot;#autoformOrderDate2.readOnly&quot;, false);&#xD;
+		this.set(&quot;#autoformNodeCode2.readOnly&quot;, false);&#xD;
+		this.set(&quot;#autoformStatu2.readOnly&quot;, false);&#xD;
+		 this.get(&quot;#panelButtonSave&quot;).set(&quot;disabled&quot;,false);&#xD;
+		 this.get(&quot;#panelButtonCancel&quot;).set(&quot;disabled&quot;,false);&#xD;
+		 this.get(&quot;#panelButtonEdit&quot;).set(&quot;disabled&quot;,true);	&#xD;
+		}&#xD;
+		&#xD;
+	}&#xD;
+	else{&#xD;
+		dorado.MessageBox.alert(&quot;不能创建与&lt;虚拟平级节点>平级的目录&quot;)&#xD;
+	}&#xD;
+  }&#xD;
+  else{&#xD;
+	dorado.MessageBox.alert(&quot;请选择一个新闻目录&quot;);&#xD;
+   }&#xD;
+&#xD;
+</ClientEvent>
+        <Property name="caption">创建平级分类</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -60px -120px</Property>
+        <Property name="visible">false</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick"> var treeMenu = this.id(&quot;dataTreeNews&quot;);&#xD;
+    var currentEntity = treeMenu.get(&quot;currentEntity&quot;);&#xD;
+    if (currentEntity) {&#xD;
+		if (currentEntity.get(&quot;nodeId&quot;) != 0) {&#xD;
+			if (currentEntity.get(&quot;isleaf&quot;) == 'true') {&#xD;
+				dorado.MessageBox.alert(&quot;不能创建新闻节点下挂子分类！&quot;);&#xD;
+			}&#xD;
+			else {&#xD;
+				var newEntity = currentEntity.createChild(&quot;subNews&quot;, {&#xD;
+					icon: '',&#xD;
+					nodeTitle: '',&#xD;
+					nodeId: '-1',&#xD;
+					isleaf: 'false',&#xD;
+					orderDate: new Date(),&#xD;
+					statu:'publish',&#xD;
+					parentId: currentEntity.get(&quot;nodeId&quot;)&#xD;
+				&#xD;
+				})&#xD;
+				treeMenu.get(&quot;currentNode&quot;).expand();&#xD;
+				treeMenu.set(&quot;currentEntity&quot;, newEntity);&#xD;
+		this.set(&quot;#autoformNodeTitle2.readOnly&quot;, false);&#xD;
+		this.set(&quot;#autoformOrderDate2.readOnly&quot;, false);&#xD;
+		this.set(&quot;#autoformNodeCode2.readOnly&quot;, false);&#xD;
+		this.set(&quot;#autoformStatu2.readOnly&quot;, false);&#xD;
+		 this.get(&quot;#panelButtonSave&quot;).set(&quot;disabled&quot;,false);&#xD;
+		 this.get(&quot;#panelButtonCancel&quot;).set(&quot;disabled&quot;,false);&#xD;
+		 this.get(&quot;#panelButtonEdit&quot;).set(&quot;disabled&quot;,true);	&#xD;
+			//	var dialog = this.id(&quot;dialogCategory&quot;);&#xD;
+				//dialog.set(&quot;caption&quot;, &quot;创建子级分类&quot;);&#xD;
+				//dialog.show();&#xD;
+			}&#xD;
+		}else{&#xD;
+			dorado.MessageBox.alert(&quot;不能创建与&lt;虚拟平级节点>子级的目录！&quot;);&#xD;
+		}&#xD;
+    }&#xD;
+    else {&#xD;
+        dorado.MessageBox.alert(&quot;请选中一个新闻目录后再进行此操作！&quot;);&#xD;
+    }</ClientEvent>
+        <Property name="caption">创建子级分类</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -60px -120px</Property>
+        <Property name="visible">false</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var hashTable = new window.Hashtable();&#xD;
+ var date = new Date();&#xD;
+hashTable.add(&quot;389ffd3c-634e-4985-bc0a-bfba172cdccd&quot;,&quot;公司简介&quot;);&#xD;
+hashTable.add(&quot;d45f63ea-e4c9-4c28-b9ce-13b4d08a1810&quot;,&quot;人才&quot;);&#xD;
+hashTable.add(&quot;e7c99680-873d-49ac-9388-8ed3bc0d2350&quot;,&quot;成功案例&quot;);&#xD;
+var newsDataTree = this.get(&quot;#dataTreeNews&quot;);&#xD;
+var currentNode = newsDataTree.get(&quot;currentNode&quot;);&#xD;
+if (currentNode) {&#xD;
+	var nodeId = currentNode.get(&quot;data&quot;).get(&quot;nodeId&quot;);&#xD;
+	if (nodeId != 0) {&#xD;
+			if (hashTable.contains(nodeId)) {&#xD;
+				dorado.MessageBox.alert(&quot;不能创建与&quot; + hashTable.items(nodeId) + &quot;平级的新闻&quot;);&#xD;
+			}&#xD;
+			else {&#xD;
+				var parentEntity = currentNode.get(&quot;parent&quot;).get(&quot;data&quot;);&#xD;
+				var newEntity = parentEntity.createChild(&quot;subNews&quot;, {&#xD;
+					icon: '',&#xD;
+					nodeTitle: '',&#xD;
+					nodeContent: '',&#xD;
+					isleaf: 'true',&#xD;
+					statu: 'save',&#xD;
+					orderDate: date,&#xD;
+					parentId: parentEntity.get(&quot;nodeId&quot;),&#xD;
+					nodeCode:date.getFullYear().toString()+date.getMonth().toString()+date.getDay().toString()+date.getHours().toString()+date.getMinutes().toString()+date.getSeconds().toString()&#xD;
+				&#xD;
+				})&#xD;
+				newsDataTree.set(&quot;currentEntity&quot;, newEntity);&#xD;
+				this.set(&quot;^editor.readOnly&quot;, false);&#xD;
+				this.get(&quot;#panelButtonSave&quot;).set(&quot;disabled&quot;, false);&#xD;
+				this.get(&quot;#panelButtonCancel&quot;).set(&quot;disabled&quot;, false);&#xD;
+				this.get(&quot;#panelButtonEdit&quot;).set(&quot;disabled&quot;,true);	&#xD;
+			}	&#xD;
+	}&#xD;
+	else{&#xD;
+		dorado.MessageBox.alert(&quot;不能创建与&lt;虚拟平级节点>平级的目录&quot;)&#xD;
+	}&#xD;
+  }&#xD;
+  else{&#xD;
+	dorado.MessageBox.alert(&quot;请选择一个新闻目录&quot;);&#xD;
+   }</ClientEvent>
+        <Property name="caption">创建平级新闻</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -60px -120px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick"> var treeMenu = this.id(&quot;dataTreeNews&quot;);&#xD;
+ var date = new Date();&#xD;
+    var currentEntity = treeMenu.get(&quot;currentEntity&quot;);&#xD;
+    if (currentEntity) {&#xD;
+		if (currentEntity.get(&quot;nodeId&quot;) != 0) {&#xD;
+		if (currentEntity.get(&quot;isleaf&quot;) == 'true') {&#xD;
+		  dorado.MessageBox.alert(&quot;不能创建新闻节点下挂子新闻！&quot;);&#xD;
+		}&#xD;
+		else {&#xD;
+			var newEntity = currentEntity.createChild(&quot;subNews&quot;, {&#xD;
+				icon: '',&#xD;
+				nodeTitle: '',&#xD;
+				nodeContent: '',&#xD;
+				statu: 'save',&#xD;
+				isleaf: 'true',&#xD;
+				orderDate: date,&#xD;
+				parentId: currentEntity.get(&quot;nodeId&quot;),&#xD;
+				nodeCode:date.getFullYear().toString()+date.getMonth().toString()+date.getDay().toString()+date.getHours().toString()+date.getMinutes().toString()+date.getSeconds().toString()&#xD;
+			&#xD;
+			})&#xD;
+			treeMenu.get(&quot;currentNode&quot;).expand();&#xD;
+			treeMenu.set(&quot;currentEntity&quot;, newEntity);&#xD;
+		 this.set(&quot;^editor.readOnly&quot;, false);&#xD;
+		 this.get(&quot;#panelButtonSave&quot;).set(&quot;disabled&quot;,false);&#xD;
+		 this.get(&quot;#panelButtonCancel&quot;).set(&quot;disabled&quot;,false);&#xD;
+		 this.get(&quot;#panelButtonEdit&quot;).set(&quot;disabled&quot;,true);	&#xD;
+		}&#xD;
+		}else{&#xD;
+			dorado.MessageBox.alert(&quot;不能创建与&lt;虚拟平级节点>子级新闻！&quot;);&#xD;
+		}&#xD;
+    }&#xD;
+    else {&#xD;
+        dorado.MessageBox.alert(&quot;请选中一个新闻目录后再进行此操作！&quot;);&#xD;
+    }</ClientEvent>
+        <Property name="caption">创建子级新闻</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -60px -120px</Property>
+      </ToolBarButton>
+      <ToolBarButton id="tbDelete">
+        <ClientEvent name="onClick"> var currentEntity = this.id(&quot;dataTreeNews&quot;).get(&quot;currentEntity&quot;);&#xD;
+    var deleteAjaxAction = this.id(&quot;ajaxActionDelete&quot;);&#xD;
+    if (currentEntity) {&#xD;
+        if (currentEntity.get(&quot;nodeId&quot;) != 0) {&#xD;
+            var currentNode = this.id(&quot;dataTreeNews&quot;).get(&quot;currentNode&quot;);&#xD;
+            if (!currentNode.get(&quot;expanded&quot;)) {&#xD;
+                currentNode.expand();&#xD;
+            }&#xD;
+            if (currentNode.get(&quot;nodes&quot;).size == 0) {&#xD;
+                if(currentNode.get(&quot;data&quot;).get(&quot;statu&quot;) == &quot;save&quot; || currentNode.get(&quot;data&quot;).get(&quot;statu&quot;) == &quot;publish&quot;){&#xD;
+					var canDeleteAction = this.id(&quot;canDeleteAction&quot;);&#xD;
+				    canDeleteAction.execute(function(canDelete){&#xD;
+				    //var canDelete = canDeleteAction.get(&quot;returnValue&quot;);&#xD;
+					if(canDelete == false &amp;&amp; currentNode.get(&quot;data&quot;).get(&quot;statu&quot;) == &quot;publish&quot;){&#xD;
+						dorado.MessageBox.alert(&quot;已发布的新闻只有管理员才能删除！&quot;);&#xD;
+						return;&#xD;
+					}&#xD;
+	                dorado.MessageBox.show({&#xD;
+	                    title: &quot;提示&quot;,&#xD;
+	                    icon: dorado.MessageBox.INFO_ICON,&#xD;
+	                    message: &quot;您真的要删除当前新闻项吗？&quot;,&#xD;
+	                    buttons: [&quot;yes&quot;, &quot;no&quot;],&#xD;
+	                    detailCallback: function(buttonId){&#xD;
+	                        if (buttonId == &quot;yes&quot;) {&#xD;
+	                            currentEntity.remove();&#xD;
+								if (currentEntity.get(&quot;nodeId&quot;)) {&#xD;
+									deleteAjaxAction.set(&quot;parameter&quot;, {&#xD;
+										nodeId: currentEntity.get(&quot;nodeId&quot;)&#xD;
+									})&#xD;
+									deleteAjaxAction.execute();&#xD;
+								}&#xD;
+	                        }&#xD;
+	                    }&#xD;
+					})});&#xD;
+				}&#xD;
+			    else{&#xD;
+                    dorado.MessageBox.alert(&quot;当前新闻已申请发布，不允许删除！&quot;);&#xD;
+	            }&#xD;
+            }&#xD;
+            else {&#xD;
+                dorado.MessageBox.show({&#xD;
+                    title: &quot;操作错误&quot;,&#xD;
+                    icon: dorado.MessageBox.ERROR_ICON,&#xD;
+                    message: &quot;当前选中新闻或新闻目录含有子新闻项，请先删除子新闻！&quot;,&#xD;
+                    buttons: [&quot;ok&quot;]&#xD;
+                })&#xD;
+            }&#xD;
+        }&#xD;
+        else {&#xD;
+            dorado.MessageBox.alert(&quot;&lt;虚拟平级节点>不能进行删除&quot;);&#xD;
+        }&#xD;
+    }&#xD;
+    else {&#xD;
+        dorado.MessageBox.show({&#xD;
+            title: &quot;操作错误&quot;,&#xD;
+            icon: dorado.MessageBox.ERROR_ICON,&#xD;
+            message: &quot;请选中一个新闻后再进行此操作！&quot;,&#xD;
+            buttons: [&quot;ok&quot;]&#xD;
+        })&#xD;
+    }</ClientEvent>
+        <Property name="caption">删除选中项</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -80px -120px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var ajaxActionRefreshOscache = this.get(&quot;#ajaxActionRefreshOscache&quot;);&#xD;
+ dorado.MessageBox.show({&#xD;
+                    title: &quot;提示&quot;,&#xD;
+                    icon: dorado.MessageBox.INFO_ICON,&#xD;
+                    message: &quot;确认要刷新缓存吗？&quot;,&#xD;
+                    buttons: [&quot;yes&quot;, &quot;no&quot;],&#xD;
+                    detailCallback: function(buttonId){&#xD;
+                        if (buttonId == &quot;yes&quot;) {&#xD;
+                           ajaxActionRefreshOscache.execute();&#xD;
+                        }&#xD;
+                    }&#xD;
+                });</ClientEvent>
+        <Property name="caption">刷新缓存</Property>
+        <Property name="icon">	url(>skin>common/icons.gif) -280px -220px</Property>
+      </ToolBarButton>
+      <ToolBarButton id="tbApplyPublish">
+        <ClientEvent name="onClick">if(this.get(&quot;#panelButtonEdit&quot;).get(&quot;disabled&quot;) == true)&#xD;
+    dorado.MessageBox.alert(&quot;请先保存！&quot;);&#xD;
+else{&#xD;
+	//var entity = this.id(&quot;dataSetNews&quot;).getData(&quot;#&quot;);&#xD;
+	//var value = this.get(&quot;#dataTreeNews&quot;).get(&quot;currentNode&quot;).get(&quot;data&quot;).get(&quot;nodeId&quot;);&#xD;
+	/*var entity = view.get(&quot;#autoformEdit&quot;).get(&quot;entity&quot;);&#xD;
+	var value = entity.get(&quot;nodeId&quot;,&quot;always&quot;);&#xD;
+	var action = this.id(&quot;applyPublishAction&quot;);&#xD;
+    action.set(&quot;parameter&quot;,value).execute();*/&#xD;
+	this.id(&quot;dialog&quot;).show();&#xD;
+}</ClientEvent>
+        <Property name="caption">申请发布</Property>
+        <Property name="visible">false</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -0px -120px</Property>
+      </ToolBarButton>
+      <ToolBarButton id="tbFlowChart">
+        <Property name="caption">查看流程图</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -100px -100px</Property>
+        <Property name="visible">false</Property>
+        <Property name="action">flowChartAction</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <SplitPanel>
+      <Property name="position">300</Property>
+      <MainControl>
+        <Panel id="panelDetail">
+          <Property name="caption">详细内容</Property>
+          <Property name="contentOverflow">auto</Property>
+          <Property name="contentOverflowY">hidden</Property>
+          <Property name="contentOverflowX">auto</Property>
+          <Buttons>
+            <Button id="panelButtonSave">
+              <ClientEvent name="onClick">&#xD;
+window.checkNewsForm();&#xD;
+var action = this.id(&quot;updateActionNews&quot;);&#xD;
+action.execute();&#xD;
+this.get(&quot;#panelButtonSave&quot;).set(&quot;disabled&quot;,true);&#xD;
+this.get(&quot;#panelButtonCancel&quot;).set(&quot;disabled&quot;,true);&#xD;
+this.get(&quot;#panelButtonEdit&quot;).set(&quot;disabled&quot;,false);       &#xD;
+this.set(&quot;^editor.readOnly&quot;, true);     &#xD;
+&#xD;
+</ClientEvent>
+              <Property name="caption">保存</Property>
+              <Property name="icon">url(>skin>common/icons.gif) -140px -20px</Property>
+              <Property name="disabled">true</Property>
+            </Button>
+            <Button id="panelButtonCancel">
+              <ClientEvent name="onClick">var treeMenu = this.id(&quot;dataTreeNews&quot;);&#xD;
+var entity = treeMenu.get(&quot;currentEntity&quot;);&#xD;
+var formObj = this.get(&quot;^editor&quot;);&#xD;
+var saveButton = this.get(&quot;#panelButtonSave&quot;);&#xD;
+var cancelButton = this.get(&quot;#panelButtonCancel&quot;);&#xD;
+var editButton = this.get(&quot;#panelButtonEdit&quot;);&#xD;
+if (entity) {&#xD;
+    dorado.MessageBox.show({&#xD;
+        title: &quot;提示&quot;,&#xD;
+        icon: dorado.MessageBox.INFO_ICON,&#xD;
+        message: &quot;确定要取消当前操作？&quot;,&#xD;
+        buttons: [&quot;yes&quot;, &quot;no&quot;],&#xD;
+        detailCallback: function(buttonId){&#xD;
+            if (buttonId == &quot;yes&quot;) {&#xD;
+                entity.cancel();&#xD;
+				formObj.set(&quot;readOnly&quot;, true);&#xD;
+                saveButton.set(&quot;disabled&quot;,true);&#xD;
+                cancelButton.set(&quot;disabled&quot;,true);&#xD;
+				editButton.set(&quot;disabled&quot;,false);&#xD;
+            }&#xD;
+            else {&#xD;
+                &#xD;
+            }&#xD;
+        }&#xD;
+    })&#xD;
+}</ClientEvent>
+              <Property name="caption">取消</Property>
+              <Property name="disabled">true</Property>
+              <Property name="icon">url(>skin>common/icons.gif) -40px -0px</Property>
+            </Button>
+            <Button id="panelButtonEdit">
+              <ClientEvent name="onClick">var newsDataTree = this.get(&quot;#dataTreeNews&quot;);&#xD;
+var currentNode = newsDataTree.get(&quot;currentNode&quot;);&#xD;
+if (currentNode) {&#xD;
+	if (currentNode.get(&quot;data&quot;).get(&quot;nodeId&quot;) != 0) {&#xD;
+		if(currentNode.get(&quot;data&quot;).get(&quot;isleaf&quot;) == 'true')&#xD;
+			this.set(&quot;^editor.readOnly&quot;, false);&#xD;
+		 else if(currentNode.get(&quot;data&quot;).get(&quot;isleaf&quot;) == 'false'){&#xD;
+		 	this.set(&quot;#autoformNodeTitle2.readOnly&quot;, false);&#xD;
+			this.set(&quot;#autoformOrderDate2.readOnly&quot;, false);&#xD;
+			this.set(&quot;#autoformNodeCode2.readOnly&quot;, false);&#xD;
+			this.set(&quot;#autoformStatu2.readOnly&quot;, false);&#xD;
+		 }&#xD;
+		 this.get(&quot;#panelButtonSave&quot;).set(&quot;disabled&quot;,false);&#xD;
+		 this.get(&quot;#panelButtonCancel&quot;).set(&quot;disabled&quot;,false);&#xD;
+		 self.set(&quot;disabled&quot;,true);&#xD;
+	}&#xD;
+	else{&#xD;
+		dorado.MessageBox.alert(&quot;不能编辑&lt;虚拟平级节点>&quot;);&#xD;
+	}&#xD;
+}else{&#xD;
+ dorado.MessageBox.alert(&quot;请选中一个新闻目录后再进行此操作！&quot;);&#xD;
+}&#xD;
+</ClientEvent>
+              <Property name="caption">编辑</Property>
+              <Property name="icon">url(>skin>common/icons.gif) -100px -120px</Property>
+            </Button>
+          </Buttons>
+          <Children>
+            <HtmlContainer>
+              <ClientEvent name="onCreate">self.getDom().innerHTML = '&lt;p style=\'   background-color: #FFFFA2;'+&#xD;
+'border-color: #CAA700;border-style: solid;border-width: 1px;'+&#xD;
+'margin: 0;padding: 4px;\'>'+&#xD;
+'为了页面展示,请设置图片宽度小于500px;统一字体为宋体,大小为14px'+&#xD;
+'&lt;/p>';&#xD;
+</ClientEvent>
+              <Property name="contentOverflowY">scroll</Property>
+              <CardBook id="cardBook">
+                <AutoForm id="autoformEdit">
+                  <Property name="dataSet">dataSetNews</Property>
+                  <Property name="readOnly">true</Property>
+                  <Property name="dataPath">!CURRENT_NODE</Property>
+                  <Property name="cols">*,*</Property>
+                  <Property name="height">90%</Property>
+                  <Property name="dataType">dataTypeNews</Property>
+                  <Property name="tags">editor</Property>
+                  <AutoFormElement layoutConstraint="colSpan:2" name="autoFormElement2">
+                    <Property name="name">isleaf</Property>
+                    <Property name="property">isleaf</Property>
+                    <Property name="label">目录类型</Property>
+                    <Property name="readOnly">true</Property>
+                    <Editor/>
+                  </AutoFormElement>
+                  <AutoFormElement id="autoformNodeCode" layoutConstraint="colSpan:2" name="autoFormElement1">
+                    <Property name="name">nodeTitle</Property>
+                    <Property name="property">nodeCode</Property>
+                    <Property name="label">编码</Property>
+                    <Property name="tags">editor</Property>
+                    <Property name="readOnly">true</Property>
+                    <Editor/>
+                  </AutoFormElement>
+                  <AutoFormElement id="autoformNodeTitle" layoutConstraint="colSpan:2" name="autoFormElement1">
+                    <Property name="name">nodeTitle</Property>
+                    <Property name="property">nodeTitle</Property>
+                    <Property name="label">标题</Property>
+                    <Property name="tags">editor</Property>
+                    <Property name="readOnly">true</Property>
+                    <Editor/>
+                  </AutoFormElement>
+                  <AutoFormElement id="autoformnodeContent" layoutConstraint="colSpan:2" name="autoFormElement2">
+                    <Property name="name">nodeContent</Property>
+                    <Property name="property">nodeContent</Property>
+                    <Property name="label">内容</Property>
+                    <Property name="height">550</Property>
+                    <Property name="tags">editor</Property>
+                    <Property name="ignored">false</Property>
+                    <Editor>
+                      <UEditor>
+                        <Property name="defaultFontSize">14px</Property>
+                      </UEditor>
+                    </Editor>
+                  </AutoFormElement>
+                  <AutoFormElement id="autoformOrderDate" name="autoFormElement3">
+                    <Property name="property">orderDate</Property>
+                    <Property name="label">排序时间</Property>
+                    <Property name="readOnly">true</Property>
+                    <Editor>
+                      <DateTimeSpinner>
+                        <Property name="type">dateTime</Property>
+                      </DateTimeSpinner>
+                    </Editor>
+                  </AutoFormElement>
+                  <AutoFormElement name="autoFormElement4">
+                    <Property name="property">statu</Property>
+                    <Property name="label">状态</Property>
+                    <Property name="readOnly">true</Property>
+                    <Editor/>
+                  </AutoFormElement>
+                </AutoForm>
+                <AutoForm id="autoformEditCategory">
+                  <Property name="readOnly">true</Property>
+                  <Property name="dataType">dataTypeNews</Property>
+                  <Property name="dataSet">dataSetNews</Property>
+                  <Property name="dataPath">!CURRENT_NODE</Property>
+                  <Property name="cols">*,*</Property>
+                  <Property name="tags">editor</Property>
+                  <AutoFormElement layoutConstraint="colSpan:2" name="autoFormElement2">
+                    <Property name="name">isleaf</Property>
+                    <Property name="property">isleaf</Property>
+                    <Property name="label">目录类型</Property>
+                    <Property name="readOnly">true</Property>
+                    <Editor/>
+                  </AutoFormElement>
+                  <AutoFormElement id="autoformNodeCode2" layoutConstraint="colSpan:2">
+                    <Property name="name">nodeCode</Property>
+                    <Property name="property">nodeCode</Property>
+                    <Property name="label">编码</Property>
+                    <Property name="tags">editor</Property>
+                    <Property name="readOnly">true</Property>
+                    <Property name="name">autoFormElement5</Property>
+                    <Editor/>
+                  </AutoFormElement>
+                  <AutoFormElement id="autoformNodeTitle2" layoutConstraint="colSpan:2">
+                    <Property name="name">nodeTitle</Property>
+                    <Property name="property">nodeTitle</Property>
+                    <Property name="label">标题</Property>
+                    <Property name="tags">editor</Property>
+                    <Property name="readOnly">true</Property>
+                    <Property name="name">autoFormElement5</Property>
+                    <Editor/>
+                  </AutoFormElement>
+                  <AutoFormElement id="autoformOrderDate2" name="autoFormElement3">
+                    <Property name="property">orderDate</Property>
+                    <Property name="label">排序时间</Property>
+                    <Property name="tags">editor</Property>
+                    <Property name="readOnly">true</Property>
+                    <Editor>
+                      <DateTimeSpinner>
+                        <Property name="type">dateTime</Property>
+                      </DateTimeSpinner>
+                    </Editor>
+                  </AutoFormElement>
+                  <AutoFormElement id="autoformStatu2" name="autoFormElement4">
+                    <Property name="property">statu</Property>
+                    <Property name="label">状态</Property>
+                    <Property name="tags">editor</Property>
+                    <Property name="readOnly">true</Property>
+                    <Editor/>
+                  </AutoFormElement>
+                </AutoForm>
+              </CardBook>
+            </HtmlContainer>
+          </Children>
+          <Tools/>
+        </Panel>
+      </MainControl>
+      <SideControl>
+        <Panel>
+          <Property name="caption">新闻目录</Property>
+          <Buttons/>
+          <Children>
+            <DataTree id="dataTreeNews">
+              <ClientEvent name="onCurrentChange">this.set(&quot;^editor.readOnly&quot;, true);&#xD;
+this.get(&quot;#panelButtonSave&quot;).set(&quot;disabled&quot;,true);&#xD;
+this.get(&quot;#panelButtonCancel&quot;).set(&quot;disabled&quot;,true);&#xD;
+this.get(&quot;#panelButtonEdit&quot;).set(&quot;disabled&quot;,false);&#xD;
+this.get(&quot;#tbFlowChart&quot;).set(&quot;visible&quot;,false);&#xD;
+var leafVar = self.get(&quot;currentNode&quot;).get(&quot;data&quot;).get(&quot;isleaf&quot;);&#xD;
+var statu = self.get(&quot;currentNode&quot;).get(&quot;data&quot;).get(&quot;statu&quot;);&#xD;
+var eleContent=this.get(&quot;#autoformnodeContent&quot;);&#xD;
+var cardBook  =   this.get(&quot;#cardBook&quot;);&#xD;
+if(leafVar==&quot;true&quot;){&#xD;
+	cardBook.set(&quot;currentControl&quot;,&quot;autoformEdit&quot;);&#xD;
+	if(statu == &quot;save&quot;){&#xD;
+		this.get(&quot;#tbApplyPublish&quot;).set(&quot;visible&quot;,true);&#xD;
+	}&#xD;
+	else{		&#xD;
+	    this.get(&quot;#tbApplyPublish&quot;).set(&quot;visible&quot;,false);&#xD;
+		this.get(&quot;#panelButtonEdit&quot;).set(&quot;disabled&quot;,true);&#xD;
+		if(statu != &quot;publish&quot;)&#xD;
+		    this.get(&quot;#tbFlowChart&quot;).set(&quot;visible&quot;,true);&#xD;
+		&#xD;
+	}&#xD;
+}else if(leafVar == &quot;false&quot;){&#xD;
+	cardBook.set(&quot;currentControl&quot;,&quot;autoformEditCategory&quot;);&#xD;
+	this.get(&quot;#tbApplyPublish&quot;).set(&quot;visible&quot;,false);&#xD;
+}&#xD;
+</ClientEvent>
+              <ClientEvent name="onDragStop">var sourceObject = arg.draggingInfo.get(&quot;object&quot;);&#xD;
+var targetObject = arg.draggingInfo.get(&quot;targetObject&quot;);&#xD;
+var sourceEntity = sourceObject.get(&quot;data&quot;);&#xD;
+var targetEntity = targetObject.get(&quot;data&quot;);&#xD;
+if (targetEntity.get(&quot;isleaf&quot;) == &quot;true&quot;) {&#xD;
+	dorado.MessageBox.alert(&quot;请选择一个目录&quot;);&#xD;
+}&#xD;
+else {&#xD;
+	sourceEntity.set(&quot;parentId&quot;, targetEntity.get(&quot;nodeId&quot;));&#xD;
+    this.$CurrentOperation = &quot;DragTreeNode&quot;;&#xD;
+}</ClientEvent>
+              <ClientEvent name="beforeDraggingSourceDrop">var targetObject = arg.draggingInfo.get(&quot;targetObject&quot;);&#xD;
+var targetEntity = targetObject.get(&quot;data&quot;);&#xD;
+if (targetEntity.get(&quot;isleaf&quot;) == &quot;true&quot;) {&#xD;
+	throw new Exception(&quot;请选择一个目录&quot;);&#xD;
+}</ClientEvent>
+              <ClientEvent name="onRenderNode">var node = arg.node, data = node.get(&quot;data&quot;);&#xD;
+if (node.get(&quot;level&quot;) == 1 || data.get(&quot;isleaf&quot;) == &quot;true&quot;) {&#xD;
+	arg.processDefault = true;&#xD;
+}else {&#xD;
+	var index = new Number($(&quot;#&quot; + data.get(&quot;nodeCode&quot;) + &quot;index&quot;).html() == null ? &quot;1&quot; : $(&quot;#&quot; + data.get(&quot;nodeCode&quot;) + &quot;index&quot;).html());&#xD;
+	if (!$(&quot;#&quot; + data.get(&quot;nodeCode&quot;) + &quot;pageSize&quot;).html()) {&#xD;
+    var ajaxActionNodeCount = this.get(&quot;#nodeCountAjaxAction&quot;);&#xD;
+    var newsDataSet = this.get(&quot;#dataSetNews&quot;);&#xD;
+	ajaxActionNodeCount.set(&quot;parameter&quot;,{nodeId:data.get(&quot;nodeId&quot;),pageSize:newsDataSet.get(&quot;pageSize&quot;)});&#xD;
+	ajaxActionNodeCount.execute(function(){&#xD;
+		var  pageSize = ajaxActionNodeCount.get(&quot;returnValue&quot;);&#xD;
+		$(arg.dom).empty().xCreate([{&#xD;
+			tagName: &quot;SPAN&quot;,&#xD;
+			contentText: node.get(&quot;label&quot;)&#xD;
+		}, {&#xD;
+			tagName: &quot;label&quot;,&#xD;
+			// 定义按钮的标题&#xD;
+			title: &quot;上页&quot;,&#xD;
+			// 定义按钮的style&#xD;
+			style: {&#xD;
+				background:&quot;url(client/resource/images/icons.gif) -120px -280px&quot;,&#xD;
+                position:&quot;relative&quot;,&#xD;
+				top:&quot;5px&quot;,&#xD;
+				marginLeft: &quot;1px&quot;,&#xD;
+				cursor:&quot;pointer&quot;,&#xD;
+				display:&quot;inline-block&quot;,&#xD;
+				width:&quot;20px&quot;,&#xD;
+				height:&quot;20px&quot;&#xD;
+			},&#xD;
+			// 定义onclick事件&#xD;
+			onclick: function(){&#xD;
+				if (index > 1) {&#xD;
+					var indexArg = index-1;&#xD;
+					window.removeChildNode(indexArg);&#xD;
+				&#xD;
+				}&#xD;
+				&#xD;
+			}&#xD;
+		}, {&#xD;
+			tagName: &quot;label&quot;,&#xD;
+			// 定义按钮的标题&#xD;
+			title: &quot;下页&quot;,&#xD;
+			// 定义按钮的style&#xD;
+			style: {&#xD;
+				background:&quot;url(client/resource/images/icons.gif) -140px -280px&quot;,&#xD;
+                position:&quot;relative&quot;,&#xD;
+				top:&quot;5px&quot;,&#xD;
+				marginLeft: &quot;1px&quot;,&#xD;
+				cursor:&quot;pointer&quot;,&#xD;
+				display:&quot;inline-block&quot;,&#xD;
+				width:&quot;20px&quot;,&#xD;
+				height:&quot;20px&quot;&#xD;
+			},&#xD;
+			// 定义onclick事件&#xD;
+			onclick: function(){&#xD;
+				if (index &lt; pageSize) {&#xD;
+					var indexArg = index+1;&#xD;
+					window.removeChildNode(indexArg);&#xD;
+				&#xD;
+				}&#xD;
+			}&#xD;
+		}, {&#xD;
+			tagName: &quot;span&quot;,&#xD;
+			content: &quot;(&quot;,&#xD;
+			style: {&#xD;
+				marginLeft: &quot;1px&quot;&#xD;
+			}&#xD;
+		}, {&#xD;
+			tagName: &quot;span&quot;,&#xD;
+			id: data.get(&quot;nodeCode&quot;) + &quot;index&quot;,&#xD;
+			content: &quot;1&quot;,&#xD;
+			style: {&#xD;
+				marginLeft: &quot;1px&quot;&#xD;
+			}&#xD;
+		}, {&#xD;
+			tagName: &quot;span&quot;,&#xD;
+			content: &quot;/&quot;,&#xD;
+			style: {&#xD;
+				marginLeft: &quot;1px&quot;&#xD;
+			}&#xD;
+		}, {&#xD;
+			tagName: &quot;span&quot;,&#xD;
+			id: data.get(&quot;nodeCode&quot;) + &quot;pageSize&quot;,&#xD;
+			content: &quot;1&quot;,&#xD;
+			style: {&#xD;
+				marginLeft: &quot;1px&quot;&#xD;
+			}&#xD;
+		}, {&#xD;
+			tagName: &quot;span&quot;,&#xD;
+			content: &quot;)&quot;,&#xD;
+			style: {&#xD;
+				marginLeft: &quot;1px&quot;&#xD;
+			}&#xD;
+		}]);&#xD;
+		$(&quot;#&quot; + data.get(&quot;nodeCode&quot;) + &quot;index&quot;).html(index.toString());&#xD;
+		$(&quot;#&quot; + data.get(&quot;nodeCode&quot;) + &quot;pageSize&quot;).html(pageSize);		&#xD;
+	});&#xD;
+&#xD;
+	}&#xD;
+	else {&#xD;
+		var pageSize = $(&quot;#&quot; + data.get(&quot;nodeCode&quot;) + &quot;pageSize&quot;).html();&#xD;
+		$(arg.dom).empty().xCreate([{&#xD;
+			tagName: &quot;SPAN&quot;,&#xD;
+			contentText: node.get(&quot;label&quot;)&#xD;
+		}, {&#xD;
+			tagName: &quot;label&quot;,&#xD;
+			// 定义按钮的标题&#xD;
+			title: &quot;上页&quot;,&#xD;
+			// 定义按钮的style&#xD;
+			style: {&#xD;
+				background:&quot;url(client/resource/images/icons.gif) -120px -280px&quot;,&#xD;
+                position:&quot;relative&quot;,&#xD;
+				top:&quot;5px&quot;,&#xD;
+				marginLeft: &quot;1px&quot;,&#xD;
+				cursor:&quot;pointer&quot;,&#xD;
+				display:&quot;inline-block&quot;,&#xD;
+				width:&quot;20px&quot;,&#xD;
+				height:&quot;20px&quot;&#xD;
+			},&#xD;
+			// 定义onclick事件&#xD;
+			onclick: function(){&#xD;
+					if (index > 1) {&#xD;
+					var indexArg = index-1;&#xD;
+					window.removeChildNode(indexArg);&#xD;
+				}&#xD;
+				&#xD;
+			}&#xD;
+		}, {&#xD;
+			tagName: &quot;label&quot;,&#xD;
+			// 定义按钮的标题&#xD;
+			title: &quot;下页&quot;,&#xD;
+			// 定义按钮的style&#xD;
+			style: {&#xD;
+				background:&quot;url(client/resource/images/icons.gif) -140px -280px&quot;,&#xD;
+                position:&quot;relative&quot;,&#xD;
+				top:&quot;5px&quot;,&#xD;
+				marginLeft: &quot;1px&quot;,&#xD;
+				cursor:&quot;pointer&quot;,&#xD;
+				display:&quot;inline-block&quot;,&#xD;
+				width:&quot;20px&quot;,&#xD;
+				height:&quot;20px&quot;&#xD;
+			},&#xD;
+			// 定义onclick事件&#xD;
+			onclick: function(){&#xD;
+					if (index &lt; pageSize) {&#xD;
+					var indexArg = index+1;&#xD;
+					window.removeChildNode(indexArg);&#xD;
+				}&#xD;
+			}&#xD;
+		}, {&#xD;
+			tagName: &quot;span&quot;,&#xD;
+			content: &quot;(&quot;,&#xD;
+			style: {&#xD;
+				marginLeft: &quot;1px&quot;&#xD;
+			}&#xD;
+		}, {&#xD;
+			tagName: &quot;span&quot;,&#xD;
+			id: data.get(&quot;nodeCode&quot;) + &quot;index&quot;,&#xD;
+			content: &quot;1&quot;,&#xD;
+			style: {&#xD;
+				marginLeft: &quot;1px&quot;&#xD;
+			}&#xD;
+		}, {&#xD;
+			tagName: &quot;span&quot;,&#xD;
+			content: &quot;/&quot;,&#xD;
+			style: {&#xD;
+				marginLeft: &quot;1px&quot;&#xD;
+			}&#xD;
+		}, {&#xD;
+			tagName: &quot;span&quot;,&#xD;
+			id: data.get(&quot;nodeCode&quot;) + &quot;pageSize&quot;,&#xD;
+			content: &quot;1&quot;,&#xD;
+			style: {&#xD;
+				marginLeft: &quot;1px&quot;&#xD;
+			}&#xD;
+		}, {&#xD;
+			tagName: &quot;span&quot;,&#xD;
+			content: &quot;)&quot;,&#xD;
+			style: {&#xD;
+				marginLeft: &quot;1px&quot;&#xD;
+			}&#xD;
+		}]);&#xD;
+		$(&quot;#&quot; + data.get(&quot;nodeCode&quot;) + &quot;index&quot;).html(index.toString());&#xD;
+		$(&quot;#&quot; + data.get(&quot;nodeCode&quot;) + &quot;pageSize&quot;).html(pageSize);&#xD;
+	}&#xD;
+}</ClientEvent>
+              <Property name="dataSet">dataSetNews</Property>
+              <Property name="currentNodeDataPath">CURRENT_NODE</Property>
+              <Property name="dragTags">newsTree</Property>
+              <Property name="draggable">false</Property>
+              <Property name="droppable">false</Property>
+              <Property name="droppableTags">newsTree</Property>
+              <Property name="dropMode">onOrInsertItems</Property>
+              <Property name="expandingMode">async</Property>
+              <BindingConfigs>
+                <BindingConfig>
+                  <Property name="recursive">true</Property>
+                  <Property name="labelProperty">nodeTitle</Property>
+                  <Property name="childrenProperty">subNews</Property>
+                  <Property name="expandLevel">4</Property>
+                  <Property name="iconProperty">icon</Property>
+                  <Property name="name">newsTree</Property>
+                </BindingConfig>
+              </BindingConfigs>
+            </DataTree>
+          </Children>
+          <Tools/>
+        </Panel>
+      </SideControl>
+    </SplitPanel>
+    <Dialog id="dialog">
+      <Property name="width">500</Property>
+      <Property name="height">350</Property>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="draggable">true</Property>
+      <Property name="droppable">true</Property>
+      <Property name="caption">选择审核处理人</Property>
+      <Property name="minimizeable">false</Property>
+      <Property name="maximizeable">true</Property>
+      <Property name="closeable">true</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">var user = this.id(&quot;dataSetUsers&quot;).getData(&quot;#&quot;);&#xD;
+if(user){&#xD;
+	var entity = view.get(&quot;#autoformEdit&quot;).get(&quot;entity&quot;);&#xD;
+	var value = entity.get(&quot;nodeId&quot;,&quot;always&quot;);&#xD;
+	var action = this.id(&quot;applyPublishAction&quot;);&#xD;
+	var parameter = {&#xD;
+	    newsId:value,&#xD;
+	    userName:user.get(&quot;username&quot;)&#xD;
+    };&#xD;
+	action.set(&quot;parameter&quot;,parameter).execute();&#xD;
+	var dialog = this.id(&quot;dialog&quot;);&#xD;
+	dialog.hide();&#xD;
+}&#xD;
+else{&#xD;
+	dorado.MessageBox.alert(&quot;请选择审批处理人！&quot;);&#xD;
+}</ClientEvent>
+          <Property name="caption">确定</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var dialog = this.id(&quot;dialog&quot;);&#xD;
+dialog.hide();</ClientEvent>
+          <Property name="caption">取消</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <Container>
+          <DataGrid>
+            <Property name="dataSet">dataSetUsers</Property>
+            <Property name="readOnly">true</Property>
+            <DataColumn>
+              <Property name="name">username</Property>
+              <Property name="property">username</Property>
+              <Editor/>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">cname</Property>
+              <Property name="property">cname</Property>
+              <Editor/>
+            </DataColumn>
+          </DataGrid>
+        </Container>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <UpdateAction id="updateActionNews">
+      <ClientEvent name="beforeExecute">//window.checkNewsForm();&#xD;
+</ClientEvent>
+      <Property name="successMessage">保存数据成功</Property>
+      <Property name="dataResolver">newsTreePR#saveAllNews</Property>
+      <UpdateItem>
+        <Property name="dataSet">dataSetNews</Property>
+        <Property name="dataPath">!CURRENT_NODE</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <AjaxAction id="ajaxActionDelete">
+      <Property name="successMessage">操作成功</Property>
+      <Property name="service">newsTreePR#deleteNewsById</Property>
+    </AjaxAction>
+    <UpdateAction id="updateActionDragTree">
+      <Property name="dataResolver">newsTreePR#doRebuildNewsTree</Property>
+      <UpdateItem>
+        <Property name="dataSet">dataSetNews</Property>
+        <Property name="dataPath">!DIRTY_TREE</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <AjaxAction id="newsTreePaginationAjaxAction">
+      <Property name="service">newsTreePR#findPaginationNewsTreeAjax</Property>
+      <Property name="async">true</Property>
+    </AjaxAction>
+    <AjaxAction id="nodeCountAjaxAction">
+      <Property name="service">newsTreePR#getNodeCountByParentId</Property>
+      <Property name="async">false</Property>
+    </AjaxAction>
+    <AjaxAction id="ajaxActionRefreshOscache">
+      <Property name="service">newsTreePR#flushAllOscache</Property>
+      <Property name="successMessage">缓存刷新成功</Property>
+    </AjaxAction>
+    <AjaxAction id="applyPublishAction">
+      <ClientEvent name="onSuccess">//var isSuccess = self.get(&quot;returnValue&quot;);&#xD;
+//if(isSuccess){&#xD;
+	this.get(&quot;#panelButtonEdit&quot;).set(&quot;disabled&quot;,true);&#xD;
+	this.get(&quot;#tbApplyPublish&quot;).set(&quot;visible&quot;,false);&#xD;
+	this.get(&quot;#tbFlowChart&quot;).set(&quot;visible&quot;,true);&#xD;
+	var entity = view.get(&quot;#autoformEdit&quot;).get(&quot;entity&quot;);&#xD;
+	entity.set(&quot;statu&quot;,&quot;managerApproving&quot;);&#xD;
+	self.set(&quot;successMessage&quot;,&quot;已成功启动流程申请，请等候审批&quot;);&#xD;
+//}&#xD;
+//else{&#xD;
+//	dorado.MessageBox.alert(&quot;未找到审批主任，请通知管理员在角色{主任}下指定当前申请人所在部门的主任！&quot;);&#xD;
+//}&#xD;
+</ClientEvent>
+      <Property name="service">newsPublishService#applyPublish</Property>
+      <Property name="parameter"></Property>
+    </AjaxAction>
+    <AjaxAction id="flowChartAction">
+      <ClientEvent name="beforeExecute">var dataTree = this.id(&quot;dataTreeNews&quot;);&#xD;
+var value = dataTree.get(&quot;currentNode&quot;).get(&quot;data&quot;).get(&quot;nodeId&quot;);&#xD;
+self.set(&quot;parameter&quot;,value);</ClientEvent>
+      <ClientEvent name="onSuccess">var taskId = self.get(&quot;returnValue&quot;);&#xD;
+this.get(&quot;#ufloProcessDiagram1&quot;).set(&quot;requestParameterValue&quot;,taskId);&#xD;
+view.id(&quot;ufloProcessDiagram1&quot;).show();</ClientEvent>
+      <Property name="service">newsPublishService#getTaskId</Property>
+    </AjaxAction>
+    <AjaxAction id="canDeleteAction">
+      <Property name="service">newsTreePR#canDelete</Property>
+    </AjaxAction>
+  </View>
+</ViewConfig>

@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model>
+  <DataType name="Supportprogram">
+    <Property name="matchType">com.buaa.out.domain.Supportprogram</Property>
+    <PropertyDef name="troop">
+      <Property name="dataType">String</Property>
+      <Property name="label">部队</Property>
+    </PropertyDef>
+    <PropertyDef name="staffrequirement">
+      <Property name="dataType">String</Property>
+      <Property name="label">人员需求</Property>
+    </PropertyDef>
+    <PropertyDef name="supporttype">
+      <Property name="dataType">String</Property>
+      <Property name="label">保障类型</Property>
+    </PropertyDef>
+    <PropertyDef name="changeperiod">
+      <Property name="dataType">String</Property>
+      <Property name="label">更换周期</Property>
+    </PropertyDef>
+    <PropertyDef name="workaddress">
+      <Property name="dataType">String</Property>
+      <Property name="label">地点</Property>
+      <Property name="mapping">
+        <Property name="mapValues"></Property>
+      </Property>
+    </PropertyDef>
+    <PropertyDef name="worktime">
+      <Property name="dataType">DateTime</Property>
+      <Property name="label">制定时间</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+      <Property name="visible">false</Property>
+    </PropertyDef>
+    <Reference name="supportitem">
+      <Property name="dataProvider">supportitemPR#querySupportitem</Property>
+      <Property name="dataType">[Supportitem]</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="oid">$${this.oid}</Property>
+        </Entity>
+      </Property>
+    </Reference>
+    <PropertyDef name="miji">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">密级</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">机密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">秘密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">非密</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+      <Property name="defaultValue">0</Property>
+    </PropertyDef>
+    <PropertyDef name="parentnode">
+      <Property name="dataType">String</Property>
+      <Property name="label">parentnode</Property>
+      <Property name="visible">false</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Supportitem">
+    <Property name="matchType">com.buaa.out.domain.Supportitem</Property>
+    <PropertyDef name="startexecutiontime">
+      <Property name="dataType">DateTime</Property>
+      <Property name="label">开始时间</Property>
+    </PropertyDef>
+    <PropertyDef name="endexecutiontime">
+      <Property name="dataType">DateTime</Property>
+      <Property name="label">结束时间</Property>
+    </PropertyDef>
+    <PropertyDef name="registrationexecutor">
+      <Property name="dataType">String</Property>
+      <Property name="label">登记执行人</Property>
+    </PropertyDef>
+    <PropertyDef name="id">
+      <Property name="dataType">String</Property>
+      <Property name="label">id</Property>
+      <Property name="visible">false</Property>
+    </PropertyDef>
+    <PropertyDef name="supportprogram">
+      <Property name="dataType">Supportprogram</Property>
+    </PropertyDef>
+    <Reference name="handover">
+      <Property name="parameter">
+        <Entity>
+          <Property name="oid">$${this.id}</Property>
+        </Entity>
+      </Property>
+      <Property name="dataProvider">handoverPR#queryHandover</Property>
+      <Property name="dataType">[Handover]</Property>
+      <Property name="pageSize">20</Property>
+    </Reference>
+    <Reference name="children1">
+      <Property name="dataProvider">itemmemberPR#queryItemmember</Property>
+      <Property name="dataType">[Itemmember]</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="tid">$${this.id}</Property>
+        </Entity>
+      </Property>
+      <Property name="visible">false</Property>
+    </Reference>
+    <PropertyDef name="miji">
+      <Property name="dataType">Integer</Property>
+      <Property name="defaultValue">0</Property>
+      <Property name="label">密级</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">机密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">秘密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">非密</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Itemmember">
+    <Property name="matchType">com.buaa.out.domain.Itemmember</Property>
+    <PropertyDef name="id">
+      <Property name="dataType">String</Property>
+      <Property name="label">id</Property>
+    </PropertyDef>
+    <PropertyDef name="children">
+      <Property name="dataType">Handover</Property>
+    </PropertyDef>
+    <PropertyDef name="supportitem">
+      <Property name="dataType">Supportitem</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Supportevaluation">
+    <Property name="matchType">com.buaa.out.domain.Supportevaluation</Property>
+    <PropertyDef name="supportgrade">
+      <Property name="dataType">String</Property>
+      <Property name="label">supportgrade</Property>
+    </PropertyDef>
+    <PropertyDef name="supportendtime">
+      <Property name="dataType">DateTime</Property>
+      <Property name="label">supportendtime</Property>
+    </PropertyDef>
+    <PropertyDef name="supportaddress">
+      <Property name="dataType">String</Property>
+      <Property name="label">supportaddress</Property>
+    </PropertyDef>
+    <PropertyDef name="feedbackquestion">
+      <Property name="dataType">String</Property>
+      <Property name="label">feedbackquestion</Property>
+    </PropertyDef>
+    <PropertyDef name="supportstarttime">
+      <Property name="dataType">DateTime</Property>
+      <Property name="label">supportstarttime</Property>
+    </PropertyDef>
+    <PropertyDef name="customersatisfactionsurvey">
+      <Property name="dataType">String</Property>
+      <Property name="label">customersatisfactionsurvey</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Technicaldocument">
+    <Property name="matchType">com.buaa.out.domain.Technicaldocument</Property>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="documenttype">
+      <Property name="dataType">String</Property>
+      <Property name="label">文档类型</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="aircrafttype">
+      <Property name="dataType">String</Property>
+      <Property name="label">机型</Property>
+    </PropertyDef>
+    <PropertyDef name="number">
+      <Property name="dataType">String</Property>
+      <Property name="label">文件编号</Property>
+      <Property name="readOnly">false</Property>
+      <Property name="required">true</Property>
+      <Validator type="ajax">
+        <ClientEvent name="beforeExecute">var oid = arg.entity.get(&quot;oid&quot;);&#xD;
+if(!oid)&#xD;
+    oid = null;&#xD;
+var parameter = {&#xD;
+		oid:oid,&#xD;
+		number:arg.data&#xD;
+	};&#xD;
+arg.parameter = parameter;</ClientEvent>
+        <Property name="service">technicaldocumentManager#technicaldocumentIsExists</Property>
+      </Validator>
+    </PropertyDef>
+    <PropertyDef name="title">
+      <Property name="dataType">String</Property>
+      <Property name="label">文件标题</Property>
+      <Property name="readOnly">false</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="efile">
+      <Property name="dataType">String</Property>
+      <Property name="label">文件附件</Property>
+    </PropertyDef>
+    <PropertyDef name="contentabstract">
+      <Property name="dataType">String</Property>
+      <Property name="label">内容摘要</Property>
+    </PropertyDef>
+    <PropertyDef name="contenttype">
+      <Property name="dataType">String</Property>
+      <Property name="label">内容类型</Property>
+    </PropertyDef>
+    <PropertyDef name="transceivertype">
+      <Property name="dataType">String</Property>
+      <Property name="label">收发类型</Property>
+    </PropertyDef>
+    <PropertyDef name="major">
+      <Property name="dataType">String</Property>
+      <Property name="label">所属专业</Property>
+    </PropertyDef>
+    <PropertyDef name="responsibleperson">
+      <Property name="dataType">String</Property>
+      <Property name="label">责任人</Property>
+      <Property name="readOnly">false</Property>
+      <Property name="required">false</Property>
+    </PropertyDef>
+    <PropertyDef name="issuedate">
+      <Property name="dataType">Date</Property>
+      <Property name="label">发放日期</Property>
+    </PropertyDef>
+    <PropertyDef name="recipient">
+      <Property name="dataType">String</Property>
+      <Property name="label">接收人</Property>
+    </PropertyDef>
+    <PropertyDef name="execution">
+      <Property name="dataType">String</Property>
+      <Property name="label">执行/处理情况</Property>
+    </PropertyDef>
+    <PropertyDef name="miji">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">密级</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">机密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">秘密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">非密</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+      <Property name="defaultValue">0</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Handover">
+    <Property name="matchType">com.buaa.out.domain.Handover</Property>
+    <PropertyDef name="outfield">
+      <Property name="dataType">String</Property>
+      <Property name="label">地点</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="efile">
+      <Property name="dataType">String</Property>
+      <Property name="label">交接文件</Property>
+    </PropertyDef>
+    <PropertyDef name="filename">
+      <Property name="dataType">String</Property>
+      <Property name="label">交接文件名</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="personto">
+      <Property name="dataType">String</Property>
+      <Property name="label">接收人</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="filenumber">
+      <Property name="dataType">String</Property>
+      <Property name="label">文件编号</Property>
+      <Property name="required">true</Property>
+      <Validator type="ajax">
+        <ClientEvent name="beforeExecute">var oid = arg.entity.get(&quot;oid&quot;);&#xD;
+if(!oid)&#xD;
+    oid = null;&#xD;
+var parameter = {&#xD;
+		oid:oid,&#xD;
+		number:arg.data&#xD;
+	};&#xD;
+arg.parameter = parameter;</ClientEvent>
+        <Property name="service">handoverManager#handoverIsExists</Property>
+      </Validator>
+    </PropertyDef>
+    <PropertyDef name="personfrom">
+      <Property name="dataType">String</Property>
+      <Property name="label">交接人</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="handovertime">
+      <Property name="dataType">DateTime</Property>
+      <Property name="label">交接时间</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+      <Property name="visible">false</Property>
+    </PropertyDef>
+    <PropertyDef name="miji">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">密级</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">机密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">秘密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">非密</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+      <Property name="defaultValue">0</Property>
+    </PropertyDef>
+    <PropertyDef name="supportitem">
+      <Property name="dataType">Supportitem</Property>
+      <Property name="visible">false</Property>
+    </PropertyDef>
+    <PropertyDef name="bytes">
+      <Property name="dataType">Integer</Property>
+      <Property name="required">false</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Servicepersonnel">
+    <Property name="matchType">com.buaa.out.domain.Servicepersonnel</Property>
+    <PropertyDef name="outfield">
+      <Property name="dataType">String</Property>
+      <Property name="label">地点</Property>
+    </PropertyDef>
+    <PropertyDef name="job">
+      <Property name="dataType">String</Property>
+      <Property name="label">承担工作</Property>
+    </PropertyDef>
+    <PropertyDef name="datefrom">
+      <Property name="dataType">DateTime</Property>
+      <Property name="label">出差日期</Property>
+    </PropertyDef>
+    <PropertyDef name="dateto">
+      <Property name="dataType">DateTime</Property>
+      <Property name="label">返回日期</Property>
+    </PropertyDef>
+    <PropertyDef name="name">
+      <Property name="dataType">String</Property>
+      <Property name="label">姓名</Property>
+    </PropertyDef>
+    <PropertyDef name="staffnumber">
+      <Property name="dataType">String</Property>
+      <Property name="label">职工编号</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="miji">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">密级</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">机密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">秘密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">非密</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+      <Property name="defaultValue">0</Property>
+    </PropertyDef>
+  </DataType>
+</Model>

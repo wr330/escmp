@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Testparameter</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <DataSet id="dsTestparameter">
+      <Property name="dataType">[Testparameter]</Property>
+      <Property name="dataProvider">testparameterPR#queryTestparameter</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <DataSet id="dsUsers">
+      <Property name="dataProvider">bdf2.userMaintain#loadUsers</Property>
+      <Property name="dataType">[User]</Property>
+      <Property name="pageSize">200</Property>
+    </DataSet>
+    <DataSet id="dsDictionaryParaType">
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="dictype">Dic_ParaType</Property>
+          <Property name="status">0</Property>
+        </Entity>
+      </Property>
+    </DataSet>
+    <DataSet id="dsDictionaryMajor">
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="dictype">Dic_Major</Property>
+          <Property name="status">0</Property>
+        </Entity>
+      </Property>
+      <Property name="dataType">[Dictionary]</Property>
+    </DataSet>
+    <UpdateAction id="uaTestparameter">
+      <Property name="dataResolver">testparameterPR#saveTestparameter</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsTestparameter</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <ToolBar>
+      <DataPilot>
+        <Property name="itemCodes">pages</Property>
+        <Property name="dataSet">dsTestparameter</Property>
+        <Property name="dataPath"/>
+      </DataPilot>
+      <ToolBarButton>
+        <ClientEvent name="onClick">
+	view.id('dsTestparameter').getData().insert();
+	view.id('diaTestparameter').show();
+	</ClientEvent>
+        <Property name="caption">新增</Property>
+        <Property name="icon">url(&gt;skin&gt;common/icons.gif) -120px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">
+	var cur=view.id('dsTestparameter').getData('#');
+	if (cur) {
+		view.id('diaTestparameter').show();
+	}
+	</ClientEvent>
+        <Property name="caption">修改</Property>
+        <Property name="icon"> url(&gt;skin&gt;common/icons.gif) -300px -60px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsTestparameter').getData('#');
+	var ua=view.id('uaTestparameter')
+	if(cur){
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+			cur.remove();
+			ua.execute();
+				}); 
+			} 
+	</ClientEvent>
+        <Property name="caption">删除</Property>
+        <Property name="icon"> url(&gt;skin&gt;common/icons.gif) -140px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <Property name="icon">url(&gt;skin&gt;common/icons.gif) -40px -140px</Property>
+        <Property name="action">export2ReportAction1</Property>
+        <Property name="caption">导出</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid id="dgTestparameter">
+      <Property name="readOnly">true</Property>
+      <Property name="dataSet">dsTestparameter</Property>
+      <Property name="dataPath"/>
+      <Property name="filterMode">serverSide</Property>
+      <Property name="showFilterBar">true</Property>
+      <Property name="rowHeight">22</Property>
+      <RowNumColumn/>
+      <DataColumn name="paraname">
+        <Property name="property">paraname</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="paratype">
+        <Property name="property">paratype</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="major">
+        <Property name="property">major</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="responsiblepersion">
+        <Property name="property">responsiblepersion</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="subdate">
+        <Property name="property">subdate</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="fatustate">
+        <Property name="property">fatustate</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="implementation">
+        <Property name="property">implementation</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="parastate">
+        <Property name="property">parastate</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="coordinatelist">
+        <Property name="property">coordinatelist</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+    </DataGrid>
+    <Dialog id="diaTestparameter">
+      
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="caption">试飞测试参数</Property>
+      <Property name="width">500</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaTestparameter').execute(function(){
+               view.id('diaTestparameter').hide();
+           });
+         </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(&gt;skin&gt;common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">view.set("#datagridMajor.selection",null);
+var cur=view.id('dsTestparameter').getData('#');
+				cur.cancel();
+				view.id('diaTestparameter').hide();
+	         </ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(&gt;skin&gt;common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <CustomDropDown id="customDropDown1">
+          <Property name="editable">false</Property>
+          <Property name="autoOpen">true</Property>
+          <DataGrid>
+            <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#13;
+var user=view.id("dsUsers").getData("#");&#13;
+if (user) {&#13;
+	dropDown.close(user.get("cname"));&#13;
+}</ClientEvent>
+            <Property name="showFilterBar">true</Property>
+            <Property name="rowHeight">22</Property>
+            <Property name="dataSet">dsUsers</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="height">300</Property>
+            <RowNumColumn/>
+            <DataColumn>
+              <Property name="name">username</Property>
+              <Property name="property">username</Property>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">cname</Property>
+              <Property name="property">cname</Property>
+            </DataColumn>
+            <DataColumn name="depts">
+              <ClientEvent name="onRenderCell">var entitylist = arg.data.get("depts");&#13;
+var name = [];&#13;
+if (entitylist) {&#13;
+	entitylist.each(function(item){&#13;
+		name.push(item.get("name"));&#13;
+	});&#13;
+}&#13;
+arg.dom.innerHTML = name.join(",");</ClientEvent>
+              <Property name="property">depts</Property>
+            </DataColumn>
+          </DataGrid>
+        </CustomDropDown>
+        <DataSetDropDown id="dataSetDropDownParaType">
+          <Property name="autoOpen">true</Property>
+          <Property name="dataSet">dsDictionaryParaType</Property>
+          <Property name="property">name</Property>
+          <Property name="displayProperty">name</Property>
+          <Property name="editable">false</Property>
+          <Property name="useEmptyItem">true</Property>
+        </DataSetDropDown>
+        <CustomDropDown id="customDropDown2">
+          <ClientEvent name="onClose">var selections = view.get(&quot;#datagridMajor.selection&quot;);&#xD;
+	var tmpList=selections.slice(0);&#xD;
+	if(tmpList.length==0){alert(&quot;来源专业必填&quot;);}&#xD;
+	else{&#xD;
+			var name=&quot;&quot;;&#xD;
+	tmpList.each(function(entity){name+=entity.get(&quot;name&quot;)+&quot;,&quot;;});&#xD;
+	var entity=view.get(&quot;#dsTestparameter&quot;).getData(&quot;#&quot;);&#xD;
+	/*var name=name.split(&quot;&quot;);&#xD;
+	name[name.length-1]=&quot;&quot;;&#xD;
+	var name=name.join(&quot;&quot;);*/&#xD;
+	name=name.substring(0,name.length-1);&#xD;
+	entity.set(&quot;major&quot;,name);&#xD;
+	&#xD;
+	}&#xD;
+		&#xD;
+		&#xD;
+		arg.processDefault = false;&#xD;
+</ClientEvent>
+          <ClientEvent name="onOpen">view.set(&quot;#datagridMajor.selection&quot;,null);&#xD;
+&#xD;
+var value =view.get(&quot;#major1.value&quot;);&#xD;
+if(value){&#xD;
+	var selectedItems=[];&#xD;
+	var p1=value.indexOf(&quot;,&quot;);&#xD;
+	if(p1==-1){&#xD;
+		var dataList =view.get(&quot;#dsDictionaryMajor&quot;).getData();&#xD;
+		    dataList.each(function(entity){&#xD;
+		if(entity.get(&quot;name&quot;)==value){&#xD;
+			selectedItems.push(entity);	&#xD;
+		}&#xD;
+	});&#xD;
+	}&#xD;
+	else{&#xD;
+&#xD;
+	while(p1!=-1){&#xD;
+	value1=value.substring(0,p1);&#xD;
+	var dataList =view.get(&quot;#dsDictionaryMajor&quot;).getData();&#xD;
+	&#xD;
+	dataList.each(function(entity){&#xD;
+		if(entity.get(&quot;name&quot;)==value1){&#xD;
+			selectedItems.push(entity);		&#xD;
+		}&#xD;
+	});&#xD;
+	&#xD;
+	value=value.substring(p1+1,value.length);&#xD;
+	var p1=value.indexOf(&quot;,&quot;);&#xD;
+	if(p1==-1){&#xD;
+		&#xD;
+	&#xD;
+	    dataList.each(function(entity){&#xD;
+		if(entity.get(&quot;name&quot;)==value){&#xD;
+			selectedItems.push(entity);	&#xD;
+		}&#xD;
+	});&#xD;
+	}&#xD;
+	}&#xD;
+	&#xD;
+	}&#xD;
+	&#xD;
+	view.set(&quot;#datagridMajor.selection&quot;,selectedItems);&#xD;
+}&#xD;
+</ClientEvent>
+          
+          <Property name="autoOpen">true</Property>
+          <Container>
+            <Property name="height">140</Property>
+            <DataGrid id="datagridMajor">
+               <ClientEvent name="onReady">&#xD;
+var value =view.get(&quot;#major1.value&quot;);&#xD;
+if(value){&#xD;
+	var selectedItems=[];&#xD;
+	var p1=value.indexOf(&quot;,&quot;);&#xD;
+	if(p1==-1){&#xD;
+	&#xD;
+		var dataList =view.get(&quot;#dsDictionaryMajor&quot;).getData();&#xD;
+		    dataList.each(function(entity){&#xD;
+		if(entity.get(&quot;name&quot;)==value){&#xD;
+			selectedItems.push(entity);	&#xD;
+		}&#xD;
+	});&#xD;
+	}&#xD;
+	else{&#xD;
+	&#xD;
+	&#xD;
+	while(p1!=-1){&#xD;
+	value1=value.substring(0,p1);&#xD;
+	var dataList =view.get(&quot;#dsDictionaryMajor&quot;).getData();&#xD;
+	&#xD;
+	dataList.each(function(entity){&#xD;
+		if(entity.get(&quot;name&quot;)==value1){&#xD;
+			selectedItems.push(entity);		&#xD;
+		}&#xD;
+	});&#xD;
+	&#xD;
+	value=value.substring(p1+1,value.length);&#xD;
+	var p1=value.indexOf(&quot;,&quot;);&#xD;
+	if(p1==-1){&#xD;
+		&#xD;
+	&#xD;
+	    dataList.each(function(entity){&#xD;
+		if(entity.get(&quot;name&quot;)==value){&#xD;
+			selectedItems.push(entity);	&#xD;
+		}&#xD;
+	});&#xD;
+	}&#xD;
+	}&#xD;
+	}&#xD;
+	view.set(&quot;#datagridMajor.selection&quot;,selectedItems);&#xD;
+}&#xD;
+</ClientEvent>
+              <ClientEvent name="onDataRowClick">//单击行设置选中。多选，判断是否已选，已选则取消&#xD;
+&#xD;
+if(arg.column.get(&quot;name&quot;) == &quot;name&quot;){&#xD;
+var entity=view.get(&quot;#dsDictionaryMajor&quot;).getData(&quot;#&quot;);&#xD;
+&#xD;
+&#xD;
+var selection=self.get(&quot;selection&quot;);&#xD;
+if(selection==undefined) selection=new Array();//逻辑错误&#xD;
+	//var tmpList=selections.slice(0);&#xD;
+	var m=0;&#xD;
+	if(m==0){&#xD;
+	selection.each(function(data){ &#xD;
+	if(data==entity)&#xD;
+	{&#xD;
+	selection.remove(data);&#xD;
+	m=1;&#xD;
+    }&#xD;
+});&#xD;
+self.set(&quot;selection&quot;,selection);&#xD;
+}&#xD;
+if(m==0){&#xD;
+	selection.insert(entity);&#xD;
+	self.set(&quot;selection&quot;,selection);&#xD;
+}&#xD;
+}</ClientEvent>
+              
+              <Property name="dataSet">dsDictionaryMajor</Property>
+              <Property name="height">80%</Property>
+              <Property name="readOnly">true</Property>
+              <Property name="rowHeight">22</Property>
+              <Property name="selectionMode">multiRows</Property>
+              <Property name="showHeader">false</Property>
+              <RowSelectorColumn/>
+              <DataColumn name="name">
+                <Property name="property">name</Property>
+              </DataColumn>
+            </DataGrid>
+            <ToolBar layoutConstraint="bottom">
+              <Button>
+                <ClientEvent name="onClick">&#13;
+var selections = view.get("#datagridMajor.selection");&#13;
+	var tmpList=selections.slice(0);&#13;
+	if(tmpList.length==0){alert("来源专业必填");}&#13;
+	else&#13;
+	{&#13;
+			var name="";&#13;
+	tmpList.each(function(entity){name+=entity.get("name")+",";});&#13;
+	var entity=view.get("#dsTestparameter").getData("#");&#13;
+	&#13;
+	name=name.substring(0,name.length-1);&#13;
+	entity.set("major",name);&#13;
+	&#13;
+	}&#13;
+		&#13;
+		view.get("#customDropDown2").close();&#13;
+	&#13;
+		arg.processDefault = false;&#13;
+&#13;
+	</ClientEvent>
+                <Property name="caption">确定</Property>
+              </Button>
+              <Button>
+                <ClientEvent name="onClick">&#13;
+view.set("#datagridMajor.selection",null);&#13;
+&#13;
+view.get("#customDropDown2").close();&#13;
+	&#13;
+		arg.processDefault = false;&#13;
+&#13;
+	</ClientEvent>
+                <Property name="caption">取消</Property>
+              </Button>
+            </ToolBar>
+          </Container>
+        </CustomDropDown>
+        <AutoForm id="afTestparameter">
+          <Property name="cols">*</Property>
+          <Property name="dataSet">dsTestparameter</Property>
+          <Property name="dataPath">#</Property>
+          <Property name="labelWidth">100</Property>
+          <AutoFormElement>
+            <Property name="name">ParaName</Property>
+            <Property name="property">paraname</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">ParaType</Property>
+            <Property name="property">paratype</Property>
+            <Property name="trigger">dataSetDropDownParaType</Property>
+          </AutoFormElement>
+          <AutoFormElement id="major1">
+            <Property name="name">Major</Property>
+            <Property name="property">major</Property>
+            <Property name="trigger">customDropDown2</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">ResponsiblePersion</Property>
+            <Property name="property">responsiblepersion</Property>
+            <Property name="trigger">customDropDown1,triggerClear</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">SubDate</Property>
+            <Property name="property">subdate</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">FaTuState</Property>
+            <Property name="property">fatustate</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">Implementation</Property>
+            <Property name="property">implementation</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">ParaState</Property>
+            <Property name="property">parastate</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">CoordinateList</Property>
+            <Property name="property">coordinatelist</Property>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Export2ReportAction id="export2ReportAction1">
+      <Property name="template">dgTestparameter</Property>
+      <Property name="dataScope">serverAll</Property>
+    </Export2ReportAction>
+  </View>
+</ViewConfig>

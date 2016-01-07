@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:d="http://www.bstek.com/dorado/schema"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.bstek.com/dorado/schema http://www.bstek.com/dorado/schema/spring-dorado-7.0.xsd">
+  
+  <!--  -->
+   <context:component-scan base-package="com.bstek"/>
+  	<bean id="bdf.passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder"></bean>
+<!-- 	<bean id="NrsFilter" class="com.bstek.newstree.filter.NrsFilter"> -->
+<!-- 	</bean> -->
+  	
+  
+</beans>

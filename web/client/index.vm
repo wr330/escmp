@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<title>$!{title}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="$!{resourcesPath}resource/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="$!{resourcesPath}resource/js/jquery.min.js"></script>
+<script type="text/javascript" src="$!{resourcesPath}resource/js/jcarousellite_1.0.1.min.js"></script>
+<script type="text/javascript" src="$!{resourcesPath}resource/js/easySlider1.js"></script>
+#[[<script type="text/javascript" charset="utf-8">
+$(document).ready(function(){	
+	$("#slider").easySlider({
+		controlsBefore:	'<p id="controls">',
+		controlsAfter:	'</p>',
+		auto: true, 
+		pause:	8000,
+		continuous: true
+	});	
+});
+$(function() {
+    $(".menu").jCarouselLite({
+        btnNext: ".next",
+        btnPrev: ".prev",
+        circular: false,
+        visible: 6
+    });
+});
+</script>]]#
+<style type="text/css">
+#slider { margin:0; padding:0; list-style:none; }
+#slider ul,
+#slider li { margin:0; padding:0; list-style:none; }
+/* 
+    define width and height of list item (slide)
+    entire slider area will adjust according to the parameters provided here
+*/
+#slider li { width:966px; height:348px; overflow:hidden; }
+
+</style>
+</head>
+<body>
+<div class="main">
+ #parse("top.vm")
+  <div class="slider">
+    <div class="slice1">
+      <div style="width: 966px; height: 348px; overflow: hidden;" class="slice2" id="slider">
+        <ul style="width: 2898px; margin-left: 0px;">
+          <li style="float: left;">         	
+           <div>
+              <p class="img"><img src="$!{resourcesPath}resource/images/simple_text_img_4.png" alt="screen 2" height="292" width="539"></p>
+              <h2>NRS <br>
+               新闻发布系统 </h2>
+              <p>新闻发布系统(News Release System)(简称NRS)是一个基于新闻和内容管理的全站管理系统,新闻发布系统是基于B/S模式的WEBMIS系统,本系统可以将杂乱无章的信息经过组织,合理有序地呈现在大家面前。采用velocity,spring MVC,dorado7,BDF等技术进行开发。</p>
+              <p><a href="$!{basePath}nrs" title="新闻发布系统"><img src="$!{resourcesPath}resource/images/more_information.gif" alt="img" border="0" height="30" width="133"></a></p>
+           </div>
+          </li>
+          <li style="float: left;">
+           <div>
+              <p class="img"><img src="$!{resourcesPath}resource/images/simple_text_img_1.png" alt="screen 1" height="292" width="539"></p>
+              <h2>极速开发 <br>
+                仿佛艳艳</h2>
+              <p>DORADO展现中间件软件V7.0(简称Dorado7)是锐道(BSTEK)研发的源代码开放的商业软件，是企业级AJAX交互式web应用的运行平台与开发平台，填补Java技术体系Web表现层的架构空白，基于Dorado7能够快速而规范地开发出具有美感与差异化用户体验的Web应用。</p>
+              <p><a href="http://www.bsdn.org/projects/dorado7" title="dorado7" target="_blank"><img src="$!{resourcesPath}resource/images/more_information.gif" alt="dorado7" border="0" height="30" width="133"></a></p>
+           </div>
+          </li>
+          <li style="float: left;">
+            <div>
+              <p class="img"><img src="$!{resourcesPath}resource/images/simple_text_img_3.png" alt="screen 3" height="292" width="539"></p>
+              <h2>BDF <br>
+                锐道开发框架</h2>
+              <p>锐道开发框架（Bstek Development Framework 简称 BDF)，是一套以Spring3为基础以 Dorado7 为表现层的轻量级企业应用开发框架，提供诸如权限控制、流程引擎、WebService发布与调用、任务调度、多数据源切换等企业应用常见的功能</p>
+              <p><a href="http://www.bsdn.org/projects/bdf" title="bdf" target="_blank"><img src="$!{resourcesPath}resource/images/more_information.gif" alt="dorado7" border="0" height="30" width="133"></a></p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="clr"></div>
+  <div class="body">
+    <div class="topi">
+      <div class="blogi">
+        <h2 class="what">Dorado7</h2>
+        <p><a title="     Dorado7的全称是Dorado展现中间件，是一款开源软件，致力于为Web应用提供更加丰富、友好的用户界面，同时大幅提高展现层的开发效率。本产品由三个部分组成：浏览器端的控件(Javascript+css)、服务器端的驱动引擎(Java)和集成开发环境(Eclipse Plugin)。Dorado7是一款完全重新设计打造的产品，几乎没有从前作中继承任何代码，是Dorado产品（包括更早期的Extra产品）在实战多年后的一次重大革新。" style="text-decoration: none;color:#646464;" href="http://www.bsdn.org/projects/dorado7" target="_blank">
+        	 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dorado7的全称是Dorado展现中间件，是一款开源软件，致力于为Web应用提供更加丰富、友好的用户界面，同时大幅提高展现层的开发效率。本产品由三个部分组成：浏览器端的控件(Javascript+css)、服务器端的驱动引擎(Java)... </a></p>
+        <p><a href="http://www.bsdn.org/projects/dorado7" target="_blank"  title="dorado7">more</a></p>
+      </div>
+      <div class="blogi">
+        <h2 class="Our">BDF</h2>
+        <p><a title="锐道开发框架（Bstek Development Framework 简称 BDF)，是一套以Spring3为基础以 Dorado7 为表现层的轻量级企业应用开发框架，提供诸如权限控制、流程引擎、WebService发布与调用、任务调度、多数据源切换等企业应用常见的功能。" style="text-decoration: none;color:#646464;" href="http://www.bsdn.org/projects/bdf" target="_blank">
+        	 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;锐道开发框架（Bstek Development Framework 简称 BDF)，是一套以Spring3为基础以 Dorado7为表现层的轻量级企业应用开发框架，提供诸如权限控制、流程引擎、WebService发布与调用、任务调度、多数据源切换等企业应用... </a></p>
+        <p><a href="http://www.bsdn.org/projects/bdf" target="_blank"  title="bdf">more</a></p>
+      </div>
+      <div class="blogi">
+        <h2 class="work">BSDN</h2>
+        <p><a title="     1， 中华人民共和国内依法注册、依法登记的机关、企、事业单位、社会团体和民办非企业单位（以下简称合法单位），以实名制为前提，均可以成为BSTEK会员。2， 合法单位支付年费之后成为相应级别的BSTEK会员，以《中华人民共和国组织机构代码证》所显示的组织机构代码为准，一个组织机构代码对应一家BSTEK会员，一家BSETK会员对应一份BSTEK会员证书。......" style="text-decoration: none; color:#646464;" href="http://www.bsdn.org/members/bstekmembership" target="_blank">
+        	 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1， 中华人民共和国内依法注册、依法登记的机关、企、事业单位、社会团体和民办非企业单位（以下简称合法单位），以实名制为前提，均可以成为BSTEK会员。2， 合法单位支付年费之后成为相应级别的BSTEK会员，以... </a></p>
+        <p><a href="http://www.bsdn.org" target="_blank" title="bsdn">more</a></p>
+      </div>
+      <div class="clr"></div>
+    </div>
+    <div class="clr"></div>
+  </div>
+      <div class="body_resize">
+      <div class="News">
+        <h2>热点新闻</h2>
+        <ul>
+		#foreach($a in [0..9])
+			#if($!{mainNewsList.size()}>$!{a})
+				<li ><a  href="$!{basePath}dynamic/hot_news/$!{mainNewsList.get($!{a}).getNodeCode()}" title="$!{mainNewsList.get($!{a}).getNodeTitle()}">$!{mainNewsList.get($!{a}).getNodeTitle()}</a></li>
+			#else
+			#end
+		#end
+        </ul>
+        <div style="margin-top:10px;"><a href="$!{basePath}dynamic/hot_news" style="color:#35678F;" title="more">more</a></div>
+      </div>
+      <div class="Welcome">
+        <h2>新闻发布系统简介</h2>
+        <p><strong>项目简介 </strong></p>
+        <div class="bg"></div>
+        <p style="color:#8D8D8D;font-size:13px;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新闻发布系统(News Release System)简称(NRS) 是一个基于新闻和内容管理的全站管理系统,新闻发布系统是基于B/S模式的WEBMIS系统,
+        本系统可以将杂乱无章的信息经过组织,合理有序地呈现在大家面前。
+        采用velocity,spring MVC,dorado7,BDF等技术进行开发。前台使用velocity开发页面模板，
+        使用spring MVC配置搭建MVC框架，实现了视图与模型的分离。后台使用BDF框架搭建，使用dorado7进行开发。
+        网站所有的内容及分类都放在datatree控件上进行展现，更加直观，易操作。内容编辑使用htmleditor控件，
+        可以轻松的将word,及excel编辑好的文件复制进去。使得发布信息的的使用人员不须要知道过多的html，css等技术就能发布丰富多彩的网页内容。
+        系统中使用oscache缓存技术对网页中的内容进行缓存,提高了系统并发访问时的性能。前台的模板界面不仅仅拘泥于某种风格，可根据各人的品位及创新自由发挥。只要你了解html ,css 及velocity。
+        你就可以编写出属于你想要的风格的新闻发布系统。
+        </p>
+        <div class="bg"></div>
+        <ul class="main_nrs_ul">
+        	#foreach($a in [0..2])
+			#if($!{mainNrsGuideList.size()}>$!{a})
+          <li class="main_nrs_li"><a href="$!{basePath}nrs/$!{mainNrsGuideList.get($!{a}).getNodeCode()}" style="color:#35678F;" title="$!{mainNrsGuideList.get($!{a}).getNodeTitle()}">$!{mainNrsGuideList.get($!{a}).getNodeTitle()}</a></li>  
+        	#else
+			#end
+		#end
+        </ul>
+      </div>
+      <div class="clr"></div>
+    </div>
+    <div class="clr"></div>
+  </div>
+#parse("footer.vm")
+</div>
+
+</body></html>

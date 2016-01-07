@@ -1,0 +1,9 @@
+  <div class="footer">
+    <div class="resize">
+      <div>
+        <p class="footer_left">Copyright © 1998 - 2012 Bstek. All Rights Reserved</p>
+        <p><a href="http://www.bstek.com" title="bstek">Home</a> | <a href="http://www.bstek.com/home/company/contact" title="contact">Contact</a> | <a href="$!{base}/d7.login.Login.d">login</a></p>
+      </div>
+    </div>
+    <p class="clr"></p>
+  </div>

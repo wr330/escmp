@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<title></title>
+</head>
+<body scroll="no">
+<div class="News">
+     <ul>
+		#foreach($a in [0..9])
+			#if($!{classicNewsList.size()}>$!{a})
+			    <li style="*float:left;*overflow:hidden;" class="list"><a style="*float:left;" href ="$!{basePath}dynamic/classic_news/$!{classicNewsList.get($!{a}).getNodeCode()}" target="_blank" title="$!{classicNewsList.get($!{a}).getNodeTitle()}">$!{classicNewsList.get($!{a}).getNodeTitle2()}</a><font style="float:right;Color:#46a3ff;" id = "orderDate">$!{classicNewsList.get($!{a}).getOrderDate2()}</font></li>
+				##<li ><a  href="$!{basePath}dynamic/classic_news/$!{classicNewsList.get($!{a}).getNodeCode()}" title="$!{classicNewsList.get($!{a}).getNodeTitle()}">$!{classicNewsList.get($!{a}).getNodeTitle()}</a></li>
+			#else
+			#end
+		#end
+     </ul>
+     <div style="margin-top:10px;text-align:right;"><a href="$!{basePath}dynamic/classic_news" target="_blank" style="color:#35678F;" title="更多">more</a></div>
+     <style>
+        .News{
+              width:640px;
+              margin:0px;
+              display: inline;
+	          text-align: left;
+	          font-size:12px;
+	          font-family: 'Hiragino Sans GB',Verdana,Arial,Sans-Serif;}
+        .News ul { list-style:none; margin:0; padding:0;height:260px; }
+        .News li { background:url($!{resourcesPath}resource/images/Sub_ul_li.gif) left no-repeat; padding:5px 5px 5px 30px; margin:0; border-bottom:1px solid #eaeaea; }
+        .News ul li a { font: normal 12px 'SimSun-ExtB',Verdana,Arial,Sans-Serif; color:#3a3c3c; text-decoration:none; }
+        .News ul li a:hover { color:#2e5a7c; text-decoration:underline; }
+    </style>
+</div>
+</body></html>

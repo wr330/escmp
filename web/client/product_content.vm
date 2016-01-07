@@ -1,0 +1,10 @@
+<style>
+	.welcome_detail_content p{
+	font:normal 14px 'Microsoft YaHei',Verdana,Arial,Sans-Serif;
+	}
+</style>
+<div class="welcome_detail_title" style=" margin-top: 5px;">$!{currentNode.getNodeTitle()}</div>
+ <hr style="border:1px #cccccc dotted;"/>
+<div class="welcome_detail_content" style ="font:normal 14px 'Microsoft YaHei',Verdana,Arial,Sans-Serif;">	
+$!{currentNode.getNodeContent()}
+</div>

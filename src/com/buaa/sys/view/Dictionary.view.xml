@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Dictionary</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <DataSet id="dsDictionary">
+      <Property name="dataType">[Dictionary]</Property>
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+      <Property name="loadMode">manual</Property>
+    </DataSet>
+    <UpdateAction id="uaDictionary">
+      <Property name="dataResolver">dictionaryPR#saveDictionary</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsDictionary</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <SplitPanel>
+      <Property name="position">240</Property>
+      <MainControl>
+        <Container>
+          <ToolBar>
+            <ToolBarButton>
+              <ClientEvent name="onClick">var node = view.id(&quot;tree1&quot;).get(&quot;currentNode&quot;);
+var dictype = node.get(&quot;userData&quot;);
+if(dictype){
+    view.id('dsDictionary').getData().insert({dictype:dictype});
+    view.id('diaDictionary').show();
+}
+else
+    dorado.MessageBox.alert(&quot;请先选择一个数据字典类别！&quot;);
+	</ClientEvent>
+              <Property name="caption">新增</Property>
+              <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">
+	var cur=view.id('dsDictionary').getData('#');
+	if (cur) {
+		view.id('diaDictionary').show();
+	}
+	</ClientEvent>
+              <Property name="caption">修改</Property>
+              <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">var cur=view.id('dsDictionary').getData('#');
+	var ua=view.id('uaDictionary')
+	if(cur){
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+			cur.remove();
+			ua.execute();
+				}); 
+			} 
+	</ClientEvent>
+              <Property name="caption">删除</Property>
+              <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+            </ToolBarButton>
+          </ToolBar>
+          <DataGrid id="dgDictionary">
+            <Property name="readOnly">true</Property>
+            <Property name="dataSet">dsDictionary</Property>
+            <Property name="dataPath"></Property>
+            <Property name="filterMode">clientSide</Property>
+            <Property name="showFilterBar">false</Property>
+            <Property name="rowHeight">22</Property>
+            <RowNumColumn/>
+            <DataColumn name="name">
+              <Property name="property">name</Property>
+              <Property name="width">160</Property>
+            </DataColumn>
+            <DataColumn name="description">
+              <Property name="property">description</Property>
+              <Property name="width">300</Property>
+            </DataColumn>
+            <DataColumn name="dictype">
+              <Property name="property">dictype</Property>
+              <Property name="width">160</Property>
+            </DataColumn>
+            <DataColumn name="status">
+              <Property name="property">status</Property>
+              <Property name="width">120</Property>
+              <Property name="align">left</Property>
+            </DataColumn>
+          </DataGrid>
+        </Container>
+      </MainControl>
+      <SideControl>
+        <Panel>
+          <Property name="caption">数据字典类别目录</Property>
+          <Buttons/>
+          <Children>
+            <Tree id="tree1">
+              <ClientEvent name="onCurrentChange">var dictype = arg.newCurrent.get(&quot;userData&quot;);&#xD;
+if(!dictype)&#xD;
+    dictype = &quot;undefined&quot;;&#xD;
+var dataset = view.id(&quot;dsDictionary&quot;);&#xD;
+var parameter = {&#xD;
+	dictype:dictype&#xD;
+}&#xD;
+dataset.set(&quot;parameter&quot;,parameter).flushAsync();&#xD;
+</ClientEvent>
+              <Node>
+                <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
+                <Property name="label">外场服务工作</Property>
+                <Property name="expanded">true</Property>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="label">外场地点</Property>
+                  <Property name="userData">Dic_Outfield</Property>
+                </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="label">所属专业</Property>
+                  <Property name="userData">Dic_Major</Property>
+                </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="label">外场执行情况</Property>
+                  <Property name="userData">Dic_OutExecution</Property>
+                </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="userData">Dic_OutDocumentType</Property>
+                  <Property name="label">文档类型</Property>
+                </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="label">保障计划类型</Property>
+                  <Property name="userData">Dic_Plantype</Property>
+                </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="label">更换周期</Property>
+                  <Property name="userData">Dic_Changetime</Property>
+                </Node>
+              </Node>
+              <Node>
+                <Property name="expanded">true</Property>
+                <Property name="label">试飞技术工作</Property>
+                <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
+                <Node>
+                  <Property name="label">试飞大纲完成状态</Property>
+                  <Property name="userData">Dic_CompleteState</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                </Node>
+                <Node>
+                  <Property name="label">试飞大纲剩余状态</Property>
+                  <Property name="userData">Dic_RemainState</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                </Node>
+                <Node>
+                  <Property name="label">机型代号</Property>
+                  <Property name="userData">Dic_AircraftType</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                </Node>
+                <Node>
+                  <Property name="label">试飞任务单执行情况</Property>
+                  <Property name="userData">Dic_TaskExecution</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="userData">Dic_ShiFeiAdrs</Property>
+                  <Property name="label">试飞地点</Property>
+                </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="userData">Dic_Laiyuan</Property>
+                  <Property name="label">信息来源</Property>
+                </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="userData">Dic_DealStatus</Property>
+                  <Property name="label">处理状态</Property>
+                </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="userData">Dic_Department</Property>
+                  <Property name="label">责任/相关部门</Property>
+                </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="userData">Dic_MajorSystem</Property>
+                  <Property name="label">责任/相关专业</Property>
+                </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="userData">Dic_DutyType</Property>
+                  <Property name="label">问题责任</Property>
+                </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="userData">Dic_Gzfs</Property>
+                  <Property name="label">跟踪方式</Property>
+                </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="userData">Dic_Majorsubject</Property>
+                  <Property name="label">试飞科目</Property>
+                </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="userData">Dic_Result</Property>
+                  <Property name="label">任务完成情况</Property>
+                </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="userData">Dic_TestStatus</Property>
+                  <Property name="label">试飞状态</Property>
+                </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="userData">Dic_EngineState</Property>
+                  <Property name="label">引擎状态</Property>
+                </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="userData">Dic_FoundOpp</Property>
+                  <Property name="label">发现时机</Property>
+                </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="userData">Dic_Effect</Property>
+                  <Property name="label">故障后果</Property>
+                </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="userData">Dic_Origin</Property>
+                  <Property name="label">问题来源</Property>
+                </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="userData">Dic_Deal</Property>
+                  <Property name="label">现场处理方式</Property>
+                </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="userData">Dic_Type</Property>
+                  <Property name="label">判明方式</Property>
+                </Node>
+              </Node>
+              <Node>
+                <Property name="label">部门通用工作</Property>
+                <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
+                <Property name="expanded">true</Property>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="label">作业状态</Property>
+                  <Property name="userData">Dic_JobState</Property>
+                </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="label">资源类型</Property>
+                  <Property name="userData">Dic_ResourceType</Property>
+                </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="label">会议文件类型</Property>
+                  <Property name="userData">Dic_MeetDocumentType</Property>
+                </Node>
+              </Node>
+            </Tree>
+          </Children>
+          <Tools/>
+        </Panel>
+      </SideControl>
+    </SplitPanel>
+    <Dialog id="diaDictionary">
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">500</Property>
+      <Property name="caption">数据字典</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaDictionary').execute(function(){
+               view.id('diaDictionary').hide();
+           });
+         </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsDictionary').getData('#');
+				cur.cancel();
+				view.id('diaDictionary').hide();
+	         </ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afDictionary">
+          <Property name="cols">*</Property>
+          <Property name="dataSet">dsDictionary</Property>
+          <Property name="dataPath">#</Property>
+          <AutoFormElement>
+            <Property name="name">Name</Property>
+            <Property name="property">name</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">Description</Property>
+            <Property name="property">description</Property>
+            <Property name="editorType">TextArea</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">DicType</Property>
+            <Property name="property">dictype</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="editable">true</Property>
+            <Editor>
+              <TextEditor>
+                <Property name="style">
+                  <Property name="background">#e0e0e0</Property>
+                </Property>
+              </TextEditor>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">Status</Property>
+            <Property name="property">status</Property>
+            <Property name="editable">false</Property>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+  </View>
+</ViewConfig>

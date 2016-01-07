@@ -1,0 +1,1115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model>
+  <DataType name="Subject" meta="x:8;y:10">
+    <Property name="matchType">com.buaa.fly.domain.Subject</Property>
+    <PropertyDef name="orderno">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">序号</Property>
+    </PropertyDef>
+    <PropertyDef name="description">
+      <Property name="dataType">String</Property>
+      <Property name="label">描述</Property>
+    </PropertyDef>
+    <PropertyDef name="name">
+      <Property name="dataType">String</Property>
+      <Property name="label">科目名称</Property>
+      <Property name="required">true</Property>
+      <Validator type="ajax">
+        <ClientEvent name="beforeExecute">var oid = arg.entity.get(&quot;oid&quot;);&#xD;
+var ftype = arg.entity.get(&quot;ftype&quot;);&#xD;
+if(!oid)&#xD;
+    oid = null;&#xD;
+var parameter = {&#xD;
+		ftype:ftype,&#xD;
+		oid:oid,&#xD;
+		name:arg.data&#xD;
+	};&#xD;
+arg.parameter = parameter;</ClientEvent>
+        <Property name="service">subjectManager#subjectIsExists</Property>
+      </Validator>
+    </PropertyDef>
+    <PropertyDef name="parentnode">
+      <Property name="dataType">String</Property>
+      <Property name="label">上级科目</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="ftype">
+      <Property name="dataType">String</Property>
+      <Property name="label">机型</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Tasklist" meta="x:287;y:10">
+    <Property name="matchType">com.buaa.fly.domain.Tasklist</Property>
+    <PropertyDef name="taskexecution">
+      <Property name="dataType">String</Property>
+      <Property name="label">执行情况</Property>
+    </PropertyDef>
+    <PropertyDef name="tasknumber">
+      <Property name="dataType">String</Property>
+      <Property name="label">试飞任务单号</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="aircrafttype">
+      <Property name="dataType">String</Property>
+      <Property name="label">机型</Property>
+    </PropertyDef>
+    <PropertyDef name="taskcontent">
+      <Property name="dataType">String</Property>
+      <Property name="label">任务单内容</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="subject">
+      <Property name="dataType">String</Property>
+      <Property name="label">试飞科目</Property>
+    </PropertyDef>
+    <Reference name="fdata">
+      <Property name="dataProvider">dataPR#queryData</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="tasknumber">$${this.tasknumber}</Property>
+        </Entity>
+      </Property>
+      <Property name="dataType">[Data]</Property>
+    </Reference>
+    <PropertyDef name="miji">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">密级</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">机密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">秘密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">非密</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+      <Property name="defaultValue">0</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Sfstatistic" meta="x:426;y:10">
+    <Property name="creationType">com.buaa.fly.domain.Sfstatistic</Property>
+    <PropertyDef name="id">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">id</Property>
+    </PropertyDef>
+    <PropertyDef name="ftype">
+      <Property name="dataType">String</Property>
+      <Property name="label">飞机型号</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="fdate">
+      <ClientEvent name="onSet">arg.entity.set(&quot;para&quot;,true);&#xD;
+var year = arg.value.getFullYear();&#xD;
+var month = arg.value.getMonth();&#xD;
+var date = arg.value.getDate();&#xD;
+var time = arg.entity.get(&quot;timeqifei&quot;);&#xD;
+time.setYear(year);&#xD;
+time.setMonth(month);&#xD;
+time.setDate(date);&#xD;
+arg.entity.set(&quot;timeqifei&quot;,time);&#xD;
+time = arg.entity.get(&quot;timeland&quot;);&#xD;
+time.setYear(year);&#xD;
+time.setMonth(month);&#xD;
+time.setDate(date);&#xD;
+arg.entity.set(&quot;timeland&quot;,time);&#xD;
+arg.entity.set(&quot;para&quot;,false);&#xD;
+</ClientEvent>
+      <Property name="dataType">Date</Property>
+      <Property name="label">飞行日期</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="timeqifei">
+      <ClientEvent name="onSet">var para = arg.entity.get(&quot;para&quot;);&#xD;
+if(para)&#xD;
+    return;&#xD;
+var fdate = arg.entity.get(&quot;fdate&quot;);&#xD;
+var year = fdate.getFullYear();&#xD;
+var month = fdate.getMonth();&#xD;
+var date = fdate.getDate();&#xD;
+var time = arg.value;&#xD;
+time.setYear(year);&#xD;
+time.setMonth(month);&#xD;
+time.setDate(date);&#xD;
+arg.value = time;&#xD;
+</ClientEvent>
+      <Property name="dataType">Time</Property>
+      <Property name="label">起飞时间</Property>
+      <Property name="defaultValue">00:00:00</Property>
+    </PropertyDef>
+    <PropertyDef name="timeland">
+      <ClientEvent name="onSet">var para = arg.entity.get(&quot;para&quot;);&#xD;
+if(para)&#xD;
+    return;&#xD;
+var fdate = arg.entity.get(&quot;fdate&quot;);&#xD;
+var year = fdate.getFullYear();&#xD;
+var month = fdate.getMonth();&#xD;
+var date = fdate.getDate();&#xD;
+var time = arg.value;&#xD;
+time.setYear(year);&#xD;
+time.setMonth(month);&#xD;
+time.setDate(date);&#xD;
+arg.value = time;</ClientEvent>
+      <Property name="dataType">Time</Property>
+      <Property name="label">着陆时间</Property>
+      <Property name="defaultValue">00:00:00</Property>
+    </PropertyDef>
+    <PropertyDef name="timefly">
+      <ClientEvent name="onGet">var timeland = arg.entity.get(&quot;timeland&quot;);&#xD;
+var timeqifei = arg.entity.get(&quot;timeqifei&quot;);&#xD;
+if(timeland != null &amp;&amp; timeqifei != null){&#xD;
+    var time = (timeland.getTime()-timeqifei.getTime())/1000;&#xD;
+    var miao = time%60;&#xD;
+    var fen = (parseInt(time/60))%60;&#xD;
+    var shi = parseInt(time/3600);&#xD;
+    arg.value = (shi&lt;10?&quot;0&quot;+shi:shi) + &quot;:&quot; +  (fen&lt;10?&quot;0&quot;+fen:fen) + &quot;:&quot; +  (miao&lt;10?&quot;0&quot;+miao:miao);&#xD;
+}</ClientEvent>
+      <Property name="dataType">String</Property>
+      <Property name="label">飞行时间</Property>
+      <Property name="defaultValue">00:00:00</Property>
+    </PropertyDef>
+    <PropertyDef name="taskno">
+      <Property name="dataType">String</Property>
+      <Property name="label">任务单号</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="jiaci">
+      <Property name="dataType">String</Property>
+      <Property name="label">当日架次</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="config">
+      <Property name="dataType">String</Property>
+      <Property name="label">飞机构型</Property>
+    </PropertyDef>
+    <PropertyDef name="address">
+      <Property name="dataType">String</Property>
+      <Property name="label">地点</Property>
+    </PropertyDef>
+    <PropertyDef name="subject">
+      <Property name="dataType">String</Property>
+      <Property name="label">子科目</Property>
+    </PropertyDef>
+    <PropertyDef name="bytes2">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">bytes2</Property>
+    </PropertyDef>
+    <PropertyDef name="filename4">
+      <Property name="dataType">String</Property>
+      <Property name="label">任务交底单</Property>
+    </PropertyDef>
+    <PropertyDef name="bytes1">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">bytes1</Property>
+    </PropertyDef>
+    <PropertyDef name="pilot">
+      <Property name="dataType">String</Property>
+      <Property name="label">飞行员</Property>
+    </PropertyDef>
+    <PropertyDef name="checker">
+      <Property name="dataType">String</Property>
+      <Property name="label">审阅</Property>
+    </PropertyDef>
+    <PropertyDef name="dailymajor">
+      <Property name="dataType">String</Property>
+      <Property name="label">dailymajor</Property>
+    </PropertyDef>
+    <PropertyDef name="jiangpingmajor">
+      <Property name="dataType">String</Property>
+      <Property name="label">jiangpingmajor</Property>
+    </PropertyDef>
+    <PropertyDef name="feixingqk">
+      <Property name="dataType">String</Property>
+      <Property name="label">任务执行情况记录</Property>
+    </PropertyDef>
+    <PropertyDef name="gdasdirjp">
+      <Property name="dataType">String</Property>
+      <Property name="label">GDAS指挥员讲评</Property>
+    </PropertyDef>
+    <PropertyDef name="jiangpingname">
+      <Property name="dataType">String</Property>
+      <Property name="label">jiangpingname</Property>
+    </PropertyDef>
+    <PropertyDef name="filename3">
+      <Property name="dataType">String</Property>
+      <Property name="label">问题概述单</Property>
+    </PropertyDef>
+    <PropertyDef name="filename2">
+      <Property name="dataType">String</Property>
+      <Property name="label">飞行员讲评</Property>
+    </PropertyDef>
+    <PropertyDef name="filename5">
+      <Property name="dataType">String</Property>
+      <Property name="label">试飞任务单</Property>
+    </PropertyDef>
+    <PropertyDef name="pilotjp">
+      <Property name="dataType">String</Property>
+      <Property name="label">飞行员讲评</Property>
+    </PropertyDef>
+    <PropertyDef name="xianchang">
+      <Property name="dataType">String</Property>
+      <Property name="label">现场人员</Property>
+    </PropertyDef>
+    <PropertyDef name="bytes4">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">bytes4</Property>
+    </PropertyDef>
+    <PropertyDef name="jiankongjl">
+      <Property name="dataType">String</Property>
+      <Property name="label">故障监控记录</Property>
+    </PropertyDef>
+    <PropertyDef name="action">
+      <Property name="dataType">String</Property>
+      <Property name="label">试验动作</Property>
+    </PropertyDef>
+    <PropertyDef name="yuyou">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">余油</Property>
+    </PropertyDef>
+    <PropertyDef name="dataaddr">
+      <Property name="dataType">String</Property>
+      <Property name="label">数据下载地址</Property>
+    </PropertyDef>
+    <PropertyDef name="towerdir">
+      <Property name="dataType">String</Property>
+      <Property name="label">塔台指挥员</Property>
+    </PropertyDef>
+    <PropertyDef name="sequence">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">sequence</Property>
+    </PropertyDef>
+    <PropertyDef name="bytes3">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">bytes3</Property>
+    </PropertyDef>
+    <PropertyDef name="jiayou">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">加油</Property>
+    </PropertyDef>
+    <PropertyDef name="towerdirjp">
+      <Property name="dataType">String</Property>
+      <Property name="label">灯塔指挥员讲评</Property>
+    </PropertyDef>
+    <PropertyDef name="result">
+      <Property name="dataType">String</Property>
+      <Property name="label">任务完成情况</Property>
+    </PropertyDef>
+    <PropertyDef name="dailyname">
+      <Property name="dataType">String</Property>
+      <Property name="label">录入人员</Property>
+    </PropertyDef>
+    <PropertyDef name="pilotpj">
+      <Property name="dataType">String</Property>
+      <Property name="label">飞行员空中语音摘要</Property>
+    </PropertyDef>
+    <PropertyDef name="mainsubject">
+      <Property name="dataType">String</Property>
+      <Property name="label">试飞科目</Property>
+    </PropertyDef>
+    <PropertyDef name="summary">
+      <Property name="dataType">String</Property>
+      <Property name="label">备注</Property>
+    </PropertyDef>
+    <PropertyDef name="fighterno">
+      <Property name="dataType">String</Property>
+      <Property name="label">飞机编号</Property>
+    </PropertyDef>
+    <PropertyDef name="bytes5">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">bytes5</Property>
+    </PropertyDef>
+    <PropertyDef name="gdasdir">
+      <Property name="dataType">String</Property>
+      <Property name="label">GDAS指挥员</Property>
+    </PropertyDef>
+    <PropertyDef name="filename1">
+      <Property name="dataType">String</Property>
+      <Property name="label">试飞日志上传</Property>
+    </PropertyDef>
+    <PropertyDef name="para">
+      <Property name="dataType">Boolean</Property>
+      <Property name="defaultValue">false</Property>
+      <Property name="label">辅助判断参数</Property>
+    </PropertyDef>
+    <PropertyDef name="content">
+      <Property name="dataType">String</Property>
+      <Property name="label">任务单内容摘要</Property>
+      <Property name="required">false</Property>
+    </PropertyDef>
+    <PropertyDef name="miji">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">密级</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">机密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">秘密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">非密</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+      <Property name="defaultValue">0</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Flightrestrict" meta="x:573;y:10">
+    <Property name="creationType">com.buaa.fly.domain.Flightrestrict</Property>
+    <PropertyDef name="ftype">
+      <Property name="dataType">String</Property>
+      <Property name="label">飞机型号</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="id">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">id</Property>
+    </PropertyDef>
+    <PropertyDef name="begindate">
+      <Property name="dataType">Date</Property>
+      <Property name="label">发出日期</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="bytes">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">bytes</Property>
+    </PropertyDef>
+    <PropertyDef name="isnew">
+      <Property name="dataType">String</Property>
+      <Property name="label">是否最新</Property>
+    </PropertyDef>
+    <PropertyDef name="fname">
+      <Property name="dataType">String</Property>
+      <Property name="label">附件</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="isaffect">
+      <Property name="dataType">boolean</Property>
+      <Property name="label">现行有效</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">true</Property>
+              <Property name="value">是</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">false</Property>
+              <Property name="value">否</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+    </PropertyDef>
+    <PropertyDef name="major">
+      <Property name="dataType">String</Property>
+      <Property name="label">专业</Property>
+    </PropertyDef>
+    <PropertyDef name="affect">
+      <Property name="dataType">String</Property>
+      <Property name="label">有效范围</Property>
+    </PropertyDef>
+    <PropertyDef name="filename">
+      <Property name="dataType">String</Property>
+      <Property name="label">名称</Property>
+    </PropertyDef>
+    <PropertyDef name="modifydate">
+      <Property name="dataType">Date</Property>
+      <Property name="label">更改日期</Property>
+    </PropertyDef>
+    <PropertyDef name="fno">
+      <Property name="dataType">String</Property>
+      <Property name="label">文件编号</Property>
+    </PropertyDef>
+    <PropertyDef name="maincontent">
+      <Property name="dataType">String</Property>
+      <Property name="label">主要内容</Property>
+    </PropertyDef>
+    <PropertyDef name="miji">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">密级</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">机密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">秘密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">非密</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+      <Property name="defaultValue">0</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Shifeirequestacc" meta="x:857;y:10">
+    <Property name="creationType">com.buaa.fly.domain.Shifeirequestacc</Property>
+    <PropertyDef name="fileno">
+      <Property name="dataType">String</Property>
+      <Property name="label">编号</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="ftype">
+      <Property name="dataType">String</Property>
+      <Property name="label">飞机型号</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="id">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">id</Property>
+      <Property name="required">false</Property>
+    </PropertyDef>
+    <PropertyDef name="bytes">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">bytes</Property>
+    </PropertyDef>
+    <PropertyDef name="date">
+      <Property name="dataType">Date</Property>
+      <Property name="label">日期</Property>
+    </PropertyDef>
+    <PropertyDef name="author">
+      <Property name="dataType">String</Property>
+      <Property name="label">编写人员</Property>
+    </PropertyDef>
+    <PropertyDef name="type">
+      <Property name="dataType">String</Property>
+      <Property name="label">文件类型</Property>
+    </PropertyDef>
+    <PropertyDef name="filename">
+      <Property name="dataType">String</Property>
+      <Property name="label">附件</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="miji">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">密级</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">机密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">秘密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">非密</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+      <Property name="defaultValue">0</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Dailyacc" meta="x:996;y:10">
+    <Property name="creationType">com.buaa.fly.domain.Dailyacc</Property>
+    <PropertyDef name="filename">
+      <Property name="dataType">String</Property>
+      <Property name="label">日报名称</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="ftype">
+      <Property name="dataType">String</Property>
+      <Property name="label">飞机型号</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="id">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">id</Property>
+    </PropertyDef>
+    <PropertyDef name="bytes">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">bytes</Property>
+    </PropertyDef>
+    <PropertyDef name="summary">
+      <Property name="dataType">String</Property>
+      <Property name="label">备注</Property>
+    </PropertyDef>
+    <PropertyDef name="miji">
+      <Property name="dataType">String</Property>
+      <Property name="label">密级</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">机密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">秘密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">非密</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+      <Property name="defaultValue">0</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Ftypes" meta="x:1114;y:10">
+    <Property name="creationType">com.buaa.fly.domain.Ftypes</Property>
+    <PropertyDef name="fighterid">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">飞机编号</Property>
+    </PropertyDef>
+    <PropertyDef name="alias">
+      <Property name="dataType">String</Property>
+      <Property name="label">别名</Property>
+    </PropertyDef>
+    <PropertyDef name="moreinfo">
+      <Property name="dataType">String</Property>
+      <Property name="label">更多信息</Property>
+    </PropertyDef>
+    <PropertyDef name="ftypename">
+      <Property name="dataType">String</Property>
+      <Property name="label">飞机型号</Property>
+    </PropertyDef>
+    <Reference name="fpici">
+      <Property name="dataProvider">fpiciPR#queryFpici</Property>
+      <Property name="dataType">[Fpici]</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="ftypename">$${this.ftypename}</Property>
+        </Entity>
+      </Property>
+      <Property name="label">fpici</Property>
+    </Reference>
+    <Reference name="categories">
+      <Property name="dataProvider">ftypesPR#queryCategories</Property>
+      <Property name="dataType">[Ftypes]</Property>
+      <Property name="parameter">$${this.fighterid}</Property>
+    </Reference>
+    <PropertyDef name="parentnode">
+      <Property name="dataType">Integer</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Fpici" meta="x:1239;y:10">
+    <Property name="creationType">com.buaa.fly.domain.Fpici</Property>
+    <PropertyDef name="piciid">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">piciid</Property>
+    </PropertyDef>
+    <PropertyDef name="fighterid">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">飞机编号</Property>
+    </PropertyDef>
+    <PropertyDef name="more">
+      <Property name="dataType">String</Property>
+      <Property name="label">其他信息</Property>
+    </PropertyDef>
+    <PropertyDef name="piciname">
+      <Property name="dataType">String</Property>
+      <Property name="label">批次名</Property>
+    </PropertyDef>
+    <PropertyDef name="ftypename">
+      <Property name="dataType">String</Property>
+      <Property name="label">机型</Property>
+    </PropertyDef>
+    <PropertyDef name="ftypes">
+      <Property name="dataType">Ftypes</Property>
+    </PropertyDef>
+    <Reference name="fighterinfo">
+      <Property name="dataProvider">fighterinfoPR#queryFighterinfo</Property>
+      <Property name="dataType">[Fighterinfo]</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="piciname">$${this.piciname}</Property>
+          <Property name="ftypename">$${this.ftypename}</Property>
+        </Entity>
+      </Property>
+    </Reference>
+  </DataType>
+  <DataType name="Fighterinfo" meta="x:1366;y:10">
+    <Property name="creationType">com.buaa.fly.domain.Fighterinfo</Property>
+    <PropertyDef name="ftypeid">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">ftypeid</Property>
+    </PropertyDef>
+    <PropertyDef name="piciid">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">piciid</Property>
+    </PropertyDef>
+    <PropertyDef name="id">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">id</Property>
+    </PropertyDef>
+    <PropertyDef name="firstfdate">
+      <Property name="dataType">DateTime</Property>
+      <Property name="label">首飞日期</Property>
+    </PropertyDef>
+    <PropertyDef name="userno">
+      <Property name="dataType">String</Property>
+      <Property name="label">用户编号</Property>
+    </PropertyDef>
+    <PropertyDef name="outdate">
+      <Property name="dataType">DateTime</Property>
+      <Property name="label">转场日期</Property>
+    </PropertyDef>
+    <PropertyDef name="outfactoryno">
+      <Property name="dataType">String</Property>
+      <Property name="label">飞机编号</Property>
+    </PropertyDef>
+    <PropertyDef name="piciname">
+      <Property name="dataType">String</Property>
+      <Property name="label">批次</Property>
+    </PropertyDef>
+    <PropertyDef name="ftypename">
+      <Property name="dataType">String</Property>
+      <Property name="label">机型</Property>
+    </PropertyDef>
+    <PropertyDef name="fpici">
+      <Property name="dataType">Fpici</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Data" meta="x:1627;y:10">
+    <Property name="creationType">com.buaa.fly.domain.Fdata</Property>
+    <PropertyDef name="outFactoryNo">
+      <Property></Property>
+      <Property name="label">出厂编号</Property>
+    </PropertyDef>
+    <PropertyDef name="landingTimes">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">起落次数</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="dataType">
+      <Property></Property>
+      <Property name="label">数据类型</Property>
+    </PropertyDef>
+    <PropertyDef name="special">
+      <Property></Property>
+      <Property name="label">特殊数据处理情况</Property>
+    </PropertyDef>
+    <PropertyDef name="dataPath">
+      <Property></Property>
+      <Property name="label">数据信息</Property>
+    </PropertyDef>
+    <PropertyDef name="dataLabel">
+      <Property></Property>
+      <Property name="label">数据状态</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property></Property>
+      <Property name="label">序号</Property>
+    </PropertyDef>
+    <PropertyDef name="flightdate">
+      <Property name="dataType">Date</Property>
+      <Property name="label">飞行时间</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="taskList">
+      <Property name="dataType">Tasklist</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="CombineVehicle">
+    <Property name="creationType">com.buaa.fly.domain.CombineVehicle</Property>
+    <PropertyDef name="oid">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">Oid</Property>
+    </PropertyDef>
+    <PropertyDef name="combineSubject">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">结合科目</Property>
+    </PropertyDef>
+    <PropertyDef name="combineNumber">
+      <Property name="dataType">int</Property>
+      <Property name="label">结合架次</Property>
+    </PropertyDef>
+    <PropertyDef name="outlineExecution">
+      <Property name="dataType">Outlineexecution</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Outlineexecution" meta="x:137;y:10">
+    <Property name="matchType">com.buaa.fly.domain.Outlineexecution</Property>
+    <Property name="acceptValidationState">warn</Property>
+    <PropertyDef name="aircrafttype">
+      <Property name="dataType">String</Property>
+      <Property name="label">机型</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="remainstate">
+      <Property name="dataType">String</Property>
+      <Property name="label">剩余状态</Property>
+      <Property name="required">false</Property>
+    </PropertyDef>
+    <PropertyDef name="execdate">
+      <Property name="dataType">Date</Property>
+      <Property name="label">执行日期</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="completestate">
+      <Property name="dataType">String</Property>
+      <Property name="label">完成状态</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">序号</Property>
+    </PropertyDef>
+    <PropertyDef name="subject">
+      <Property name="dataType">String</Property>
+      <Property name="label">试飞科目</Property>
+    </PropertyDef>
+    <PropertyDef name="outlineFlights">
+      <Property name="dataType">int</Property>
+      <Property name="label">大纲架次</Property>
+      <Property name="required">true</Property>
+      <Validator type="range">
+        <Property name="maxValue">100</Property>
+        <Property name="minValue">0</Property>
+        <Property name="maxValueValidateMode">allowEquals</Property>
+        <Property name="minValueValidateMode">notAllowEquals</Property>
+      </Validator>
+    </PropertyDef>
+    <PropertyDef name="combineFlights">
+      <Property name="dataType">int</Property>
+      <Property name="label">结合架次</Property>
+      <Property name="required">true</Property>
+      <Validator type="range">
+        <Property name="maxValue">100</Property>
+        <Property name="minValue">0</Property>
+      </Validator>
+    </PropertyDef>
+    <PropertyDef name="combineSubject">
+      <Property></Property>
+      <Property name="label">结合科目</Property>
+    </PropertyDef>
+    <PropertyDef name="aircraftStruct">
+      <Property></Property>
+      <Property name="label">飞机构形</Property>
+    </PropertyDef>
+    <PropertyDef name="testStatus">
+      <Property></Property>
+      <Property name="label">试飞状态</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="engineState">
+      <Property></Property>
+      <Property name="label">发动机状态</Property>
+    </PropertyDef>
+    <PropertyDef name="testMethod">
+      <Property></Property>
+      <Property name="label">试飞方法</Property>
+    </PropertyDef>
+    <Reference name="combineVehicle">
+      <Property name="label">combineVehicle</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="OutlineExecution">$${this.oid}</Property>
+        </Entity>
+      </Property>
+      <Property name="dataType">[CombineVehicle]</Property>
+      <Property name="dataProvider">combineVehiclePR#queryCombineVehicle</Property>
+      <Property name="pageSize">20</Property>
+    </Reference>
+    <PropertyDef name="orderno">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">序号</Property>
+    </PropertyDef>
+    <PropertyDef name="parentnode">
+      <Property name="dataType">String</Property>
+      <Property name="label">上级科目</Property>
+    </PropertyDef>
+    <PropertyDef name="jiaci">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">架次</Property>
+    </PropertyDef>
+    <PropertyDef name="shijijiaci">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">实际架次</Property>
+    </PropertyDef>
+    <PropertyDef name="miji">
+      <Property name="dataType">String</Property>
+      <Property name="label">密级</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">机密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">秘密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">非密</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+      <Property name="defaultValue">0</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Sffault" meta="x:708;y:10">
+    <Property name="creationType">com.buaa.fly.domain.Sffault</Property>
+    <PropertyDef name="ftype">
+      <Property name="dataType">String</Property>
+      <Property name="label">飞机型号</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="id">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">id</Property>
+    </PropertyDef>
+    <PropertyDef name="fighterno">
+      <Property name="dataType">String</Property>
+      <Property name="label">飞机编号</Property>
+    </PropertyDef>
+    <PropertyDef name="date">
+      <Property name="dataType">Date</Property>
+      <Property name="label">日期</Property>
+    </PropertyDef>
+    <PropertyDef name="name">
+      <Property name="dataType">String</Property>
+      <Property name="label">问题名称</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="waichangxxms">
+      <Property name="dataType">String</Property>
+      <Property name="label">外场信息描述</Property>
+    </PropertyDef>
+    <PropertyDef name="miaoshu">
+      <Property name="dataType">String</Property>
+      <Property name="label">问题分解描述</Property>
+    </PropertyDef>
+    <PropertyDef name="yuanyinfx">
+      <Property name="dataType">String</Property>
+      <Property name="label">故障原因分析</Property>
+    </PropertyDef>
+    <PropertyDef name="qingkuang">
+      <Property name="dataType">String</Property>
+      <Property name="label">解决措施及说明</Property>
+    </PropertyDef>
+    <PropertyDef name="result">
+      <Property name="dataType">String</Property>
+      <Property name="label">处理结果</Property>
+    </PropertyDef>
+    <PropertyDef name="status">
+      <Property name="dataType">String</Property>
+      <Property name="label">处理状态</Property>
+    </PropertyDef>
+    <PropertyDef name="fileno">
+      <Property name="dataType">String</Property>
+      <Property name="label">文件依据</Property>
+    </PropertyDef>
+    <PropertyDef name="danwei">
+      <Property name="dataType">String</Property>
+      <Property name="label">责任单位</Property>
+    </PropertyDef>
+    <PropertyDef name="system">
+      <Property name="dataType">String</Property>
+      <Property name="label">系统名称</Property>
+    </PropertyDef>
+    <PropertyDef name="bumen">
+      <Property name="dataType">String</Property>
+      <Property name="label">责任部门</Property>
+    </PropertyDef>
+    <PropertyDef name="relatebumen">
+      <Property name="dataType">String</Property>
+      <Property name="label">相关部门</Property>
+    </PropertyDef>
+    <PropertyDef name="relatemajor">
+      <Property name="dataType">String</Property>
+      <Property name="label">相关专业</Property>
+    </PropertyDef>
+    <PropertyDef name="zerenren">
+      <Property name="dataType">String</Property>
+      <Property name="label">责任人</Property>
+    </PropertyDef>
+    <PropertyDef name="majorsystem">
+      <Property name="dataType">String</Property>
+      <Property name="label">责任专业</Property>
+    </PropertyDef>
+    <PropertyDef name="zongshi">
+      <Property name="dataType">String</Property>
+      <Property name="label">主管总师</Property>
+    </PropertyDef>
+    <PropertyDef name="adrs">
+      <Property name="dataType">String</Property>
+      <Property name="label">地点</Property>
+    </PropertyDef>
+    <PropertyDef name="partname">
+      <Property name="dataType">String</Property>
+      <Property name="label">成品名称</Property>
+    </PropertyDef>
+    <PropertyDef name="partmodel">
+      <Property name="dataType">String</Property>
+      <Property name="label">成品型号</Property>
+    </PropertyDef>
+    <PropertyDef name="pici">
+      <Property name="dataType">String</Property>
+      <Property name="label">执行批次</Property>
+    </PropertyDef>
+    <PropertyDef name="repeat">
+      <Property name="dataType">Boolean</Property>
+      <Property name="label">是否重复</Property>
+    </PropertyDef>
+    <PropertyDef name="repeattime">
+      <Property name="dataType">String</Property>
+      <Property name="label">重复次数</Property>
+    </PropertyDef>
+    <PropertyDef name="guiling">
+      <Property name="dataType">String</Property>
+      <Property name="label">是否归零</Property>
+    </PropertyDef>
+    <PropertyDef name="xccharger">
+      <Property name="dataType">String</Property>
+      <Property name="label">现场责任人</Property>
+    </PropertyDef>
+    <PropertyDef name="inputdate">
+      <Property name="dataType">Date</Property>
+      <Property name="label">录入日期</Property>
+    </PropertyDef>
+    <PropertyDef name="inputer">
+      <Property name="dataType">String</Property>
+      <Property name="label">录入人员</Property>
+    </PropertyDef>
+    <PropertyDef name="faulteffect">
+      <Property name="dataType">String</Property>
+      <Property name="label">故障后果</Property>
+    </PropertyDef>
+    <PropertyDef name="laiyuan">
+      <Property name="dataType">String</Property>
+      <Property name="label">问题来源</Property>
+    </PropertyDef>
+    <PropertyDef name="judge">
+      <Property name="dataType">String</Property>
+      <Property name="label">判明方式</Property>
+    </PropertyDef>
+    <PropertyDef name="type">
+      <Property name="dataType">String</Property>
+      <Property name="label">问题责任</Property>
+    </PropertyDef>
+    <PropertyDef name="deal">
+      <Property name="dataType">String</Property>
+      <Property name="label">现场处理方式</Property>
+    </PropertyDef>
+    <PropertyDef name="gzfs">
+      <Property name="dataType">String</Property>
+      <Property name="label">跟踪方式</Property>
+    </PropertyDef>
+    <PropertyDef name="summary">
+      <Property name="dataType">String</Property>
+      <Property name="label">备注</Property>
+    </PropertyDef>
+    <PropertyDef name="sequence">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">序号</Property>
+    </PropertyDef>
+    <PropertyDef name="foundopp">
+      <Property name="dataType">String</Property>
+      <Property name="label">发现时机</Property>
+    </PropertyDef>
+    <PropertyDef name="yiliuwt">
+      <Property name="dataType">String</Property>
+      <Property name="label">遗留问题</Property>
+    </PropertyDef>
+    <PropertyDef name="gengxinjl">
+      <Property name="dataType">String</Property>
+      <Property name="label">更新历史记录</Property>
+    </PropertyDef>
+    <PropertyDef name="gengxincontent">
+      <Property name="dataType">String</Property>
+      <Property name="label">本次更新内容</Property>
+    </PropertyDef>
+    <PropertyDef name="xianchanggz">
+      <Property name="dataType">String</Property>
+      <Property name="label">xiangchanggz</Property>
+    </PropertyDef>
+    <PropertyDef name="jiancanr">
+      <Property name="dataType">String</Property>
+      <Property name="label">jiancanr</Property>
+    </PropertyDef>
+    <PropertyDef name="miji">
+      <Property></Property>
+      <Property name="dataType">Integer</Property>
+      <Property name="label">密级</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">机密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">秘密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">非密</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+      <Property name="defaultValue">0</Property>
+    </PropertyDef>
+    <PropertyDef name="fdata">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">fdata</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Fighterxzh" meta="x:1366;y:10">
+    <Property name="creationType">com.buaa.fly.domain.Fighterxzh</Property>
+    <PropertyDef name="id">
+      <Property name="dataType">String</Property>
+      <Property name="label">id</Property>
+    </PropertyDef>
+    <PropertyDef name="filename">
+      <Property name="dataType">String</Property>
+      <Property name="label">名称</Property>
+    </PropertyDef>
+    <PropertyDef name="outfactoryno">
+      <Property name="dataType">String</Property>
+      <Property name="label">飞机编号</Property>
+    </PropertyDef>
+    <PropertyDef name="piciname">
+      <Property name="dataType">String</Property>
+      <Property name="label">批次</Property>
+    </PropertyDef>
+    <PropertyDef name="ftypename">
+      <Property name="dataType">String</Property>
+      <Property name="label">机型</Property>
+    </PropertyDef>
+  </DataType>
+</Model>

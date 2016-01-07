@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uflo-process category-id="611" name="PublishFlow">
+   <description>新闻发布流程</description>
+   <start g="30,118,65,62" name="开始" url="com.buaa.comm.uflo.view.ApplyPublish.d">
+      <sequence-flow to="审核"/>
+   </start>
+   <task g="197,222,115,50" allow-specify-assignee="false" task-type="Normal" assignment-handler-bean="newspublish.managerAssignmentHandler" url="com.buaa.comm.uflo.view.ApprovePublish.d" assignment-type="Handler" name="审核">
+      <sequence-flow to="审定" g="-47,13" name="通过"/>
+      <sequence-flow to="开始" g="96,222:95,-125" name="驳回"/>
+   </task>
+   <end g="475,149,32,62" terminate="true" name="结束"/>
+   <task g="281,85,115,50" allow-specify-assignee="false" task-type="Normal" assignment-handler-bean="newspublish.ministerAssignmentHandler" url="com.buaa.comm.uflo.view.ApprovePublish.d" assignment-type="Handler" name="审定">
+      <sequence-flow to="结束" g="-24,-30" name="通过"/>
+      <sequence-flow to="开始" g="-96,102" name="驳回"/>
+   </task>
+</uflo-process>

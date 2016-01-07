@@ -1,0 +1,782 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Tasklist</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="dataTypeSubject" parent="Subject">
+      <Reference name="children">
+        <Property name="dataType">[SELF]</Property>
+        <Property name="dataProvider">subjectPR#querySubject</Property>
+        <Property name="parameter">
+          <Entity>
+            <Property name="ftype">$${this.ftype}</Property>
+            <Property name="parentnode">$${this.name}</Property>
+          </Entity>
+        </Property>
+      </Reference>
+    </DataType>
+  </Model>
+  <View>
+    <ClientEvent name="onCreate">/**@view*/&#xD;
+	var mydrop = 0;&#xD;
+</ClientEvent>
+    <DataSet id="dsFtypes">
+      <Property name="dataProvider">ftypesPR#queryFtypes</Property>
+      <Property name="dataType">[Ftypes]</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <DataSet id="dsTasklist">
+      <Property name="dataType">[Tasklist]</Property>
+      <Property name="dataProvider">tasklistPR#queryTasklist</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <DataSet id="dataSetSubject">
+      <Property name="dataType">[dataTypeSubject]</Property>
+      <Property name="dataProvider">subjectPR#querySubject</Property>
+      <Property name="loadMode">onReady</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="ftype"></Property>
+          <Property name="parentnode"></Property>
+        </Entity>
+      </Property>
+    </DataSet>
+    <DataSet id="dsDictionaryTaskExecution">
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="dictype">Dic_TaskExecution</Property>
+          <Property name="status">0</Property>
+        </Entity>
+      </Property>
+    </DataSet>
+    <DataSet id="dsUserOperationLog">
+      <Property name="dataProvider">userOperationLogPR#queryUserOperationLog</Property>
+      <Property name="dataType">[UserOperationLog]</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <UpdateAction id="uaUserOperationLog">
+      <Property name="dataResolver">userOperationLogPR#saveUserOperationLog</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsUserOperationLog</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <UpdateAction id="uaTasklist">
+      <Property name="dataResolver">tasklistPR#saveTasklist</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsTasklist</Property>
+        <Property name="dataPath">!DIRTY_TREE</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <Dialog id="diaTasklist">
+      <ClientEvent name="onClose">&#xD;
+//datatree获取选中行，迭代设置选中状态，清空选中&#xD;
+var nodes=view.get(&quot;#dataTreeSubject&quot;).getCheckedNodes();&#xD;
+nodes.each(function(node){&#xD;
+	node.set(&quot;checked&quot;,false);&#xD;
+});&#xD;
+</ClientEvent>
+      <ClientEvent name="onReady">	&#xD;
+var dropDown=view.id(&quot;customDropDown1&quot;);&#xD;
+dropDown.execute(view.id(&quot;afSubject&quot;).get(&quot;editor&quot;));&#xD;
+dropDown.close();&#xD;
+</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">800</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaTasklist').execute(function(){
+               view.id('diaTasklist').hide();
+           });
+         </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">view.set(&quot;#dataTreeGridSubject.selection&quot;,null);
+
+var cur=view.id('dsTasklist').getData('#');
+				cur.cancel();
+				view.id('diaTasklist').hide();
+	/*
+	 * 删除当前用户操作日志记录并保存
+	 */
+	view.id('dsUserOperationLog').getData().remove()
+	view.id('uaUserOperationLog').execute();
+	         </ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afTasklist">
+          <Property name="cols">*</Property>
+          <Property name="dataSet">dsTasklist</Property>
+          <Property name="dataPath">#</Property>
+          <Property name="labelWidth">90</Property>
+          <AutoFormElement>
+            <Property name="name">AircraftType</Property>
+            <Property name="property">aircrafttype</Property>
+            <Property name="trigger">chooseAircraft</Property>
+            <Property name="readOnly">true</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">TaskNumber</Property>
+            <Property name="property">tasknumber</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">TaskExecution</Property>
+            <Property name="property">taskexecution</Property>
+            <Property name="trigger">dataSetDropDownTaskExecution</Property>
+          </AutoFormElement>
+          <AutoFormElement id="afSubject">
+            <ClientEvent name="onReady">view.id(&quot;&quot;)&#xD;
+</ClientEvent>
+            <Property name="name">Subject</Property>
+            <Property name="property">subject</Property>
+            <Property name="trigger">customDropDown1</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">TaskContent</Property>
+            <Property name="property">taskcontent</Property>
+            <Property name="height">250</Property>
+            <Property name="editorType">TextArea</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+        <DataSetDropDown id="dataSetDropDownTaskExecution">
+          <Property name="autoOpen">true</Property>
+          <Property name="dataSet">dsDictionaryTaskExecution</Property>
+          <Property name="displayProperty">name</Property>
+          <Property name="editable">false</Property>
+          <Property name="property">name</Property>
+          <Property name="useEmptyItem">true</Property>
+        </DataSetDropDown>
+        <DataSetDropDown id="dataSetDropDownAircraftType">
+          <Property name="autoOpen">true</Property>
+          <Property name="dataSet">dsDictionaryAircraftType</Property>
+          <Property name="displayProperty">name</Property>
+          <Property name="editable">false</Property>
+          <Property name="property">name</Property>
+          <Property name="useEmptyItem">true</Property>
+        </DataSetDropDown>
+        <CustomDropDown id="customDropDown1">
+          <ClientEvent name="onClose">   var caption=view.id('diaTasklist').get(&quot;caption&quot;);&#xD;
+	if(caption==&quot;新增试飞任务单&quot;){&#xD;
+		var selections = view.get(&quot;#dataTreeSubject&quot;).getCheckedNodes();&#xD;
+	var tmpList=selections.slice(0);&#xD;
+	&#xD;
+	if(tmpList.length!=0){&#xD;
+			var name=&quot;&quot;;&#xD;
+			&#xD;
+	tmpList.each(function(entity){&#xD;
+		name+=&quot;,&quot; + entity.get(&quot;data.name&quot;);});         //data是因为树节点&#xD;
+	var entity=view.get(&quot;#dsTasklist&quot;).getData(&quot;#&quot;);&#xD;
+	name += &quot;,&quot;;&#xD;
+	//name=name.substring(0,name.length-1);&#xD;
+	entity.set(&quot;subject&quot;,name);                           //赋给subject，这是Tasklist的一个字段&#xD;
+	&#xD;
+	}&#xD;
+		&#xD;
+		&#xD;
+	&#xD;
+		arg.processDefault = false;&#xD;
+	}&#xD;
+	&#xD;
+   if(caption==&quot;修改试飞任务单&quot;&amp;&amp;view.mydrop==1){&#xD;
+		var selections = view.get(&quot;#dataTreeSubject&quot;).getCheckedNodes();&#xD;
+	var tmpList=selections.slice(0);&#xD;
+	&#xD;
+	if(tmpList.length!=0){&#xD;
+			var name=&quot;&quot;;&#xD;
+			&#xD;
+	tmpList.each(function(entity){&#xD;
+		name+=&quot;,&quot;+entity.get(&quot;data.name&quot;);});         //data是因为树节点&#xD;
+	var entity=view.get(&quot;#dsTasklist&quot;).getData(&quot;#&quot;);&#xD;
+	name += &quot;,&quot;;&#xD;
+	//name=name.substring(0,name.length-1);&#xD;
+	entity.set(&quot;subject&quot;,name);                           //赋给subject，这是Tasklist的一个字段&#xD;
+	&#xD;
+	}&#xD;
+		&#xD;
+		&#xD;
+	&#xD;
+		arg.processDefault = false;&#xD;
+	}&#xD;
+	&#xD;
+ view.mydrop=1;&#xD;
+</ClientEvent>
+          <ClientEvent name="onOpen">//datatree获取选中行，迭代设置选中状态，清空选中&#xD;
+&#xD;
+&#xD;
+var nodes=view.get(&quot;#dataTreeSubject&quot;).getCheckedNodes();&#xD;
+nodes.each(function(node){&#xD;
+	node.set(&quot;checked&quot;,false);&#xD;
+});&#xD;
+&#xD;
+&#xD;
+//编辑时将已有行设置为选中&#xD;
+ &#xD;
+&#xD;
+var value =view.get(&quot;#afSubject.value&quot;);&#xD;
+if(value){&#xD;
+	function getAllNodes(nodes,stvalue){&#xD;
+		nodes.each(function(node){&#xD;
+			var children=node.get(&quot;nodes&quot;);&#xD;
+			if(children){&#xD;
+			children.each(function(node){ &#xD;
+		if(node.get(&quot;data.name&quot;)==stvalue){&#xD;
+			selectedItems.push(node);	&#xD;
+		}&#xD;
+	});&#xD;
+			getAllNodes(children,stvalue);&#xD;
+			}&#xD;
+		});&#xD;
+	}&#xD;
+	var selectedItems=[];&#xD;
+	var p1=value.indexOf(&quot;,&quot;);&#xD;
+	if(p1==-1){              &#xD;
+		var dataList =view.get(&quot;#dataTreeSubject&quot;).get(&quot;nodes&quot;);//顶层节点&#xD;
+		&#xD;
+		 dataList.each(function(node){ &#xD;
+		if(node.get(&quot;data.name&quot;)==value){&#xD;
+			selectedItems.push(node);	&#xD;
+		}&#xD;
+	});&#xD;
+	getAllNodes(dataList,value);&#xD;
+	}&#xD;
+	else{&#xD;
+&#xD;
+	while(p1!=-1){&#xD;
+	value1=value.substring(0,p1);&#xD;
+	var dataList =view.get(&quot;#dataTreeSubject&quot;).get(&quot;nodes&quot;);&#xD;
+	&#xD;
+	dataList.each(function(entity){&#xD;
+		if(entity.get(&quot;data.name&quot;)==value1){&#xD;
+			selectedItems.push(entity);		&#xD;
+		}&#xD;
+	});&#xD;
+	getAllNodes(dataList,value1);&#xD;
+	value=value.substring(p1+1,value.length);&#xD;
+	var p1=value.indexOf(&quot;,&quot;);&#xD;
+	if(p1==-1){&#xD;
+		&#xD;
+	&#xD;
+	    dataList.each(function(entity){&#xD;
+		if(entity.get(&quot;data.name&quot;)==value){&#xD;
+			selectedItems.push(entity);	&#xD;
+		}&#xD;
+	});&#xD;
+	getAllNodes(dataList,value);&#xD;
+	}&#xD;
+	}&#xD;
+	&#xD;
+	}&#xD;
+	selectedItems.each(function(node){&#xD;
+	node.set(&quot;checked&quot;,true);&#xD;
+    });&#xD;
+	&#xD;
+}&#xD;
+&#xD;
+&#xD;
+&#xD;
+</ClientEvent>
+          <Property name="autoOpen">true</Property>
+          <Property name="editable">false</Property>
+          <Container>
+            <Property name="width">300</Property>
+            <Property name="height">300</Property>
+            <ToolBar layoutConstraint="bottom">
+              <Button>
+                <ClientEvent name="onClick">&#xD;
+var selections = view.get(&quot;#dataTreeSubject&quot;).getCheckedNodes();&#xD;
+	var tmpList=selections.slice(0);&#xD;
+	if(tmpList.length==0){&#xD;
+		alert(&quot;试飞科目必填&quot;);&#xD;
+	}&#xD;
+	else{&#xD;
+			var name=&quot;&quot;;&#xD;
+			&#xD;
+	tmpList.each(function(entity){&#xD;
+		name+=&quot;,&quot;+entity.get(&quot;data.name&quot;);});         //data是因为树节点&#xD;
+	var entity=view.get(&quot;#dsTasklist&quot;).getData(&quot;#&quot;);&#xD;
+	name += &quot;,&quot;;&#xD;
+	//name=name.substring(0,name.length-1);&#xD;
+	entity.set(&quot;subject&quot;,name);                           //赋给subject，这是Tasklist的一个字段&#xD;
+	&#xD;
+	}&#xD;
+		&#xD;
+		view.get(&quot;#customDropDown1&quot;).close();&#xD;
+	&#xD;
+		arg.processDefault = false;&#xD;
+&#xD;
+	</ClientEvent>
+                <Property name="caption">确定</Property>
+              </Button>
+              <Button>
+                <ClientEvent name="onClick">&#xD;
+view.set(&quot;#dataTreeGridSubject.selection&quot;,null);&#xD;
+		&#xD;
+		view.get(&quot;#customDropDown1&quot;).close();&#xD;
+	&#xD;
+		arg.processDefault = false;&#xD;
+&#xD;
+	</ClientEvent>
+                <Property name="caption">取消</Property>
+              </Button>
+            </ToolBar>
+            <DataTree id="dataTreeSubject" layoutConstraint="left">
+              <ClientEvent name="onDataRowClick">&#xD;
+	/*&#xD;
+	var check=view.get(&quot;#dataTreeSubject&quot;).getCheckedNodes();&#xD;
+	if(check==undefined) check=new Array();&#xD;
+	&#xD;
+var entity=view.get(&quot;#dataTreeSubject&quot;).get(&quot;currentNode&quot;);&#xD;
+&#xD;
+&#xD;
+&#xD;
+	&#xD;
+	var m=0;&#xD;
+	if(m==0){&#xD;
+	check.each(function(data){ &#xD;
+	&#xD;
+	if(data==entity)&#xD;
+	{&#xD;
+	data.set(&quot;checked&quot;,false);&#xD;
+	m=1;&#xD;
+    }&#xD;
+});&#xD;
+&#xD;
+}&#xD;
+if(m==0){&#xD;
+	&#xD;
+	entity.set(&quot;checked&quot;,true);&#xD;
+    &#xD;
+}&#xD;
+&#xD;
+*/</ClientEvent>
+              <ClientEvent name="onReady">//编辑时将已有行设置为选中&#xD;
+&#xD;
+var value =view.get(&quot;#afSubject.value&quot;);&#xD;
+if(value){&#xD;
+	function getAllNodes(nodes,stvalue){&#xD;
+		nodes.each(function(node){&#xD;
+			var children=node.get(&quot;nodes&quot;);&#xD;
+			if(children){&#xD;
+			children.each(function(node){ &#xD;
+		if(node.get(&quot;data.name&quot;)==stvalue){&#xD;
+			selectedItems.push(node);	&#xD;
+		}&#xD;
+	});&#xD;
+			getAllNodes(children,stvalue);&#xD;
+			}&#xD;
+		});&#xD;
+	}&#xD;
+	var selectedItems=[];&#xD;
+	var p1=value.indexOf(&quot;,&quot;);&#xD;
+	if(p1==-1){            &#xD;
+		var dataList =view.get(&quot;#dataTreeSubject&quot;).get(&quot;nodes&quot;);//顶层节点&#xD;
+		&#xD;
+		 dataList.each(function(node){ &#xD;
+		if(node.get(&quot;data.name&quot;)==value){&#xD;
+			selectedItems.push(node);	&#xD;
+		}&#xD;
+	});&#xD;
+	getAllNodes(dataList,value);&#xD;
+	}&#xD;
+	else{&#xD;
+&#xD;
+	while(p1!=-1){&#xD;
+	value1=value.substring(0,p1);&#xD;
+	var dataList =view.get(&quot;#dataTreeSubject&quot;).get(&quot;nodes&quot;);&#xD;
+	&#xD;
+	dataList.each(function(entity){&#xD;
+		if(entity.get(&quot;data.name&quot;)==value1){&#xD;
+			selectedItems.push(entity);		&#xD;
+		}&#xD;
+	});&#xD;
+	getAllNodes(dataList,value1);&#xD;
+	value=value.substring(p1+1,value.length);&#xD;
+	var p1=value.indexOf(&quot;,&quot;);&#xD;
+	if(p1==-1){&#xD;
+		&#xD;
+	&#xD;
+	    dataList.each(function(entity){&#xD;
+		if(entity.get(&quot;data.name&quot;)==value){&#xD;
+			selectedItems.push(entity);	&#xD;
+		}&#xD;
+	});&#xD;
+	getAllNodes(dataList,value);&#xD;
+	}&#xD;
+	}&#xD;
+	&#xD;
+	}&#xD;
+	selectedItems.each(function(node){&#xD;
+	node.set(&quot;checked&quot;,true);&#xD;
+    });&#xD;
+	&#xD;
+}&#xD;
+&#xD;
+&#xD;
+&#xD;
+</ClientEvent>
+              <Property name="dataSet">dataSetSubject</Property>
+              <Property name="draggable">false</Property>
+              <Property name="droppable">false</Property>
+              <Property name="width">650</Property>
+              <Property name="selectionMode">multiRows</Property>
+              <Property name="height">90%</Property>
+              <BindingConfigs>
+                <BindingConfig>
+                  <Property name="childrenProperty">children</Property>
+                  <Property name="tipProperty">description</Property>
+                  <Property name="labelProperty">name</Property>
+                  <Property name="recursive">true</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
+                  <Property name="checkable">true</Property>
+                  <Property name="autoCheckChildren">true</Property>
+                  <Property name="expandLevel">4</Property>
+                </BindingConfig>
+              </BindingConfigs>
+            </DataTree>
+          </Container>
+        </CustomDropDown>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <ToolBar>
+      <DataPilot>
+        <Property name="itemCodes">pages</Property>
+        <Property name="dataSet">dsTasklist</Property>
+        <Property name="dataPath"></Property>
+      </DataPilot>
+      <ToolBarButton>
+        <ClientEvent name="onClick">    dialog=view.id('diaTasklist');
+    dialog.set(&quot;caption&quot;,&quot;新增试飞任务单&quot;);
+	var cur = view.id('formElement1').get(&quot;value&quot;);
+	view.id('dsTasklist').getData().insert({
+		aircrafttype : cur
+		});
+	view.id('diaTasklist').show();
+	
+	/*
+ 	 * 对用户新增操作进行记录，在用户操作日志表中新增一条记录。
+     */
+	var myDate = new Date();
+	view.id('dsUserOperationLog').getData().insert({
+		logOperationType:&quot;0&quot;,
+		operationPerson: &quot;${loginUsername}&quot;,
+		operationContent:&quot;对试飞任务单管理表新增一条记录&quot;,
+		operationTime:myDate
+	});
+	view.id('uaUserOperationLog').execute();
+</ClientEvent>
+        <Property name="caption">新增</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">    
+    dialog=view.id('diaTasklist');
+    dialog.set(&quot;caption&quot;,&quot;修改试飞任务单&quot;);
+	var cur=view.id('dsTasklist').getData('#');
+	if (cur) {
+		view.id('diaTasklist').show();
+	}
+	
+	/*
+ 	 * 对用户修改操作进行记录，在用户操作日志表中新增一条记录。
+ 	 */
+	var myDate = new Date();
+	view.id('dsUserOperationLog').getData().insert({
+		logOperationType:&quot;1&quot;,
+		operationPerson: &quot;${loginUsername}&quot;,
+		operationContent:&quot;对试飞任务单管理表修改选定记录&quot;,
+		operationTime:myDate
+	});
+	view.id('uaUserOperationLog').execute();
+</ClientEvent>
+        <Property name="caption">修改</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsTasklist').getData('#');
+	var ua=view.id('uaTasklist')
+	if(cur){
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+			
+			/*
+ 			 * 对用户删除操作进行记录，在用户操作日志表中新增一条记录。
+ 			 */
+			var myDate = new Date();
+			view.id('dsUserOperationLog').getData().insert({
+				logOperationType:&quot;2&quot;,
+				operationPerson: &quot;${loginUsername}&quot;,
+				operationContent:&quot;对试飞任务单管理表删除所选记录&quot;,
+				operationTime:myDate
+			});
+			view.id('uaUserOperationLog').execute();
+			
+			cur.remove();
+			ua.execute();
+				}); 
+			} 
+	</ClientEvent>
+        <Property name="caption">删除</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var dsOutlineexecution = this.get(&quot;#dsTasklist&quot;);&#xD;
+dsOutlineexecution.set(&quot;parameter&quot;, {&#xD;
+});&#xD;
+dsOutlineexecution.flushAsync();&#xD;
+</ClientEvent>
+        <Property name="caption">重置查询条件</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -260px -180px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">//view.id('dgTasklist').set(&quot;showFilterBar&quot;,!view.id('dgTasklist').get(&quot;showFilterBar&quot;));&#xD;
+var dsTasklist = this.get(&quot;#dsTasklist&quot;);&#xD;
+var entity = this.get(&quot;#autoForm1.entity&quot;);&#xD;
+dsTasklist.set(&quot;parameter&quot;, {&#xD;
+	aircrafttype: entity.aircraftElement,&#xD;
+	tasknumber: entity.listNumberElement,&#xD;
+	subject: entity.subjectElement&#xD;
+});&#xD;
+dsTasklist.flushAsync();&#xD;
+</ClientEvent>
+        <Property name="caption">自定义查询</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <FieldSet>
+      <Property name="caption">查询条件</Property>
+      <Buttons/>
+      <Children>
+        <AutoForm id="autoForm1">
+          <Property name="cols">*,*,*,100</Property>
+          <FormElement id="formElement1">
+            <Property name="editorWidth">150</Property>
+            <Property name="label">选择机型：</Property>
+            <Property name="trigger">chooseAircraft</Property>
+            <Editor/>
+          </FormElement>
+          <FormElement id="formElement2">
+            <Property name="editorWidth">150</Property>
+            <Property name="label">选择单号：</Property>
+            <Property name="trigger">chooseListNumber</Property>
+            <Editor/>
+          </FormElement>
+          <FormElement id="formElement3">
+            <Property name="editorWidth">150</Property>
+            <Property name="label">选择科目：</Property>
+            <Property name="trigger">chooseSubject</Property>
+            <Editor/>
+          </FormElement>
+          <Button>
+            <ClientEvent name="onClick">var dsTasklist = this.get(&quot;#dsTasklist&quot;);&#xD;
+var temp = [];&#xD;
+var entity = this.get(&quot;#autoForm1.entity&quot;);&#xD;
+&#xD;
+var name = view.id('formElement3').get(&quot;value&quot;);&#xD;
+&#xD;
+temp = name.split(&quot;,&quot;);&#xD;
+&#xD;
+dsTasklist.set(&quot;parameter&quot;, {&#xD;
+	aircrafttype: view.id('formElement1').get(&quot;value&quot;),&#xD;
+	tasknumber: view.id('formElement2').get(&quot;value&quot;),&#xD;
+	subject: temp&#xD;
+});&#xD;
+dsTasklist.flushAsync();&#xD;
+</ClientEvent>
+            <Property name="caption">按条件查询</Property>
+            <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
+          </Button>
+        </AutoForm>
+      </Children>
+    </FieldSet>
+    <DataGrid id="dgTasklist">
+      <Property name="readOnly">true</Property>
+      <Property name="dataSet">dsTasklist</Property>
+      <Property name="dataPath"></Property>
+      <Property name="filterMode">serverSide</Property>
+      <Property name="showFilterBar">false</Property>
+      <Property name="rowHeight">22</Property>
+      <Property name="height">70%</Property>
+      <RowNumColumn/>
+      <DataColumn name="aircrafttype">
+        <Property name="property">aircrafttype</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="tasknumber">
+        <Property name="property">tasknumber</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="subject">
+        <Property name="property">subject</Property>
+        <Property name="width">200</Property>
+      </DataColumn>
+      <DataColumn name="taskexecution">
+        <Property name="property">taskexecution</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="taskcontent">
+        <Property name="property">taskcontent</Property>
+        <Property name="width">400</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="width">120</Property>
+        <Property name="property">miji</Property>
+        <Editor/>
+      </DataColumn>
+    </DataGrid>
+    <DataSetDropDown id="chooseAircraft">
+      <ClientEvent name="onValueSelect">var dsTasklist = this.get(&quot;#dsTasklist&quot;);&#xD;
+dsTasklist.set(&quot;parameter&quot;, {&#xD;
+	aircrafttype: arg.selectedValue&#xD;
+});&#xD;
+dsTasklist.flushAsync();&#xD;
+var dataSetSubject = this.get(&quot;#dataSetSubject&quot;);&#xD;
+dataSetSubject.set(&quot;parameter&quot;, {&#xD;
+	ftype: arg.selectedValue,&#xD;
+	parentnode: arg.selectedValue&#xD;
+});&#xD;
+dataSetSubject.flushAsync();&#xD;
+&#xD;
+</ClientEvent>
+      <Property name="dataSet">dsFtypes</Property>
+      <Property name="property">ftypename</Property>
+      <Property name="useEmptyItem">true</Property>
+      <Property name="editable">false</Property>
+      <Property name="autoOpen">true</Property>
+    </DataSetDropDown>
+    <DataSetDropDown id="chooseListNumber">
+      <ClientEvent name="onValueSelect">var dsTasklist = this.get(&quot;#dsTasklist&quot;);&#xD;
+dsTasklist.set(&quot;parameter&quot;, {&#xD;
+	tasknumber: arg.selectedValue&#xD;
+});&#xD;
+dsTasklist.flushAsync();</ClientEvent>
+      <Property name="useEmptyItem">true</Property>
+      <Property name="dataSet">dsTasklist</Property>
+      <Property name="property">tasknumber</Property>
+      <Property name="autoOpen">true</Property>
+      <Property name="editable">false</Property>
+      <Property name="reloadDataOnOpen">false</Property>
+    </DataSetDropDown>
+    <CustomDropDown id="chooseSubject">
+      <ClientEvent name="onClose">var dataTree = this.get(&quot;#subjectDataTree&quot;);&#xD;
+var selectNodes = dataTree.getCheckedNodes();&#xD;
+var dsTasklist = this.get(&quot;#dsTasklist&quot;);&#xD;
+//var tmpList = selectNodes.slice(0);&#xD;
+var temp=[];&#xD;
+var time = 0;&#xD;
+var name = &quot;&quot;;&#xD;
+//dorado.MessageBox.alert(selectNodes.length);&#xD;
+//dorado.MessageBox.alert(selectNodes[2].get(&quot;data.name&quot;));&#xD;
+while(time &lt; selectNodes.length){&#xD;
+	name += selectNodes[time].get(&quot;data.name&quot;) + &quot;,&quot;;&#xD;
+	//dorado.MessageBox.alert(selectNodes[time].get(&quot;data.name&quot;));&#xD;
+	temp.push(selectNodes[time].get(&quot;data.name&quot;));&#xD;
+	time = time + 1;&#xD;
+	//dorado.MessageBox.alert(time);	&#xD;
+}&#xD;
+&#xD;
+name = name.substring(0,name.length-1);&#xD;
+var form = view.get(&quot;#formElement3&quot;);&#xD;
+form.set(&quot;value&quot;,name); &#xD;
+//dsTasklist.set(&quot;parameter&quot;, {&#xD;
+//	subject: temp&#xD;
+//});&#xD;
+//dsTasklist.flushAsync();&#xD;
+	&#xD;
+arg.processDefault = false;</ClientEvent>
+      <Property name="autoOpen">true</Property>
+      <Property name="editable">false</Property>
+      <Property name="height">200</Property>
+      <Container>
+        <ToolBar>
+          <ToolBarButton>
+            <ClientEvent name="onClick">var dataTree = this.get(&quot;#subjectDataTree&quot;);&#xD;
+var selectNodes = dataTree.getCheckedNodes();&#xD;
+//var dsTasklist = this.get(&quot;#dsTasklist&quot;);&#xD;
+//var tmpList = selectNodes.slice(0);&#xD;
+var temp=[];&#xD;
+var time = 0;&#xD;
+var name = &quot;&quot;;&#xD;
+//dorado.MessageBox.alert(selectNodes.length);&#xD;
+//dorado.MessageBox.alert(selectNodes[2].get(&quot;data.name&quot;));&#xD;
+while(time &lt; selectNodes.length){&#xD;
+	name += selectNodes[time].get(&quot;data.name&quot;) + &quot;,&quot;;&#xD;
+	//dorado.MessageBox.alert(selectNodes[time].get(&quot;data.name&quot;));&#xD;
+	temp.push(selectNodes[time].get(&quot;data.name&quot;));&#xD;
+	time = time + 1;&#xD;
+	//dorado.MessageBox.alert(time);	&#xD;
+}&#xD;
+&#xD;
+name = name.substring(0,name.length-1);&#xD;
+var form = view.get(&quot;#formElement3&quot;);&#xD;
+form.set(&quot;value&quot;,name); &#xD;
+/*dsTasklist.set(&quot;parameter&quot;, {&#xD;
+	subject: temp&#xD;
+});&#xD;
+dsTasklist.flushAsync();&#xD;
+	*/&#xD;
+arg.processDefault = false;&#xD;
+view.get(&quot;#chooseSubject&quot;).close();</ClientEvent>
+            <Property name="caption">确定</Property>
+          </ToolBarButton>
+          <ToolBarButton>
+            <ClientEvent name="onClick">var dataTree = this.get(&quot;#subjectDataTree&quot;);&#xD;
+function unselect(nodes) {&#xD;
+		nodes.each(function(node) {&#xD;
+			unselect(node.get(&quot;nodes&quot;));&#xD;
+			node.set(&quot;checked&quot;, false);&#xD;
+		});&#xD;
+	}&#xD;
+&#xD;
+unselect(dataTree.get(&quot;nodes&quot;));&#xD;
+view.get(&quot;#chooseSubject&quot;).close();&#xD;
+</ClientEvent>
+            <Property name="caption">取消</Property>
+          </ToolBarButton>
+        </ToolBar>
+        <DataTree id="subjectDataTree">
+          <ClientEvent name="onDataRowClick">/*var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
+var node = self.get(&quot;currentNode&quot;);&#xD;
+&#xD;
+if (node ) {&#xD;
+var dsOutlineexecution = this.get(&quot;#dsTasklist&quot;);&#xD;
+dropDown.close(node.get(&quot;data.name&quot;));&#xD;
+dsOutlineexecution.set(&quot;parameter&quot;, {&#xD;
+	subject: node.get(&quot;data.name&quot;)&#xD;
+});&#xD;
+&#xD;
+dsOutlineexecution.flushAsync();&#xD;
+}*/&#xD;
+</ClientEvent>
+          <Property name="dataSet">dataSetSubject</Property>
+          <Property name="width">260</Property>
+          <BindingConfigs>
+            <BindingConfig>
+              <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
+              <Property name="tipProperty">description</Property>
+              <Property name="expandLevel">3</Property>
+              <Property name="recursive">true</Property>
+              <Property name="childrenProperty">children</Property>
+              <Property name="labelProperty">name</Property>
+              <Property name="checkable">true</Property>
+            </BindingConfig>
+          </BindingConfigs>
+        </DataTree>
+      </Container>
+    </CustomDropDown>
+  </View>
+</ViewConfig>

@@ -1,0 +1,28 @@
+@CHARSET "UTF-8";
+
+
+.d-panel .caption{
+  font-size:18px;
+  font-weight:bold;
+  height:30px;
+  font-family:'Hiragino Sans GB',Verdana,Arial,Sans-Serif
+}
+.d-grid1 {
+  font-size:14px;
+}
+/*表头样式*/
+.d-grid1 .header-table .header{
+  background: lightgrey !important;
+  font-size:16px;
+  font-weight:bold;
+  height:25px;
+  text-align:left;
+  font-family:'Hiragino Sans GB',Verdana,Arial,Sans-Serif
+}
+.d-label {
+  font-size:18px;
+  font-weight:bold;
+  height:30px;
+  font-family:'Hiragino Sans GB',Verdana,Arial,Sans-Serif;
+  padding:5px 0px 0px 5px
+}

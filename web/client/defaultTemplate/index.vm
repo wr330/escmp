@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<title>$!{title}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="$!{resourcesPath}resource/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="$!{resourcesPath}resource/js/jquery.min.js"></script>
+<script type="text/javascript" src="$!{resourcesPath}resource/js/jcarousellite_1.0.1.min.js"></script>
+<script type="text/javascript" src="$!{resourcesPath}resource/js/easySlider1.js"></script>
+#[[<script type="text/javascript" charset="utf-8">
+$(document).ready(function(){	
+	$("#slider").easySlider({
+		controlsBefore:	'<p id="controls">',
+		controlsAfter:	'</p>',
+		auto: true, 
+		pause:	3000,
+		continuous: true
+	});	
+});
+$(function() {
+    $(".menu").jCarouselLite({
+        btnNext: ".next",
+        btnPrev: ".prev",
+        circular: false,
+        visible: 6
+    });
+});
+</script>]]#
+<style type="text/css">
+#slider { margin:0; padding:0; list-style:none; }
+#slider ul,
+#slider li { margin:0; padding:0; list-style:none; }
+/* 
+    define width and height of list item (slide)
+    entire slider area will adjust according to the parameters provided here
+*/
+#slider li { width:966px; height:348px; overflow:hidden; }
+
+</style>
+</head>
+<body>
+
+<div class="main">
+ #parse("top.vm")
+  <div  class="slider">
+    <div   class="slice1">
+      <div style="width: 966px; height: 348px; overflow: hidden;" class="slice2" id="slider">
+        <ul style="width: 2898px; margin-left: 0px; margin-right:0px;">
+			#foreach($a in [0..5])
+			#if($!{mainNewsList.size()}>$!{a})
+				<li style="float: left;">         	
+           <div>
+                <h2>$!{mainNewsList.get($!{a}).getNodeTitle()}<p><a href="$!{basePath}dynamic/hot_news/$!{mainNewsList.get($!{a}).getNodeCode()}"><img src="$!{resourcesPath}resource/images/more_information.gif" alt="img" border="0" height="30" width="133" ></a></p></h2>
+                <p><a href=$!{basePath}dynamic/hot_news/$!{mainNewsList.get($!{a}).getNodeCode()}><img src = $!{mainNewsList.get($!{a}).getNodeContent2()}></a></p>            
+           </div>
+        </li>
+			#else
+			#end
+		#end
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="clr"></div>
+  <div class="body">
+    
+  </div>
+      <div class="body_resize"  style="overflow: hidden;">
+      <div class="News">
+        <h2 style="Color:#4b69ad;">新闻报道</h2>
+        <ul>
+		#foreach($a in [0..9])
+			#if($!{classicNewsList.size()}>$!{a})
+			    <li style="*float:left;*overflow:hidden;" class="list"><a style="*float:left;" href ="$!{basePath}dynamic/classic_news/$!{classicNewsList.get($!{a}).getNodeCode()}" title="$!{classicNewsList.get($!{a}).getNodeTitle()}">$!{classicNewsList.get($!{a}).getNodeTitle2()}</a><font style="float:right;Color:#46a3ff;" id = "orderDate">$!{classicNewsList.get($!{a}).getOrderDate2()}</font></li>
+				##<li ><a  href="$!{basePath}dynamic/classic_news/$!{classicNewsList.get($!{a}).getNodeCode()}" title="$!{classicNewsList.get($!{a}).getNodeTitle()}">$!{classicNewsList.get($!{a}).getNodeTitle()}</a></li>
+			#else
+			#end
+		#end
+        </ul>
+        <div style="margin-top:10px;text-align:right;"><a href="$!{basePath}dynamic/classic_news" style="color:#35678F;" title="更多">more</a></div>
+       <style>
+     .News{
+        width:838px;
+        margin:10px 10px 0px 50px;
+        display: inline;
+	    text-align: left;
+	    font-size:14px;
+	    font-family: 'Hiragino Sans GB',Verdana,Arial,Sans-Serif;
+        }
+         </style>
+      </div>
+    <div class="clr"></div>
+  </div>
+#parse("footer.vm")
+</div>
+<script language="JavaScript">
+var myimg,oldwidth,oldheight;
+var maxwidth=500;
+var maxheight=350;
+for(i = 0; i < document.all.length; i++)
+{
+  if(document.all(i).tagName.toLowerCase()=="img")
+  {
+     myimg = document.all(i);
+     if(myimg.width > myimg.height)
+     {
+         if(myimg.width > maxwidth)
+         {
+            oldwidth = myimg.width;
+            myimg.height = myimg.height * (maxwidth/oldwidth);
+            myimg.width = maxwidth;
+         }
+     }
+     else{
+         if(myimg.height > maxheight)
+         {
+            oldheight = myimg.height;
+            myimg.width = myimg.width * (maxheight/oldheight);
+            myimg.height = maxheight;
+         }
+     }
+  }
+}
+</script>
+</body></html>

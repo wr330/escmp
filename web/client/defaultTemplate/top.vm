@@ -1,0 +1,24 @@
+  <div class="header">
+    <div class="block_header">
+      <div class="logo"><a href="$!{base}" title="openNRS"><img src="$!{resourcesPath}resource/images/myzoo.gif" alt="logo" border="0" height="44" width="209"></a></div>
+      <div class="telephone">服务热线：010-82338336&nbsp;&nbsp;&nbsp;
+      <a class="rss"  href="$!{basePath}news/rss"><span >RSS</span></a>&nbsp;&nbsp;
+      <iframe width="63" scrolling="no" style="position:absolute" height="24" frameborder="0" src="http://widget.weibo.com/relationship/followbutton.php?language=zh_cn&amp;width=63&amp;height=14&amp;uid=2558128307&amp;style=1&amp;btn=light&amp;dpc=1" border="0" marginheight="0" marginwidth="0" allowtransparency="true"></iframe>
+      </div>
+      <div class="clr"></div>
+      <div class="prev menuBar" style="float:left;"><div style="padding:17px 0px; color:#FFFFFF"><</div></div>  
+      <div class="menu" style="overflow:hidden;float:left;">
+        <ul >
+         #foreach($menu in $!{menuList})
+         	#if($!{parentNode.getNodeCode().equals($!{menu.getNodeCode()})})
+          <li ><a class ="active" href="$!{basePath}$!{menu.getNodeCode()}" title="$!{menu.getNodeTitle()}">$!{menu.getNodeTitle()}</a></li>		
+	        #else
+          <li ><a href="$!{basePath}$!{menu.getNodeCode()}" title="$!{menu.getNodeTitle()}">$!{menu.getNodeTitle()}</a></li>
+            #end
+         #end
+        </ul>
+      </div>
+       <div class="next menuBar" style="float:left;"><div style="padding:17px 0px; color:#FFFFFF">></div></div>
+      <div class="clr"></div>
+    </div>
+  </div>

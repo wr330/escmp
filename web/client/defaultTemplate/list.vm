@@ -1,0 +1,231 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<title>$!{title}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="$!{resourcesPath}resource/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="$!{resourcesPath}resource/js/jquery.min.js"></script>
+<script type="text/javascript" src="$!{resourcesPath}resource/js/jcarousellite_1.0.1.min.js"></script>
+<script src="http://static.l99.com/js/jquery/jquery-1.2.6.pack.js" type="text/javascript"></script>
+<script type='text/javascript' src='/escmp/dwr/interface/DefaultWebNewsServiceImp.js'></script>
+<script type='text/javascript' src='/escmp/dwr/engine.js'></script>
+<script type='text/javascript' src='/escmp/dwr/util.js'></script>
+<style type="text/css">
+*{ padding:0; margin:0;color:#333;}
+body{text-align:center;width: auto;}
+fieldset,img,img a{ border:0;}
+ul,ol,li{ list-style:none;}
+p{ font:200 12px Arial, Helvetica, sans-serif;}
+a{text-decoration:none;color:#36c; cursor:pointer;outline: none;}
+h1,h3,h4,h5,h6{ font:200 14px  Arial, helvetica, sans-serif;}
+h2{ font:200 12px  Arial, helvetica, sans-serif;}
+.feedHome{ padding:20px 200px;}
+.feedHome li { width:525px;border-bottom:1px solid #E3EEF8; position:relative;}
+.message_block{ width:100%; padding:10px 0; text-align:left; overflow:hidden;}
+.my_img { float:left;}
+.message{ margin-left:60px; padding-top:3px;}
+.message a { margin-right:8px;}
+.message_right{float:left;}
+.repeat_time{}
+.repeat_time h2{ padding:3px 0 5px 0;}
+.repeat_time h2 a{ margin: 0 5px;}
+.leav_mes{ background:#EBF3F7; overflow:hidden; padding:6px 0; margin-bottom:3px;}
+.leav_mes_img{ float:left; padding-left:10px;}
+.leav_mes_info{ margin-left:5px; line-height:18px;font-size:13px;}
+.leav_mes_info span{  margin-left:15px;font:100 10px Arial, helvetica, sans-serif;}
+.leav_mes_info a{ margin-left:0px;}
+.leav_mes_info a.huif{ margin-left:10px;}
+.reapte_mes{ width:100%; float:left;background:#EBF3F7; overflow:hidden;}
+.reapte_mes textarea{ margin:7px; width:100%; height:20px; overflow-y:auto;}
+.hfxq{ overflow:hidden; width:100%;}
+</style>
+#[[<script type="text/javascript" charset="utf-8">
+$(function() {
+    $(".menu").jCarouselLite({
+        btnNext: ".next",
+        btnPrev: ".prev",
+        circular: false,
+        visible: 6
+    });
+});
+   </script>]]#
+</head>
+<body>
+ <div class="main">
+  #parse("top.vm")
+  <div class="slider2">
+    <div class="slice12" style ="overflow:hidden;">
+      <h2>$!{parentNode.getNodeTitle()}</h2>
+    </div>
+  </div>
+  <div class="clr"></div>
+  <div class="body">
+    <div class="body_resize">
+      <div class="News" >
+      	 <ul>
+      	 	#foreach($!{category} in $!{categorys})
+      	 	<li><a style="font-weight:bold;font-size: 16px;Color:#4b69ad;" href ="$!{basePath}$!{parentPath}/$!{category.getNodeCode()}"  title="$!{category.getNodeTitle()}">$!{category.getNodeTitle()}</a></li>	
+	 	    #end
+ 	     </ul>
+      </div>
+      <style>
+     .News{
+        width:164px;
+        _margin:5px 7px;
+        }
+     .Welcome{
+        width:696px;
+        _margin:5px 7px;
+        }
+     .welcome_detail{
+      font-family: 'Hiragino Sans GB',Verdana,Arial,Sans-Serif;
+	  text-align: left;
+	  line-height: 180%;
+	  display: block;
+	  font-size: 14px;
+      	}
+      	
+     .welcome_detail_title{
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+      	}
+     .welcome_detail_date{
+      font-family: 'SimSun-ExtBMicrosoft YaHei',Verdana,Arial,Sans-Serif;
+	  text-align: left;
+	  line-height: 180%;
+	  display: block;
+	  font-size: 14px;
+      text-align: center;
+      	}
+      .welcome_detail_content{
+      line-height: 250%;
+	  font-family: 'Hiragino Sans GB',Verdana,Arial,Sans-Serif;
+      font-size: 14px;
+      text-align: left;
+      	}
+      .welcome_list_top{
+        display: block;
+	    height: 24px;
+	    margin-bottom: 19px;
+	    font-family: 'Hiragino Sans GB',Verdana,Arial,Sans-Serif;
+      	}
+      .welcome_list_top_title{
+        font-family: 'Hiragino Sans GB',Verdana,Arial,Sans-Serif;
+      	float: left;
+	    font-size: 20px;
+	    font-weight: bold;
+	    Color:#4b69ad;
+      	}
+      .welcome_list_detail{
+      	display: block;
+	    text-align: left;
+	    font-size:14px;
+	    font-family: 'Hiragino Sans GB',Verdana,Arial,Sans-Serif;
+      	}
+      .welcome_list_detail ul li.list{
+      	font-size: 14px;
+	    margin-bottom: 15px;
+	    font-family: 'Hiragino Sans GB',Verdana,Arial,Sans-Serif;
+      	}
+      ul li {
+        list-style: none outside none;
+        margin: 0;
+        padding: 0;
+        }
+     .welcome_detail_content p{
+	font:normal 14px 'Hiragino Sans GB',Verdana,Arial,Sans-Serif;
+	}
+      </style>
+      </style>
+      <div class="Welcome" >
+      			#if($!{isList} == false)
+					#if($!{childNode})				
+						<div class="welcome_detail">
+                              <div class="welcome_detail_title" style=" margin-top: 25px;">$!{childNode.getNodeTitle()}</div>
+                              <div class="welcome_detail_date" style=" margin-top: 25px;">发布时间：$!{childNode.getOrderDate2()}</div>
+                              <hr style="border:1px #cccccc dotted;"/>
+                              <div class="welcome_detail_content" style ="font:normal 14px 'SimSun-ExtB',Verdana,Arial,Sans-Serif;">	
+                              $!{childNode.getNodeContent()}
+                               <div class="message_block">
+                    <div class="message_right">
+                            <div class="repeat_time" ><h2><a class="dis_none" href="javascript:void(0)">收起评论 ($!{commentsListCount})</a></h2></div> 
+                            <div class="hfxq ">  
+                            #foreach($!{comments} in $!{commentsList}) 
+                            <div class="leav_mes">
+                                                ##<div class="leav_mes_img"><img src="" /></div>
+                                                <h4 class="leav_mes_info"><a href="javascript:void(0)">$!{comments.getUserName()}</a>&nbsp;&nbsp;<span id = "commentsDate">$!{comments.getDate2()}</span><br />$!{comments.getContents()}</h4>                                  
+                            </div> 
+                            #end
+                            <div class=\"reapte_mes\" style=" width:700px;"><textarea id ="test" style=" width:690px;resize:none;"></textarea><br /><a class="huif" style="float:right;padding:5px 5px;margin:5px;background:#eedfcc" href="javascript:void(0)">发表评论</a></div>
+                            </div>             
+                    </div>
+            </div>
+                              </div>
+				        </div>
+					#else
+				#parse("$!{includeView}") 
+				    #end
+				#else
+				    #if($!{childNode})
+				<div class="welcome_list_top">
+					<div class="bak"></div>
+					<div class="welcome_list_top_title">$!{childNode.getNodeTitle()}</div>
+				</div>
+				<div class="welcome_list_detail" style="height: 690px">
+					<ul>
+						#foreach($!{news} in $!{newsList})
+					<li class="list"><a  href ="$!{basePath}$!{parentPath}/$!{currentNode.getNodeCode()}/$!{news.getNodeCode()}" title="$!{news.getNodeTitle()}">$!{news.getNodeTitle()}</a></li>												
+						#end
+					</ul>
+				</div>
+				#parse("navpage.vm")   	
+    				#else
+				<div class="welcome_list_top">
+					<div class="bak"></div>
+					<div class="welcome_list_top_title">$!{currentNode.getNodeTitle()}</div>
+				</div>
+				<div class="welcome_list_detail" style="height: 690px">
+					<ul>
+						#foreach($!{news} in $!{newsList})
+					  <li style="*float:left;*overflow:hidden;" class="list"><a style="*float:left;font-size: 14px;" href ="$!{basePath}$!{parentPath}/$!{currentNode.getNodeCode()}/$!{news.getNodeCode()}" title="$!{news.getNodeTitle()}" >$!{news.getNodeTitle2()}</a><font style="float:right;Color:#46a3ff;" id = "orderDate">$!{news.getOrderDate2()}</font></li>												
+						#end
+					</ul>
+				</div>
+			   #parse("navpage2.vm")
+				  #end
+				#end
+      	</div> 
+    <div class="clr"></div>
+    </div>
+  <div class="clr"></div>
+  </div>
+  #parse("footer.vm")
+ </div>
+ <script type="text/javascript">
+ 
+$(document).ready(function(){
+ $(".dis_none").click(function(){
+  $(this).parents(".message_right").children(".hfxq").slideToggle(1200,toggleText);
+ });
+   function toggleText(){
+    if($(this).parents(".message_right").find(".dis_none").text()=="收起评论 ($!{commentsListCount})"){
+     $(this).parents(".message_right").find(".dis_none").text("展开评论 ($!{commentsListCount})")
+     }else{
+     $(this).parents(".message_right").find(".dis_none").text("收起评论 ($!{commentsListCount})")
+     }
+   }
+ $(".huif").click(function(){
+ var txt = document.getElementById('test');
+ if(txt.value != "")
+ {
+DefaultWebNewsServiceImp.saveComments(txt.value, "$!{childCode}",handleResponse);
+document.getElementById('test').value = "";
+}
+ })
+})
+ function handleResponse(){
+ window.location.reload();
+ }
+</script>
+</body>
+</html>

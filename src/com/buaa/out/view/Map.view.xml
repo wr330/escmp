@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="Province">
+      <Reference name="id">
+        <Property name="label">行政区域编码</Property>
+      </Reference>
+      <Reference name="name">
+        <Property name="label">名称</Property>
+      </Reference>
+      <Reference name="description">
+        <Property name="label">详细</Property>
+      </Reference>
+    </DataType>
+    <DataType name="Phone">
+      <PropertyDef name="price"/>
+      <PropertyDef name="name"/>
+    </DataType>
+  </Model>
+  <View layout="padding:20">
+    <Property name="title"> 中国地图</Property>
+    <DataSet id="dsServicepersonnel">
+      <Property name="dataType">[Servicepersonnel]</Property>
+      <Property name="dataProvider">servicepersonnelPR#queryServicepersonnel</Property>
+      <Property name="pageSize">5</Property>
+    </DataSet>
+    <DataSet id="dsPhone">
+      <Property name="dataProvider">supportprogramPR#getNumbers</Property>
+    </DataSet>
+    <DataSet id="dsSupportprogram">
+      <Property name="dataType">[Supportprogram]</Property>
+      <Property name="dataProvider">supportprogramPR#querySupportprogram</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <DataSet id="dsProvince">
+      <Property name="dataType">[Province]</Property>
+    </DataSet>
+    <DataSet id="dsHighlight">
+      <Property name="dataType">[Province]</Property>
+    </DataSet>
+    <SplitPanel>
+      <Property name="position">70%</Property>
+      <Property name="direction">top</Property>
+      <MainControl>
+        <SplitPanel>
+          <Property name="position">45%</Property>
+          <Property name="direction">right</Property>
+          <MainControl>
+            <Panel>
+              <Property name="caption">最大保障人员需求</Property>
+              <Buttons/>
+              <Children>
+                <Chart>
+                  <Axes>
+                    <CategoryAxis>
+                      <Property name="dataSet">dsPhone</Property>
+                      <Property name="properties">name</Property>
+                    </CategoryAxis>
+                    <NumbericAxis>
+                      <Property name="min">0</Property>
+                    </NumbericAxis>
+                  </Axes>
+                  <Series>
+                    <Column>
+                      <Property name="bindingConfig">
+                        <Property name="yProperty">price</Property>
+                      </Property>
+                      <Property name="dataSet">dsPhone</Property>
+                      <Property name="dataLabels">
+                        <Property name="color">#96EE11</Property>
+                        <Property name="enabled">true</Property>
+                      </Property>
+                      <Property name="color">#96EE11</Property>
+                    </Column>
+                  </Series>
+                </Chart>
+              </Children>
+              <Tools/>
+            </Panel>
+          </MainControl>
+          <SideControl>
+            <Panel>
+              <Property name="caption">现场服务人员信息</Property>
+              <Buttons/>
+              <Children>
+                <ToolBar>
+                  <DataPilot>
+                    <Property name="dataSet">dsServicepersonnel</Property>
+                  </DataPilot>
+                </ToolBar>
+                <DataGrid id="dgServicepersonnel">
+                  <Property name="readOnly">true</Property>
+                  <Property name="dataSet">dsServicepersonnel</Property>
+                  <Property name="dataPath"></Property>
+                  <Property name="filterMode">serverSide</Property>
+                  <Property name="showFilterBar">true</Property>
+                  <Property name="rowHeight">22</Property>
+                  <RowNumColumn/>
+                  <DataColumn name="name">
+                    <Property name="property">name</Property>
+                    <Property name="width">120</Property>
+                  </DataColumn>
+                  <DataColumn name="outfield">
+                    <Property name="property">outfield</Property>
+                    <Property name="width">120</Property>
+                  </DataColumn>
+                  <DataColumn name="job">
+                    <Property name="property">job</Property>
+                    <Property name="width">120</Property>
+                  </DataColumn>
+                  <DataColumn name="datefrom">
+                    <Property name="property">datefrom</Property>
+                    <Property name="width">120</Property>
+                  </DataColumn>
+                  <DataColumn name="dateto">
+                    <Property name="property">dateto</Property>
+                    <Property name="width">120</Property>
+                  </DataColumn>
+                  <DataColumn>
+                    <Property name="property">miji</Property>
+                    <Property name="width">120</Property>
+                    <Property name="name">miji</Property>
+                  </DataColumn>
+                </DataGrid>
+              </Children>
+              <Tools/>
+            </Panel>
+          </SideControl>
+        </SplitPanel>
+      </MainControl>
+      <SideControl>
+        <SplitPanel>
+          <Property name="direction">left</Property>
+          <Property name="position">30%</Property>
+          <MainControl>
+            <Panel>
+              <Property name="caption">中国地图</Property>
+              <Buttons/>
+              <Children>
+                <Container>
+                  <ToolBar>
+                    <Property name="tip">chinaMap</Property>
+                    <ToolBarButton id="btnZoomIn">
+                      <ClientEvent name="onClick">var	chinaMap = this.get(&quot;#chinaMap&quot;);&#xD;
+	chinaMap.zoomIn(1);</ClientEvent>
+                      <Property name="caption">放大</Property>
+                      <Property name="icon">url(>skin>common/icons.gif) -60px -100px</Property>
+                    </ToolBarButton>
+                    <Separator/>
+                    <ToolBarButton id="btnZoomOut">
+                      <ClientEvent name="onClick">var	chinaMap = this.get(&quot;#chinaMap&quot;);&#xD;
+	chinaMap.zoomOut(1);</ClientEvent>
+                      <Property name="caption">缩小</Property>
+                      <Property name="icon">url(>skin>common/icons.gif) -80px -100px</Property>
+                    </ToolBarButton>
+                    <Separator/>
+                  </ToolBar>
+                  <Map id="chinaMap">
+                    <ClientEvent name="onElementClick">var id = arg.element.data('id'), name = arg.element.data('name');&#xD;
+var parameter={&#xD;
+	address:name&#xD;
+}&#xD;
+//var entityCount = view.id(&quot;dsServicepersonnel&quot;).get(&quot;data&quot;).entityCount;&#xD;
+&#xD;
+var number=[];&#xD;
+number.push(1);&#xD;
+number.push(2);&#xD;
+number.push(3);&#xD;
+var parameter1={&#xD;
+	count:number&#xD;
+}&#xD;
+view.id(&quot;dsPhone&quot;).set(&quot;parameter&quot;,parameter1);&#xD;
+view.id(&quot;dsPhone&quot;).flushAsync();&#xD;
+&#xD;
+view.id(&quot;dsSupportprogram&quot;).set(&quot;parameter&quot;,parameter);&#xD;
+view.id(&quot;dsServicepersonnel&quot;).set(&quot;parameter&quot;,parameter);&#xD;
+view.id(&quot;dsServicepersonnel&quot;).flushAsync();&#xD;
+view.id(&quot;dsSupportprogram&quot;).flushAsync();&#xD;
+	var subMap = self.get('subMap');&#xD;
+	arg.element.attr({&#xD;
+		fill : &quot;#65aecf&quot;&#xD;
+	});&#xD;
+&#xD;
+	function showSubMap() {&#xD;
+		subMap.set('data', dorado.widget.map.China[name]);&#xD;
+		subMap.show();&#xD;
+		return true;&#xD;
+	}&#xD;
+	dorado.widget.map.China[name] &amp;&amp; showSubMap()&#xD;
+			|| $import(&quot;map-China-&quot; + name, function() {&#xD;
+				showSubMap();&#xD;
+			});&#xD;
+&#xD;
+			&#xD;
+</ClientEvent>
+                    <ClientEvent name="onElementMouseOver">//alert( self.get('fill'));&#xD;
+arg.element.attr({&#xD;
+				fill : &quot;#a8e5ff&quot;&#xD;
+			});</ClientEvent>
+                    <ClientEvent name="onElementMouseOut">arg.element.attr({&#xD;
+				fill : '#96Cee6'&#xD;
+			});</ClientEvent>
+                    <ClientEvent name="onRefreshPaper"> var paper = self.getPaper(),&#xD;
+        circleDot,popupFrame,popupLabels;&#xD;
+&#xD;
+    var x = 10, y = 10,&#xD;
+        circleStyle = {&#xD;
+            fill: &quot;r#FE7727:50-#F57124:100&quot;,&#xD;
+            stroke: &quot;#fff&quot;,&#xD;
+            &quot;stroke-width&quot;: 2&#xD;
+        },&#xD;
+        labelStyle = {&#xD;
+            font: '10px Helvetica, Arial',&#xD;
+            fill: &quot;#fff&quot;&#xD;
+        },&#xD;
+        popupStyle = {&#xD;
+            fill: &quot;#5C4D4D&quot;,&#xD;
+            stroke: &quot;#666&quot;,&#xD;
+            &quot;stroke-width&quot;: 2,&#xD;
+            &quot;fill-opacity&quot;: .7&#xD;
+        };&#xD;
+&#xD;
+    circleDot = paper.circle(x, y, 1).attr(circleStyle);&#xD;
+    popupLabels = paper.set();&#xD;
+    popupLabels.push(paper.text(60, 12, &quot;最大人数:000&quot;).attr(labelStyle));&#xD;
+    popupLabels.push(paper.text(60, 30, &quot;时间:00月&quot;).attr(labelStyle));&#xD;
+    popupLabels.hide();&#xD;
+    popupFrame = paper.popup(100, 100, popupLabels, &quot;top&quot;).attr(popupStyle).hide();&#xD;
+&#xD;
+&#xD;
+    setTimeout(function () {&#xD;
+        (function () {&#xD;
+            var texts = self._data.texts,&#xD;
+                text = texts[Math.floor(Math.random() * 35)],&#xD;
+                amount = Math.floor(Math.random() * 20 + 1),&#xD;
+                money = Math.floor(Math.random() *12+1)+&quot;月&quot; ,&#xD;
+                easing = &quot;bounce&quot;, ms = 800;&#xD;
+				//alert(texts[1]);&#xD;
+            var popupStyle = amount > 80 ? {&#xD;
+                fill: &quot;#813232&quot;,&#xD;
+                stroke: &quot;#9E6060&quot;&#xD;
+            } : {&#xD;
+                fill: &quot;#5C4D4D&quot;,&#xD;
+                stroke: &quot;#666&quot;&#xD;
+            };&#xD;
+            var ppp = self._paper.popup(text.x, text.y, popupLabels, 'top', 1),&#xD;
+                anim = Raphael.animation({&#xD;
+                    path: ppp.path,&#xD;
+                    transform: [ &quot;t&quot;, ppp.dx, ppp.dy ]&#xD;
+                }, ms, easing);&#xD;
+&#xD;
+            var matrix = popupLabels[0].matrix;&#xD;
+            var lx = matrix.e + ppp.dx,&#xD;
+                ly = matrix.f + ppp.dy;&#xD;
+&#xD;
+            popupLabels[0].attr({text: &quot;最大人数:&quot; + amount });&#xD;
+            popupLabels[1].attr({ text: &quot;时间:&quot; + money });&#xD;
+            popupLabels.show().stop().animateWith(&#xD;
+                popupFrame, anim,&#xD;
+                {transform: [ &quot;t&quot;, lx, ly ]},&#xD;
+                ms, easing&#xD;
+            );&#xD;
+            popupFrame.show().stop().attr(popupStyle).animate(anim);&#xD;
+            circleDot.stop().attr({&#xD;
+                cy: text.y,&#xD;
+                cx: text.x,&#xD;
+                r: 2&#xD;
+            }).animate({r: 7}, ms * 3, easing);&#xD;
+&#xD;
+            var data = view.get(&quot;#dsSupportprogram.data&quot;);&#xD;
+            (data.toArray().length >= 10) &amp;&amp; (data.remove(data.last()));&#xD;
+            data.insert({&#xD;
+				troop:'编号'+amount,&#xD;
+				staffrequirement:Math.floor(Math.random() * 9+1),&#xD;
+				changeperiod:Math.random()*8+4,&#xD;
+				workaddress:text.content,&#xD;
+				supporttype:'年度保障计划',&#xD;
+				worktime:new Date()&#xD;
+            }, &quot;begin&quot;);&#xD;
+            setTimeout(arguments.callee, 2000);&#xD;
+        })();&#xD;
+&#xD;
+&#xD;
+    }, 1000);&#xD;
+</ClientEvent>
+                    <ClientEvent name="onRenderElement">	arg.element.attr({&#xD;
+		cursor : &quot;pointer&quot;&#xD;
+	});</ClientEvent>
+                    <Property name="scalable">true</Property>
+                    <Property name="showTexts">true</Property>
+                    <Property name="stroke">#fff</Property>
+                    <Property name="tags">map</Property>
+                    <Property name="fill">#96Cee6</Property>
+                    <SubMap id="provinceMap">
+                      <ClientEvent name="onRenderElement">arg.element.color = Raphael.getColor();</ClientEvent>
+                      <ClientEvent name="onElementMouseOut">arg.element.attr({
+		fill : self._fill,
+		stroke : self._stroke
+	});</ClientEvent>
+                      <ClientEvent name="onElementClick">var id = arg.element.data('id')&#xD;
+alert(id);&#xD;
+</ClientEvent>
+                      <Property name="fill">#96Cee6</Property>
+                      <Property name="stroke">#fff</Property>
+                      <Property name="tags">map</Property>
+                    </SubMap>
+                  </Map>
+                </Container>
+                <Tip id="mapTip">
+                  <Property name="content">&lt;div>试试推动鼠标滚动轴！&lt;/div>&lt;div>试试地图拖动！&lt;/div></Property>
+                  <Property name="caption">小提示</Property>
+                  <Property name="closeable">true</Property>
+                  <Property name="arrowAlign">left</Property>
+                  <Property name="arrowDirection">bottom</Property>
+                  <Property name="icon">INFO</Property>
+                  <Property name="hideAnimateType">fade</Property>
+                </Tip>
+              </Children>
+              <Tools/>
+            </Panel>
+          </MainControl>
+          <SideControl>
+            <Panel>
+              <Property name="caption"> 说明</Property>
+              <Buttons/>
+              <Children>
+                <AutoForm>
+                  <Property name="dataSet">dsSupportprogram</Property>
+                  <Property name="cols">*</Property>
+                  <Property name="rowHeight">40</Property>
+                  <AutoFormElement>
+                    <Property name="name">workaddress</Property>
+                    <Property name="property">workaddress</Property>
+                    <Editor/>
+                  </AutoFormElement>
+                  <AutoFormElement>
+                    <Property name="name">troop</Property>
+                    <Property name="property">troop</Property>
+                    <Editor/>
+                  </AutoFormElement>
+                  <AutoFormElement>
+                    <Property name="name">staffrequirement</Property>
+                    <Property name="property">staffrequirement</Property>
+                    <Editor/>
+                  </AutoFormElement>
+                  <AutoFormElement>
+                    <Property name="name">supporttype</Property>
+                    <Property name="property">supporttype</Property>
+                    <Editor/>
+                  </AutoFormElement>
+                  <AutoFormElement>
+                    <Property name="name">changeperiod</Property>
+                    <Property name="property">changeperiod</Property>
+                    <Editor/>
+                  </AutoFormElement>
+                  <AutoFormElement>
+                    <Property name="name">worktime</Property>
+                    <Property name="property">worktime</Property>
+                    <Editor/>
+                  </AutoFormElement>
+                </AutoForm>
+              </Children>
+              <Tools/>
+            </Panel>
+          </SideControl>
+        </SplitPanel>
+      </SideControl>
+    </SplitPanel>
+  </View>
+</ViewConfig>

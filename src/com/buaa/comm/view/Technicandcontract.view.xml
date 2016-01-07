@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Technicandcontract</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <DataSet id="dsTechnicandcontract">
+      <Property name="dataType">[Technicandcontract]</Property>
+      <Property name="dataProvider">technicandcontractPR#queryTechnicandcontract</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <UpdateAction id="uaTechnicandcontract">
+      <Property name="dataResolver">technicandcontractPR#saveTechnicandcontract</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsTechnicandcontract</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <ToolBar>
+      <DataPilot>
+        <Property name="itemCodes">pages</Property>
+        <Property name="dataSet">dsTechnicandcontract</Property>
+        <Property name="dataPath"></Property>
+      </DataPilot>
+      <ToolBarButton>
+        <ClientEvent name="onClick">
+	view.id('dsTechnicandcontract').getData().insert();
+	view.id('diaTechnicandcontract').show();
+	</ClientEvent>
+        <Property name="caption">新增</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">
+	var cur=view.id('dsTechnicandcontract').getData('#');
+	if (cur) {
+		view.id('diaTechnicandcontract').show();
+	}
+	</ClientEvent>
+        <Property name="caption">修改</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsTechnicandcontract').getData('#');
+	var ua=view.id('uaTechnicandcontract')
+	if(cur){
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+			cur.remove();
+			ua.execute();
+				}); 
+			} 
+	</ClientEvent>
+        <Property name="caption">删除</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid id="dgTechnicandcontract">
+      <Property name="readOnly">true</Property>
+      <Property name="dataSet">dsTechnicandcontract</Property>
+      <Property name="dataPath"></Property>
+      <Property name="filterMode">serverSide</Property>
+      <Property name="showFilterBar">true</Property>
+      <Property name="rowHeight">22</Property>
+      <RowNumColumn/>
+      <DataColumn name="projectnumber">
+        <Property name="property">projectnumber</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="projectname">
+        <Property name="property">projectname</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="contractnumber">
+        <Property name="property">contractnumber</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="contractname">
+        <Property name="property">contractname</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="responsiblepersion">
+        <Property name="property">responsiblepersion</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="major">
+        <Property name="property">major</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="contractmoney">
+        <Property name="property">contractmoney</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="submitargumentreportdate">
+        <Property name="property">submitargumentreportdate</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="contractsubmitedappovedate">
+        <Property name="property">contractsubmitedappovedate</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="signcontractdate">
+        <Property name="property">signcontractdate</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="paymentdate">
+        <Property name="property">paymentdate</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="paymentmethod">
+        <Property name="property">paymentmethod</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">miji</Property>
+        <Property name="width">120</Property>
+        <Property name="name">miji</Property>
+      </DataColumn>
+    </DataGrid>
+    <Dialog id="diaTechnicandcontract">
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">800</Property>
+      <Property name="caption">技改与合同管理</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaTechnicandcontract').execute(function(){
+               view.id('diaTechnicandcontract').hide();
+           });
+         </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsTechnicandcontract').getData('#');
+				cur.cancel();
+				view.id('diaTechnicandcontract').hide();
+	         </ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afTechnicandcontract">
+          <Property name="cols">*,*</Property>
+          <Property name="dataSet">dsTechnicandcontract</Property>
+          <Property name="dataPath">#</Property>
+          <Property name="labelWidth">140</Property>
+          <AutoFormElement>
+            <Property name="name">ProjectNumber</Property>
+            <Property name="property">projectnumber</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">ProjectName</Property>
+            <Property name="property">projectname</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">ContractNumber</Property>
+            <Property name="property">contractnumber</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">ContractName</Property>
+            <Property name="property">contractname</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">ResponsiblePersion</Property>
+            <Property name="property">responsiblepersion</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">Major</Property>
+            <Property name="property">major</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">ContractMoney</Property>
+            <Property name="property">contractmoney</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">SubmitArgumentReportDate</Property>
+            <Property name="property">submitargumentreportdate</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">ContractSubmitedAppoveDate</Property>
+            <Property name="property">contractsubmitedappovedate</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">SignContractDate</Property>
+            <Property name="property">signcontractdate</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">PaymentDate</Property>
+            <Property name="property">paymentdate</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">PaymentMethod</Property>
+            <Property name="property">paymentmethod</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+  </View>
+</ViewConfig>

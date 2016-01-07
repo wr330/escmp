@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Supportprogram</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <DataSet id="dsDictionary">
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="dictype">Dic_Outfield</Property>
+          <Property name="status">0</Property>
+        </Entity>
+      </Property>
+    </DataSet>
+    <DataSet id="dsDictionary2">
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="dictype">Dic_Plantype</Property>
+          <Property name="status">0</Property>
+        </Entity>
+      </Property>
+    </DataSet>
+    <DataSet id="dsSupportprogram">
+      <Property name="dataType">[Supportprogram]</Property>
+      <Property name="dataProvider">supportprogramPR#querySupportprogram</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <DataSetDropDown id="dataSetDropDown1">
+      <Property name="autoOpen">true</Property>
+      <Property name="dataSet">dsDictionary</Property>
+      <Property name="property">name</Property>
+      <Property name="displayProperty">name</Property>
+      <Property name="editable">false</Property>
+    </DataSetDropDown>
+    <DataSetDropDown id="dataSetDropDown2">
+      <Property name="autoOpen">true</Property>
+      <Property name="dataSet">dsDictionary2</Property>
+      <Property name="property">name</Property>
+      <Property name="displayProperty">name</Property>
+      <Property name="editable">false</Property>
+    </DataSetDropDown>
+    <UpdateAction id="uaSupportprogram">
+      <Property name="dataResolver">supportprogramPR#saveSupportprogram</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsSupportprogram</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <ToolBar>
+      <DataPilot>
+        <Property name="itemCodes">pages</Property>
+        <Property name="dataSet">dsSupportprogram</Property>
+        <Property name="dataPath"></Property>
+      </DataPilot>
+      <ToolBarButton>
+        <ClientEvent name="onClick">	view.id('dsSupportprogram').getData().insert();&#xD;
+	view.id('diaSupportprogram').show();</ClientEvent>
+        <Property name="caption">新增</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">	var cur=view.id('dsSupportprogram').getData('#');&#xD;
+	if (cur) {&#xD;
+		view.id('diaSupportprogram').show();&#xD;
+	}</ClientEvent>
+        <Property name="caption">修改</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsSupportprogram').getData('#');&#xD;
+	var ua=view.id('uaSupportprogram')&#xD;
+	if(cur){&#xD;
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){&#xD;
+			cur.remove();&#xD;
+			ua.execute();&#xD;
+				}); &#xD;
+			} </ClientEvent>
+        <Property name="caption">删除</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">view.id('dgSupportprogram').set(&quot;showFilterBar&quot;,!view.id('dgSupportprogram').get(&quot;showFilterBar&quot;));</ClientEvent>
+        <Property name="caption">自定义查询</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid id="dgSupportprogram">
+      <Property name="dataSet">dsSupportprogram</Property>
+      <Property name="filterMode">serverSide</Property>
+      <Property name="showFilterBar">false</Property>
+      <Property name="rowHeight">22</Property>
+      <Property name="readOnly">true</Property>
+      <Property name="height">50%</Property>
+      <RowNumColumn/>
+      <DataColumn name="supporttype">
+        <Property name="property">supporttype</Property>
+      </DataColumn>
+      <DataColumn name="workaddress">
+        <Property name="property">workaddress</Property>
+      </DataColumn>
+      <DataColumn name="troop">
+        <Property name="property">troop</Property>
+      </DataColumn>
+      <DataColumn name="staffrequirement">
+        <Property name="property">staffrequirement</Property>
+      </DataColumn>
+      <DataColumn name="worktime">
+        <Property name="property">worktime</Property>
+      </DataColumn>
+      <DataColumn name="changeperiod">
+        <Property name="property">changeperiod</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">miji</Property>
+        <Property name="name">miji</Property>
+      </DataColumn>
+    </DataGrid>
+    <Dialog id="diaSupportprogram">
+      <Property name="height">80%</Property>
+      <Property name="width">40%</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaSupportprogram').execute(function(){
+               view.id('diaSupportprogram').hide();
+           });
+         </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsSupportprogram').getData('#');
+				cur.cancel();
+				view.id('diaSupportprogram').hide();
+	         </ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm>
+          <Property name="cols">*</Property>
+          <Property name="dataSet">dsSupportprogram</Property>
+          <AutoFormElement>
+            <Property name="name">troop</Property>
+            <Property name="property">troop</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">staffrequirement</Property>
+            <Property name="property">staffrequirement</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">supporttype</Property>
+            <Property name="property">supporttype</Property>
+            <Property name="trigger">dataSetDropDown2</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">changeperiod</Property>
+            <Property name="property">changeperiod</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">workaddress</Property>
+            <Property name="property">workaddress</Property>
+            <Property name="trigger">dataSetDropDown1</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">worktime</Property>
+            <Property name="property">worktime</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <DataGrid>
+      <Property name="dataSet">dsSupportprogram</Property>
+      <Property name="dataPath">#.supportitem</Property>
+      <Property name="height">50%</Property>
+      <DataColumn name="endexecutiontime">
+        <Property name="property">endexecutiontime</Property>
+      </DataColumn>
+      <DataColumn name="startexecutiontime">
+        <Property name="property">startexecutiontime</Property>
+      </DataColumn>
+      <DataColumn name="registrationexecutor">
+        <Property name="property">registrationexecutor</Property>
+      </DataColumn>
+      <DataColumn name="miji">
+        <Property name="property">miji</Property>
+      </DataColumn>
+    </DataGrid>
+    <DataSet id="dsSupportItem">
+      <Property name="pageSize">20</Property>
+      <Property name="dataType">[Supportitem]</Property>
+      <Property name="dataProvider">supportitemPR#querySupportitem</Property>
+    </DataSet>
+  </View>
+</ViewConfig>
