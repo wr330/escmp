@@ -60,6 +60,33 @@
         <Property name="dataSet">dsUserOperationLog</Property>
       </UpdateItem>
     </UpdateAction>
+    <UpdateAction id="updateSubject">
+      <ClientEvent name="beforeExecute">var cur=view.id('dsSubject');&#xD;
+var ftype=view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
+//cur.set(&quot;parameter&quot;,{&#xD;
+//	});&#xD;
+//cur.flushAsync();&#xD;
+cur.getData().each(function(Subject){&#xD;
+	Subject.set(&quot;ftype&quot;,ftype);&#xD;
+});&#xD;
+</ClientEvent>
+      <ClientEvent name="onExecute">var cur=view.id('dataSetSubject');&#xD;
+var ftype=view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
+cur.set(&quot;parameter&quot;,{&#xD;
+	ftype:ftype&#xD;
+	});&#xD;
+cur.flushAsync();&#xD;
+var cur1=view.id('dsSubject');&#xD;
+cur1.set(&quot;parameter&quot;,{&#xD;
+	});&#xD;
+cur1.flushAsync();</ClientEvent>
+      <Property name="dataResolver">subjectPR#copySubject</Property>
+      <Property name="successMessage">数据已关联</Property>
+      <Property name="parameter"></Property>
+      <UpdateItem>
+        <Property name="dataSet">dsSubject</Property>
+      </UpdateItem>
+    </UpdateAction>
     <SplitPanel>
       <Property name="position">270</Property>
       <MainControl>
@@ -283,98 +310,6 @@ view.set({&#xD;
         </Container>
       </SideControl>
     </SplitPanel>
-    <Menu id="menuOperate">
-      <Property name="visible">false</Property>
-      <MenuItem>
-        <ClientEvent name="onClick">var data=view.id(&quot;dataSetSubject&quot;).getData();&#xD;
-var newOrder=view.buildOrder(view.id(&quot;dataTreeSubject&quot;).get(&quot;root&quot;).get(&quot;nodes&quot;));&#xD;
-var newEntity=data.insert({orderno:newOrder});//插入一条新的&#xD;
-view.id(&quot;dataTreeSubject&quot;).set(&quot;currentEntity&quot;,newEntity);&#xD;
-var cur=view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
-var cur1=view.id(&quot;dataSetSubject&quot;).getData(&quot;!currentSubject&quot;);&#xD;
-cur1.set(&quot;ftype&quot;,cur);&#xD;
-&#xD;
-</ClientEvent>
-        <Property name="name">addRoot</Property>
-        <Property name="caption">添加根节点</Property>
-        <Property name="icon">url(skin>common/icons.gif) -280px -100px</Property>
-        <Property name="visible">false</Property>
-      </MenuItem>
-      <MenuItem>
-        <ClientEvent name="onClick">var tree=view.id(&quot;dataTreeSubject&quot;);&#xD;
-var currentNode=tree.get(&quot;currentNode&quot;);&#xD;
-if(!currentNode){&#xD;
-	dorado.MessageBox.alert(&quot;请先选中一个父节点!&quot;);&#xD;
-	return;&#xD;
-}&#xD;
-var newOrder=view.buildOrder(currentNode.get(&quot;nodes&quot;));&#xD;
-var currentEntity=currentNode.get(&quot;data&quot;);&#xD;
-var newEntity=currentEntity.createChild(&quot;children&quot;,{&#xD;
-	parentnode:currentEntity.get(&quot;name&quot;),&#xD;
-	orderno:newOrder&#xD;
-});&#xD;
-currentNode.expand();&#xD;
-tree.set(&quot;currentEntity&quot;,newEntity);&#xD;
-var cur=view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
-var cur1=view.id(&quot;dataSetSubject&quot;).getData(&quot;!currentSubject&quot;);&#xD;
-cur1.set(&quot;ftype&quot;,cur);&#xD;
-&#xD;
-	var myDate = new Date();&#xD;
-	view.id('dsUserOperationLog').getData().insert({&#xD;
-		logOperationType:&quot;0&quot;,&#xD;
-		operationPerson: &quot;${loginUsername}&quot;,&#xD;
-		operationContent:&quot;对试飞科目表新增一条子节点记录&quot;,&#xD;
-		operationTime:myDate&#xD;
-	});&#xD;
-	view.id('uaUserOperationLog').execute();&#xD;
-&#xD;
-</ClientEvent>
-        <Property name="caption">添加子节点</Property>
-        <Property name="name">addSub</Property>
-        <Property name="icon">url(skin>common/icons.gif) -120px 0px</Property>
-      </MenuItem>
-      <MenuItem>
-        <ClientEvent name="onClick">var tree=view.id(&quot;dataTreeSubject&quot;);&#xD;
-var entity=tree.get(&quot;currentEntity&quot;);&#xD;
-if(entity){&#xD;
-	view.id(&quot;ajaxActionCheckChildren&quot;).set(&quot;parameter&quot;, {&#xD;
-		parentnode:entity.get(&quot;name&quot;),&#xD;
-		ftype:entity.get(&quot;ftype&quot;)&#xD;
-		}).execute(function(count){&#xD;
-		if (count>0){&#xD;
-			dorado.MessageBox.alert(&quot;请先删除子节点&quot;);&#xD;
-		} else {&#xD;
-			dorado.MessageBox.confirm(&quot;真的要删除当前节点？&quot;,function(){&#xD;
-			&#xD;
-				var myDate = new Date();&#xD;
-				view.id('dsUserOperationLog').getData().insert({&#xD;
-					logOperationType:&quot;2&quot;,&#xD;
-					operationPerson: &quot;${loginUsername}&quot;,&#xD;
-					operationContent:&quot;对试飞科目表删除所选节点&quot;,&#xD;
-					operationTime:myDate&#xD;
-				});&#xD;
-				view.id('uaUserOperationLog').execute();&#xD;
-			&#xD;
-				entity.remove();&#xD;
-				var firstNode=tree.get(&quot;firstNode&quot;);&#xD;
-				if(firstNode){&#xD;
-					tree.set(&quot;currentNode&quot;,firstNode);&#xD;
-				}&#xD;
-				//view.id(&quot;updateActionSubject&quot;).execute();&#xD;
-			});&#xD;
-		}&#xD;
-	});&#xD;
-}else{&#xD;
-	dorado.MessageBox.alert(&quot;当前没有节点可供删除！&quot;);&#xD;
-}&#xD;
-</ClientEvent>
-        <Property name="name">del</Property>
-        <Property name="caption">删除</Property>
-        <Property name="icon">url(skin>common/icons.gif) -140px 0px</Property>
-        <Property name="tags">DirtyNode</Property>
-        <Property name="disabled">true</Property>
-      </MenuItem>
-    </Menu>
     <AjaxAction id="ajaxActionCheckChildren">
       <Property name="service">subjectPR#countChildren</Property>
       <Property name="parameter">
@@ -398,42 +333,6 @@ dataSetSubject.flushAsync();</ClientEvent>
       <Property name="reloadDataOnOpen">true</Property>
       <Property name="useEmptyItem">true</Property>
     </DataSetDropDown>
-    <DataSet id="dsDictionaryAircraftType">
-      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
-      <Property name="parameter">
-        <Entity>
-          <Property name="dictype">Dic_AircraftType</Property>
-          <Property name="status">0</Property>
-        </Entity>
-      </Property>
-    </DataSet>
-    <UpdateAction id="updateSubject">
-      <ClientEvent name="beforeExecute">var cur=view.id('dsSubject');&#xD;
-var ftype=view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
-//cur.set(&quot;parameter&quot;,{&#xD;
-//	});&#xD;
-//cur.flushAsync();&#xD;
-cur.getData().each(function(Subject){&#xD;
-	Subject.set(&quot;ftype&quot;,ftype);&#xD;
-});&#xD;
-</ClientEvent>
-      <ClientEvent name="onExecute">var cur=view.id('dataSetSubject');&#xD;
-var ftype=view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
-cur.set(&quot;parameter&quot;,{&#xD;
-	ftype:ftype&#xD;
-	});&#xD;
-cur.flushAsync();&#xD;
-var cur1=view.id('dsSubject');&#xD;
-cur1.set(&quot;parameter&quot;,{&#xD;
-	});&#xD;
-cur1.flushAsync();</ClientEvent>
-      <Property name="dataResolver">subjectPR#copySubject</Property>
-      <Property name="successMessage">数据已关联</Property>
-      <Property name="parameter"></Property>
-      <UpdateItem>
-        <Property name="dataSet">dsSubject</Property>
-      </UpdateItem>
-    </UpdateAction>
     <DataSetDropDown id="dataSetDropDownAircraftType">
       <ClientEvent name="onValueSelect">var dataSetSubject = this.get(&quot;#dataSetSubject&quot;);&#xD;
 dataSetSubject.set(&quot;parameter&quot;, {&#xD;
@@ -453,6 +352,15 @@ else&#xD;
       <Property name="property">ftypename</Property>
       <Property name="useEmptyItem">true</Property>
     </DataSetDropDown>
+    <DataSet id="dsDictionaryAircraftType">
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="dictype">Dic_AircraftType</Property>
+          <Property name="status">0</Property>
+        </Entity>
+      </Property>
+    </DataSet>
     <DataSet id="dsFtypes">
       <Property name="dataType">[Ftypes]</Property>
       <Property name="dataProvider">ftypesPR#queryFtypes</Property>

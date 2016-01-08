@@ -8,8 +8,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -27,13 +25,11 @@ public class  Ftypes implements Serializable {
 	private String ftypename ;
 
 	private Integer fighterid ;
-	private Integer parentnode ;
 	private String alias ;
 	private String moreinfo ;
 	private List<Ftypes> categories;
 
 	private Collection<Fpici> fpici;
-	private Collection<Fighterinfo> fighterinfo;
 	
 	@Id
 		@Column(name = "ftypename", unique = true, nullable = false)
@@ -44,13 +40,7 @@ public class  Ftypes implements Serializable {
 		this.ftypename=ftypename;
 	}
 	
-	@Column(name="parentnode")
-	public Integer getParentnode() {
-		return parentnode;
-	}
-	public void setParentnode(Integer parentnode) {
-		this.parentnode = parentnode;
-	}
+
 	@Column(name="fighterid")
 	public Integer getFighterid() {
 		return fighterid;
@@ -87,11 +77,5 @@ public class  Ftypes implements Serializable {
 	public void setFpici(Collection<Fpici> fpici) {
 		this.fpici=fpici;
 	}
-	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY,mappedBy = "fpici")
-    public Collection<Fighterinfo> getFighterinfo() {
-		return fighterinfo;
-	}
-	public void setFighterinfo(Collection<Fighterinfo> fighterinfo) {
-		this.fighterinfo=fighterinfo;
-	}
+
 }

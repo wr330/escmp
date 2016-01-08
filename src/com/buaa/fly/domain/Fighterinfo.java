@@ -35,7 +35,6 @@ public class  Fighterinfo implements Serializable {
 	private Date outdate ;
 
 	private Fpici fpici;
-	private Ftypes ftypes;
 
 	@Id
 	@Column(name = "OutFactoryNo", unique = true, nullable = false)
@@ -88,14 +87,7 @@ public class  Fighterinfo implements Serializable {
 	public void setOutdate(Date outdate) {
 		this.outdate=outdate;
 	}
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "ftypeName")
-    public Ftypes getFtypes() {
-		return ftypes;
-	}
-	public void setFtypes(Ftypes ftypes) {
-		this.ftypes=ftypes;
-	}
+
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn(name = "piciName")
 	public Fpici getFpici() {

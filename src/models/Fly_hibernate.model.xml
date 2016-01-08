@@ -609,14 +609,6 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
       </Property>
       <Property name="label">fpici</Property>
     </Reference>
-    <Reference name="categories">
-      <Property name="dataProvider">ftypesPR#queryCategories</Property>
-      <Property name="dataType">[Ftypes]</Property>
-      <Property name="parameter">$${this.fighterid}</Property>
-    </Reference>
-    <PropertyDef name="parentnode">
-      <Property name="dataType">Integer</Property>
-    </PropertyDef>
   </DataType>
   <DataType name="Fpici" meta="x:1239;y:10">
     <Property name="creationType">com.buaa.fly.domain.Fpici</Property>
@@ -657,10 +649,6 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
   </DataType>
   <DataType name="Fighterinfo" meta="x:1366;y:10">
     <Property name="creationType">com.buaa.fly.domain.Fighterinfo</Property>
-    <PropertyDef name="ftypeid">
-      <Property name="dataType">Integer</Property>
-      <Property name="label">ftypeid</Property>
-    </PropertyDef>
     <PropertyDef name="piciid">
       <Property name="dataType">Integer</Property>
       <Property name="label">piciid</Property>
@@ -684,14 +672,6 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
     <PropertyDef name="outfactoryno">
       <Property name="dataType">String</Property>
       <Property name="label">飞机编号</Property>
-    </PropertyDef>
-    <PropertyDef name="piciname">
-      <Property name="dataType">String</Property>
-      <Property name="label">批次</Property>
-    </PropertyDef>
-    <PropertyDef name="ftypename">
-      <Property name="dataType">String</Property>
-      <Property name="label">机型</Property>
     </PropertyDef>
     <PropertyDef name="fpici">
       <Property name="dataType">Fpici</Property>

@@ -46,8 +46,7 @@ public class FtypesPR{
 		@DataProvider
 		public Collection<Ftypes> queryCategories(String parentCategoryId) throws Exception {
 		    
-		return ftypesDao.query("from " + Ftypes.class.getName()+" where parentnode='"
-			+ parentCategoryId + "'");
+		return ftypesDao.query("from " + Ftypes.class.getName()+" where 1=1");
 		}
 		   /**                  
 			* 查询顶级节点机型
@@ -58,7 +57,7 @@ public class FtypesPR{
 			@DataProvider
 			public Collection<Ftypes> currentTree() throws Exception {
 			    
-			return ftypesDao.query("from " + Ftypes.class.getName()+" where parentnode = 0"
+			return ftypesDao.query("from " + Ftypes.class.getName()+" where 1 = 1"
 				);
 			}
 	

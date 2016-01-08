@@ -1,5 +1,6 @@
 package com.buaa.fly.fighterinfo.dao;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Date;
 import java.util.List;
@@ -82,6 +83,12 @@ public class FighterinfoDao extends HibernateBaseDao {
 		return info.get(0);
 	} 
 	
+	public Collection<Fighterinfo> queryFighterinfobyPici(String parameter) {
+		String hql = " from " + Fighterinfo.class.getName()
+				+ " u where u.fpici.piciname like '"+parameter+"'";
+		Collection<Fighterinfo> info= this.query(hql);
+		return info;
+	} 
 	
 
 	public Integer conlumIdentity() {

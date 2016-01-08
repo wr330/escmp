@@ -12,8 +12,11 @@ import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 
+import com.buaa.fly.domain.Fpici;
 import com.buaa.fly.domain.Ftypes;
+import com.buaa.fly.domain.Root;
 import com.buaa.fly.ftypes.dao.FtypesDao;
+import com.buaa.fly.fpici.dao.FpiciDao;
 import com.buaa.fly.fpici.manager.FpiciManager;
 
 @Component("ftypesManager")
@@ -23,6 +26,8 @@ public class FtypesManager {
 	private FtypesDao ftypesDao;
 		@Resource
 	private FpiciManager fpiciManager;
+		@Resource	
+	private	FpiciDao fpiciDao;
 		
 	/**                  
 	* 分页查询信息，带有criteria
@@ -43,8 +48,11 @@ public class FtypesManager {
 	 */
 	 @SuppressWarnings({ "rawtypes", "unchecked" })
 	 public void saveFtypes(Map<String, Collection> dataItems) throws Exception {
-	    Collection<Ftypes> details =(Collection<Ftypes>) dataItems.get("dsCurrentTree");
-		this.saveFtypes(details);
+		 Collection<Root> detail =(Collection<Root>) dataItems.get("dsExamples");
+		 for(Root item : detail) {
+			 Collection<Ftypes> details=item.getCategories();
+			 this.saveFtypes(details);
+		 }    
 	 }
 	 
 	 
@@ -64,11 +72,14 @@ public class FtypesManager {
 				} else if (state.equals(EntityState.MODIFIED)) {
 					ftypesDao.updateData(item);
 				} else if (state.equals(EntityState.DELETED)) {
+					Collection<Fpici> picis= fpiciDao.queryFighterinfobyType(item.getFtypename());
+					if(picis!=null)
+						fpiciDao.deleteData(picis);
 					ftypesDao.deleteData(item);
 				} else if (state.equals(EntityState.NONE)) {
-					if(item.getCategories()!=null){
+					/*if(item.getCategories()!=null){
 						this.saveFtypes(item.getCategories());
-					}
+					}*/
 									}
 				
 					fpiciManager.saveFpici(item.getFpici());

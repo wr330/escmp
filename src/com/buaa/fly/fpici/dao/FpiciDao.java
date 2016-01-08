@@ -1,9 +1,12 @@
 package com.buaa.fly.fpici.dao;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Resource;
 
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
@@ -14,12 +17,15 @@ import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 import com.common.HibernateBaseDao;
 
+import com.buaa.fly.domain.Fighterinfo;
 import com.buaa.fly.domain.Fpici;
 import com.buaa.fly.domain.Ftypes;
+import com.buaa.fly.fighterinfo.dao.FighterinfoDao;
 
 @Repository("fpiciDao")
 public class FpiciDao extends HibernateBaseDao {
-
+	@Resource
+private	FighterinfoDao fighterinfoDao;
 	/**
 	 * 同时也支持普通类型查询，在数据类型和日期类型支持区间查询
 	 * 
@@ -54,6 +60,13 @@ public class FpiciDao extends HibernateBaseDao {
 		this.pagingQuery(page, hql, countHql, args);
 	}
 	
+	
+	public Collection<Fpici> queryFighterinfobyType(String parameter) {
+		String hql = " from " + Fpici.class.getName()
+				+ " u where u.ftypes.ftypename like '"+parameter+"'";
+		Collection<Fpici> info= this.query(hql);
+		return info;
+	} 
 	/**
 	 * 数据添加
 	 * @param detail
@@ -99,11 +112,30 @@ public class FpiciDao extends HibernateBaseDao {
 	 */
 	public void deleteData(Fpici detail) throws Exception {
 		Session session = this.getSessionFactory().openSession();
+		Collection<Fighterinfo> items=fighterinfoDao.queryFighterinfobyPici(detail.getPiciname());
+		if(items!=null){
+			for(Fighterinfo item:items){
+				fighterinfoDao.deleteData(item);
+			}
+		}
 		try {
 			session.delete(detail);
 		} finally {
 			session.flush();
 			session.close();
+		}
+	}
+
+	public void deleteData(Collection<Fpici> fpici) {
+		if (null != fpici && fpici.size() > 0) {
+			for (Fpici item : fpici) {
+			try {
+				this.deleteData(item);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			}
 		}
 	}
         
