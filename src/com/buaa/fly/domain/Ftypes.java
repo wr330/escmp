@@ -51,7 +51,7 @@ public class  Ftypes implements Serializable {
 		this.moreinfo=moreinfo;
 	}
 
-	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY,mappedBy = "Fly_ftypes")
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY,mappedBy = "fTypeName")
     public Collection<Fpici> getFpici() {
 		return fpici;
 	}

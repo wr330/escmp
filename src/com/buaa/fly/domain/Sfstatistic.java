@@ -109,7 +109,7 @@ public class  Sfstatistic implements Serializable {
     public Tasklist getTaskNo() {
 		return taskNo;
 	}
-	public void setFTypeName(Tasklist taskNo) {
+	public void setTaskNo(Tasklist taskNo) {
 		this.taskNo = taskNo;
 	}
 	

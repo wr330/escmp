@@ -86,7 +86,7 @@ public class  Tasklist implements Serializable {
 		this.miji = miji;
 	}
 
-	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY,mappedBy = "Fly_TaskList")
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY,mappedBy = "taskNo")
     public Collection<Sfstatistic> getSfstatistic() {
 		return sfstatistic;
 	}

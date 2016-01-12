@@ -152,7 +152,7 @@ public class  Flightrestrict implements Serializable {
 		this.miji = miji;
 	}
 
-	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY,mappedBy = "Fly_FlightRestrict")
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY,mappedBy = "flightRestrict")
     public Collection<Fighterxzh> getFighterxzh() {
 		return fighterxzh;
 	}

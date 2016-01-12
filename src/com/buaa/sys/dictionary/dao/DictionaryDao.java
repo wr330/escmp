@@ -36,10 +36,9 @@ public class DictionaryDao extends HibernateBaseDao {
         		coreHql.append(" and a.dictype ='" + dictype + "'");
         	}
 			if (parameter.containsKey("status")) {
-				String status = (String) parameter.get("status");// 添加筛选：状态=有效
-				int status1 = Integer.valueOf(status).intValue();
-				if (status1 == 0) {
-					coreHql.append(" and a.status =" + status1);
+				Object status =  parameter.get("status");// 添加筛选：状态=有效
+				if (status.toString() == "0") {
+					coreHql.append(" and a.status =" + status);
 				}
 			}
         }

@@ -45,6 +45,9 @@ public class Fpici implements Serializable {
 	public String getPiciName() {
 		return piciName;
 	}
+	public void setPiciName(String piciName) {
+		this.piciName = piciName;
+	}
 	public void setPiciid(String piciName) {
 		this.piciName = piciName;
 	}
@@ -58,14 +61,14 @@ public class Fpici implements Serializable {
 
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn(name = "fTypeName")
-    public Ftypes getFTypeName() {
+    public Ftypes getfTypeName() {
 		return fTypeName;
 	}
-	public void setFTypeName(Ftypes fTypeName) {
+	public void setfTypeName(Ftypes fTypeName) {
 		this.fTypeName=fTypeName;
 	}
 
-	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY,mappedBy = "Fly_fpici")
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY,mappedBy = "piciid")
     public Collection<Fighterinfo> getFighterinfo() {
 		return fighterinfo;
 	}
