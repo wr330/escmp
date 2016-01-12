@@ -15,6 +15,7 @@ import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 
 import com.buaa.fly.domain.Flightrestrict;
+import com.buaa.fly.fighterxzh.manager.FighterxzhManager;
 import com.buaa.fly.flightrestrict.dao.FlightrestrictDao;
 import com.buaa.fly.view.FileHelper;
 
@@ -23,7 +24,8 @@ public class FlightrestrictManager {
 	
 	@Resource
 	private FlightrestrictDao flightrestrictDao;
-		
+	@Resource
+	private FighterxzhManager fighterxzhManager;	
 	/**                  
 	* 分页查询信息，带有criteria
 	* 将criteria转换为一个Map
@@ -61,7 +63,7 @@ public class FlightrestrictManager {
 	    	for(Flightrestrict item : details) {
 				EntityState state = EntityUtils.getState(item);
 				if (state.equals(EntityState.NEW)) {
-					int tempId = item.getId();
+					String tempId = item.getId();
 					fileManager(item);
 					flightrestrictDao.saveData(item);
 					FileHelper.changeFolderById("/Fly_Flightrestrict/" +tempId,"/Fly_Flightrestrict/" +item.getId());//替换以临时ID命名的文件夹
@@ -72,7 +74,9 @@ public class FlightrestrictManager {
 					flightrestrictDao.deleteData(item);
 					FileHelper.deleteFile("/Fly_Flightrestrict/" +item.getId());//删除相关文件
 				} else if (state.equals(EntityState.NONE)) {
-									}
+					
+				}
+				fighterxzhManager.saveFighterxzh(item.getFighterxzh());
 							}
 		}
 	 }

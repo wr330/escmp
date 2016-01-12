@@ -26,7 +26,7 @@
       </Property>
     </PropertyDef>
     <PropertyDef name="worktime">
-      <Property name="dataType">DateTime</Property>
+      <Property name="dataType">Date</Property>
       <Property name="label">制定时间</Property>
     </PropertyDef>
     <PropertyDef name="oid">
@@ -76,11 +76,11 @@
   <DataType name="Supportitem">
     <Property name="matchType">com.buaa.out.domain.Supportitem</Property>
     <PropertyDef name="startexecutiontime">
-      <Property name="dataType">DateTime</Property>
+      <Property name="dataType">Date</Property>
       <Property name="label">开始时间</Property>
     </PropertyDef>
     <PropertyDef name="endexecutiontime">
-      <Property name="dataType">DateTime</Property>
+      <Property name="dataType">Date</Property>
       <Property name="label">结束时间</Property>
     </PropertyDef>
     <PropertyDef name="registrationexecutor">
@@ -105,17 +105,6 @@
       <Property name="dataType">[Handover]</Property>
       <Property name="pageSize">20</Property>
     </Reference>
-    <Reference name="children1">
-      <Property name="dataProvider">itemmemberPR#queryItemmember</Property>
-      <Property name="dataType">[Itemmember]</Property>
-      <Property name="pageSize">20</Property>
-      <Property name="parameter">
-        <Entity>
-          <Property name="tid">$${this.id}</Property>
-        </Entity>
-      </Property>
-      <Property name="visible">false</Property>
-    </Reference>
     <PropertyDef name="miji">
       <Property name="dataType">Integer</Property>
       <Property name="defaultValue">0</Property>
@@ -138,19 +127,6 @@
           </Collection>
         </Property>
       </Property>
-    </PropertyDef>
-  </DataType>
-  <DataType name="Itemmember">
-    <Property name="matchType">com.buaa.out.domain.Itemmember</Property>
-    <PropertyDef name="id">
-      <Property name="dataType">String</Property>
-      <Property name="label">id</Property>
-    </PropertyDef>
-    <PropertyDef name="children">
-      <Property name="dataType">Handover</Property>
-    </PropertyDef>
-    <PropertyDef name="supportitem">
-      <Property name="dataType">Supportitem</Property>
     </PropertyDef>
   </DataType>
   <DataType name="Supportevaluation">
@@ -367,59 +343,8 @@ arg.parameter = parameter;</ClientEvent>
       <Property name="dataType">Integer</Property>
       <Property name="required">false</Property>
     </PropertyDef>
-  </DataType>
-  <DataType name="Servicepersonnel">
-    <Property name="matchType">com.buaa.out.domain.Servicepersonnel</Property>
-    <PropertyDef name="outfield">
-      <Property name="dataType">String</Property>
-      <Property name="label">地点</Property>
-    </PropertyDef>
-    <PropertyDef name="job">
-      <Property name="dataType">String</Property>
-      <Property name="label">承担工作</Property>
-    </PropertyDef>
-    <PropertyDef name="datefrom">
-      <Property name="dataType">DateTime</Property>
-      <Property name="label">出差日期</Property>
-    </PropertyDef>
-    <PropertyDef name="dateto">
-      <Property name="dataType">DateTime</Property>
-      <Property name="label">返回日期</Property>
-    </PropertyDef>
-    <PropertyDef name="name">
-      <Property name="dataType">String</Property>
-      <Property name="label">姓名</Property>
-    </PropertyDef>
-    <PropertyDef name="staffnumber">
-      <Property name="dataType">String</Property>
-      <Property name="label">职工编号</Property>
-    </PropertyDef>
-    <PropertyDef name="oid">
-      <Property name="dataType">String</Property>
-      <Property name="label">oid</Property>
-    </PropertyDef>
-    <PropertyDef name="miji">
-      <Property name="dataType">Integer</Property>
-      <Property name="label">密级</Property>
-      <Property name="mapping">
-        <Property name="mapValues">
-          <Collection>
-            <Entity>
-              <Property name="key">2</Property>
-              <Property name="value">机密</Property>
-            </Entity>
-            <Entity>
-              <Property name="key">1</Property>
-              <Property name="value">秘密</Property>
-            </Entity>
-            <Entity>
-              <Property name="key">0</Property>
-              <Property name="value">非密</Property>
-            </Entity>
-          </Collection>
-        </Property>
-      </Property>
-      <Property name="defaultValue">0</Property>
+    <PropertyDef name="datablock">
+      <Property name="dataType">[Byte]</Property>
     </PropertyDef>
   </DataType>
 </Model>

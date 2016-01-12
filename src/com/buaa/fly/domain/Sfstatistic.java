@@ -20,7 +20,7 @@ import java.util.Date;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name="SFstatistic")
+@Table(name="Fly_SFstatistic")
 public class  Sfstatistic implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Sfstatistic(){}
@@ -28,8 +28,8 @@ public class  Sfstatistic implements Serializable {
 
 	private String ftype ;
 	private Date fdate ;
-	private Integer id ;
-	private String taskno ;
+	private String id ;
+	private Tasklist taskNo ;
 	private String jiaci ;
 	private String config ;
 	private String address ;
@@ -97,21 +97,22 @@ public class  Sfstatistic implements Serializable {
 		this.fdate=fdate;
 	}
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY) 
 	@Column(name="id")
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id=id;
 	}
-	@Column(name="TaskNo")
-	public String getTaskno() {
-		return taskno;
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinColumn(name = "TaskNo")
+    public Tasklist getTaskNo() {
+		return taskNo;
 	}
-	public void setTaskno(String taskno) {
-		this.taskno=taskno;
+	public void setFTypeName(Tasklist taskNo) {
+		this.taskNo = taskNo;
 	}
+	
 	@Column(name="JiaCi")
 	public String getJiaci() {
 		return jiaci;

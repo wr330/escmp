@@ -14,7 +14,6 @@ import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 import com.buaa.out.domain.Supportitem;
 import com.buaa.out.handover.manager.HandoverManager;
-import com.buaa.out.itemmember.manager.ItemmemberManager;
 import com.buaa.out.supportitem.dao.SupportitemDao;
 
 
@@ -25,8 +24,6 @@ public class SupportitemManager {
 	
 	@Resource
 	private SupportitemDao supportitemDao;
-	@Resource
-	private ItemmemberManager itemmemberManager;
 	@Resource	
 	private HandoverManager handoverManager;
 	/**                  
@@ -67,12 +64,9 @@ public class SupportitemManager {
 				EntityState state = EntityUtils.getState(item);
 				if (state.equals(EntityState.NEW)) {
 					supportitemDao.saveData(item);
-						itemmemberManager.saveItemmember(item.getItemmember());
 				} else if (state.equals(EntityState.MODIFIED)) {
 					supportitemDao.updateData(item);
-						itemmemberManager.saveItemmember(item.getItemmember());
 				} else if (state.equals(EntityState.DELETED)) {
-						itemmemberManager.saveItemmember(item.getItemmember());
 					supportitemDao.deleteData(item);
 				} else if (state.equals(EntityState.NONE)) {
 						EntityState supportprogramState = EntityUtils.getState(item.getSupportprogram());
@@ -80,7 +74,6 @@ public class SupportitemManager {
 	if(supportprogramState.equals(EntityState.MODIFIED)){
 	supportitemDao.updateData(item);
 	}
-						itemmemberManager.saveItemmember(item.getItemmember());
 						handoverManager.saveHandover(item.getHandover());
 				}
 			}

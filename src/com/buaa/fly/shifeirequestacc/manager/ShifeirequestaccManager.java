@@ -59,7 +59,7 @@ public class ShifeirequestaccManager {
 	    	for(Shifeirequestacc item : details) {
 				EntityState state = EntityUtils.getState(item);
 				if (state.equals(EntityState.NEW)) {
-					int tempId = item.getId();
+					String tempId = item.getId();
 					fileManager(item);
 					shifeirequestaccDao.saveData(item);
 					FileHelper.changeFolderById("/Fly_Shifeirequestacc/" +tempId,"/Fly_Shifeirequestacc/" +item.getId());//替换以临时ID命名的文件夹

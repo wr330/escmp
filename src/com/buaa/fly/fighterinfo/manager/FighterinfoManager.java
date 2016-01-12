@@ -62,7 +62,7 @@ public class FighterinfoManager {
 				} else if (state.equals(EntityState.DELETED)) {
 					fighterinfoDao.deleteData(item);
 				} else if (state.equals(EntityState.NONE)) {
-						EntityState fpiciState = EntityUtils.getState(item.getFpici());
+						EntityState fpiciState = EntityUtils.getState(item.getPiciid());
 		
 	if(fpiciState.equals(EntityState.MODIFIED)){
 	fighterinfoDao.updateData(item);

@@ -68,8 +68,7 @@ public class FighterinfoDao extends HibernateBaseDao {
 	public void saveData(Fighterinfo detail) throws Exception {
 		Session session = this.getSessionFactory().openSession();
 		try {
-			detail.setId(conlumIdentity());
-			session.save(detail);
+			
 		} finally {
 			session.flush();
 			session.close();
@@ -85,7 +84,7 @@ public class FighterinfoDao extends HibernateBaseDao {
 	
 	public Collection<Fighterinfo> queryFighterinfobyPici(String parameter) {
 		String hql = " from " + Fighterinfo.class.getName()
-				+ " u where u.fpici.piciname like '"+parameter+"'";
+				+ " u where u.piciid.piciid like '"+parameter+"'";
 		Collection<Fighterinfo> info= this.query(hql);
 		return info;
 	} 

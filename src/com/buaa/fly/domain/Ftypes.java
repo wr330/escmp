@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name="Ftypes")
+@Table(name="Fly_ftypes")
 public class  Ftypes implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Ftypes(){}
@@ -23,12 +23,8 @@ public class  Ftypes implements Serializable {
  	}	
 
 	private String ftypename ;
-
-	private Integer fighterid ;
 	private String alias ;
 	private String moreinfo ;
-	private List<Ftypes> categories;
-
 	private Collection<Fpici> fpici;
 	
 	@Id
@@ -40,14 +36,6 @@ public class  Ftypes implements Serializable {
 		this.ftypename=ftypename;
 	}
 	
-
-	@Column(name="fighterid")
-	public Integer getFighterid() {
-		return fighterid;
-	}
-	public void setFighterid(Integer fighterid) {
-		this.fighterid=fighterid;
-	}
 	@Column(name="alias")
 	public String getAlias() {
 		return alias;
@@ -63,14 +51,7 @@ public class  Ftypes implements Serializable {
 		this.moreinfo=moreinfo;
 	}
 
-	@Transient
-	public List<Ftypes> getCategories() {
-		return categories;
-	}
-	public void setCategories(List<Ftypes> categories) {
-		this.categories = categories;
-	}
-	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY,mappedBy = "ftypes")
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY,mappedBy = "Fly_ftypes")
     public Collection<Fpici> getFpici() {
 		return fpici;
 	}

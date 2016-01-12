@@ -19,14 +19,14 @@ import org.hibernate.annotations.GenericGenerator;
 import java.util.Date;
 
 @Entity
-@Table(name="SFfault")
+@Table(name="Fly_SFfault")
 public class  Sffault implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Sffault(){}
 
 
 	private String ftype ;
-	private Integer id ;
+	private String id ;
 	private String name ;
 	private String relatebumen ;
 	private String type ;
@@ -81,12 +81,11 @@ public class  Sffault implements Serializable {
 		this.ftype=ftype;
 	}
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY) 
 	@Column(name="id")
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id=id;
 	}
 	@Column(name="name")

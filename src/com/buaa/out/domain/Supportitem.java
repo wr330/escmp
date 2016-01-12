@@ -37,7 +37,6 @@ public class  Supportitem implements Serializable {
 
 	private Supportprogram supportprogram;
 	private Collection<Handover> handover;
-	private Collection<Itemmember> itemmember;
 
 	@Id
 	@Column(name = "ID", unique = true, nullable = false)
@@ -86,13 +85,6 @@ public class  Supportitem implements Serializable {
 		this.supportprogram=supportprogram;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "supportitem")
-    public Collection<Itemmember> getItemmember() {
-		return itemmember;
-	}
-	public void setItemmember(Collection<Itemmember> itemmember) {
-		this.itemmember=itemmember;
-	}
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "supportitem")
 	public Collection<Handover> getHandover() {
 		return handover;

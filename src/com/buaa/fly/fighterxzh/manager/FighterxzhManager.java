@@ -62,7 +62,12 @@ public class FighterxzhManager {
 									} else if (state.equals(EntityState.DELETED)) {
 										fighterxzhDao.deleteData(item);
 				} else if (state.equals(EntityState.NONE)) {
-														}
+					EntityState flightRestrictState = EntityUtils.getState(item.getFlightRestrict());
+
+					if (flightRestrictState.equals(EntityState.MODIFIED)) {
+						fighterxzhDao.updateData(item);
+					}									
+				}
 			}
 		}
 	 }

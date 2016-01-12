@@ -59,7 +59,7 @@ public class DailyaccManager {
 	    	for(Dailyacc item : details) {
 				EntityState state = EntityUtils.getState(item);
 				if (state.equals(EntityState.NEW)) {
-					int tempId = item.getId();
+					String tempId = item.getId();
 					fileManager(item);
 					dailyaccDao.saveData(item);
 					FileHelper.changeFolderById("/Fly_Dailyacc/" +tempId,"/Fly_Dailyacc/" +item.getId());//替换以临时ID命名的文件夹

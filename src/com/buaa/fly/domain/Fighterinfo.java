@@ -21,79 +21,62 @@ import java.math.BigDecimal;
 import com.buaa.fly.domain.Fpici;
 
 @Entity
-@Table(name="Fighterinfo")
+@Table(name="Fly_Fighterinfo")
 public class  Fighterinfo implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Fighterinfo(){}
     
 	private String outfactoryno ;
-	private Integer ftypeid ;
-	private Integer piciid ;
-	private Integer id ;
-	private Date firstfdate ;
+	private String ftypeName ;
+	private Date firstFDate ;
 	private String userno ;
-	private Date outdate ;
+	private Date outDate ;
 
-	private Fpici fpici;
+	private Fpici piciid;
 
 	@Id
-	@Column(name = "OutFactoryNo", unique = true, nullable = false)
+	@Column(name = "outFactoryNo", unique = true, nullable = false)
 	public String getOutfactoryno() {
 		return outfactoryno;
 	}
 	public void setOutfactoryno(String outfactoryno) {
 		this.outfactoryno=outfactoryno;
 	}
-	@Column(name="ftypeid")
-	public Integer getFtypeid() {
-		return ftypeid;
+	@Column(name="ftypeName")
+	public String getFtypeName() {
+		return ftypeName;
 	}
-	public void setFtypeid(Integer ftypeid) {
-		this.ftypeid=ftypeid;
+	public void setFtypeName(String ftypeName) {
+		this.ftypeName = ftypeName;
 	}
-	@Column(name="PiCiid")
-	public Integer getPiciid() {
-		return piciid;
+	@Column(name="firstFDate")
+	public Date getFirstFDate() {
+		return firstFDate;
 	}
-	public void setPiciid(Integer piciid) {
-		this.piciid=piciid;
+	public void setFirstFDate(Date firstFDate) {
+		this.firstFDate = firstFDate;
 	}
-	@Column(name="id")
-	@GeneratedValue(strategy=GenerationType.IDENTITY) 
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id=id;
-	}
-	@Column(name="FirstFDate")
-	public Date getFirstfdate() {
-		return firstfdate;
-	}
-	public void setFirstfdate(Date firstfdate) {
-		this.firstfdate=firstfdate;
-	}
-	@Column(name="UserNo")
+	@Column(name="userNo")
 	public String getUserno() {
 		return userno;
 	}
 	public void setUserno(String userno) {
 		this.userno=userno;
 	}
-	@Column(name="OutDate")
-	public Date getOutdate() {
-		return outdate;
+	@Column(name="outDate")
+	public Date getOutDate() {
+		return outDate;
 	}
-	public void setOutdate(Date outdate) {
-		this.outdate=outdate;
+	public void setOutDate(Date outdate) {
+		this.outDate=outdate;
 	}
 
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "piciName")
-	public Fpici getFpici() {
-		return fpici;
+	@JoinColumn(name = "piciid")
+	public Fpici getPiciid() {
+		return piciid;
 	}
-	public void setFpici(Fpici fpici) {
-		this.fpici=fpici;
+	public void setPiciid(Fpici piciid) {
+		this.piciid = piciid;
 	}
 }

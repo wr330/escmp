@@ -20,14 +20,14 @@ import java.util.Date;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name="FlightRestrict")
+@Table(name="Fly_FlightRestrict")
 public class  Flightrestrict implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Flightrestrict(){}
 
 
 	private String ftype ;
-	private Integer id ;
+	private String id ;
 	private Date begindate ;
 	private Integer bytes ;
 	private String isnew ;
@@ -42,6 +42,7 @@ public class  Flightrestrict implements Serializable {
 	private String maincontent ;
 	private String miji ;
 
+	private Collection<Fighterxzh> fighterxzh;
 
 
 	@Column(name="ftype")
@@ -52,12 +53,11 @@ public class  Flightrestrict implements Serializable {
 		this.ftype=ftype;
 	}
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY) 
 	@Column(name="id")
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id=id;
 	}
 	@Column(name="begindate")
@@ -152,5 +152,12 @@ public class  Flightrestrict implements Serializable {
 		this.miji = miji;
 	}
 
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY,mappedBy = "Fly_FlightRestrict")
+    public Collection<Fighterxzh> getFighterxzh() {
+		return fighterxzh;
+	}
+	public void setFighterxzh(Collection<Fighterxzh> fighterxzh) {
+		this.fighterxzh = fighterxzh;
+	}
 
 }

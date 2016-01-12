@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -85,6 +86,7 @@ public class SffaultDao extends HibernateBaseDao {
 	public void saveData(Sffault detail) throws Exception {
 		Session session = this.getSessionFactory().openSession();
 		try {
+			detail.setId(UUID.randomUUID().toString());
 			session.save(detail);
 		} finally {
 			session.flush();

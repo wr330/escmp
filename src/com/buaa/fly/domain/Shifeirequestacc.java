@@ -20,7 +20,7 @@ import java.util.Date;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name="ShifeiRequestAcc")
+@Table(name="Fly_ShifeiRequestAcc")
 public class  Shifeirequestacc implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Shifeirequestacc(){}
@@ -28,7 +28,7 @@ public class  Shifeirequestacc implements Serializable {
 
 	private String fileno ;
 	private String ftype ;
-	private Integer id ;
+	private String id ;
 	private Integer bytes ;
 	private Date date ;
 	private String author ;
@@ -57,10 +57,10 @@ public class  Shifeirequestacc implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY) 
 	@Column(name="id")
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id=id;
 	}
 	@Column(name="bytes")

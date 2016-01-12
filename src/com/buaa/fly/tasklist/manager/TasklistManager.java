@@ -14,6 +14,7 @@ import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 
 import com.buaa.fly.domain.Tasklist;
+import com.buaa.fly.sfstatistic.manager.SfstatisticManager;
 import com.buaa.fly.tasklist.dao.TasklistDao;
 
 @Component("tasklistManager")
@@ -21,6 +22,8 @@ public class TasklistManager {
 	
 	@Resource
 	private TasklistDao tasklistDao;
+	@Resource
+	private SfstatisticManager sfstatisticManager;
 		
 	/**                  
 	* 分页查询信息，带有criteria
@@ -73,6 +76,7 @@ public class TasklistManager {
 	tasklistDao.updateData(item);
 	}
 									}
+				sfstatisticManager.saveSfstatistic(item.getSfstatistic());
 			}
 		}
 	 }

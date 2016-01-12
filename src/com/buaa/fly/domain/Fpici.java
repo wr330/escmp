@@ -21,41 +21,32 @@ import com.buaa.fly.domain.Ftypes;
 import com.buaa.fly.domain.Fighterinfo;
 
 @Entity
-@Table(name="Fpici")
-public class  Fpici implements Serializable {
+@Table(name="Fly_fpici")
+public class Fpici implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Fpici(){}
 
-	private String piciname ;
-	private Integer piciid ;
-	private Integer fighterid ;
+	private String piciName ;
+	private String piciID ;
 	private String more ;
-	private Ftypes ftypes;
+	private Ftypes fTypeName;
 
 	private Collection<Fighterinfo> fighterinfo;
 
 	@Id
-		@Column(name = "piciName", unique = true, nullable = false)
-	public String getPiciname() {
-		return piciname;
+		@Column(name = "piciID", unique = true, nullable = false)
+	public String getPiciID() {
+		return piciID;
 	}
-	public void setPiciname(String piciname) {
-		this.piciname=piciname;
+	public void setPiciID(String piciID) {
+		this.piciID = piciID;
 	}
-	@GeneratedValue(strategy=GenerationType.IDENTITY) 
-	@Column(name="piciID")
-	public Integer getPiciid() {
-		return piciid;
+	@Column(name="piciName")
+	public String getPiciName() {
+		return piciName;
 	}
-	public void setPiciid(Integer piciid) {
-		this.piciid=piciid;
-	}
-	@Column(name="fighterID")
-	public Integer getFighterid() {
-		return fighterid;
-	}
-	public void setFighterid(Integer fighterid) {
-		this.fighterid=fighterid;
+	public void setPiciid(String piciName) {
+		this.piciName = piciName;
 	}
 	@Column(name="more")
 	public String getMore() {
@@ -67,14 +58,14 @@ public class  Fpici implements Serializable {
 
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn(name = "fTypeName")
-    public Ftypes getFtypes() {
-		return ftypes;
+    public Ftypes getFTypeName() {
+		return fTypeName;
 	}
-	public void setFtypes(Ftypes ftypes) {
-		this.ftypes=ftypes;
+	public void setFTypeName(Ftypes fTypeName) {
+		this.fTypeName=fTypeName;
 	}
 
-	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY,mappedBy = "fpici")
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY,mappedBy = "Fly_fpici")
     public Collection<Fighterinfo> getFighterinfo() {
 		return fighterinfo;
 	}

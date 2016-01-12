@@ -29,8 +29,8 @@ public class  Tasklist implements Serializable {
 	private String taskcontent ;
 
 	private String subject;
-	private Collection<Fdata> fdata;
 	private String miji; 
+	private Collection<Sfstatistic> sfstatistic;
 
 	@Id
 		@Column(name = "Oid", unique = true, nullable = false)
@@ -41,14 +41,6 @@ public class  Tasklist implements Serializable {
 		this.oid=oid;
 	}
 
-	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "taskList")
-	public Collection<Fdata> getFdata() {
-		return fdata;
-	}
-	public void setFdata(Collection<Fdata> fdata) {
-		this.fdata = fdata;
-	}
 	@Column(name="TaskExecution")
 	public String getTaskexecution() {
 		return taskexecution;
@@ -94,4 +86,11 @@ public class  Tasklist implements Serializable {
 		this.miji = miji;
 	}
 
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY,mappedBy = "Fly_TaskList")
+    public Collection<Sfstatistic> getSfstatistic() {
+		return sfstatistic;
+	}
+	public void setSfstatistic(Collection<Sfstatistic> sfstatistic) {
+		this.sfstatistic = sfstatistic;
+	}
 }

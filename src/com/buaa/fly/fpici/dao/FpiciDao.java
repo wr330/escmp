@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -75,7 +76,7 @@ private	FighterinfoDao fighterinfoDao;
 	public void saveData(Fpici detail) throws Exception {
 		Session session = this.getSessionFactory().openSession();
 		try {
-			detail.setPiciid(conlumIdentity());
+			detail.setPiciID(UUID.randomUUID().toString());
 			session.save(detail);
 		} finally {
 			session.flush();
@@ -112,7 +113,7 @@ private	FighterinfoDao fighterinfoDao;
 	 */
 	public void deleteData(Fpici detail) throws Exception {
 		Session session = this.getSessionFactory().openSession();
-		Collection<Fighterinfo> items=fighterinfoDao.queryFighterinfobyPici(detail.getPiciname());
+		Collection<Fighterinfo> items=fighterinfoDao.queryFighterinfobyPici(detail.getPiciID());
 		if(items!=null){
 			for(Fighterinfo item:items){
 				fighterinfoDao.deleteData(item);

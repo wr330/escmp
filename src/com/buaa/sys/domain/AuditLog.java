@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "AuditLog")
+@Table(name = "Sys_AuditLog")
 public class AuditLog implements Serializable{
 
 	private static final long serialVersionUID = 1L;

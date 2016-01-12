@@ -59,7 +59,7 @@ public class SfstatisticManager {
 	    	for(Sfstatistic item : details) {
 				EntityState state = EntityUtils.getState(item);
 				if (state.equals(EntityState.NEW)) {
-					int tempId = item.getId();
+					String tempId = item.getId();
 					fileManager(item);
 					sfstatisticDao.saveData(item);
 					FileHelper.changeFolderById("/Fly_Sfstatistic/" +tempId,"/Fly_Sfstatistic/" +item.getId());//替换以临时ID命名的文件夹
@@ -70,7 +70,12 @@ public class SfstatisticManager {
 					sfstatisticDao.deleteData(item);
 					FileHelper.deleteFile("/Fly_Sfstatistic/" +item.getId());//删除相关文件
 				} else if (state.equals(EntityState.NONE)) {
-									}
+					EntityState tasklistState = EntityUtils.getState(item.getTaskNo());
+
+					if (tasklistState.equals(EntityState.MODIFIED)) {
+						sfstatisticDao.updateData(item);
+					}
+				}
 							}
 		}
 		

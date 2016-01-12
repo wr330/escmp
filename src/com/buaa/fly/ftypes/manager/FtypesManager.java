@@ -67,7 +67,6 @@ public class FtypesManager {
 	    	for(Ftypes item : details) {
 				EntityState state = EntityUtils.getState(item);
 				if (state.equals(EntityState.NEW)) {
-					item.setFighterid(11);
 					ftypesDao.saveData(item);
 				} else if (state.equals(EntityState.MODIFIED)) {
 					ftypesDao.updateData(item);

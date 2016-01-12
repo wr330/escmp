@@ -52,7 +52,7 @@ public void wordTemplate(Collection<Sfstatistic> sfstatistic ){
 	for(Sfstatistic item : sfstatistic) {
 		wd.inserTitle("("+i+")#"+item.getFighterno(), "标题 2");
 		Fighterinfo fighter=fighterinfoDao.queryFighterinfo1(item.getFighterno());
-		wd.insertText("本机于"  +format.format(fighter.getFirstfdate())+  "日首飞，在成都地区共飞行 __个起落。本机总共飞行__个起落");
+		wd.insertText("本机于"  +format.format(fighter.getFirstFDate())+  "日首飞，在成都地区共飞行 __个起落。本机总共飞行__个起落");
 		i++;
 		}
 		
@@ -66,7 +66,7 @@ public void wordTemplate(Collection<Sfstatistic> sfstatistic ){
 		str1[1]=item.getFighterno();
 		str1[2]=format.format(item.getFdate());
 		Fighterinfo fighter=fighterinfoDao.queryFighterinfo1(item.getFighterno());
-		str1[3]=format.format(fighter.getFirstfdate());
+		str1[3]=format.format(fighter.getFirstFDate());
 		//str1[4]=item.getJiaci();当日架次
 		Total total=totalService.loadflight(item.getFighterno());
 		str1[4]=total.getThisyearcount();//近年起落架次

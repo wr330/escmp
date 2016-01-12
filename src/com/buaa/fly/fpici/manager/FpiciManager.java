@@ -66,7 +66,7 @@ public class FpiciManager {
 					fpiciDao.deleteData(item);
 				} else if (state.equals(EntityState.NONE)) {
 					EntityState ftypesState = EntityUtils.getState(item
-							.getFtypes());
+							.getFTypeName());
 
 					if (ftypesState.equals(EntityState.MODIFIED)) {
 						fpiciDao.updateData(item);

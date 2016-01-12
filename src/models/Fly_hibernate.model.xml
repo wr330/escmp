@@ -68,16 +68,6 @@ arg.parameter = parameter;</ClientEvent>
       <Property name="dataType">String</Property>
       <Property name="label">试飞科目</Property>
     </PropertyDef>
-    <Reference name="fdata">
-      <Property name="dataProvider">dataPR#queryData</Property>
-      <Property name="pageSize">20</Property>
-      <Property name="parameter">
-        <Entity>
-          <Property name="tasknumber">$${this.tasknumber}</Property>
-        </Entity>
-      </Property>
-      <Property name="dataType">[Data]</Property>
-    </Reference>
     <PropertyDef name="miji">
       <Property name="dataType">Integer</Property>
       <Property name="label">密级</Property>
@@ -101,11 +91,21 @@ arg.parameter = parameter;</ClientEvent>
       </Property>
       <Property name="defaultValue">0</Property>
     </PropertyDef>
+    <Reference>
+      <Property name="dataProvider">sfstatisticPR#querySfstatistic</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="dataType">[Sfstatistic]</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="oid">$${this.id}</Property>
+        </Entity>
+      </Property>
+    </Reference>
   </DataType>
   <DataType name="Sfstatistic" meta="x:426;y:10">
     <Property name="creationType">com.buaa.fly.domain.Sfstatistic</Property>
     <PropertyDef name="id">
-      <Property name="dataType">Integer</Property>
+      <Property name="dataType">String</Property>
       <Property name="label">id</Property>
     </PropertyDef>
     <PropertyDef name="ftype">
@@ -184,7 +184,7 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
       <Property name="defaultValue">00:00:00</Property>
     </PropertyDef>
     <PropertyDef name="taskno">
-      <Property name="dataType">String</Property>
+      <Property name="dataType">Tasklist</Property>
       <Property name="label">任务单号</Property>
       <Property name="required">true</Property>
     </PropertyDef>
@@ -383,7 +383,7 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
       <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="id">
-      <Property name="dataType">Integer</Property>
+      <Property name="dataType">String</Property>
       <Property name="label">id</Property>
     </PropertyDef>
     <PropertyDef name="begindate">
@@ -469,6 +469,16 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
       </Property>
       <Property name="defaultValue">0</Property>
     </PropertyDef>
+    <Reference>
+      <Property name="dataProvider">fighterxzhPR#queryFighterxzh</Property>
+      <Property name="dataType">[Fighterxzh]</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="id">$${this.id}</Property>
+        </Entity>
+      </Property>
+    </Reference>
   </DataType>
   <DataType name="Shifeirequestacc" meta="x:857;y:10">
     <Property name="creationType">com.buaa.fly.domain.Shifeirequestacc</Property>
@@ -483,7 +493,7 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
       <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="id">
-      <Property name="dataType">Integer</Property>
+      <Property name="dataType">String</Property>
       <Property name="label">id</Property>
       <Property name="required">false</Property>
     </PropertyDef>
@@ -545,7 +555,7 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
       <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="id">
-      <Property name="dataType">Integer</Property>
+      <Property name="dataType">String</Property>
       <Property name="label">id</Property>
     </PropertyDef>
     <PropertyDef name="bytes">
@@ -582,10 +592,6 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
   </DataType>
   <DataType name="Ftypes" meta="x:1114;y:10">
     <Property name="creationType">com.buaa.fly.domain.Ftypes</Property>
-    <PropertyDef name="fighterid">
-      <Property name="dataType">Integer</Property>
-      <Property name="label">飞机编号</Property>
-    </PropertyDef>
     <PropertyDef name="alias">
       <Property name="dataType">String</Property>
       <Property name="label">别名</Property>
@@ -612,28 +618,23 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
   </DataType>
   <DataType name="Fpici" meta="x:1239;y:10">
     <Property name="creationType">com.buaa.fly.domain.Fpici</Property>
-    <PropertyDef name="piciid">
-      <Property name="dataType">Integer</Property>
-      <Property name="label">piciid</Property>
+    <PropertyDef name="piciID">
+      <Property/>
+      <Property name="dataType">String</Property>
+      <Property name="label">piciID</Property>
     </PropertyDef>
-    <PropertyDef name="fighterid">
-      <Property name="dataType">Integer</Property>
-      <Property name="label">飞机编号</Property>
+    <PropertyDef name="piciName">
+      <Property/>
+      <Property name="dataType">String</Property>
+      <Property name="label">批次名</Property>
     </PropertyDef>
     <PropertyDef name="more">
       <Property name="dataType">String</Property>
       <Property name="label">其他信息</Property>
     </PropertyDef>
-    <PropertyDef name="piciname">
-      <Property name="dataType">String</Property>
-      <Property name="label">批次名</Property>
-    </PropertyDef>
     <PropertyDef name="ftypename">
       <Property name="dataType">String</Property>
       <Property name="label">机型</Property>
-    </PropertyDef>
-    <PropertyDef name="ftypes">
-      <Property name="dataType">Ftypes</Property>
     </PropertyDef>
     <Reference name="fighterinfo">
       <Property name="dataProvider">fighterinfoPR#queryFighterinfo</Property>
@@ -649,16 +650,16 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
   </DataType>
   <DataType name="Fighterinfo" meta="x:1366;y:10">
     <Property name="creationType">com.buaa.fly.domain.Fighterinfo</Property>
+    <PropertyDef name="outfactoryno">
+      <Property name="dataType">String</Property>
+      <Property name="label">飞机编号</Property>
+    </PropertyDef>
     <PropertyDef name="piciid">
       <Property name="dataType">Integer</Property>
       <Property name="label">piciid</Property>
     </PropertyDef>
-    <PropertyDef name="id">
-      <Property name="dataType">Integer</Property>
-      <Property name="label">id</Property>
-    </PropertyDef>
-    <PropertyDef name="firstfdate">
-      <Property name="dataType">DateTime</Property>
+    <PropertyDef name="firstFDate">
+      <Property name="dataType">Date</Property>
       <Property name="label">首飞日期</Property>
     </PropertyDef>
     <PropertyDef name="userno">
@@ -669,52 +670,8 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
       <Property name="dataType">DateTime</Property>
       <Property name="label">转场日期</Property>
     </PropertyDef>
-    <PropertyDef name="outfactoryno">
-      <Property name="dataType">String</Property>
-      <Property name="label">飞机编号</Property>
-    </PropertyDef>
     <PropertyDef name="fpici">
       <Property name="dataType">Fpici</Property>
-    </PropertyDef>
-  </DataType>
-  <DataType name="Data" meta="x:1627;y:10">
-    <Property name="creationType">com.buaa.fly.domain.Fdata</Property>
-    <PropertyDef name="outFactoryNo">
-      <Property></Property>
-      <Property name="label">出厂编号</Property>
-    </PropertyDef>
-    <PropertyDef name="landingTimes">
-      <Property name="dataType">Integer</Property>
-      <Property name="label">起落次数</Property>
-      <Property name="required">true</Property>
-    </PropertyDef>
-    <PropertyDef name="dataType">
-      <Property></Property>
-      <Property name="label">数据类型</Property>
-    </PropertyDef>
-    <PropertyDef name="special">
-      <Property></Property>
-      <Property name="label">特殊数据处理情况</Property>
-    </PropertyDef>
-    <PropertyDef name="dataPath">
-      <Property></Property>
-      <Property name="label">数据信息</Property>
-    </PropertyDef>
-    <PropertyDef name="dataLabel">
-      <Property></Property>
-      <Property name="label">数据状态</Property>
-    </PropertyDef>
-    <PropertyDef name="oid">
-      <Property></Property>
-      <Property name="label">序号</Property>
-    </PropertyDef>
-    <PropertyDef name="flightdate">
-      <Property name="dataType">Date</Property>
-      <Property name="label">飞行时间</Property>
-      <Property name="required">true</Property>
-    </PropertyDef>
-    <PropertyDef name="taskList">
-      <Property name="dataType">Tasklist</Property>
     </PropertyDef>
   </DataType>
   <DataType name="CombineVehicle">
@@ -868,7 +825,7 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
       <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="id">
-      <Property name="dataType">Integer</Property>
+      <Property name="dataType">String</Property>
       <Property name="label">id</Property>
     </PropertyDef>
     <PropertyDef name="fighterno">
@@ -1075,21 +1032,11 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
       <Property name="dataType">String</Property>
       <Property name="label">id</Property>
     </PropertyDef>
-    <PropertyDef name="filename">
-      <Property name="dataType">String</Property>
-      <Property name="label">名称</Property>
+    <PropertyDef name="flightrestrict">
+      <Property name="dataType">Flightrestrict</Property>
     </PropertyDef>
-    <PropertyDef name="outfactoryno">
-      <Property name="dataType">String</Property>
-      <Property name="label">飞机编号</Property>
-    </PropertyDef>
-    <PropertyDef name="piciname">
-      <Property name="dataType">String</Property>
-      <Property name="label">批次</Property>
-    </PropertyDef>
-    <PropertyDef name="ftypename">
-      <Property name="dataType">String</Property>
-      <Property name="label">机型</Property>
+    <PropertyDef name="referenceName">
+      <Property/>
     </PropertyDef>
   </DataType>
 </Model>

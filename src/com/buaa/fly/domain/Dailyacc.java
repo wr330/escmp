@@ -18,7 +18,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 
 @Entity
-@Table(name="DailyAcc")
+@Table(name="Fly_DailyAcc")
 public class  Dailyacc implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Dailyacc(){}
@@ -26,7 +26,7 @@ public class  Dailyacc implements Serializable {
 
 	private String filename ;
 	private String ftype ;
-	private Integer id ;
+	private String id ;
 	private Integer bytes ;
 	private String summary ;
 	private byte[] datablock ;
@@ -49,12 +49,11 @@ public class  Dailyacc implements Serializable {
 		this.ftype=ftype;
 	}
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY) 
 	@Column(name="id")
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id=id;
 	}
 	@Column(name="bytes")

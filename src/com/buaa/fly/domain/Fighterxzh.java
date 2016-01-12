@@ -21,16 +21,14 @@ import java.math.BigDecimal;
 import com.buaa.fly.domain.Fpici;
 
 @Entity
-@Table(name="Fighterxzh")
+@Table(name="Fly_Fighterxzh")
 public class  Fighterxzh implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Fighterxzh(){}
     
-	private String outfactoryno ;
+	private Flightrestrict flightRestrict ;
 	private String id ;
-	private String piciname ;
-	private String ftypename;
-	private String filename;
+	private String referenceName ;
 
 	@Id
 	@Column(name="id", unique = true, nullable = false) 
@@ -40,33 +38,19 @@ public class  Fighterxzh implements Serializable {
 	public void setId(String id) {
 		this.id=id;
 	}
-	@Column(name = "OutFactoryNo", unique = true, nullable = false)
-	public String getOutfactoryno() {
-		return outfactoryno;
+	@Column(name = "ReferenceName")
+	public String getReferenceName() {
+		return referenceName;
 	}
-	public void setOutfactoryno(String outfactoryno) {
-		this.outfactoryno=outfactoryno;
+	public void setReferenceName(String referenceName) {
+		this.referenceName = referenceName;
 	}
-	@Column(name = "ftypeName")
-	public String getFtypename() {
-		return ftypename;
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinColumn(name = "FlightRestrict")
+    public Flightrestrict getFlightRestrict() {
+		return flightRestrict;
 	}
-	public void setFtypename(String ftypename) {
-		this.ftypename = ftypename;
-	}	
-	@Column(name = "piciName")
-	public String getPiciname() {
-		return piciname;
+	public void setFlightRestrict(Flightrestrict flightRestrict) {
+		this.flightRestrict = flightRestrict;
 	}
-	public void setPiciname(String piciname) {
-		this.piciname = piciname;
-	}
-	@Column(name = "fileName")
-	public String getFilename() {
-		return filename;
-	}
-	public void setFilename(String filename) {
-		this.filename = filename;
-	}
-	
 }

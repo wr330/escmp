@@ -57,8 +57,7 @@ public class FtypesDao extends HibernateBaseDao {
 	public void saveData(Ftypes detail) throws Exception {
 		Session session = this.getSessionFactory().openSession();
 		try {
-			detail.setFighterid(conlumIdentity());
-			session.save(detail);
+			
 		} finally {
 			session.flush();
 			session.close();
