@@ -34,13 +34,14 @@ public class  Supportprogram implements Serializable {
  	}	
 
 	private String oid ;
-	private String parentnode ;
+	private String maker ;
 	private String troop ;
 	private String staffrequirement ;
 	private String supporttype ;
 	private String changeperiod ;
 	private String workaddress ;
 	private Date worktime ;
+	private Date endtime ;
 	private List<Supportprogram> children;
 	private String miji ;
 
@@ -97,13 +98,19 @@ public class  Supportprogram implements Serializable {
 	public void setWorktime(Date worktime) {
 		this.worktime=worktime;
 	}
-	
-	@Column(name="ParentNode")
-	public String getParentnode() {
-		return parentnode;
+	@Column(name="Maker")
+	public String getMaker() {
+		return maker;
 	}
-	public void setParentnode(String parentnode) {
-		this.parentnode = parentnode;
+	public void setMaker(String maker) {
+		this.maker = maker;
+	}
+	@Column(name="EndTime")
+	public Date getEndtime() {
+		return endtime;
+	}
+	public void setEndtime(Date endtime) {
+		this.endtime = endtime;
 	}
 	@Column(name="miji")
 	public String getMiji() {

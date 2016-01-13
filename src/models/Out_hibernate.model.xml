@@ -27,7 +27,7 @@
     </PropertyDef>
     <PropertyDef name="worktime">
       <Property name="dataType">Date</Property>
-      <Property name="label">制定时间</Property>
+      <Property name="label">制定日期</Property>
     </PropertyDef>
     <PropertyDef name="oid">
       <Property name="dataType">String</Property>
@@ -67,10 +67,13 @@
       </Property>
       <Property name="defaultValue">0</Property>
     </PropertyDef>
-    <PropertyDef name="parentnode">
+    <PropertyDef name="maker">
       <Property name="dataType">String</Property>
-      <Property name="label">parentnode</Property>
-      <Property name="visible">false</Property>
+      <Property name="label">制定人</Property>
+    </PropertyDef>
+    <PropertyDef name="endtime">
+      <Property name="dataType">Date</Property>
+      <Property name="label">终止日期</Property>
     </PropertyDef>
   </DataType>
   <DataType name="Supportitem">

@@ -147,7 +147,7 @@ link.set(&quot;visible&quot;,false);
       <Property name="filterMode">clientSide</Property>
       <Property name="showFilterBar">false</Property>
       <Property name="rowHeight">22</Property>
-      <Property name="fixedColumnCount">3</Property>
+      <Property name="fixedColumnCount">5</Property>
       <RowNumColumn/>
       <DataColumn name="documenttype">
         <Property name="property">documenttype</Property>
@@ -155,7 +155,7 @@ link.set(&quot;visible&quot;,false);
       </DataColumn>
       <DataColumn>
         <Property name="property">aircrafttype</Property>
-        <Property name="width">120</Property>
+        <Property name="width">80</Property>
         <Editor/>
       </DataColumn>
       <DataColumn name="number">
@@ -168,13 +168,17 @@ link.set(&quot;visible&quot;,false);
         <Editor/>
       </DataColumn>
       <DataColumn>
+        <ClientEvent name="onRenderCell">jQuery(arg.dom).empty();&#xD;
+var file = arg.data.get(&quot;efile&quot;);&#xD;
+var oid = arg.data.get(&quot;oid&quot;);&#xD;
+var href = &quot;ServletDownload?filename=Out_Technicaldocument/&quot; + oid + &quot;/&quot; + file;&#xD;
+jQuery(arg.dom).xCreate({&#xD;
+	tagName:&quot;A&quot;,&#xD;
+	href:href,&#xD;
+	content:arg.data.get(&quot;efile&quot;)&#xD;
+});</ClientEvent>
         <Property name="width">200</Property>
         <Property name="property">efile</Property>
-        <Editor/>
-      </DataColumn>
-      <DataColumn>
-        <Property name="width">200</Property>
-        <Property name="property">contentabstract</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
@@ -213,6 +217,7 @@ link.set(&quot;visible&quot;,false);
         <Property name="width">200</Property>
         <Property name="property">miji</Property>
         <Property name="name">miji</Property>
+        <Property name="align">left</Property>
         <Editor/>
       </DataColumn>
     </DataGrid>
@@ -449,8 +454,5 @@ var link = view.id(&quot;lefile&quot;);&#xD;
 link.set(&quot;visible&quot;,false);</ClientEvent>
       <Property name="service">defaultUploadProcessor#deleteFile</Property>
     </AjaxAction>
-    <Import id="sendMessage" src="bdf2.core.view.frame.main.register.message.SendMessage#$dialogSendMessage"/>
-    <Import id="dataSetMessageForSend" src="bdf2.core.view.frame.main.register.message.SendMessage#$dataSetMessageForSend"/>
-    <Import id="updateActionSendMessage" src="bdf2.core.view.frame.main.register.message.SendMessage#$updateActionSendMessage"/>
   </View>
 </ViewConfig>

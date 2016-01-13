@@ -62,7 +62,6 @@ public class TechnicaldocumentDao extends HibernateBaseDao {
 	public void saveData(Technicaldocument detail) throws Exception {
 		Session session = this.getSessionFactory().openSession();
 		try {
-			detail.setOid(UUID.randomUUID().toString());
 			session.save(detail);
 		} finally {
 			session.flush();
