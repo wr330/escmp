@@ -15,6 +15,7 @@ import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 import com.buaa.out.domain.Supportitem;
 import com.buaa.out.domain.Supportprogram;
+import com.buaa.out.handover.manager.HandoverManager;
 import com.buaa.out.supportitem.manager.SupportitemManager;
 import com.buaa.out.supportprogram.dao.SupportprogramDao;
 
@@ -24,8 +25,10 @@ public class SupportprogramManager {
 	
 	@Resource
 	private SupportprogramDao supportprogramDao;
-		@Resource
+	@Resource
 	private SupportitemManager supportitemManager;
+	@Resource	
+	private HandoverManager handoverManager;
 		
 	/**                  
 	* 分页查询信息，带有criteria
@@ -55,7 +58,7 @@ public class SupportprogramManager {
 	 */
 	 @SuppressWarnings({ "rawtypes", "unchecked" })
 	 public void saveSupportprogram(Map<String, Collection> dataItems) throws Exception {
-	    Collection<Supportprogram> details =(Collection<Supportprogram>) dataItems.get("dsCurrentTree");
+	    Collection<Supportprogram> details =(Collection<Supportprogram>) dataItems.get("dsSupportprogram");
 		this.saveSupportprogram(details);
 	 }
 	 
@@ -72,19 +75,17 @@ public class SupportprogramManager {
 				EntityState state = EntityUtils.getState(item);
 				if (state.equals(EntityState.NEW)) {
 					supportprogramDao.saveData(item);
-					supportitemManager.saveSupportitem(item.getSupportitem());
 				} else if (state.equals(EntityState.MODIFIED)) {
 					supportprogramDao.updateData(item);
-					supportitemManager.saveSupportitem(item.getSupportitem());
 				} else if (state.equals(EntityState.DELETED)) {
-					supportitemManager.saveSupportitem(item.getSupportitem());
 					supportprogramDao.deleteData(item);
 				} else if (state.equals(EntityState.NONE)) {
 					if(item.getChildren()!=null){
 						this.saveSupportprogram(item.getChildren());
 					}
-					supportitemManager.saveSupportitem(item.getSupportitem());
 				}
+				supportitemManager.saveSupportitem(item.getSupportitem());
+				handoverManager.saveHandover(item.getHandover());
 			}
 		}
 	 }

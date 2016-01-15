@@ -75,7 +75,7 @@ public class SupportitemDao extends HibernateBaseDao {
 	public void saveData(Supportitem detail) throws Exception {
 		Session session = this.getSessionFactory().openSession();
 		try {
-			detail.setId(UUID.randomUUID().toString());
+			detail.setOid(UUID.randomUUID().toString());
 			session.save(detail);
 		} finally {
 			session.flush();

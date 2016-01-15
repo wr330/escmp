@@ -40,7 +40,7 @@ public class HandoverDao extends HibernateBaseDao {
         if(null != parameter && !parameter.isEmpty()){
         	String oid = (String)parameter.get("oid");
         	if(StringUtils.isNotEmpty( oid )){
-        		coreHql.append(" and a.supportitem.id = :oid ");
+        		coreHql.append(" and a.supportprogram.oid = :oid ");
         		args.put("oid", oid);
         	}
         }

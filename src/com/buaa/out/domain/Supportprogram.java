@@ -46,6 +46,7 @@ public class  Supportprogram implements Serializable {
 	private String miji ;
 
 	private Collection<Supportitem> supportitem;
+	private Collection<Handover> handover;
 
 	@Id
 	@Column(name = "Oid", unique = true, nullable = false)
@@ -132,5 +133,12 @@ public class  Supportprogram implements Serializable {
 	}
 	public void setSupportitem(Collection<Supportitem> supportitem) {
 		this.supportitem=supportitem;
+	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "supportprogram")
+    public Collection<Handover> getHandover() {
+		return handover;
+	}
+	public void setHandover(Collection<Handover> handover) {
+		this.handover = handover;
 	}
 }

@@ -24,11 +24,11 @@ import java.lang.String;
 public class  Supportitem implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Supportitem(){}
-   public Supportitem(String id) {
-      this.id=id;
+   public Supportitem(String oid) {
+      this.oid = oid;
  	}	
 
-	private String id ;
+	private String oid ;
 
 	private Date endexecutiontime ;
 	private Date startexecutiontime ;
@@ -36,15 +36,15 @@ public class  Supportitem implements Serializable {
 	private int miji;
 
 	private Supportprogram supportprogram;
-	private Collection<Handover> handover;
+	
 
 	@Id
-	@Column(name = "ID", unique = true, nullable = false)
-	public String getId() {
-		return id;
+	@Column(name = "Oid", unique = true, nullable = false)
+	public String getOid() {
+		return oid;
 	}
-	public void setId(String id) {
-		this.id=id;
+	public void setOid(String oid) {
+		this.oid = oid;
 	}
 
 	@Column(name="EndExecutionTime")
@@ -85,12 +85,4 @@ public class  Supportitem implements Serializable {
 		this.supportprogram=supportprogram;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "supportitem")
-	public Collection<Handover> getHandover() {
-		return handover;
-	}
-	public void setHandover(Collection<Handover> handover) {
-		this.handover = handover;
-	}
-	
 }

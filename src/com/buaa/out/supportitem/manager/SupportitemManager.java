@@ -13,7 +13,6 @@ import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 import com.buaa.out.domain.Supportitem;
-import com.buaa.out.handover.manager.HandoverManager;
 import com.buaa.out.supportitem.dao.SupportitemDao;
 
 
@@ -24,8 +23,7 @@ public class SupportitemManager {
 	
 	@Resource
 	private SupportitemDao supportitemDao;
-	@Resource	
-	private HandoverManager handoverManager;
+	
 	/**                  
 	* 分页查询信息，带有criteria
 	* 将criteria转换为一个Map
@@ -69,12 +67,10 @@ public class SupportitemManager {
 				} else if (state.equals(EntityState.DELETED)) {
 					supportitemDao.deleteData(item);
 				} else if (state.equals(EntityState.NONE)) {
-						EntityState supportprogramState = EntityUtils.getState(item.getSupportprogram());
-		
-	if(supportprogramState.equals(EntityState.MODIFIED)){
-	supportitemDao.updateData(item);
-	}
-						handoverManager.saveHandover(item.getHandover());
+						EntityState supportprogramState = EntityUtils.getState(item.getSupportprogram());		
+						if(supportprogramState.equals(EntityState.MODIFIED)){
+							supportitemDao.updateData(item);
+						}			
 				}
 			}
 		}

@@ -37,7 +37,7 @@ public class  Handover implements Serializable {
 	private Date handovertime ;
 	private String miji ;
 	private byte[] datablock;
-	private Supportitem supportitem;
+	private Supportprogram supportprogram;
 
 
 	@Id
@@ -120,12 +120,12 @@ public class  Handover implements Serializable {
 		this.miji=miji;
 	}
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "SupportItem")
-	public Supportitem getSupportitem() {
-		return supportitem;
+	@JoinColumn(name = "SupportProgram")
+	public Supportprogram getSupportprogram() {
+		return supportprogram;
 	}
-	public void setSupportitem(Supportitem supportitem) {
-		this.supportitem = supportitem;
+	public void setSupportprogram(Supportprogram supportprogram) {
+		this.supportprogram = supportprogram;
 	}
 
 }
