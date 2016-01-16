@@ -49,7 +49,7 @@ window.open('upload/Out_Handover/'+ cur.get(&quot;oid&quot;) + '/' + arg.result)
         <TabControl id="tabsupport">
           <Property name="showMenuButton">true</Property>
           <ControlTab>
-            <Property name="caption">保障条目</Property>
+            <Property name="caption">计划执行情况</Property>
             <Container>
               <ToolBar>
                 <DataPilot>
@@ -194,28 +194,24 @@ if(cur){&#xD;
       </MainControl>
       <SideControl>
         <Container>
-          <FieldSet>
-            <Property name="caption">保障计划</Property>
-            <Buttons/>
-            <Children>
-              <ToolBar>
-                <DataPilot>
-                  <Property name="itemCodes">pages</Property>
-                  <Property name="dataSet">dsSupportprogram</Property>
-                </DataPilot>
-                <ToolBarButton>
-                  <ClientEvent name="onClick">view.id('dsSupportprogram').getData().insert();&#xD;
+          <ToolBar>
+            <DataPilot>
+              <Property name="itemCodes">pages</Property>
+              <Property name="dataSet">dsSupportprogram</Property>
+            </DataPilot>
+            <ToolBarButton>
+              <ClientEvent name="onClick">view.id('dsSupportprogram').getData().insert();&#xD;
 dialog=view.id('dgSupportprogram');&#xD;
 dialog.set(&quot;caption&quot;,&quot;新增保障计划&quot;);&#xD;
 dialog.show();&#xD;
 &#xD;
 </ClientEvent>
-                  <Property name="caption">新增</Property>
-                  <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
-                  <Property name="width">57</Property>
-                </ToolBarButton>
-                <ToolBarButton>
-                  <ClientEvent name="onClick">var cur=view.id('dsSupportprogram').getData('#');&#xD;
+              <Property name="caption">新增</Property>
+              <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+              <Property name="width">57</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">var cur=view.id('dsSupportprogram').getData('#');&#xD;
 dialog=view.id('dgSupportprogram');&#xD;
 dialog.set(&quot;caption&quot;,&quot;新增保障计划&quot;);&#xD;
 dialog.show();&#xD;
@@ -224,12 +220,12 @@ if (cur) {&#xD;
 	dialog.set(&quot;caption&quot;,&quot;修改保障计划&quot;);&#xD;
 	dialog.show();&#xD;
 }</ClientEvent>
-                  <Property name="caption">修改</Property>
-                  <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
-                  <Property name="width">57</Property>
-                </ToolBarButton>
-                <ToolBarButton>
-                  <ClientEvent name="onClick">var cur = view.id('dsSupportprogram').getData('#');&#xD;
+              <Property name="caption">修改</Property>
+              <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+              <Property name="width">57</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">var cur = view.id('dsSupportprogram').getData('#');&#xD;
 var uaSupportprogram = view.id('uaSupportprogram');&#xD;
 if(cur){&#xD;
 	dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){&#xD;
@@ -238,13 +234,11 @@ if(cur){&#xD;
 		}); &#xD;
 	}&#xD;
 </ClientEvent>
-                  <Property name="caption">删除</Property>
-                  <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
-                  <Property name="width">57</Property>
-                </ToolBarButton>
-              </ToolBar>
-            </Children>
-          </FieldSet>
+              <Property name="caption">删除</Property>
+              <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+              <Property name="width">57</Property>
+            </ToolBarButton>
+          </ToolBar>
           <DataGrid>
             <Property name="dataSet">dsSupportprogram</Property>
             <Property name="rowHeight">22</Property>
@@ -275,6 +269,10 @@ if(cur){&#xD;
       </SideControl>
     </SplitPanel>
     <Dialog id="dgSupportprogram">
+      <ClientEvent name="onClose">var cur=view.id('dsSupportprogram').getData();&#xD;
+cur.cancel();&#xD;
+view.id('dgSupportprogram').hide();&#xD;
+</ClientEvent>
       <Property name="height">300</Property>
       <Property name="width">450</Property>
       <Buttons>
@@ -324,6 +322,7 @@ view.id('dgSupportprogram').hide();&#xD;
           <AutoFormElement>
             <Property name="name">workaddress</Property>
             <Property name="property">workaddress</Property>
+            <Property name="trigger">dataSetDropDown1</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
@@ -341,8 +340,9 @@ view.id('dgSupportprogram').hide();&#xD;
       <Tools/>
     </Dialog>
     <Dialog id="diaSupportitem">
-      <ClientEvent name="onClose">view.id('elementfsupporttype').set('readOnly',false);&#xD;
-</ClientEvent>
+      <ClientEvent name="onClose">var cur=view.id('dsSupportprogram').getData('#.#supportitem');&#xD;
+cur.cancel();&#xD;
+view.id('diaSupportitem').hide();</ClientEvent>
       <Property name="width">60%</Property>
       <Property name="height">40%</Property>
       <Buttons>
@@ -396,6 +396,9 @@ view.id('diaSupportitem').hide();&#xD;
       <Tools/>
     </Dialog>
     <Dialog id="dgHandover">
+      <ClientEvent name="onClose">var cur=view.id('dsSupportprogram').getData('#.#handover');&#xD;
+cur.cancel();&#xD;
+view.id('dgHandover').hide();</ClientEvent>
       <Property name="width">60%</Property>
       <Property name="height">80%</Property>
       <Buttons>

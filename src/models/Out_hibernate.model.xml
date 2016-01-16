@@ -175,7 +175,7 @@ arg.parameter = parameter;</ClientEvent>
       <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="handovertime">
-      <Property name="dataType">DateTime</Property>
+      <Property name="dataType">Date</Property>
       <Property name="label">交接时间</Property>
       <Property name="required">true</Property>
     </PropertyDef>
