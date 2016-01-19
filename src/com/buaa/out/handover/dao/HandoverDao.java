@@ -56,7 +56,6 @@ public class HandoverDao extends HibernateBaseDao {
         
         String countHql = "select count(*) " + coreHql.toString();
         String hql = coreHql.toString();
-        hql = userService.checkUser(hql);
 		this.pagingQuery(page, hql, countHql, args);
 	}
 	

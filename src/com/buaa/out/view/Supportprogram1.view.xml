@@ -50,6 +50,7 @@ window.open('upload/Out_Handover/'+ cur.get(&quot;oid&quot;) + '/' + arg.result)
           <Property name="showMenuButton">true</Property>
           <ControlTab>
             <Property name="caption">计划执行情况</Property>
+            <Property name="icon">url(>skin>common/icons.gif) -100px -100px</Property>
             <Container>
               <ToolBar>
                 <DataPilot>
@@ -99,22 +100,26 @@ if(cur){&#xD;
                 <Property name="rowHeight">22</Property>
                 <DataColumn name="registrationexecutor">
                   <Property name="property">registrationexecutor</Property>
+                  <Property name="width">150</Property>
                 </DataColumn>
                 <DataColumn name="startexecutiontime">
                   <Property name="property">startexecutiontime</Property>
+                  <Property name="width">150</Property>
                 </DataColumn>
                 <DataColumn name="endexecutiontime">
                   <Property name="property">endexecutiontime</Property>
+                  <Property name="width">150</Property>
                 </DataColumn>
               </DataGrid>
             </Container>
           </ControlTab>
           <ControlTab>
             <Property name="caption">现场交接记录</Property>
+            <Property name="icon">url(>skin>common/icons.gif) -220px -180px</Property>
             <Container>
               <ToolBar>
                 <DataPilot>
-                  <Property name="itemCodes">pages</Property>
+                  <Property name="itemCodes">-,pages</Property>
                   <Property name="dataSet">dsSupportprogram</Property>
                   <Property name="dataPath">#.handover</Property>
                 </DataPilot>
@@ -148,7 +153,6 @@ if(cur){&#xD;
 	dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){&#xD;
 		cur.remove();&#xD;
 		uaSupportprogram.execute();	&#xD;
-		alert(&quot;1234&quot;);&#xD;
 		}); &#xD;
 	}&#xD;
 </ClientEvent>
@@ -163,29 +167,38 @@ if(cur){&#xD;
                 <Property name="readOnly">true</Property>
                 <Property name="filterMode">serverSide</Property>
                 <Property name="rowHeight">22</Property>
-                <DataColumn name="outfield">
-                  <Property name="property">outfield</Property>
-                </DataColumn>
                 <DataColumn name="efile">
+                  <ClientEvent name="onRenderCell">jQuery(arg.dom).empty();&#xD;
+var file = arg.data.get(&quot;efile&quot;);&#xD;
+var oid = arg.data.get(&quot;oid&quot;);&#xD;
+var href = &quot;ServletDownload?filename=Out_Handover/&quot; + oid + &quot;/&quot; + file;&#xD;
+jQuery(arg.dom).xCreate({&#xD;
+	tagName:&quot;A&quot;,&#xD;
+	href:href,&#xD;
+	content:arg.data.get(&quot;efile&quot;)&#xD;
+});</ClientEvent>
                   <Property name="property">efile</Property>
+                  <Property name="width">150</Property>
                 </DataColumn>
                 <DataColumn name="filename">
                   <Property name="property">filename</Property>
+                  <Property name="width">150</Property>
                 </DataColumn>
                 <DataColumn name="personto">
                   <Property name="property">personto</Property>
+                  <Property name="width">150</Property>
                 </DataColumn>
                 <DataColumn name="filenumber">
                   <Property name="property">filenumber</Property>
+                  <Property name="width">150</Property>
                 </DataColumn>
                 <DataColumn name="personfrom">
                   <Property name="property">personfrom</Property>
+                  <Property name="width">150</Property>
                 </DataColumn>
                 <DataColumn name="handovertime">
                   <Property name="property">handovertime</Property>
-                </DataColumn>
-                <DataColumn name="miji">
-                  <Property name="property">miji</Property>
+                  <Property name="width">150</Property>
                 </DataColumn>
               </DataGrid>
             </Container>
@@ -199,45 +212,6 @@ if(cur){&#xD;
               <Property name="itemCodes">pages</Property>
               <Property name="dataSet">dsSupportprogram</Property>
             </DataPilot>
-            <ToolBarButton>
-              <ClientEvent name="onClick">view.id('dsSupportprogram').getData().insert();&#xD;
-dialog=view.id('dgSupportprogram');&#xD;
-dialog.set(&quot;caption&quot;,&quot;新增保障计划&quot;);&#xD;
-dialog.show();&#xD;
-&#xD;
-</ClientEvent>
-              <Property name="caption">新增</Property>
-              <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
-              <Property name="width">57</Property>
-            </ToolBarButton>
-            <ToolBarButton>
-              <ClientEvent name="onClick">var cur=view.id('dsSupportprogram').getData('#');&#xD;
-dialog=view.id('dgSupportprogram');&#xD;
-dialog.set(&quot;caption&quot;,&quot;新增保障计划&quot;);&#xD;
-dialog.show();&#xD;
-if (cur) {&#xD;
-	dialog=view.id('dgSupportprogram');&#xD;
-	dialog.set(&quot;caption&quot;,&quot;修改保障计划&quot;);&#xD;
-	dialog.show();&#xD;
-}</ClientEvent>
-              <Property name="caption">修改</Property>
-              <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
-              <Property name="width">57</Property>
-            </ToolBarButton>
-            <ToolBarButton>
-              <ClientEvent name="onClick">var cur = view.id('dsSupportprogram').getData('#');&#xD;
-var uaSupportprogram = view.id('uaSupportprogram');&#xD;
-if(cur){&#xD;
-	dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){&#xD;
-	cur.remove();&#xD;
-	uaSupportprogram.execute();	&#xD;
-		}); &#xD;
-	}&#xD;
-</ClientEvent>
-              <Property name="caption">删除</Property>
-              <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
-              <Property name="width">57</Property>
-            </ToolBarButton>
           </ToolBar>
           <DataGrid>
             <Property name="dataSet">dsSupportprogram</Property>
@@ -257,12 +231,6 @@ if(cur){&#xD;
             </DataColumn>
             <DataColumn name="workaddress">
               <Property name="property">workaddress</Property>
-            </DataColumn>
-            <DataColumn name="worktime">
-              <Property name="property">worktime</Property>
-            </DataColumn>
-            <DataColumn name="miji">
-              <Property name="property">miji</Property>
             </DataColumn>
           </DataGrid>
         </Container>
@@ -343,8 +311,8 @@ view.id('dgSupportprogram').hide();&#xD;
       <ClientEvent name="onClose">var cur=view.id('dsSupportprogram').getData('#.#supportitem');&#xD;
 cur.cancel();&#xD;
 view.id('diaSupportitem').hide();</ClientEvent>
-      <Property name="width">60%</Property>
-      <Property name="height">40%</Property>
+      <Property name="width">450</Property>
+      <Property name="height">200</Property>
       <Buttons>
         <Button>
           <ClientEvent name="onClick">view.id('uaSupportprogram').execute(function(){&#xD;
@@ -386,11 +354,6 @@ view.id('diaSupportitem').hide();&#xD;
             <Property name="trigger">customDropDownUser2</Property>
             <Editor/>
           </AutoFormElement>
-          <AutoFormElement id="elementfsupporttype">
-            <Property name="name">supportprogram</Property>
-            <Property name="property">supportprogram.supporttype</Property>
-            <Editor/>
-          </AutoFormElement>
         </AutoForm>
       </Children>
       <Tools/>
@@ -399,8 +362,8 @@ view.id('diaSupportitem').hide();&#xD;
       <ClientEvent name="onClose">var cur=view.id('dsSupportprogram').getData('#.#handover');&#xD;
 cur.cancel();&#xD;
 view.id('dgHandover').hide();</ClientEvent>
-      <Property name="width">60%</Property>
-      <Property name="height">80%</Property>
+      <Property name="width">450</Property>
+      <Property name="height">270</Property>
       <Buttons>
         <Button>
           <ClientEvent name="onClick">view.id('uaSupportprogram').execute(function(){&#xD;
@@ -424,21 +387,16 @@ view.id('dgHandover').hide();</ClientEvent>
           <Property name="dataPath">#.#handover</Property>
           <Property name="dataType">Handover</Property>
           <AutoFormElement>
-            <Property name="name">Outfield</Property>
-            <Property name="property">outfield</Property>
-            <Property name="trigger">dataSetDropDown1</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">HandoverTime</Property>
+            <Property name="name">handoverTime</Property>
             <Property name="property">handovertime</Property>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="name">PersonFrom</Property>
+            <Property name="name">personFrom</Property>
             <Property name="property">personfrom</Property>
             <Property name="trigger">customDropDownUser2</Property>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="name">PersonTo</Property>
+            <Property name="name">personTo</Property>
             <Property name="property">personto</Property>
             <Property name="trigger">customDropDownUser2</Property>
           </AutoFormElement>
@@ -447,7 +405,7 @@ view.id('dgHandover').hide();</ClientEvent>
             <Property name="property">filename</Property>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="name">FileNumber</Property>
+            <Property name="name">fileNumber</Property>
             <Property name="property">filenumber</Property>
           </AutoFormElement>
           <AutoFormElement>
@@ -456,9 +414,9 @@ view.id('dgHandover').hide();</ClientEvent>
             <Editor>
               <Container>
                 <Link id="lefile" layoutConstraint="center">
-                  <Property name="dataSet">dsCurrentTree</Property>
+                  <Property name="dataSet">dsSupportprogram</Property>
                   <Property name="property">efile</Property>
-                  <Property name="dataPath">!CURRENT_ITEM.#handover</Property>
+                  <Property name="dataPath">#.#handover</Property>
                 </Link>
                 <Button layoutConstraint="right">
                   <Property name="caption">删除</Property>
@@ -471,54 +429,7 @@ view.id('dgHandover').hide();</ClientEvent>
               </Container>
             </Editor>
           </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">miji</Property>
-            <Property name="property">miji</Property>
-          </AutoFormElement>
         </AutoForm>
-        <UploadAction id="uaUpload">
-          <ClientEvent name="onFilesAdded">var cur=view.id('dsSupportprogram').getData('#.#handover');&#xD;
-var value = &quot;/Out_Handover/&quot; + cur.get(&quot;oid&quot;) + &quot;/&quot;;&#xD;
-self.set(&quot;multipartParams&quot;, {record: value});</ClientEvent>
-          <ClientEvent name="onFileUploaded">var returnValue = arg.file.name;&#xD;
-var cur=view.id('dsSupportprogram').getData('#.#handover');&#xD;
-cur.set(&quot;efile&quot;,returnValue);&#xD;
-var link = view.id(&quot;lefile&quot;);&#xD;
-if(returnValue){&#xD;
-	var oid = cur.get(&quot;oid&quot;);&#xD;
-    var href = &quot;/escmp/upload/Out_Handover/&quot; + oid + &quot;/&quot; + returnValue;&#xD;
-    link.set({&#xD;
-		href: href,&#xD;
-		visible: true&#xD;
-	});&#xD;
-}&#xD;
-else{&#xD;
-    link.set(&quot;visible&quot;,false);&#xD;
-}</ClientEvent>
-          <ClientEvent name="onError">	var error = arg.error;&#xD;
-	dorado.MessageBox.show({&#xD;
-		title:error.message,&#xD;
-		message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
-		icon: &quot;WARNING&quot;,&#xD;
-		buttons: [&quot;ok&quot;]&#xD;
-	});</ClientEvent>
-          <Property name="url">>dorado/uploader/fileupload</Property>
-          <Property name="maxFileSize">100MB</Property>
-          <Filters/>
-        </UploadAction>
-        <AjaxAction id="deleteFileAction">
-          <ClientEvent name="beforeExecute">var cur=view.id('dsCurrentTree').getData('!CURRENT_ITEM.#handover');&#xD;
-var value = &quot;/Out_Handover/&quot; + cur.get(&quot;oid&quot;) + &quot;/&quot;;&#xD;
-var file = cur.get(&quot;efile&quot;);&#xD;
-self.set(&quot;parameter&quot;,{&#xD;
-	record: value,&#xD;
-	filename: file&#xD;
-});&#xD;
-cur.set(&quot;efile&quot;,null);&#xD;
-var link = view.id(&quot;lefile&quot;);&#xD;
-link.set(&quot;visible&quot;,false);</ClientEvent>
-          <Property name="service">defaultUploadProcessor#deleteFile</Property>
-        </AjaxAction>
       </Children>
       <Tools/>
     </Dialog>
@@ -569,5 +480,51 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
       <Property name="displayProperty">name</Property>
       <Property name="editable">false</Property>
     </DataSetDropDown>
+    <UploadAction id="uaUpload">
+      <ClientEvent name="onFilesAdded">var cur=view.id('dsSupportprogram').getData('#.#handover');&#xD;
+var value = &quot;/Out_Handover/&quot; + cur.get(&quot;oid&quot;) + &quot;/&quot;;&#xD;
+self.set(&quot;multipartParams&quot;, {record: value});</ClientEvent>
+      <ClientEvent name="onFileUploaded">var returnValue = arg.file.name;&#xD;
+var cur=view.id('dsSupportprogram').getData('#.#handover');&#xD;
+cur.set(&quot;efile&quot;,returnValue);&#xD;
+var link = view.id(&quot;lefile&quot;);&#xD;
+if(returnValue){&#xD;
+	var oid = cur.get(&quot;oid&quot;);&#xD;
+	alert(cur.get(&quot;oid&quot;));&#xD;
+    var href = &quot;/escmp/upload/Out_Handover/&quot; + oid + &quot;/&quot; + returnValue;&#xD;
+	alert(href);&#xD;
+    link.set({&#xD;
+		href: href,&#xD;
+		visible: true&#xD;
+	});&#xD;
+}&#xD;
+else{&#xD;
+    link.set(&quot;visible&quot;,false);&#xD;
+}</ClientEvent>
+      <ClientEvent name="onError">	var error = arg.error;&#xD;
+	dorado.MessageBox.show({&#xD;
+		title:error.message,&#xD;
+		message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
+		icon: &quot;WARNING&quot;,&#xD;
+		buttons: [&quot;ok&quot;]&#xD;
+	});</ClientEvent>
+      <Property name="url">>dorado/uploader/fileupload</Property>
+      <Property name="maxFileSize">100MB</Property>
+      <Filters/>
+    </UploadAction>
+    <AjaxAction id="deleteFileAction">
+      <ClientEvent name="beforeExecute">var cur=view.id('dsSupportprogram').getData('#.#handover');&#xD;
+var value = &quot;/Out_Handover/&quot; + cur.get(&quot;oid&quot;) + &quot;/&quot;;&#xD;
+var file = cur.get(&quot;efile&quot;);&#xD;
+self.set(&quot;parameter&quot;,{&#xD;
+	record: value,&#xD;
+	filename: file&#xD;
+});&#xD;
+cur.set(&quot;efile&quot;,null);&#xD;
+var link = view.id(&quot;lefile&quot;);&#xD;
+link.set(&quot;visible&quot;,false);&#xD;
+</ClientEvent>
+      <Property name="service">defaultUploadProcessor#deleteFile</Property>
+    </AjaxAction>
   </View>
 </ViewConfig>

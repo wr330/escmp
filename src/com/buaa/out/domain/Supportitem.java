@@ -33,7 +33,6 @@ public class  Supportitem implements Serializable {
 	private Date endexecutiontime ;
 	private Date startexecutiontime ;
 	private String registrationexecutor ;
-	private int miji;
 
 	private Supportprogram supportprogram;
 	
@@ -67,13 +66,6 @@ public class  Supportitem implements Serializable {
 	}
 	public void setRegistrationexecutor(String registrationexecutor) {
 		this.registrationexecutor=registrationexecutor;
-	}
-	@Column(name="miji")
-	public int getMiji() {
-		return miji;
-	}
-	public void setMiji(int miji) {
-		this.miji = miji;
 	}
 
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })

@@ -57,16 +57,21 @@
         <Property name="dataPath"></Property>
       </DataPilot>
       <ToolBarButton>
-        <ClientEvent name="onClick">	view.id('dsSupportprogram').getData().insert();&#xD;
-	view.id('diaSupportprogram').show();</ClientEvent>
+        <ClientEvent name="onClick">view.id('dsSupportprogram').getData().insert();&#xD;
+var dialog=view.id('diaSupportprogram');&#xD;
+dialog.set(&quot;caption&quot;,&quot;新增保障计划&quot;);&#xD;
+dialog.show();&#xD;
+</ClientEvent>
         <Property name="caption">新增</Property>
         <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">	var cur=view.id('dsSupportprogram').getData('#');&#xD;
 	if (cur) {&#xD;
-		view.id('diaSupportprogram').show();&#xD;
-	}</ClientEvent>
+		var dialog=view.id('diaSupportprogram');&#xD;
+		dialog.set(&quot;caption&quot;,&quot;修改保障计划&quot;);&#xD;
+		dialog.show();&#xD;
+		}</ClientEvent>
         <Property name="caption">修改</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
       </ToolBarButton>
@@ -94,7 +99,6 @@
       <Property name="showFilterBar">false</Property>
       <Property name="rowHeight">22</Property>
       <Property name="readOnly">true</Property>
-      <Property name="height">50%</Property>
       <RowNumColumn/>
       <DataColumn name="supporttype">
         <Property name="property">supporttype</Property>
@@ -120,6 +124,10 @@
       </DataColumn>
     </DataGrid>
     <Dialog id="diaSupportprogram">
+      <ClientEvent name="onClose">var cur=view.id('dsSupportprogram').getData('#');&#xD;
+cur.cancel();&#xD;
+view.id('diaSupportprogram').hide();&#xD;
+	         </ClientEvent>
       <Property name="height">80%</Property>
       <Property name="width">40%</Property>
       <Buttons>
@@ -185,27 +193,5 @@
       </Children>
       <Tools/>
     </Dialog>
-    <DataGrid>
-      <Property name="dataSet">dsSupportprogram</Property>
-      <Property name="dataPath">#.supportitem</Property>
-      <Property name="height">50%</Property>
-      <DataColumn name="endexecutiontime">
-        <Property name="property">endexecutiontime</Property>
-      </DataColumn>
-      <DataColumn name="startexecutiontime">
-        <Property name="property">startexecutiontime</Property>
-      </DataColumn>
-      <DataColumn name="registrationexecutor">
-        <Property name="property">registrationexecutor</Property>
-      </DataColumn>
-      <DataColumn name="miji">
-        <Property name="property">miji</Property>
-      </DataColumn>
-    </DataGrid>
-    <DataSet id="dsSupportItem">
-      <Property name="pageSize">20</Property>
-      <Property name="dataType">[Supportitem]</Property>
-      <Property name="dataProvider">supportitemPR#querySupportitem</Property>
-    </DataSet>
   </View>
 </ViewConfig>

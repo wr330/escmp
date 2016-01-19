@@ -61,9 +61,7 @@ public class SupportitemDao extends HibernateBaseDao {
         
         String countHql = "select count(*) " + coreHql.toString();
         String hql = coreHql.toString();
-        hql = userService.checkUser(hql);
         hql+="order by startexecutiontime asc ";
-        //Collection<Supportitem> a=this.query(hql, args);
 		this.pagingQuery(page, hql, countHql, args);
 	}
 	

@@ -10,19 +10,14 @@
         <Property name="background">white</Property>
       </Property>
       <IFrameTab>
-        <Property name="caption">外场保障计划</Property>
+        <Property name="caption">外场保障计划制定</Property>
         <Property name="icon">url(>skin>common/icons.gif) -0px -120px</Property>
         <Property name="path">com.buaa.out.view.Supportprogram.d</Property>
       </IFrameTab>
       <IFrameTab>
-        <Property name="caption">保障计划执行</Property>
-        <Property name="icon">url(>skin>common/icons.gif) -0px -120px</Property>
-        <Property name="path">com.buaa.out.view.Supportprogram1.d</Property>
-      </IFrameTab>
-      <IFrameTab>
-        <Property name="path">com.buaa.out.view.Handover.d</Property>
-        <Property name="caption">现场交接管理</Property>
+        <Property name="caption">保障计划变更与执行</Property>
         <Property name="icon">url(>skin>common/icons.gif) -240px -160px</Property>
+        <Property name="path">com.buaa.out.view.Supportprogram1.d</Property>
       </IFrameTab>
       <IFrameTab>
         <Property name="caption">技术文件记录</Property>

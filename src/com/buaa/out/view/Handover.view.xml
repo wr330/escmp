@@ -152,10 +152,6 @@ link.set(&quot;visible&quot;,false);
       <Property name="rowHeight">22</Property>
       <Property name="fixedColumnCount">3</Property>
       <RowNumColumn/>
-      <DataColumn name="outfield">
-        <Property name="property">outfield</Property>
-        <Property name="width">160</Property>
-      </DataColumn>
       <DataColumn name="handovertime">
         <Property name="property">handovertime</Property>
         <Property name="width">160</Property>
@@ -188,11 +184,6 @@ jQuery(arg.dom).xCreate({&#xD;
 });</ClientEvent>
         <Property name="property">efile</Property>
         <Property name="width">240</Property>
-      </DataColumn>
-      <DataColumn>
-        <Property name="property">miji</Property>
-        <Property name="width">160</Property>
-        <Property name="name">miji</Property>
       </DataColumn>
     </DataGrid>
     <Dialog id="diaHandover">

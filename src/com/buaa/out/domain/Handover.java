@@ -28,15 +28,13 @@ public class  Handover implements Serializable {
 
 	private String oid ;
 	private Integer bytes ;
-	private String outfield ;
 	private String efile ;
 	private String filename ;
 	private String personto ;
 	private String filenumber ;
 	private String personfrom ;
 	private Date handovertime ;
-	private String miji ;
-	private byte[] datablock;
+	private byte[] datablock;//因为在model中类型无法确定，所以此字段在model中没有加
 	private Supportprogram supportprogram;
 
 
@@ -49,13 +47,6 @@ public class  Handover implements Serializable {
 		this.oid=oid;
 	}
 
-	@Column(name="Outfield")
-	public String getOutfield() {
-		return outfield;
-	}
-	public void setOutfield(String outfield) {
-		this.outfield=outfield;
-	}
 	@Column(name="EFile")
 	public String getEfile() {
 		return efile;
@@ -112,13 +103,7 @@ public class  Handover implements Serializable {
 	public void setDatablock(byte[] datablock) {
 		this.datablock=datablock;
 	}
-	@Column(name="miji")
-	public String getMiji() {
-		return miji;
-	}
-	public void setMiji(String miji) {
-		this.miji=miji;
-	}
+
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn(name = "SupportProgram")
 	public Supportprogram getSupportprogram() {

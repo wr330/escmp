@@ -108,37 +108,9 @@
     <PropertyDef name="supportprogram">
       <Property name="dataType">Supportprogram</Property>
     </PropertyDef>
-    <PropertyDef name="miji">
-      <Property name="dataType">Integer</Property>
-      <Property name="defaultValue">0</Property>
-      <Property name="label">密级</Property>
-      <Property name="mapping">
-        <Property name="mapValues">
-          <Collection>
-            <Entity>
-              <Property name="key">2</Property>
-              <Property name="value">机密</Property>
-            </Entity>
-            <Entity>
-              <Property name="key">1</Property>
-              <Property name="value">秘密</Property>
-            </Entity>
-            <Entity>
-              <Property name="key">0</Property>
-              <Property name="value">非密</Property>
-            </Entity>
-          </Collection>
-        </Property>
-      </Property>
-    </PropertyDef>
   </DataType>
   <DataType name="Handover">
     <Property name="matchType">com.buaa.out.domain.Handover</Property>
-    <PropertyDef name="outfield">
-      <Property name="dataType">String</Property>
-      <Property name="label">地点</Property>
-      <Property name="required">true</Property>
-    </PropertyDef>
     <PropertyDef name="efile">
       <Property name="dataType">String</Property>
       <Property name="label">交接文件</Property>
@@ -146,17 +118,17 @@
     <PropertyDef name="filename">
       <Property name="dataType">String</Property>
       <Property name="label">交接文件名</Property>
-      <Property name="required">true</Property>
+      <Property name="required">false</Property>
     </PropertyDef>
     <PropertyDef name="personto">
       <Property name="dataType">String</Property>
       <Property name="label">接收人</Property>
-      <Property name="required">true</Property>
+      <Property name="required">false</Property>
     </PropertyDef>
     <PropertyDef name="filenumber">
       <Property name="dataType">String</Property>
       <Property name="label">文件编号</Property>
-      <Property name="required">true</Property>
+      <Property name="required">false</Property>
       <Validator type="ajax">
         <ClientEvent name="beforeExecute">var oid = arg.entity.get(&quot;oid&quot;);&#xD;
 if(!oid)&#xD;
@@ -172,47 +144,21 @@ arg.parameter = parameter;</ClientEvent>
     <PropertyDef name="personfrom">
       <Property name="dataType">String</Property>
       <Property name="label">交接人</Property>
-      <Property name="required">true</Property>
+      <Property name="required">false</Property>
     </PropertyDef>
     <PropertyDef name="handovertime">
       <Property name="dataType">Date</Property>
       <Property name="label">交接时间</Property>
-      <Property name="required">true</Property>
+      <Property name="required">false</Property>
     </PropertyDef>
     <PropertyDef name="oid">
       <Property name="dataType">String</Property>
       <Property name="label">oid</Property>
-      <Property name="visible">false</Property>
-    </PropertyDef>
-    <PropertyDef name="miji">
-      <Property name="dataType">Integer</Property>
-      <Property name="label">密级</Property>
-      <Property name="mapping">
-        <Property name="mapValues">
-          <Collection>
-            <Entity>
-              <Property name="key">2</Property>
-              <Property name="value">机密</Property>
-            </Entity>
-            <Entity>
-              <Property name="key">1</Property>
-              <Property name="value">秘密</Property>
-            </Entity>
-            <Entity>
-              <Property name="key">0</Property>
-              <Property name="value">非密</Property>
-            </Entity>
-          </Collection>
-        </Property>
-      </Property>
-      <Property name="defaultValue">0</Property>
+      <Property name="visible">true</Property>
     </PropertyDef>
     <PropertyDef name="bytes">
       <Property name="dataType">Integer</Property>
       <Property name="required">false</Property>
-    </PropertyDef>
-    <PropertyDef name="datablock">
-      <Property name="dataType">[Byte]</Property>
     </PropertyDef>
     <PropertyDef name="supportprogram">
       <Property name="dataType">Supportprogram</Property>
