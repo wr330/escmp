@@ -42,7 +42,6 @@ public class  Supportprogram implements Serializable {
 	private String workaddress ;
 	private Date worktime ;
 	private Date endtime ;
-	private List<Supportprogram> children;
 	private String miji ;
 
 	private Collection<Supportitem> supportitem;
@@ -119,13 +118,6 @@ public class  Supportprogram implements Serializable {
 	}
 	public void setMiji(String miji) {
 		this.miji = miji;
-	}
-	@Transient
-	public List<Supportprogram> getChildren() {
-		return children;
-	}
-	public void setChildren(List<Supportprogram> children) {
-		this.children = children;
 	}
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "supportprogram")
     public Collection<Supportitem> getSupportitem() {

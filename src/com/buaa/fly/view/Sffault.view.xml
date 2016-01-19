@@ -724,6 +724,18 @@ jQuery(arg.dom).xCreate({&#xD;
       <ClientEvent name="onClose">var cur=view.id('dsSffault').getData('#');&#xD;
 				cur.cancel();&#xD;
 				view.id('diaSffault').hide();</ClientEvent>
+      <ClientEvent name="beforeShow">view.id(&quot;dsDictionaryGzfs&quot;).flushAsync(function(entitylist){&#xD;
+	var gzfs = view.id(&quot;dsSffault&quot;).getData(&quot;#&quot;).get(&quot;gzfs&quot;);&#xD;
+	view.id(&quot;containerGzfs&quot;).removeAllChildren();//先清空组件&#xD;
+	entitylist.each(function(entity){//遍历数据字典&#xD;
+		var name = entity.get(&quot;name&quot;);&#xD;
+		var box = new dorado.widget.CheckBox();&#xD;
+		box.set(&quot;caption&quot;,name);//设置显示标题&#xD;
+		if(gzfs!=null&amp;&amp;gzfs.indexOf(name)!=-1)//包含的选项自动打钩&#xD;
+            box.set(&quot;checked&quot;,true);&#xD;
+        view.id(&quot;containerGzfs&quot;).addChild(box);//添加显示组件&#xD;
+	});&#xD;
+});</ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
       <Property name="width">800</Property>
@@ -744,6 +756,15 @@ if(content){
     cur.set(&quot;gengxinjl&quot;,newgx);
 	cur.set(&quot;gengxincontent&quot;,null);
 }
+
+var gzfs=&quot;&quot;;
+var children = view.id(&quot;containerGzfs&quot;).get(&quot;children&quot;);//获取跟踪方式选项组件
+children.each(function(child){
+	if(child.get(&quot;checked&quot;))//如果打钩，把名称取出来
+	    gzfs = gzfs + child.get(&quot;caption&quot;) + &quot; &quot;;
+});
+cur.set(&quot;gzfs&quot;,gzfs);
+
 view.id('uaSffault').execute(function(){
                view.id('diaSffault').hide();
            });
@@ -946,7 +967,9 @@ view.id('uaSffault').execute(function(){
                 <Property name="name">gzfs</Property>
                 <Property name="property">gzfs</Property>
                 <Property name="labelPosition">top</Property>
-                <Property name="trigger">dataSetDropDownGzfs</Property>
+                <Editor>
+                  <Container id="containerGzfs" layout="hbox regionPadding:20"/>
+                </Editor>
               </AutoFormElement>
             </AutoForm>
           </ControlTab>

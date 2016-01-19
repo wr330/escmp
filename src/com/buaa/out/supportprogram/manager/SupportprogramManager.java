@@ -111,9 +111,6 @@ public class SupportprogramManager {
 					userOperationLog.setOperationContent("对保障计划表删除选定记录");
 					userOperationLogDao.saveData(userOperationLog);
 				} else if (state.equals(EntityState.NONE)) {
-					if(item.getChildren()!=null){
-						this.saveSupportprogram(item.getChildren());
-					}
 				}
 				supportitemManager.saveSupportitem(item.getSupportitem());
 				handoverManager.saveHandover(item.getHandover());
