@@ -8,11 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.annotation.Resource;
+
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 import org.apache.commons.lang.StringUtils;
 
 import com.bstek.bdf2.core.orm.ParseResult;
+import com.bstek.bdf2.core.view.user.QueryUserData;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 import com.buaa.out.domain.Supportevaluation;
@@ -22,7 +25,8 @@ import com.common.HibernateBaseDao;
 
 @Repository("supportevaluationDao")
 public class SupportevaluationDao extends HibernateBaseDao {
-
+	@Resource
+	private QueryUserData userService;
 	/**
 	 * 同时也支持普通类型查询，在数据类型和日期类型支持区间查询
 	 * 
@@ -49,6 +53,7 @@ public class SupportevaluationDao extends HibernateBaseDao {
         
         String countHql = "select count(*) " + coreHql.toString();
         String hql = coreHql.toString();
+        hql=userService.checkUser(hql);
 		this.pagingQuery(page, hql, countHql, args);
 	}
 	

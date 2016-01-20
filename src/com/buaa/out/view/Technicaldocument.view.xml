@@ -62,17 +62,7 @@
 	var link = view.id(&quot;lefile&quot;);
     link.set(&quot;visible&quot;,false);
 	
-	/*
- 	 * 对用户新增操作进行记录，在用户操作日志表中新增一条记录。
-     */
-	var myDate = new Date();
-	view.id('dsUserOperationLog').getData().insert({
-		logOperationType:&quot;0&quot;,
-		operationPerson: &quot;${loginUsername}&quot;,
-		operationContent:&quot;对技术文件记录表新增一条记录&quot;,
-		operationTime:myDate
-	});
-	view.id('uaUserOperationLog').execute();
+	
 	
 	
 	</ClientEvent>
@@ -98,18 +88,7 @@ link.set({
 else{
 link.set(&quot;visible&quot;,false);
 }
-
-	/*
- 	 * 对用户修改操作进行记录，在用户操作日志表中新增一条记录。
- 	 */
-	var myDate = new Date();
-	view.id('dsUserOperationLog').getData().insert({
-		logOperationType:&quot;1&quot;,
-		operationPerson: &quot;${loginUsername}&quot;,
-		operationContent:&quot;对技术文件记录表修改选定记录&quot;,
-		operationTime:myDate
-	});
-	view.id('uaUserOperationLog').execute();</ClientEvent>
+</ClientEvent>
         <Property name="caption">修改</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
       </ToolBarButton>
@@ -118,19 +97,6 @@ link.set(&quot;visible&quot;,false);
 	var ua=view.id('uaTechnicaldocument')
 	if(cur){
 		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
-			
-			/*
- 			 * 对用户删除操作进行记录，在用户操作日志表中新增一条记录。
- 			 */
-			var myDate = new Date();
-			view.id('dsUserOperationLog').getData().insert({
-				logOperationType:&quot;2&quot;,
-				operationPerson: &quot;${loginUsername}&quot;,
-				operationContent:&quot;对技术文件记录表删除所选记录&quot;,
-				operationTime:myDate
-			});
-			view.id('uaUserOperationLog').execute();
-			
 			cur.remove();
 			ua.execute();
 				}); 
@@ -242,13 +208,6 @@ jQuery(arg.dom).xCreate({&#xD;
           <ClientEvent name="onClick">var cur=view.id('dsTechnicaldocument').getData('#');
 				cur.cancel();
 				view.id('diaTechnicaldocument').hide();
-				
-	/*
-	 * 删除当前用户操作日志记录并保存
-	 */
-	view.id('dsUserOperationLog').getData().remove()
-	view.id('uaUserOperationLog').execute();
-	         
 	         </ClientEvent>
           <Property name="caption">取消</Property>
           <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>

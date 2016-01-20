@@ -312,7 +312,6 @@ view.id('dgSupportprogram').hide();&#xD;
 cur.cancel();&#xD;
 view.id('diaSupportitem').hide();</ClientEvent>
       <Property name="width">450</Property>
-      <Property name="height">200</Property>
       <Buttons>
         <Button>
           <ClientEvent name="onClick">view.id('uaSupportprogram').execute(function(){&#xD;
@@ -363,7 +362,6 @@ view.id('diaSupportitem').hide();&#xD;
 cur.cancel();&#xD;
 view.id('dgHandover').hide();</ClientEvent>
       <Property name="width">450</Property>
-      <Property name="height">270</Property>
       <Buttons>
         <Button>
           <ClientEvent name="onClick">view.id('uaSupportprogram').execute(function(){&#xD;

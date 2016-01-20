@@ -1,69 +1,247 @@
-
-
-
+<?xml version="1.0" encoding="UTF-8"?>
 <ViewConfig>
   <Property name="metaData">
     <Property name="securityTag">Supportevaluation</Property>
   </Property>
   <Arguments/>
   <Context/>
-  <Model>
-    </Model>
+  <Model/>
   <View>
-  
-<DataSet id="dsSupportevaluation">
-	  <Property name="dataType">[Supportevaluation]</Property>
-	  <Property name="dataProvider">supportevaluationPR#querySupportevaluation</Property>
-	  <Property name="pageSize">20</Property>
-	  </DataSet><UpdateAction id="uaSupportevaluation">
-  <Property name="dataResolver">supportevaluationPR#saveSupportevaluation</Property>
-  <UpdateItem>
-     <Property name="dataSet">dsSupportevaluation</Property>
-  </UpdateItem>
-</UpdateAction>
-<ToolBar>
-<DataPilot>
-
-	<Property name="itemCodes">pages,+,-,x</Property>
-	<Property name="dataSet">dsSupportevaluation</Property>
-	<Property name="dataPath"></Property>
-</DataPilot>
-
-
-<ToolBarButton>
-  <Property name="caption">数据保存</Property>
-  <Property name="action">uaSupportevaluation</Property>
-  <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
-</ToolBarButton> 
-</ToolBar>
-<DataGrid id="dgSupportevaluation">
-	<RowNumColumn/>
-	<DataColumn name="oid">
-	<Property name="property">oid</Property>
-               	</DataColumn>
-	<DataColumn name="supportgrade">
-	<Property name="property">supportgrade</Property>
-               	</DataColumn>
-	<DataColumn name="supportendtime">
-	<Property name="property">supportendtime</Property>
-               	</DataColumn>
-	<DataColumn name="supportaddress">
-	<Property name="property">supportaddress</Property>
-               	</DataColumn>
-	<DataColumn name="feedbackquestion">
-	<Property name="property">feedbackquestion</Property>
-               	</DataColumn>
-	<DataColumn name="supportstarttime">
-	<Property name="property">supportstarttime</Property>
-               	</DataColumn>
-	<DataColumn name="customersatisfactionsurvey">
-	<Property name="property">customersatisfactionsurvey</Property>
-               	</DataColumn>
-	<Property name="dataSet">dsSupportevaluation</Property>
-	<Property name="dataPath"></Property>
-	  	<Property name="filterMode">serverSide</Property>
-	<Property name="showFilterBar">true</Property>
-  	<Property name="rowHeight">22</Property>
-	</DataGrid>   
-     </View>
+    <DataSet id="dsSupportevaluation">
+      <Property name="dataType">[Supportevaluation]</Property>
+      <Property name="dataProvider">supportevaluationPR#querySupportevaluation</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <DataSet id="dsDictionary">
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="dictype">Dic_Outfield</Property>
+          <Property name="status">0</Property>
+        </Entity>
+      </Property>
+    </DataSet>
+    <UpdateAction id="uaSupportevaluation">
+      <Property name="dataResolver">supportevaluationPR#saveSupportevaluation</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsSupportevaluation</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <ToolBar>
+      <DataPilot>
+        <Property name="itemCodes">pages</Property>
+        <Property name="dataSet">dsSupportevaluation</Property>
+        <Property name="dataPath"></Property>
+      </DataPilot>
+      <ToolBarButton>
+        <ClientEvent name="onClick">view.id('dsSupportevaluation').getData().insert();&#xD;
+var dialog=view.id('diaSupportevaluation');&#xD;
+dialog.set(&quot;caption&quot;,&quot;新增保障效果评估&quot;);&#xD;
+dialog.show();&#xD;
+</ClientEvent>
+        <Property name="caption">新增</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">	var cur=view.id('dsSupportevaluation').getData('#');&#xD;
+	if (cur) {&#xD;
+		var dialog=view.id('diaSupportevaluation');&#xD;
+		dialog.set(&quot;caption&quot;,&quot;修改保障效果评估&quot;);&#xD;
+		dialog.show();&#xD;
+		}</ClientEvent>
+        <Property name="caption">修改</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsSupportevaluation').getData('#');&#xD;
+	var ua=view.id('uaSupportevaluation')&#xD;
+	if(cur){&#xD;
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){&#xD;
+			cur.remove();&#xD;
+			ua.execute();&#xD;
+				}); &#xD;
+			} </ClientEvent>
+        <Property name="caption">删除</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid id="dgSupportevaluation">
+      <Property name="dataSet">dsSupportevaluation</Property>
+      <Property name="rowHeight">22</Property>
+      <Property name="readOnly">true</Property>
+      <Property name="filterMode">serverSide</Property>
+      <DataColumn name="supportAddress">
+        <Property name="property">supportAddress</Property>
+      </DataColumn>
+      <DataColumn name="supportGrade">
+        <Property name="property">supportGrade</Property>
+      </DataColumn>
+      <DataColumn name="supportStartTime">
+        <Property name="property">supportStartTime</Property>
+      </DataColumn>
+      <DataColumn name="supportEndTime">
+        <Property name="property">supportEndTime</Property>
+      </DataColumn>
+      <DataColumn name="feedbackQuestion">
+        <Property name="property">feedbackQuestion</Property>
+      </DataColumn>
+      <DataColumn name="supportSuggest">
+        <Property name="property">supportSuggest</Property>
+      </DataColumn>
+      <DataColumn name="customerSatisfactionSurvey">
+        <Property name="property">customerSatisfactionSurvey</Property>
+      </DataColumn>
+      <DataColumn name="miji">
+        <Property name="property">miji</Property>
+      </DataColumn>
+    </DataGrid>
+    <Dialog id="diaSupportevaluation">
+      <ClientEvent name="onClose">var cur=view.id('dsSupportevaluation').getData('#');&#xD;
+				cur.cancel();&#xD;
+				view.id('diaSupportevaluation').hide();</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">500</Property>
+      <Property name="caption">技术文件记录</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaSupportevaluation').execute(function(){
+               view.id('diaSupportevaluation').hide();
+           });
+         </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsSupportevaluation').getData('#');
+				cur.cancel();
+				view.id('diaSupportevaluation').hide();
+				
+	         </ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afSupportevaluation">
+          <Property name="cols">*</Property>
+          <Property name="dataSet">dsSupportevaluation</Property>
+          <Property name="dataPath">#</Property>
+          <Property name="labelWidth">90</Property>
+          <Property name="dataType">Supportevaluation</Property>
+          <AutoFormElement>
+            <Property name="name">supportAddress</Property>
+            <Property name="property">supportAddress</Property>
+            <Property name="trigger">dataSetDropDown1</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">supportGrade</Property>
+            <Property name="property">supportGrade</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">supportStartTime</Property>
+            <Property name="property">supportStartTime</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">supportEndTime</Property>
+            <Property name="property">supportEndTime</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">feedbackQuestion</Property>
+            <Property name="property">feedbackQuestion</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">100</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">supportSuggest</Property>
+            <Property name="property">supportSuggest</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">100</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">customerSatisfactionSurvey</Property>
+            <Property name="property">customerSatisfactionSurvey</Property>
+            <Editor>
+              <Container>
+                <Link id="lefile" layoutConstraint="center">
+                  <Property name="dataSet">dsSupportevaluation</Property>
+                  <Property name="property">customerSatisfactionSurvey</Property>
+                </Link>
+                <Button layoutConstraint="right">
+                  <Property name="caption">删除</Property>
+                  <Property name="action">deleteFileAction</Property>
+                </Button>
+                <Button layoutConstraint="right ">
+                  <Property name="caption">上传</Property>
+                  <Property name="action">uaUpload</Property>
+                </Button>
+              </Container>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <DataSetDropDown id="dataSetDropDown1">
+      <Property name="autoOpen">true</Property>
+      <Property name="dataSet">dsDictionary</Property>
+      <Property name="property">name</Property>
+      <Property name="displayProperty">name</Property>
+      <Property name="editable">false</Property>
+    </DataSetDropDown>
+    <UploadAction id="uaUpload">
+      <ClientEvent name="onFilesAdded">var cur=view.id('dsSupportevaluation').getData('#');&#xD;
+var value = &quot;/Out_Supportevaluation/&quot; + cur.get(&quot;oid&quot;) + &quot;/&quot;;&#xD;
+self.set(&quot;multipartParams&quot;, {record: value});</ClientEvent>
+      <ClientEvent name="onFileUploaded">var returnValue = arg.file.name;&#xD;
+var cur=view.id('dsSupportevaluation').getData('#');&#xD;
+cur.set(&quot;efile&quot;,returnValue);&#xD;
+var link = view.id(&quot;lefile&quot;);&#xD;
+if(returnValue){&#xD;
+	var oid = cur.get(&quot;oid&quot;);&#xD;
+    var href = &quot;/escmp/upload/Out_Supportevaluation/&quot; + oid + &quot;/&quot; + returnValue;&#xD;
+    link.set({&#xD;
+		href: href,&#xD;
+		visible: true&#xD;
+	});&#xD;
+}&#xD;
+else{&#xD;
+    link.set(&quot;visible&quot;,false);&#xD;
+}</ClientEvent>
+      <ClientEvent name="onError">	var error = arg.error;&#xD;
+	dorado.MessageBox.show({&#xD;
+		title:error.message,&#xD;
+		message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
+		icon: &quot;WARNING&quot;,&#xD;
+		buttons: [&quot;ok&quot;]&#xD;
+	});</ClientEvent>
+      <Property name="url">>dorado/uploader/fileupload</Property>
+      <Property name="maxFileSize">100MB</Property>
+      <Filters/>
+    </UploadAction>
+    <AjaxAction id="deleteFileAction">
+      <ClientEvent name="beforeExecute">var cur=view.id('dsSupportevaluation').getData('#');&#xD;
+var value = &quot;/Out_Supportevaluation/&quot; + cur.get(&quot;oid&quot;) + &quot;/&quot;;&#xD;
+var file = cur.get(&quot;efile&quot;);&#xD;
+self.set(&quot;parameter&quot;,{&#xD;
+	record: value,&#xD;
+	filename: file&#xD;
+});&#xD;
+cur.set(&quot;efile&quot;,null);&#xD;
+var link = view.id(&quot;lefile&quot;);&#xD;
+link.set(&quot;visible&quot;,false);</ClientEvent>
+      <Property name="service">defaultUploadProcessor#deleteFile</Property>
+    </AjaxAction>
+  </View>
 </ViewConfig>

@@ -29,12 +29,14 @@ public class  Supportevaluation implements Serializable {
 
 	private String oid ;
 
-	private String supportgrade ;
-	private Date supportendtime ;
-	private String supportaddress ;
-	private String feedbackquestion ;
-	private Date supportstarttime ;
-	private String customersatisfactionsurvey ;
+	private String supportGrade ;
+	private Date supportEndTime ;
+	private String supportAddress ;
+	private String feedbackQuestion ;
+	private Date supportStartTime ;
+	private String supportSuggest ;
+	private String customerSatisfactionSurvey ;
+	private String miji ;
 
 
 
@@ -44,51 +46,70 @@ public class  Supportevaluation implements Serializable {
 		return oid;
 	}
 	public void setOid(String oid) {
-		this.oid=oid;
+		this.oid = oid;
 	}
 
 	@Column(name="SupportGrade")
-	public String getSupportgrade() {
-		return supportgrade;
+	public String getSupportGrade() {
+		return supportGrade;
 	}
-	public void setSupportgrade(String supportgrade) {
-		this.supportgrade=supportgrade;
+	public void setSupportGrade(String supportGrade) {
+		this.supportGrade = supportGrade;
 	}
+	
 	@Column(name="SupportEndTime")
-	public Date getSupportendtime() {
-		return supportendtime;
+	public Date getSupportEndTime() {
+		return supportEndTime;
 	}
-	public void setSupportendtime(Date supportendtime) {
-		this.supportendtime=supportendtime;
+	public void setSupportEndTime(Date supportEndTime) {
+		this.supportEndTime = supportEndTime;
 	}
+	
 	@Column(name="SupportAddress")
-	public String getSupportaddress() {
-		return supportaddress;
+	public String getSupportAddress() {
+		return supportAddress;
 	}
-	public void setSupportaddress(String supportaddress) {
-		this.supportaddress=supportaddress;
+	public void setSupportAddress(String supportAddress) {
+		this.supportAddress = supportAddress;
 	}
+	
 	@Column(name="FeedbackQuestion")
-	public String getFeedbackquestion() {
-		return feedbackquestion;
+	public String getFeedbackQuestion() {
+		return feedbackQuestion;
 	}
-	public void setFeedbackquestion(String feedbackquestion) {
-		this.feedbackquestion=feedbackquestion;
+	public void setFeedbackQuestion(String feedbackQuestion) {
+		this.feedbackQuestion = feedbackQuestion;
 	}
+	
 	@Column(name="SupportStartTime")
-	public Date getSupportstarttime() {
-		return supportstarttime;
+	public Date getSupportStartTime() {
+		return supportStartTime;
 	}
-	public void setSupportstarttime(Date supportstarttime) {
-		this.supportstarttime=supportstarttime;
+	public void setSupportStartTime(Date supportStartTime) {
+		this.supportStartTime = supportStartTime;
 	}
+	
+	@Column(name="SupportSuggest")
+	public String getSupportSuggest() {
+		return supportSuggest;
+	}
+	public void setSupportSuggest(String supportSuggest) {
+		this.supportSuggest = supportSuggest;
+	}
+	
 	@Column(name="CustomerSatisfactionSurvey")
-	public String getCustomersatisfactionsurvey() {
-		return customersatisfactionsurvey;
+	public String getCustomerSatisfactionSurvey() {
+		return customerSatisfactionSurvey;
 	}
-	public void setCustomersatisfactionsurvey(String customersatisfactionsurvey) {
-		this.customersatisfactionsurvey=customersatisfactionsurvey;
+	public void setCustomerSatisfactionSurvey(String customerSatisfactionSurvey) {
+		this.customerSatisfactionSurvey = customerSatisfactionSurvey;
 	}
-
+	@Column(name="miji")
+	public String getMiji() {
+		return miji;
+	}
+	public void setMiji(String miji) {
+		this.miji = miji;
+	}
 
 }

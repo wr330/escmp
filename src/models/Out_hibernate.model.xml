@@ -166,33 +166,65 @@ arg.parameter = parameter;</ClientEvent>
   </DataType>
   <DataType name="Supportevaluation">
     <Property name="matchType">com.buaa.out.domain.Supportevaluation</Property>
-    <PropertyDef name="supportgrade">
-      <Property name="dataType">String</Property>
-      <Property name="label">supportgrade</Property>
-    </PropertyDef>
-    <PropertyDef name="supportendtime">
-      <Property name="dataType">DateTime</Property>
-      <Property name="label">supportendtime</Property>
-    </PropertyDef>
-    <PropertyDef name="supportaddress">
-      <Property name="dataType">String</Property>
-      <Property name="label">supportaddress</Property>
-    </PropertyDef>
-    <PropertyDef name="feedbackquestion">
-      <Property name="dataType">String</Property>
-      <Property name="label">feedbackquestion</Property>
-    </PropertyDef>
-    <PropertyDef name="supportstarttime">
-      <Property name="dataType">DateTime</Property>
-      <Property name="label">supportstarttime</Property>
-    </PropertyDef>
-    <PropertyDef name="customersatisfactionsurvey">
-      <Property name="dataType">String</Property>
-      <Property name="label">customersatisfactionsurvey</Property>
-    </PropertyDef>
     <PropertyDef name="oid">
       <Property name="dataType">String</Property>
       <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="supportAddress">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">保障地点</Property>
+    </PropertyDef>
+    <PropertyDef name="supportGrade">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">保障分数</Property>
+    </PropertyDef>
+    <PropertyDef name="supportStartTime">
+      <Property name="dataType">Date</Property>
+      <Property name="label">保障开始时间</Property>
+    </PropertyDef>
+    <PropertyDef name="supportEndTime">
+      <Property name="dataType">Date</Property>
+      <Property name="label">保障结束时间</Property>
+    </PropertyDef>
+    <PropertyDef name="feedbackQuestion">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">反馈的问题</Property>
+    </PropertyDef>
+    <PropertyDef name="supportSuggest">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">建议</Property>
+    </PropertyDef>
+    <PropertyDef name="customerSatisfactionSurvey">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">顾客满意度调查表</Property>
+    </PropertyDef>
+    <PropertyDef name="miji">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">密级</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">机密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">秘密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">非密</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+      <Property name="defaultValue">0</Property>
     </PropertyDef>
   </DataType>
   <DataType name="Technicaldocument">

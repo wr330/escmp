@@ -20,6 +20,11 @@
         <Property name="path">com.buaa.out.view.Supportprogram1.d</Property>
       </IFrameTab>
       <IFrameTab>
+        <Property name="icon">url(>skin>common/icons.gif) -280px -20px</Property>
+        <Property name="path">com.buaa.out.view.Supportevaluation.d</Property>
+        <Property name="caption">保障效果评估</Property>
+      </IFrameTab>
+      <IFrameTab>
         <Property name="caption">技术文件记录</Property>
         <Property name="icon">url(>skin>common/icons.gif) -0px -120px</Property>
         <Property name="path">com.buaa.out.view.Technicaldocument.d</Property>
