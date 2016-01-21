@@ -1,4 +1,4 @@
-package com.buaa.fly.view;
+package com.common;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,12 +8,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Component;
+
 import com.bstek.bdf2.core.context.ContextHolder;
+import com.bstek.bdf2.core.orm.jdbc.JdbcDao;
+import com.buaa.fly.domain.Flightrestrict;
+import com.buaa.fly.domain.Shifeirequestacc;
+import com.buaa.fly.flightrestrict.dao.FlightrestrictDao;
+import com.buaa.fly.shifeirequestacc.dao.ShifeirequestaccDao;
 
 public class FileHelper {
 	
     public static int bytes;
     public static byte[] datablock;
+    	
     //文件转换为二进制数
 	public static void fileToData(String path)  {
 		String filePath = ContextHolder.getRequest().getRealPath("/")

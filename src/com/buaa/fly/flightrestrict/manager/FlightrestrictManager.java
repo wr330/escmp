@@ -17,7 +17,7 @@ import com.bstek.dorado.data.provider.Page;
 import com.buaa.fly.domain.Flightrestrict;
 import com.buaa.fly.fighterxzh.manager.FighterxzhManager;
 import com.buaa.fly.flightrestrict.dao.FlightrestrictDao;
-import com.buaa.fly.view.FileHelper;
+import com.common.FileHelper;
 
 @Component("flightrestrictManager")
 public class FlightrestrictManager {
@@ -91,16 +91,4 @@ public class FlightrestrictManager {
 			    FileHelper.datablock = null;
 			}
 	 }
-	 //下载文件
-	 @Expose
-	 public String downloadFile(int id,String fname) throws IOException{
-		 String path = "/Fly_Flightrestrict/" + id + "/";
-		 if(!FileHelper.existFile(path,fname)){
-			 Flightrestrict flightrestrict = flightrestrictDao.queryById(id);
-			 byte[] datablock=flightrestrict.getDatablock();
-			 FileHelper.createFile(path,fname,datablock);
-		 }
-	     return fname;
-    }
-	
 }

@@ -17,11 +17,11 @@ import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 
 import com.buaa.fly.domain.Dailyacc;
-import com.buaa.fly.view.FileHelper;
 import com.buaa.out.domain.Handover;
 import com.buaa.out.handover.dao.HandoverDao;
 import com.buaa.sys.domain.UserOperationLog;
 import com.buaa.sys.userOperationLog.dao.UserOperationLogDao;
+import com.common.FileHelper;
 
 @Component("handoverManager")
 public class HandoverManager {

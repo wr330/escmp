@@ -57,6 +57,10 @@ public class ShifeirequestaccDao extends HibernateBaseDao {
         String hql = coreHql.toString();
         hql=userService.checkUser(hql);
 		this.pagingQuery(page, hql, countHql, args);
+		Session session = this.getSessionFactory().openSession();
+		List a = session.createSQLQuery("select datablock from Fly_Shifeirequestacc").list();
+		byte[] datablock =(byte[]) a.get(0);
+		int aa  = datablock.length;
 	}
 	
 	/**
@@ -67,7 +71,6 @@ public class ShifeirequestaccDao extends HibernateBaseDao {
 	public void saveData(Shifeirequestacc detail) throws Exception {
 		Session session = this.getSessionFactory().openSession();
 		try {
-			detail.setId(UUID.randomUUID().toString());
 			session.save(detail);
 		} finally {
 			session.flush();
@@ -105,8 +108,8 @@ public class ShifeirequestaccDao extends HibernateBaseDao {
 		}
 	}
 	//通过ID查找记录
-    public  Shifeirequestacc queryById(int id){
-    	String hql="from " + Shifeirequestacc.class.getName()+" a where a.id="+id;
+    public  Shifeirequestacc queryById(String id){
+    	String hql="from " + Shifeirequestacc.class.getName()+" a where a.id='"+id+"'";
 		return (Shifeirequestacc) this.query(hql).get(0);
     }           
 }

@@ -1,5 +1,7 @@
 package com.common;
 
+import org.springframework.stereotype.Repository;
+
 import com.bstek.bdf2.core.orm.hibernate.HibernateDao;
 
 /**
@@ -8,6 +10,7 @@ import com.bstek.bdf2.core.orm.hibernate.HibernateDao;
  * 
  *
  */
+@Repository("hibernateBaseDao")
 public class HibernateBaseDao extends HibernateDao {
 
 }

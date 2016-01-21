@@ -97,7 +97,7 @@ public class  Sfstatistic implements Serializable {
 		this.fdate=fdate;
 	}
 	@Id
-	@Column(name="id")
+	@Column(name="Oid")
 	public String getId() {
 		return id;
 	}

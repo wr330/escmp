@@ -16,7 +16,7 @@ import com.bstek.dorado.data.provider.Page;
 
 import com.buaa.fly.domain.Dailyacc;
 import com.buaa.fly.dailyacc.dao.DailyaccDao;
-import com.buaa.fly.view.FileHelper;
+import com.common.FileHelper;
 
 @Component("dailyaccManager")
 public class DailyaccManager {

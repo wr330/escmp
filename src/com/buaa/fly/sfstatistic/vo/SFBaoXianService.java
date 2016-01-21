@@ -19,7 +19,7 @@ public class SFBaoXianService  extends JdbcBaseDao {
 	@DataProvider
 	public Collection<SFBaoXian> loadSFBaoXian(String ftype){
 		ArrayList<SFBaoXian> items = new ArrayList<SFBaoXian>();
-		String sql = "select * from SFBaoXian where ftype='"+ ftype + "'";
+		String sql = "select * from Fly_SFBaoXian where ftype='"+ ftype + "'";
 		List<Map<String, Object>> list = this.getJdbcTemplate().queryForList(sql);
 		if(list.size()>0){
 			   String[][] array = {{"mach","height","maxtable","mintable","angle","overload","Noverload"},
@@ -34,7 +34,7 @@ public class SFBaoXianService  extends JdbcBaseDao {
 	}
 	@DataProvider
 	public Collection<SFscheme> loadSFscheme(String ftype){
-		String sql = "select * from SFscheme where ftype='"+ ftype + "'  order by Month";
+		String sql = "select * from Fly_SFscheme where ftype='"+ ftype + "'  order by Month";
 		return this.getJdbcTemplate().query(sql,new SFschemeMapper());
 	}
 

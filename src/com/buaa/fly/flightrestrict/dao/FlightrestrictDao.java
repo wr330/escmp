@@ -127,7 +127,7 @@ public class FlightrestrictDao extends HibernateBaseDao {
 		}
 	}
 	//通过ID查找记录
-    public  Flightrestrict queryById(int id){
+    public  Flightrestrict queryById(String id){
     	String hql="from " + Flightrestrict.class.getName()+" a where a.id="+id;
 		return (Flightrestrict) this.query(hql).get(0);
     }

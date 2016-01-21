@@ -16,7 +16,7 @@ import com.bstek.dorado.data.provider.Page;
 import com.buaa.fly.domain.Sfstatistic;
 import com.buaa.fly.domain.Tasklist;
 import com.buaa.fly.sfstatistic.dao.SfstatisticDao;
-import com.buaa.fly.view.FileHelper;
+import com.common.FileHelper;
 
 @Component("sfstatisticManager")
 public class SfstatisticManager {

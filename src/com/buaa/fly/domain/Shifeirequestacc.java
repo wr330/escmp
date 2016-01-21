@@ -55,8 +55,7 @@ public class  Shifeirequestacc implements Serializable {
 		this.ftype=ftype;
 	}
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY) 
-	@Column(name="id")
+	@Column(name="Oid")
 	public String getId() {
 		return id;
 	}

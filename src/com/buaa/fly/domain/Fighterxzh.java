@@ -31,7 +31,7 @@ public class  Fighterxzh implements Serializable {
 	private String referenceName ;
 
 	@Id
-	@Column(name="id", unique = true, nullable = false) 
+	@Column(name="Oid", unique = true, nullable = false) 
 	public String getId() {
 		return id;
 	}

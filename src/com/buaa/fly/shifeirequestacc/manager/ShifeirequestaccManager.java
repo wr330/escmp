@@ -16,7 +16,7 @@ import com.bstek.dorado.data.provider.Page;
 
 import com.buaa.fly.domain.Shifeirequestacc;
 import com.buaa.fly.shifeirequestacc.dao.ShifeirequestaccDao;
-import com.buaa.fly.view.FileHelper;
+import com.common.FileHelper;
 
 @Component("shifeirequestaccManager")
 public class ShifeirequestaccManager {
@@ -59,10 +59,8 @@ public class ShifeirequestaccManager {
 	    	for(Shifeirequestacc item : details) {
 				EntityState state = EntityUtils.getState(item);
 				if (state.equals(EntityState.NEW)) {
-					String tempId = item.getId();
 					fileManager(item);
 					shifeirequestaccDao.saveData(item);
-					FileHelper.changeFolderById("/Fly_Shifeirequestacc/" +tempId,"/Fly_Shifeirequestacc/" +item.getId());//替换以临时ID命名的文件夹
 				} else if (state.equals(EntityState.MODIFIED)) {
 					fileManager(item);
 					shifeirequestaccDao.updateData(item);
@@ -76,26 +74,18 @@ public class ShifeirequestaccManager {
 	 }
 	 //处理相关文件
 	 private void fileManager(Shifeirequestacc item){
-		String path = "/Fly_Shifeirequestacc/" + item.getId() + "/"+ item.getFilename();
-		FileHelper.fileToData(path);
-		if(FileHelper.bytes != 0){
-		    item.setBytes(FileHelper.bytes);
-		    item.setDatablock(FileHelper.datablock);//文件存储到数据库中
-		    FileHelper.bytes = 0;
-		    FileHelper.datablock = null;
+		if (item.getFilename().isEmpty()) {
+			item.setDatablock(null);
+			item.setBytes(null);
+		} else {
+			String path = "/Fly_Shifeirequestacc/" + item.getId() + "/"	+ item.getFilename();
+			FileHelper.fileToData(path);
+			if (FileHelper.bytes != 0) {
+				item.setBytes(FileHelper.bytes);
+				item.setDatablock(FileHelper.datablock);// 文件存储到数据库中
+				FileHelper.bytes = 0;
+				FileHelper.datablock = null;
+			}
 		}
 	 }
-	 //下载文件
-	 @Expose
-	 public String downloadFile(int id,String fname) throws IOException{
-		 String path = "/Fly_Shifeirequestacc/" + id + "/";
-		 if(!FileHelper.existFile(path,fname)){
-			 Shifeirequestacc shifeirequestacc = shifeirequestaccDao.queryById(id);
-			 byte[] datablock=shifeirequestacc.getDatablock();
-			 FileHelper.createFile(path,fname,datablock);
-		 }
-		 return fname;
-	 }
-
-
 }

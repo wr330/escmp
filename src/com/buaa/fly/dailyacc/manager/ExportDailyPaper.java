@@ -23,7 +23,7 @@ import com.buaa.fly.domain.Tasklist;
 import com.buaa.fly.fighterinfo.dao.FighterinfoDao;
 import com.buaa.fly.sfstatistic.vo.Total;
 import com.buaa.fly.sfstatistic.vo.TotalService;
-import com.buaa.fly.view.FileHelper;
+import com.common.FileHelper;
 import com.common.WriteDocument;
 
 @Component("exportDailyPaper")

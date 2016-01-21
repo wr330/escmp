@@ -10,10 +10,10 @@
 
 	<tx:annotation-driven proxy-target-class="true" transaction-manager="bdf2.jdbcTransactionManager" />
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="url" value="jdbc:sqlserver://192.168.0.18:1433;databaseName=escmp" />
+		<property name="url" value="jdbc:sqlserver://127.0.0.1:1433;databaseName=escmp" />
 		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
 		<property name="username" value="sa" />
-		<property name="password" value="sql2008" />
+		<property name="password" value="sql2005" />
 		<property name="minIdle" value="10" />
 		<property name="maxActive" value="20" />
 		<property name="maxWait" value="100000" />
@@ -58,5 +58,5 @@
 	<bean id= "authorityToSomeone" class="configs.AuthorityToSomeone"/>
 
 <!-- 	<bdf:anonymous-url urlPattern="/index.jsp"/> -->
-	<context:component-scan base-package="com.bstek,com.buaa"></context:component-scan>
+	<context:component-scan base-package="com.bstek,com.buaa,com.common"></context:component-scan>
 </beans>
