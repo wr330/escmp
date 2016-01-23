@@ -136,6 +136,8 @@ view.id('dsSupportprogram').getData('#.handover').insert({supportprogram:{oid:cu
 var dialog=view.id('dgHandover');&#xD;
 dialog.set(&quot;caption&quot;,&quot;新增交接记录&quot;);&#xD;
 dialog.show();&#xD;
+var link = view.id(&quot;lefile&quot;);&#xD;
+link.set(&quot;visible&quot;,false);&#xD;
 &#xD;
 </ClientEvent>
                   <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
@@ -147,9 +149,20 @@ if (cur) {&#xD;
 	dialog=view.id('dgHandover');&#xD;
 	dialog.set(&quot;caption&quot;,&quot;修改交接记录&quot;);&#xD;
 	dialog.show();&#xD;
+	var file = cur.get(&quot;efile&quot;);&#xD;
+    var link = view.id(&quot;lefile&quot;);&#xD;
+    if(file){&#xD;
+        var oid = cur.get(&quot;oid&quot;);&#xD;
+		var href = &quot;ServletDownload?filename=Out_Handover/&quot; + oid + &quot;/&quot; + file;&#xD;
+        link.set({&#xD;
+	       href: href,&#xD;
+	       visible: true&#xD;
+        });&#xD;
+    }&#xD;
+    else&#xD;
+      link.set(&quot;visible&quot;,false);&#xD;
 }&#xD;
-&#xD;
-	</ClientEvent>
+</ClientEvent>
                   <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
                   <Property name="caption">修改</Property>
                 </ToolBarButton>

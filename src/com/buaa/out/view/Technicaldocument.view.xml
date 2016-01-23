@@ -72,24 +72,24 @@
         <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
       </ToolBarButton>
       <ToolBarButton>
-        <ClientEvent name="onClick">
-	var cur=view.id('dsTechnicaldocument').getData('#');
-	if (cur) {
-		view.id('diaTechnicaldocument').show();
-	}
+        <ClientEvent name="onClick">var cur=view.id('dsTechnicaldocument').getData('#');
+if (cur) {
+	view.id('diaTechnicaldocument').show();
 	var file = cur.get(&quot;efile&quot;);
-var link = view.id(&quot;lefile&quot;);
-if(file){
-var oid = cur.get(&quot;oid&quot;);
-var href = &quot;/escmp/upload/Out_Technicaldocument/&quot; + oid + &quot;/&quot; + file;
-link.set({
-	href: href,
-	visible: true
-});
+	var link = view.id(&quot;lefile&quot;);
+	if(file){
+		var oid = cur.get(&quot;oid&quot;);
+		var href = &quot;ServletDownload?filename=Out_Technicaldocument/&quot; + oid + &quot;/&quot; + file;
+		link.set({
+			href: href,
+			visible: true
+		});
+	}
+	else{
+		link.set(&quot;visible&quot;,false);
+	}
 }
-else{
-link.set(&quot;visible&quot;,false);
-}
+
 </ClientEvent>
         <Property name="caption">修改</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>

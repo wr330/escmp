@@ -65,7 +65,6 @@ public class SupportevaluationDao extends HibernateBaseDao {
 	public void saveData(Supportevaluation detail) throws Exception {
 		Session session = this.getSessionFactory().openSession();
 		try {
-			detail.setOid(UUID.randomUUID().toString());
 			session.save(detail);
 		} finally {
 			session.flush();

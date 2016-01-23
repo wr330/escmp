@@ -3,6 +3,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -58,15 +59,21 @@ public class UserOperationLogManager {
 				EntityState state = EntityUtils.getState(item);
 				if (state.equals(EntityState.NEW)) {
 					userOperationLogDao.saveData(item);
-									} else if (state.equals(EntityState.MODIFIED)) {
+					} else if (state.equals(EntityState.MODIFIED)) {
 					userOperationLogDao.updateData(item);
-									} else if (state.equals(EntityState.DELETED)) {
+					} else if (state.equals(EntityState.DELETED)) {
 					userOperationLogDao.deleteData(item);
-									} else if (state.equals(EntityState.NONE)) {
-										
+					} else if (state.equals(EntityState.NONE)) {			
 				}
-
 			}
 		}
+	 }
+	 public void recordUserOperationLog(int operationType,Date operationTime,String operationPerson,String operationContent) throws Exception{
+		 	UserOperationLog userOperationLog = new UserOperationLog();
+		 	userOperationLog.setLogOperationType(operationType);
+			userOperationLog.setOperationTime(operationTime);
+			userOperationLog.setOperationPerson(operationPerson);
+			userOperationLog.setOperationContent(operationContent);
+			userOperationLogDao.saveData(userOperationLog);
 	 }
 }

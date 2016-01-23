@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
-import com.bstek.bdf2.core.business.IUser;
 import com.bstek.bdf2.core.context.ContextHolder;
 import com.bstek.dorado.data.entity.EntityState;
 import com.bstek.dorado.data.entity.EntityUtils;
@@ -18,8 +17,7 @@ import com.buaa.out.domain.Supportprogram;
 import com.buaa.out.handover.manager.HandoverManager;
 import com.buaa.out.supportitem.manager.SupportitemManager;
 import com.buaa.out.supportprogram.dao.SupportprogramDao;
-import com.buaa.sys.userOperationLog.dao.UserOperationLogDao;
-import com.buaa.sys.domain.UserOperationLog;
+import com.buaa.sys.userOperationLog.manager.UserOperationLogManager;
 
 
 @Component("supportprogramManager")
@@ -32,7 +30,7 @@ public class SupportprogramManager {
 	@Resource	
 	private HandoverManager handoverManager;
 	@Resource	
-	private UserOperationLogDao userOperationLogDao;
+	private UserOperationLogManager userOperationLogManager;
 	
 		
 	/**                  
@@ -78,38 +76,20 @@ public class SupportprogramManager {
 		if (null != details && details.size() > 0) {
 	    	for(Supportprogram item : details) {
 				EntityState state = EntityUtils.getState(item);
-				UserOperationLog userOperationLog = new UserOperationLog();
 				String un = ContextHolder.getLoginUserName();
+				Date myDate = new Date();
 				if (state.equals(EntityState.NEW)) {
 					supportprogramDao.saveData(item);
-					
 					//对用户新增操作进行记录，在用户操作日志表中新增一条记录。
-					Date myDate = new Date();
-					userOperationLog.setLogOperationType(0);
-					userOperationLog.setOperationTime(myDate);
-					userOperationLog.setOperationPerson(un);
-					userOperationLog.setOperationContent("对保障计划表新增一条记录");
-					userOperationLogDao.saveData(userOperationLog);
+					userOperationLogManager.recordUserOperationLog(0, myDate, un, "对保障计划表新增一条记录");
 				} else if (state.equals(EntityState.MODIFIED)) {
 					supportprogramDao.updateData(item);
-					
 				 	//对用户修改操作进行记录，在用户操作日志表中新增一条记录。
-					Date myDate = new Date();
-					userOperationLog.setLogOperationType(1);
-					userOperationLog.setOperationTime(myDate);
-					userOperationLog.setOperationPerson(un);
-					userOperationLog.setOperationContent("对保障计划表修改选定记录");
-					userOperationLogDao.saveData(userOperationLog);
+					userOperationLogManager.recordUserOperationLog(1, myDate, un, "对保障计划表修改选定记录");
 				} else if (state.equals(EntityState.DELETED)) {
 					supportprogramDao.deleteData(item);
-					
 					//对用户删除操作进行记录，在用户操作日志表中新增一条记录。
-					Date myDate = new Date();
-					userOperationLog.setLogOperationType(2);
-					userOperationLog.setOperationTime(myDate);
-					userOperationLog.setOperationPerson(un);
-					userOperationLog.setOperationContent("对保障计划表删除选定记录");
-					userOperationLogDao.saveData(userOperationLog);
+					userOperationLogManager.recordUserOperationLog(2, myDate, un, "对保障计划表删除选定记录");
 				} else if (state.equals(EntityState.NONE)) {
 				}
 				supportitemManager.saveSupportitem(item.getSupportitem());

@@ -47,6 +47,8 @@ cur.set(&quot;oid&quot;,guid);&#xD;
 var dialog=view.id('diaSupportevaluation');&#xD;
 dialog.set(&quot;caption&quot;,&quot;新增保障效果评估&quot;);&#xD;
 dialog.show();&#xD;
+var link = view.id(&quot;lefile&quot;);&#xD;
+link.set(&quot;visible&quot;,false);&#xD;
 </ClientEvent>
         <Property name="caption">新增</Property>
         <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
@@ -57,7 +59,19 @@ dialog.show();&#xD;
 		var dialog=view.id('diaSupportevaluation');&#xD;
 		dialog.set(&quot;caption&quot;,&quot;修改保障效果评估&quot;);&#xD;
 		dialog.show();&#xD;
-		}</ClientEvent>
+		var file = cur.get(&quot;efile&quot;);&#xD;
+  		var link = view.id(&quot;lefile&quot;);&#xD;
+   		if(file){&#xD;
+        var oid = cur.get(&quot;oid&quot;);&#xD;
+		var href = &quot;ServletDownload?filename=Out_Supportevaluation/&quot; + oid + &quot;/&quot; + file;&#xD;
+        link.set({&#xD;
+	       href: href,&#xD;
+	       visible: true&#xD;
+        });&#xD;
+    }&#xD;
+    else&#xD;
+      link.set(&quot;visible&quot;,false);&#xD;
+	}</ClientEvent>
         <Property name="caption">修改</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
       </ToolBarButton>
@@ -228,7 +242,6 @@ cur.set(&quot;efile&quot;,returnValue);&#xD;
 var link = view.id(&quot;lefile&quot;);&#xD;
 if(returnValue){&#xD;
 	var oid = cur.get(&quot;oid&quot;);&#xD;
-	alert(oid);&#xD;
     var href = &quot;ServletDownload?filename=Out_Supportevaluation/&quot; + oid + &quot;/&quot; + returnValue;&#xD;
     link.set({&#xD;
 		href: href,&#xD;

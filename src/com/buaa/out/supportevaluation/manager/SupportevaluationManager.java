@@ -14,11 +14,9 @@ import com.bstek.dorado.data.entity.EntityState;
 import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
-import com.buaa.fly.domain.Shifeirequestacc;
 import com.buaa.out.domain.Supportevaluation;
 import com.buaa.out.supportevaluation.dao.SupportevaluationDao;
-import com.buaa.sys.domain.UserOperationLog;
-import com.buaa.sys.userOperationLog.dao.UserOperationLogDao;
+import com.buaa.sys.userOperationLog.manager.UserOperationLogManager;
 import com.common.FileHelper;
 
 
@@ -29,7 +27,7 @@ public class SupportevaluationManager {
 	@Resource
 	private SupportevaluationDao supportevaluationDao;
 	@Resource	
-	private UserOperationLogDao userOperationLogDao;
+	private UserOperationLogManager userOperationLogManager;
 		
 	/**                  
 	* 分页查询信息，带有criteria
@@ -65,41 +63,23 @@ public class SupportevaluationManager {
 		if (null != details && details.size() > 0) {
 	    	for(Supportevaluation item : details) {
 				EntityState state = EntityUtils.getState(item);
-				UserOperationLog userOperationLog = new UserOperationLog();
 				String un = ContextHolder.getLoginUserName();
+				Date myDate = new Date();
 				if (state.equals(EntityState.NEW)) {
 					fileManager(item);
 					supportevaluationDao.saveData(item);
-					
 					//对用户新增操作进行记录，在用户操作日志表中新增一条记录。
-					Date myDate = new Date();
-					userOperationLog.setLogOperationType(0);
-					userOperationLog.setOperationTime(myDate);
-					userOperationLog.setOperationPerson(un);
-					userOperationLog.setOperationContent("对保障评估表新增一条记录");
-					userOperationLogDao.saveData(userOperationLog);
+					userOperationLogManager.recordUserOperationLog(0, myDate, un, "对保障评估表新增一条记录");
 				} else if (state.equals(EntityState.MODIFIED)) {
 					fileManager(item);
 					supportevaluationDao.updateData(item);
-					
 					//对用户修改操作进行记录，在用户操作日志表中新增一条记录。
-					Date myDate = new Date();
-					userOperationLog.setLogOperationType(1);
-					userOperationLog.setOperationTime(myDate);
-					userOperationLog.setOperationPerson(un);
-					userOperationLog.setOperationContent("对保障计划表修改选定记录");
-					userOperationLogDao.saveData(userOperationLog);
+					userOperationLogManager.recordUserOperationLog(1, myDate, un, "对保障评估表修改选定记录");
 				} else if (state.equals(EntityState.DELETED)) {
 					FileHelper.deleteFile("/Out_Supportevaluation/" +item.getOid());//删除相关文件
 					supportevaluationDao.deleteData(item);
-					
 					//对用户删除操作进行记录，在用户操作日志表中新增一条记录。
-					Date myDate = new Date();
-					userOperationLog.setLogOperationType(2);
-					userOperationLog.setOperationTime(myDate);
-					userOperationLog.setOperationPerson(un);
-					userOperationLog.setOperationContent("对保障评估表删除选定记录");
-					userOperationLogDao.saveData(userOperationLog);
+					userOperationLogManager.recordUserOperationLog(2, myDate, un, "对保障评估表删除选定记录");
 				} else if (state.equals(EntityState.NONE)) {
 														}
 			}

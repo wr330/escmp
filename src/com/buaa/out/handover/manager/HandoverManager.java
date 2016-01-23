@@ -1,7 +1,6 @@
 
 package com.buaa.out.handover.manager;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
@@ -16,12 +15,9 @@ import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 
-import com.buaa.fly.domain.Dailyacc;
-import com.buaa.fly.domain.Shifeirequestacc;
 import com.buaa.out.domain.Handover;
 import com.buaa.out.handover.dao.HandoverDao;
-import com.buaa.sys.domain.UserOperationLog;
-import com.buaa.sys.userOperationLog.dao.UserOperationLogDao;
+import com.buaa.sys.userOperationLog.manager.UserOperationLogManager;
 import com.common.FileHelper;
 
 @Component("handoverManager")
@@ -30,7 +26,7 @@ public class HandoverManager {
 	@Resource
 	private HandoverDao handoverDao;
 	@Resource	
-	private UserOperationLogDao userOperationLogDao;
+	private UserOperationLogManager userOperationLogManager;
 		
 	/**                  
 	* 分页查询信息，带有criteria
@@ -66,43 +62,25 @@ public class HandoverManager {
 		if (null != details && details.size() > 0) {
 	    	for(Handover item : details) {
 				EntityState state = EntityUtils.getState(item);
-				UserOperationLog userOperationLog = new UserOperationLog();
 				String un = ContextHolder.getLoginUserName();
+				Date myDate = new Date();
 				if (state.equals(EntityState.NEW)) {
 					String tempId = item.getOid();
 					fileManager(item);
 					handoverDao.saveData(item);
-					
-					//对用户新增操作进行记录，在用户操作日志表中新增一条记录。
-					Date myDate = new Date();
-					userOperationLog.setLogOperationType(0);
-					userOperationLog.setOperationTime(myDate);
-					userOperationLog.setOperationPerson(un);
-					userOperationLog.setOperationContent("对交接记录表新增一条记录");
-					userOperationLogDao.saveData(userOperationLog);
 					FileHelper.changeFolderById("/Out_Handover/" +tempId,"/Out_Handover/" +item.getOid());//替换以临时ID命名的文件夹
+					//对用户新增操作进行记录，在用户操作日志表中新增一条记录。
+					userOperationLogManager.recordUserOperationLog(0, myDate, un, "对现场交接记录表新增一条记录");
 				} else if (state.equals(EntityState.MODIFIED)) {
 					fileManager(item);
 					handoverDao.updateData(item);
-					
 					//对用户修改操作进行记录，在用户操作日志表中新增一条记录。
-					Date myDate = new Date();
-					userOperationLog.setLogOperationType(1);
-					userOperationLog.setOperationTime(myDate);
-					userOperationLog.setOperationPerson(un);
-					userOperationLog.setOperationContent("对交接记录表修改选定记录");
-					userOperationLogDao.saveData(userOperationLog);
+					userOperationLogManager.recordUserOperationLog(1, myDate, un, "对现场交接记录表修改选定记录");
 				} else if (state.equals(EntityState.DELETED)) {
 					handoverDao.deleteData(item);
 					FileHelper.deleteFile("/Out_Handover/" +item.getOid());//删除相关文件
-					
 					//对用户删除操作进行记录，在用户操作日志表中新增一条记录。
-					Date myDate = new Date();
-					userOperationLog.setLogOperationType(2);
-					userOperationLog.setOperationTime(myDate);
-					userOperationLog.setOperationPerson(un);
-					userOperationLog.setOperationContent("对交接记录表删除选定记录");
-					userOperationLogDao.saveData(userOperationLog);
+					userOperationLogManager.recordUserOperationLog(2, myDate, un, "对现场交接记录表删除选定记录");
 				} else if (state.equals(EntityState.NONE)) {
 				}
 			}

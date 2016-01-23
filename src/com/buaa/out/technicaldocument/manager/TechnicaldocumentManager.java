@@ -17,8 +17,7 @@ import com.bstek.dorado.data.provider.Page;
 
 import com.buaa.out.domain.Technicaldocument;
 import com.buaa.out.technicaldocument.dao.TechnicaldocumentDao;
-import com.buaa.sys.domain.UserOperationLog;
-import com.buaa.sys.userOperationLog.dao.UserOperationLogDao;
+import com.buaa.sys.userOperationLog.manager.UserOperationLogManager;
 import com.common.FileHelper;
 
 @Component("technicaldocumentManager")
@@ -27,7 +26,7 @@ public class TechnicaldocumentManager {
 	@Resource
 	private TechnicaldocumentDao technicaldocumentDao;
 	@Resource	
-	private UserOperationLogDao userOperationLogDao;
+	private UserOperationLogManager userOperationLogManager;
 		
 	/**                  
 	* 分页查询信息，带有criteria
@@ -63,41 +62,23 @@ public class TechnicaldocumentManager {
 		if (null != details && details.size() > 0) {
 	    	for(Technicaldocument item : details) {
 				EntityState state = EntityUtils.getState(item);
-				UserOperationLog userOperationLog = new UserOperationLog();
 				String un = ContextHolder.getLoginUserName();
+				Date myDate = new Date();
 				if (state.equals(EntityState.NEW)) {
 					fileManager(item);
 					technicaldocumentDao.saveData(item);
-					
 					//对用户新增操作进行记录，在用户操作日志表中新增一条记录。
-					Date myDate = new Date();
-					userOperationLog.setLogOperationType(0);
-					userOperationLog.setOperationTime(myDate);
-					userOperationLog.setOperationPerson(un);
-					userOperationLog.setOperationContent("对技术文件记录表新增一条记录");
-					userOperationLogDao.saveData(userOperationLog);
+					userOperationLogManager.recordUserOperationLog(0, myDate, un, "对技术文件记录表新增一条记录");
 				} else if (state.equals(EntityState.MODIFIED)) {
 					fileManager(item);
 					technicaldocumentDao.updateData(item);
-					
 					//对用户修改操作进行记录，在用户操作日志表中新增一条记录。
-					Date myDate = new Date();
-					userOperationLog.setLogOperationType(1);
-					userOperationLog.setOperationTime(myDate);
-					userOperationLog.setOperationPerson(un);
-					userOperationLog.setOperationContent("对技术文件记录修改选定记录");
-					userOperationLogDao.saveData(userOperationLog);
+					userOperationLogManager.recordUserOperationLog(1, myDate, un, "对技术文件记录修改选定记录");
 				} else if (state.equals(EntityState.DELETED)) {
 					technicaldocumentDao.deleteData(item);
 					FileHelper.deleteFile("/Out_Technicaldocument/" +item.getOid());//删除相关文件
-					
 					//对用户删除操作进行记录，在用户操作日志表中新增一条记录。
-					Date myDate = new Date();
-					userOperationLog.setLogOperationType(2);
-					userOperationLog.setOperationTime(myDate);
-					userOperationLog.setOperationPerson(un);
-					userOperationLog.setOperationContent("对技术文件记录删除选定记录");
-					userOperationLogDao.saveData(userOperationLog);
+					userOperationLogManager.recordUserOperationLog(2, myDate, un, "对技术文件记录删除选定记录");
 				} else if (state.equals(EntityState.NONE)) {
 														}
 			}
