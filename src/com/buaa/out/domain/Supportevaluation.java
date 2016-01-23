@@ -35,8 +35,10 @@ public class  Supportevaluation implements Serializable {
 	private String feedbackQuestion ;
 	private Date supportStartTime ;
 	private String supportSuggest ;
-	private String customerSatisfactionSurvey ;
+	private String efile ;
 	private String miji ;
+	private byte[] datablock ;
+	private Integer bytes ;
 
 
 
@@ -98,11 +100,11 @@ public class  Supportevaluation implements Serializable {
 	}
 	
 	@Column(name="CustomerSatisfactionSurvey")
-	public String getCustomerSatisfactionSurvey() {
-		return customerSatisfactionSurvey;
+	public String getEfile() {
+		return efile;
 	}
-	public void setCustomerSatisfactionSurvey(String customerSatisfactionSurvey) {
-		this.customerSatisfactionSurvey = customerSatisfactionSurvey;
+	public void setEfile(String efile) {
+		this.efile = efile;
 	}
 	@Column(name="miji")
 	public String getMiji() {
@@ -110,6 +112,20 @@ public class  Supportevaluation implements Serializable {
 	}
 	public void setMiji(String miji) {
 		this.miji = miji;
+	}
+	@Column(name="datablock")
+	public byte[] getDatablock() {
+		return datablock;
+	}
+	public void setDatablock(byte[] datablock) {
+		this.datablock = datablock;
+	}
+	@Column(name="bytes")
+	public Integer getBytes() {
+		return bytes;
+	}
+	public void setBytes(Integer bytes) {
+		this.bytes = bytes;
 	}
 
 }

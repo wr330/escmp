@@ -14,10 +14,12 @@ import com.bstek.dorado.data.entity.EntityState;
 import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
+import com.buaa.fly.domain.Shifeirequestacc;
 import com.buaa.out.domain.Supportevaluation;
 import com.buaa.out.supportevaluation.dao.SupportevaluationDao;
 import com.buaa.sys.domain.UserOperationLog;
 import com.buaa.sys.userOperationLog.dao.UserOperationLogDao;
+import com.common.FileHelper;
 
 
 
@@ -66,6 +68,7 @@ public class SupportevaluationManager {
 				UserOperationLog userOperationLog = new UserOperationLog();
 				String un = ContextHolder.getLoginUserName();
 				if (state.equals(EntityState.NEW)) {
+					fileManager(item);
 					supportevaluationDao.saveData(item);
 					
 					//对用户新增操作进行记录，在用户操作日志表中新增一条记录。
@@ -76,6 +79,7 @@ public class SupportevaluationManager {
 					userOperationLog.setOperationContent("对保障评估表新增一条记录");
 					userOperationLogDao.saveData(userOperationLog);
 				} else if (state.equals(EntityState.MODIFIED)) {
+					fileManager(item);
 					supportevaluationDao.updateData(item);
 					
 					//对用户修改操作进行记录，在用户操作日志表中新增一条记录。
@@ -85,8 +89,8 @@ public class SupportevaluationManager {
 					userOperationLog.setOperationPerson(un);
 					userOperationLog.setOperationContent("对保障计划表修改选定记录");
 					userOperationLogDao.saveData(userOperationLog);
-					
 				} else if (state.equals(EntityState.DELETED)) {
+					FileHelper.deleteFile("/Out_Supportevaluation/" +item.getOid());//删除相关文件
 					supportevaluationDao.deleteData(item);
 					
 					//对用户删除操作进行记录，在用户操作日志表中新增一条记录。
@@ -102,6 +106,21 @@ public class SupportevaluationManager {
 		}
 	 }
 	 
+	 private void fileManager(Supportevaluation item){
+			if (item.getEfile()==null || item.getEfile().isEmpty()) {
+				item.setDatablock(null);
+				item.setBytes(null);
+			} else {
+				String path = "/Out_Supportevaluation/" + item.getOid() + "/"	+ item.getEfile();
+				FileHelper.fileToData(path);
+				if (FileHelper.bytes != 0) {
+					item.setBytes(FileHelper.bytes);
+					item.setDatablock(FileHelper.datablock);// 文件存储到数据库中
+					FileHelper.bytes = 0;
+					FileHelper.datablock = null;
+				}
+			}
+		 }
 	 
 	
 }

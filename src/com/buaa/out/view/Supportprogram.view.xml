@@ -128,8 +128,7 @@ dialog.show();&#xD;
 cur.cancel();&#xD;
 view.id('diaSupportprogram').hide();&#xD;
 	         </ClientEvent>
-      <Property name="height">80%</Property>
-      <Property name="width">40%</Property>
+      <Property name="width">450</Property>
       <Buttons>
         <Button>
           <ClientEvent name="onClick">view.id('uaSupportprogram').execute(function(){

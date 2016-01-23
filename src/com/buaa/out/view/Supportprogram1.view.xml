@@ -119,14 +119,21 @@ if(cur){&#xD;
             <Container>
               <ToolBar>
                 <DataPilot>
-                  <Property name="itemCodes">-,pages</Property>
+                  <Property name="itemCodes">pages</Property>
                   <Property name="dataSet">dsSupportprogram</Property>
                   <Property name="dataPath">#.handover</Property>
                 </DataPilot>
                 <ToolBarButton>
                   <ClientEvent name="onClick">var cur=view.id('dsSupportprogram').getData(&quot;#&quot;);&#xD;
-view.id('dsSupportprogram').getData('#.handover').insert({supportprogram:{oid:cur.get(&quot;oid&quot;)}});&#xD;
-dialog=view.id('dgHandover');&#xD;
+var guid = &quot;&quot;;&#xD;
+for(var i=1;i&lt;=32;i++){&#xD;
+	var n = Math.floor(Math.random()*16.0).toString(16);&#xD;
+	guid += n;&#xD;
+	if((i==8)||(i==12)||(i==16)||(i==20))&#xD;
+		  guid += &quot;-&quot;;&#xD;
+}&#xD;
+view.id('dsSupportprogram').getData('#.handover').insert({supportprogram:{oid:cur.get(&quot;oid&quot;)},oid:guid});&#xD;
+var dialog=view.id('dgHandover');&#xD;
 dialog.set(&quot;caption&quot;,&quot;新增交接记录&quot;);&#xD;
 dialog.show();&#xD;
 &#xD;
@@ -488,9 +495,7 @@ cur.set(&quot;efile&quot;,returnValue);&#xD;
 var link = view.id(&quot;lefile&quot;);&#xD;
 if(returnValue){&#xD;
 	var oid = cur.get(&quot;oid&quot;);&#xD;
-	alert(cur.get(&quot;oid&quot;));&#xD;
     var href = &quot;/escmp/upload/Out_Handover/&quot; + oid + &quot;/&quot; + returnValue;&#xD;
-	alert(href);&#xD;
     link.set({&#xD;
 		href: href,&#xD;
 		visible: true&#xD;

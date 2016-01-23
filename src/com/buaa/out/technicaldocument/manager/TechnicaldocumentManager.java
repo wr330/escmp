@@ -19,6 +19,7 @@ import com.buaa.out.domain.Technicaldocument;
 import com.buaa.out.technicaldocument.dao.TechnicaldocumentDao;
 import com.buaa.sys.domain.UserOperationLog;
 import com.buaa.sys.userOperationLog.dao.UserOperationLogDao;
+import com.common.FileHelper;
 
 @Component("technicaldocumentManager")
 public class TechnicaldocumentManager {
@@ -65,6 +66,7 @@ public class TechnicaldocumentManager {
 				UserOperationLog userOperationLog = new UserOperationLog();
 				String un = ContextHolder.getLoginUserName();
 				if (state.equals(EntityState.NEW)) {
+					fileManager(item);
 					technicaldocumentDao.saveData(item);
 					
 					//对用户新增操作进行记录，在用户操作日志表中新增一条记录。
@@ -75,6 +77,7 @@ public class TechnicaldocumentManager {
 					userOperationLog.setOperationContent("对技术文件记录表新增一条记录");
 					userOperationLogDao.saveData(userOperationLog);
 				} else if (state.equals(EntityState.MODIFIED)) {
+					fileManager(item);
 					technicaldocumentDao.updateData(item);
 					
 					//对用户修改操作进行记录，在用户操作日志表中新增一条记录。
@@ -86,6 +89,7 @@ public class TechnicaldocumentManager {
 					userOperationLogDao.saveData(userOperationLog);
 				} else if (state.equals(EntityState.DELETED)) {
 					technicaldocumentDao.deleteData(item);
+					FileHelper.deleteFile("/Out_Technicaldocument/" +item.getOid());//删除相关文件
 					
 					//对用户删除操作进行记录，在用户操作日志表中新增一条记录。
 					Date myDate = new Date();
@@ -104,5 +108,22 @@ public class TechnicaldocumentManager {
 		public String technicaldocumentIsExists(String oid,String number) {
 			return technicaldocumentDao.technicaldocumentIsExists(oid,number);
 		}  
+	 
+	//处理相关文件
+		 private void fileManager(Technicaldocument item){
+			if (item.getEfile()==null || item.getEfile().isEmpty()) {
+				item.setDatablock(null);
+				item.setBytes(null);
+			} else {
+				String path = "/Out_Technicaldocument/" + item.getOid() + "/"	+ item.getEfile();
+				FileHelper.fileToData(path);
+				if (FileHelper.bytes != 0) {
+					item.setBytes(FileHelper.bytes);
+					item.setDatablock(FileHelper.datablock);// 文件存储到数据库中
+					FileHelper.bytes = 0;
+					FileHelper.datablock = null;
+				}
+			}
+		 }
 	
 }

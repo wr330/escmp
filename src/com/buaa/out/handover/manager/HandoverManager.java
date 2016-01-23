@@ -17,6 +17,7 @@ import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 
 import com.buaa.fly.domain.Dailyacc;
+import com.buaa.fly.domain.Shifeirequestacc;
 import com.buaa.out.domain.Handover;
 import com.buaa.out.handover.dao.HandoverDao;
 import com.buaa.sys.domain.UserOperationLog;
@@ -111,30 +112,21 @@ public class HandoverManager {
 		public String handoverIsExists(String oid,String number) {
 			return handoverDao.handoverIsExists(oid,number);
 		}
-		
-		//处理相关文件
+		 //处理相关文件
 		 private void fileManager(Handover item){
-				String path = "/Out_Handover/" + item.getOid() + "/"+ item.getEfile();
-				FileHelper.fileToData(path);
-				if(FileHelper.bytes != 0){
-				    item.setBytes(FileHelper.bytes);
-				    item.setDatablock(FileHelper.datablock);//文件存储到数据库中
-				    FileHelper.bytes = 0;
-				    FileHelper.datablock = null;
+				if (item.getFilename()==null || item.getFilename().isEmpty()) {
+					item.setDatablock(null);
+					item.setBytes(null);
+				} else {
+					String path = "/Out_Handover/" + item.getOid() + "/"  + item.getFilename();
+					FileHelper.fileToData(path);
+					if (FileHelper.bytes != 0) {
+						item.setBytes(FileHelper.bytes);
+						item.setDatablock(FileHelper.datablock);// 文件存储到数据库中
+						FileHelper.bytes = 0;
+						FileHelper.datablock = null;
+					}
 				}
-		 }
-		
-		//下载文件
-		 @Expose
-		 public String downloadFile(String oid,String fname) throws IOException{
-			 String path = "/Out_Handover/" + oid + "/";
-			 if(!FileHelper.existFile(path,fname)){
-				 Handover handover = handoverDao.queryById(oid);
-				 byte[] datablock=handover.getDatablock();
-				 FileHelper.createFile(path,fname,datablock);
 			 }
-		     return fname;
-	    }
 	 
-	
 }

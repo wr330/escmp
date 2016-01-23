@@ -42,6 +42,7 @@ public class  Technicaldocument implements Serializable {
 	private String transceivertype;
 	private String recipient;
 	private byte[] datablock ;
+	private Integer bytes ;
 	private String miji ;
 
 	
@@ -151,6 +152,13 @@ public class  Technicaldocument implements Serializable {
 	}
 	public void setDatablock(byte[] datablock) {
 		this.datablock=datablock;
+	}
+	@Column(name="bytes")
+	public Integer getBytes() {
+		return bytes;
+	}
+	public void setBytes(Integer bytes) {
+		this.bytes = bytes;
 	}
 	@Column(name="miji")
 	public String getMiji() {

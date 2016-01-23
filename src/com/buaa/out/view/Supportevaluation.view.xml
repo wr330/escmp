@@ -35,6 +35,15 @@
       </DataPilot>
       <ToolBarButton>
         <ClientEvent name="onClick">view.id('dsSupportevaluation').getData().insert();&#xD;
+var cur=view.id('dsSupportevaluation').getData('#');&#xD;
+var guid = &quot;&quot;;&#xD;
+for(var i=1;i&lt;=32;i++){&#xD;
+	var n = Math.floor(Math.random()*16.0).toString(16);&#xD;
+	guid += n;&#xD;
+	if((i==8)||(i==12)||(i==16)||(i==20))&#xD;
+		guid += &quot;-&quot;;&#xD;
+}&#xD;
+cur.set(&quot;oid&quot;,guid);&#xD;
 var dialog=view.id('diaSupportevaluation');&#xD;
 dialog.set(&quot;caption&quot;,&quot;新增保障效果评估&quot;);&#xD;
 dialog.show();&#xD;
@@ -88,8 +97,17 @@ dialog.show();&#xD;
       <DataColumn name="supportSuggest">
         <Property name="property">supportSuggest</Property>
       </DataColumn>
-      <DataColumn name="customerSatisfactionSurvey">
-        <Property name="property">customerSatisfactionSurvey</Property>
+      <DataColumn name="efile">
+        <ClientEvent name="onRenderCell">jQuery(arg.dom).empty();&#xD;
+var file = arg.data.get(&quot;efile&quot;);&#xD;
+var oid = arg.data.get(&quot;oid&quot;);&#xD;
+var href = &quot;ServletDownload?filename=Out_Supportevaluation/&quot; + oid + &quot;/&quot; + file;&#xD;
+jQuery(arg.dom).xCreate({&#xD;
+	tagName:&quot;A&quot;,&#xD;
+	href:href,&#xD;
+	content:arg.data.get(&quot;efile&quot;)&#xD;
+});</ClientEvent>
+        <Property name="property">efile</Property>
       </DataColumn>
       <DataColumn name="miji">
         <Property name="property">miji</Property>
@@ -165,13 +183,13 @@ dialog.show();&#xD;
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="name">customerSatisfactionSurvey</Property>
-            <Property name="property">customerSatisfactionSurvey</Property>
+            <Property name="name">efile</Property>
+            <Property name="property">efile</Property>
             <Editor>
               <Container>
                 <Link id="lefile" layoutConstraint="center">
                   <Property name="dataSet">dsSupportevaluation</Property>
-                  <Property name="property">customerSatisfactionSurvey</Property>
+                  <Property name="property">efile</Property>
                 </Link>
                 <Button layoutConstraint="right">
                   <Property name="caption">删除</Property>
@@ -210,7 +228,8 @@ cur.set(&quot;efile&quot;,returnValue);&#xD;
 var link = view.id(&quot;lefile&quot;);&#xD;
 if(returnValue){&#xD;
 	var oid = cur.get(&quot;oid&quot;);&#xD;
-    var href = &quot;/escmp/upload/Out_Supportevaluation/&quot; + oid + &quot;/&quot; + returnValue;&#xD;
+	alert(oid);&#xD;
+    var href = &quot;ServletDownload?filename=Out_Supportevaluation/&quot; + oid + &quot;/&quot; + returnValue;&#xD;
     link.set({&#xD;
 		href: href,&#xD;
 		visible: true&#xD;

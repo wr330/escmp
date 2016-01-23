@@ -198,7 +198,7 @@ arg.parameter = parameter;</ClientEvent>
       <Property name="dataType">String</Property>
       <Property name="label">建议</Property>
     </PropertyDef>
-    <PropertyDef name="customerSatisfactionSurvey">
+    <PropertyDef name="efile">
       <Property></Property>
       <Property name="dataType">String</Property>
       <Property name="label">顾客满意度调查表</Property>
@@ -225,6 +225,9 @@ arg.parameter = parameter;</ClientEvent>
         </Property>
       </Property>
       <Property name="defaultValue">0</Property>
+    </PropertyDef>
+    <PropertyDef name="bytes">
+      <Property name="dataType">Integer</Property>
     </PropertyDef>
   </DataType>
   <DataType name="Technicaldocument">
@@ -325,6 +328,10 @@ arg.parameter = parameter;</ClientEvent>
         </Property>
       </Property>
       <Property name="defaultValue">0</Property>
+    </PropertyDef>
+    <PropertyDef name="bytes">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">bytes</Property>
     </PropertyDef>
   </DataType>
 </Model>

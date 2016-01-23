@@ -619,12 +619,12 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
   <DataType name="Fpici" meta="x:1239;y:10">
     <Property name="creationType">com.buaa.fly.domain.Fpici</Property>
     <PropertyDef name="piciID">
-      <Property/>
+      <Property></Property>
       <Property name="dataType">String</Property>
       <Property name="label">piciID</Property>
     </PropertyDef>
     <PropertyDef name="piciName">
-      <Property/>
+      <Property></Property>
       <Property name="dataType">String</Property>
       <Property name="label">批次名</Property>
     </PropertyDef>
@@ -1036,7 +1036,7 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
       <Property name="dataType">Flightrestrict</Property>
     </PropertyDef>
     <PropertyDef name="referenceName">
-      <Property/>
+      <Property></Property>
     </PropertyDef>
   </DataType>
 </Model>
