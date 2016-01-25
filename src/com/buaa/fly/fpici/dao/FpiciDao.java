@@ -42,7 +42,7 @@ private	FighterinfoDao fighterinfoDao;
         if(null != parameter && !parameter.isEmpty()){
 	String ftypename = (String)parameter.get("ftypename");
 	if(StringUtils.isNotEmpty( ftypename )){
-		coreHql.append(" and a.ftypes.ftypename = :ftypename ");
+		coreHql.append(" and a.fTypeName.ftypename = :ftypename ");
 		args.put("ftypename", ftypename );	
 	}
            }
@@ -64,7 +64,7 @@ private	FighterinfoDao fighterinfoDao;
 	
 	public Collection<Fpici> queryFighterinfobyType(String parameter) {
 		String hql = " from " + Fpici.class.getName()
-				+ " u where u.ftypes.ftypename like '"+parameter+"'";
+				+ " u where u.fTypeName.ftypename like '"+parameter+"'";
 		Collection<Fpici> info= this.query(hql);
 		return info;
 	} 

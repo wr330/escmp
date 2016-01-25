@@ -61,20 +61,9 @@
                 </DataPilot>
                 <ToolBarButton>
                   <ClientEvent name="onClick">var cur=view.id('dsExamples').getData(&quot;!CURRENT_TYPE&quot;);&#xD;
-view.id('dsExamples').getData(&quot;!CURRENT_TYPE.fpici&quot;).insert({ftypes:{ftypename:cur.get(&quot;ftypename&quot;)}});&#xD;
+view.id('dsExamples').getData(&quot;!CURRENT_TYPE.fpici&quot;).insert({fTypeName:{ftypename:cur.get(&quot;ftypename&quot;)}});&#xD;
 view.id('diaFpici').show();&#xD;
 &#xD;
-	/*&#xD;
- 	 * 对用户新增操作进行记录，在用户操作日志表中新增一条记录。&#xD;
-     */&#xD;
-	var myDate = new Date();&#xD;
-	view.id('dsUserOperationLog').getData().insert({&#xD;
-		logOperationType:&quot;0&quot;,&#xD;
-		operationPerson: &quot;${loginUsername}&quot;,&#xD;
-		operationContent:&quot;对飞机批次信息表新增一条记录&quot;,&#xD;
-		operationTime:myDate&#xD;
-	});&#xD;
-	view.id('uaUserOperationLog').execute();&#xD;
 </ClientEvent>
                   <Property name="caption">新增</Property>
                   <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
@@ -139,11 +128,12 @@ else*/&#xD;
                 <Property name="rowHeight">22</Property>
                 <Property name="dataPath">!CURRENT_TYPE.fpici</Property>
                 <RowNumColumn/>
-                <DataColumn name="ftypes">
-                  <Property name="property">ftypes.ftypename</Property>
+                <DataColumn>
+                  <Property name="property">fTypeName.ftypename</Property>
+                  <Property name="name">机型</Property>
                 </DataColumn>
-                <DataColumn name="piciname">
-                  <Property name="property">piciname</Property>
+                <DataColumn name="piciName">
+                  <Property name="property">piciName</Property>
                 </DataColumn>
                 <DataColumn name="more">
                   <Property name="property">more</Property>
@@ -164,12 +154,12 @@ else*/&#xD;
                 <Property name="readOnly">true</Property>
                 <AutoFormElement>
                   <Property name="name">ftypename</Property>
-                  <Property name="property">ftypes.ftypename</Property>
+                  <Property name="property">fTypeName.ftypename</Property>
                   <Editor/>
                 </AutoFormElement>
                 <AutoFormElement>
-                  <Property name="name">piciname</Property>
-                  <Property name="property">piciname</Property>
+                  <Property name="name">piciName</Property>
+                  <Property name="property">piciName</Property>
                   <Editor/>
                 </AutoFormElement>
                 <AutoFormElement>
@@ -192,9 +182,10 @@ else*/&#xD;
                 <ToolBarButton>
                   <ClientEvent name="onClick">var cur=view.id('dsExamples').getData(&quot;!CURRENT_PICI&quot;);&#xD;
 view.id('dsExamples').getData(&quot;!CURRENT_PICI.fighterinfo&quot;).insert({&#xD;
-	fpici: {&#xD;
-		piciname: cur.get(&quot;piciname&quot;),&#xD;
-		ftypes:{ftypename:cur.get(&quot;ftypes.ftypename&quot;)}&#xD;
+	piciid: {&#xD;
+		piciID: cur.get(&quot;piciID&quot;),&#xD;
+		piciName:cur.get(&quot;piciName&quot;),&#xD;
+		fTypeName:{ftypename:cur.get(&quot;fTypeName.ftypename&quot;)}&#xD;
 	}});&#xD;
 	&#xD;
 view.id('diaFighterinfo').show();&#xD;
@@ -270,12 +261,12 @@ if(cur){&#xD;
                 <Property name="dataType">Fighterinfo</Property>
                 <RowNumColumn/>
                 <DataColumn>
-                  <Property name="property">fpici.ftypes.ftypename</Property>
+                  <Property name="property">piciid.fTypeName.ftypename</Property>
                   <Property name="width">120</Property>
                   <Property name="name">ftypename</Property>
                 </DataColumn>
-                <DataColumn name="piciname">
-                  <Property name="property">fpici.piciname</Property>
+                <DataColumn name="piciName">
+                  <Property name="property">piciid.piciName</Property>
                   <Property name="width">120</Property>
                 </DataColumn>
                 <DataColumn name="outfactoryno">
@@ -283,7 +274,7 @@ if(cur){&#xD;
                   <Property name="width">120</Property>
                 </DataColumn>
                 <DataColumn name="firstfdate">
-                  <Property name="property">firstfdate</Property>
+                  <Property name="property">firstFDate</Property>
                   <Property name="width">120</Property>
                 </DataColumn>
                 <DataColumn name="userno">
@@ -309,6 +300,16 @@ if(cur){&#xD;
                 <Property name="cols">*,*</Property>
                 <Property name="readOnly">true</Property>
                 <AutoFormElement>
+                  <Property name="property">piciid.fTypeName.ftypename</Property>
+                  <Property name="name">name</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
+                  <Property name="property">piciid.piciName</Property>
+                  <Property name="name">piciName</Property>
+                  <Editor/>
+                </AutoFormElement>
+                <AutoFormElement>
                   <Property name="name">outfactoryno</Property>
                   <Property name="property">outfactoryno</Property>
                   <Editor/>
@@ -319,23 +320,13 @@ if(cur){&#xD;
                   <Editor/>
                 </AutoFormElement>
                 <AutoFormElement>
-                  <Property name="name">firstfdate</Property>
-                  <Property name="property">firstfdate</Property>
+                  <Property name="name">firstFDate</Property>
+                  <Property name="property">firstFDate</Property>
                   <Editor/>
                 </AutoFormElement>
                 <AutoFormElement>
                   <Property name="name">outdate</Property>
                   <Property name="property">outdate</Property>
-                  <Editor/>
-                </AutoFormElement>
-                <AutoFormElement>
-                  <Property name="property">fpici.piciname</Property>
-                  <Property name="name">piciname</Property>
-                  <Editor/>
-                </AutoFormElement>
-                <AutoFormElement>
-                  <Property name="property">fpici.ftypes.ftypename</Property>
-                  <Property name="name">name</Property>
                   <Editor/>
                 </AutoFormElement>
               </AutoForm>
@@ -450,7 +441,7 @@ if(NodeType==&quot;pname&quot;){&#xD;
 	&#xD;
 }&#xD;
 if(NodeType==&quot;flight&quot;){&#xD;
-	//var piciname = dataTree1.get(&quot;currentNode.data&quot;).get(&quot;piciname&quot;);&#xD;
+	//var piciName = dataTree1.get(&quot;currentNode.data&quot;).get(&quot;piciName&quot;);&#xD;
 	index = 2;&#xD;
 		view.set({&#xD;
 		&quot;^onDirtyNode.disabled&quot; : true,&#xD;
@@ -502,17 +493,16 @@ dorado.DataPath.registerInterceptor(&quot;CURRENT_FLIGHT&quot;, function(data) {
                   <Property name="expandLevel">1</Property>
                   <Property name="icon"> url(>skin>common/icons.gif) -220px -80px</Property>
                   <BindingConfig>
-                    <Property name="labelProperty">piciname</Property>
-                    <Property name="name">pname</Property>
                     <Property name="childrenProperty">fpici</Property>
                     <Property name="icon"> url(>skin>common/icons.gif) -240px -160px</Property>
+                    <Property name="labelProperty">piciName</Property>
+                    <Property name="name">pname</Property>
                     <Property name="expandLevel">1</Property>
                     <BindingConfig>
                       <Property name="childrenProperty">fighterinfo</Property>
-                      <Property name="name">flight</Property>
                       <Property name="labelProperty">outfactoryno</Property>
+                      <Property name="name">flight</Property>
                       <Property name="icon"> url(>skin>common/icons.gif) -20px -100px</Property>
-                      <Property name="expandLevel">1</Property>
                     </BindingConfig>
                   </BindingConfig>
                 </BindingConfig>
@@ -644,7 +634,7 @@ dorado.DataPath.registerInterceptor(&quot;CURRENT_FLIGHT&quot;, function(data) {
       <Tools/>
     </Dialog>
     <Dialog id="diaFpici">
-      <ClientEvent name="onClose">var cur=view.id('dsCurrentTree').getData('!CURRENT_TYPE.fpici');&#xD;
+      <ClientEvent name="onClose">var cur=view.id('dsExamples').getData('!CURRENT_TYPE.fpici');&#xD;
 				cur.cancel();&#xD;
 				view.id('diaFpici').hide();&#xD;
 				view.id('elementfpici').set('readOnly',false);&#xD;
@@ -663,11 +653,10 @@ dorado.DataPath.registerInterceptor(&quot;CURRENT_FLIGHT&quot;, function(data) {
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
         </Button>
         <Button>
-          <ClientEvent name="onClick">var cur=view.id('dsCurrentTree').getData('!CURRENT_TYPE.#fpici');
+          <ClientEvent name="onClick">var cur=view.id('dsExamples').getData('!CURRENT_TYPE.#fpici');
 				cur.cancel();
 				view.id('diaFpici').hide();
 				
-	view.id('elementfpici').set('readOnly',false);
 	
 	/*
 	 * 删除当前用户操作日志记录并保存
@@ -685,15 +674,14 @@ dorado.DataPath.registerInterceptor(&quot;CURRENT_FLIGHT&quot;, function(data) {
           <Property name="dataPath">!CURRENT_TYPE.#fpici</Property>
           <Property name="dataSet">dsExamples</Property>
           <Property name="dataType">Fpici</Property>
-          <AutoFormElement id="elementftype1">
-            <Property name="name">ftypes</Property>
-            <Property name="property">ftypes.ftypename</Property>
+          <AutoFormElement>
+            <Property name="property">fTypeName.ftypename</Property>
             <Property name="readOnly">true</Property>
             <Editor/>
           </AutoFormElement>
-          <AutoFormElement id="elementfpici">
-            <Property name="name">piciname</Property>
-            <Property name="property">piciname</Property>
+          <AutoFormElement>
+            <Property name="name">piciName</Property>
+            <Property name="property">piciName</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
@@ -706,7 +694,7 @@ dorado.DataPath.registerInterceptor(&quot;CURRENT_FLIGHT&quot;, function(data) {
       <Tools/>
     </Dialog>
     <Dialog id="diaFighterinfo">
-      <ClientEvent name="onClose">var cur=view.id('dsCurrentTree').getData('!CURRENT_PICI.#fighterinfo');&#xD;
+      <ClientEvent name="onClose">var cur=view.id('dsExamples').getData('!CURRENT_PICI.#fighterinfo');&#xD;
 				cur.cancel();&#xD;
 				view.id('diaFighterinfo').hide();&#xD;
 				view.id('element').set('readOnly',false);&#xD;
@@ -725,7 +713,7 @@ dorado.DataPath.registerInterceptor(&quot;CURRENT_FLIGHT&quot;, function(data) {
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
         </Button>
         <Button>
-          <ClientEvent name="onClick">var cur=view.id('dsCurrentTree').getData('!CURRENT_PICI.#fighterinfo');
+          <ClientEvent name="onClick">var cur=view.id('dsExamples').getData('!CURRENT_PICI.#fighterinfo');
 				cur.cancel();
 				view.id('diaFighterinfo').hide();
 				view.id('element').set('readOnly',false);
@@ -757,8 +745,8 @@ dorado.DataPath.registerInterceptor(&quot;CURRENT_FLIGHT&quot;, function(data) {
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="name">firstfdate</Property>
-            <Property name="property">firstfdate</Property>
+            <Property name="name">firstFDate</Property>
+            <Property name="property">firstFDate</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>

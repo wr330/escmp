@@ -36,14 +36,14 @@ public class FighterinfoDao extends HibernateBaseDao {
         if(null != parameter && !parameter.isEmpty()){
 	String piciname = (String)parameter.get("piciname");
 	if(StringUtils.isNotEmpty( piciname )){
-		coreHql.append(" and a.fpici.piciname like :piciname ");
+		coreHql.append(" and a.piciid.piciID like :piciname ");
 		args.put("piciname",piciname);	
 	}
- 	String ftypename = (String)parameter.get("ftypename");
+ 	/*String ftypename = (String)parameter.get("ftypename");
 	if(StringUtils.isNotEmpty( ftypename )){
 		coreHql.append(" and a.ftypes.ftypename like :ftypename ");
 		args.put("ftypename",ftypename);	
-	}
+	}*/
            }
 		
 		if (null != criteria) {
@@ -68,7 +68,7 @@ public class FighterinfoDao extends HibernateBaseDao {
 	public void saveData(Fighterinfo detail) throws Exception {
 		Session session = this.getSessionFactory().openSession();
 		try {
-			
+			session.save(detail);
 		} finally {
 			session.flush();
 			session.close();
