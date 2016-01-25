@@ -31,6 +31,7 @@ public class  Dictionary implements Serializable {
 	private String name ;
 	private String dictype ;
 	private String description ;
+	private Integer numericalOrder;
 
 
 
@@ -70,6 +71,13 @@ public class  Dictionary implements Serializable {
 	}
 	public void setDescription(String description) {
 		this.description=description;
+	}
+	@Column(name="NumericalOrder")
+	public Integer getNumericalOrder() {
+		return numericalOrder;
+	}
+	public void setNumericalOrder(Integer numericalOrder) {
+		this.numericalOrder = numericalOrder;
 	}
 
 

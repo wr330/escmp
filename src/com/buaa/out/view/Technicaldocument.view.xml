@@ -278,6 +278,15 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <Property name="editable">false</Property>
           <Property name="useEmptyItem">true</Property>
         </DataSetDropDown>
+        <DataSetDropDown id="dataSetDropDownR">
+          <ClientEvent name="onOpen">view.id(&quot;dsDictionary&quot;).set(&quot;parameter&quot;,{dictype:&quot;Dic_SendReceiveType&quot;,status:0}).flushAsync();</ClientEvent>
+          <Property name="autoOpen">true</Property>
+          <Property name="dataSet">dsDictionary</Property>
+          <Property name="property">name</Property>
+          <Property name="displayProperty">name</Property>
+          <Property name="editable">false</Property>
+          <Property name="useEmptyItem">true</Property>
+        </DataSetDropDown>
         <AutoForm id="afTechnicaldocument">
           <Property name="cols">*</Property>
           <Property name="dataSet">dsTechnicaldocument</Property>
@@ -337,6 +346,7 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <AutoFormElement>
             <Property name="name">transceivertype</Property>
             <Property name="property">transceivertype</Property>
+            <Property name="trigger">dataSetDropDownR</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>

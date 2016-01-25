@@ -68,6 +68,12 @@ else
             <Property name="showFilterBar">false</Property>
             <Property name="rowHeight">22</Property>
             <RowNumColumn/>
+            <DataColumn>
+              <Property name="property">numericalOrder</Property>
+              <Property name="width">160</Property>
+              <Property name="name">numericalOrder</Property>
+              <Editor/>
+            </DataColumn>
             <DataColumn name="name">
               <Property name="property">name</Property>
               <Property name="width">160</Property>
@@ -137,6 +143,11 @@ dataset.set(&quot;parameter&quot;,parameter).flushAsync();&#xD;
                   <Property name="label">更换周期</Property>
                   <Property name="userData">Dic_Changetime</Property>
                 </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="label">收发类型</Property>
+                  <Property name="userData">Dic_SendReceiveType</Property>
+                </Node>
               </Node>
               <Node>
                 <Property name="expanded">true</Property>
@@ -189,13 +200,13 @@ dataset.set(&quot;parameter&quot;,parameter).flushAsync();&#xD;
                 </Node>
                 <Node>
                   <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
-                  <Property name="userData">Dic_DutyType</Property>
-                  <Property name="label">问题责任</Property>
-                </Node>
-                <Node>
-                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
                   <Property name="userData">Dic_Gzfs</Property>
                   <Property name="label">跟踪方式</Property>
+                  <Node>
+                    <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                    <Property name="userData">Dic_DutyType</Property>
+                    <Property name="label">问题责任</Property>
+                  </Node>
                 </Node>
                 <Node>
                   <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
@@ -270,6 +281,9 @@ dataset.set(&quot;parameter&quot;,parameter).flushAsync();&#xD;
       </SideControl>
     </SplitPanel>
     <Dialog id="diaDictionary">
+      <ClientEvent name="onClose">var cur=view.id('dsDictionary').getData('#');&#xD;
+				cur.cancel();&#xD;
+				view.id('diaDictionary').hide();</ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
       <Property name="width">500</Property>
@@ -297,6 +311,10 @@ dataset.set(&quot;parameter&quot;,parameter).flushAsync();&#xD;
           <Property name="cols">*</Property>
           <Property name="dataSet">dsDictionary</Property>
           <Property name="dataPath">#</Property>
+          <AutoFormElement>
+            <Property name="name">NumericalOrder</Property>
+            <Property name="property">numericalOrder</Property>
+          </AutoFormElement>
           <AutoFormElement>
             <Property name="name">Name</Property>
             <Property name="property">name</Property>

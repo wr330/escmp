@@ -218,6 +218,10 @@ arg.parameter = parameter;</ClientEvent>
               <Property name="label">现场处理方式</Property>
               <Property name="value">Dic_Deal</Property>
             </Entity>
+            <Entity>
+              <Property name="label">收发类型</Property>
+              <Property name="value">Dic_SendReceiveType</Property>
+            </Entity>
           </Collection>
         </Property>
         <Property name="keyProperty">value</Property>
@@ -233,6 +237,10 @@ arg.parameter = parameter;</ClientEvent>
     <PropertyDef name="oid">
       <Property name="dataType">String</Property>
       <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="numericalOrder">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">序号</Property>
     </PropertyDef>
   </DataType>
   <DataType name="UserOperationLog" meta="x:150;y:255">
@@ -296,7 +304,6 @@ arg.parameter = parameter;</ClientEvent>
       <Property name="dataType">DateTime</Property>
       <Property name="label">操作时间</Property>
     </PropertyDef>
-    <PropertyDef name="propertyDef1"/>
   </DataType>
   <DataType name="AuditLog" meta="x:345;y:150">
     <Property name="matchType">com.buaa.sys.domain.AuditLog</Property>
