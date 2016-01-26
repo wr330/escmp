@@ -42,7 +42,8 @@ public Collection<Outlineexecution> queryOutlineexecution(Map<String, Object> pa
 	String hql="from "+Outlineexecution.class.getName()+" u where 1=1";
 	String ftype =(String) parameter.get("ftype");
 	if(StringUtils.isEmpty(ftype)){
-		
+		hql+=" and u.aircrafttype is NULL";
+		return this.query(hql);
 	}else
 		hql+=" and u.aircrafttype ='" + ftype + "'";
 	
@@ -73,7 +74,8 @@ public Collection<Outlineexecution> query(Map<String, Object> parameter) throws 
 	String parentnode=(String) parameter.get("parentnode");
 	String subject =(String) parameter.get("subject");
 	if(StringUtils.isEmpty(ftype)){
-		
+		hql+=" and u.aircrafttype is NULL";
+		return this.query(hql);
 	}else
 		hql+=" and u.aircrafttype ='" + ftype + "'";
 	if(StringUtils.isEmpty(subject)){
