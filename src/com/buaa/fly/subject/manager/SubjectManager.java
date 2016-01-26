@@ -14,19 +14,17 @@ import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 
-import com.buaa.fly.domain.Sffault;
 import com.buaa.fly.domain.Subject;
-import com.buaa.fly.subject.dao.SubjectDao;
-import com.buaa.fly.tasklist.manager.TasklistManager;
 import com.buaa.fly.outlineexecution.manager.OutlineexecutionManager;
-import com.buaa.out.domain.Handover;
+import com.buaa.fly.subject.dao.SubjectDao;
 
 @Component("subjectManager")
 public class SubjectManager {
 
 	@Resource
 	private SubjectDao subjectDao;
-
+	@Resource
+	private OutlineexecutionManager outlineexecutionManager;
 	/**
 	 * @throws Exception
 	 */
@@ -130,15 +128,20 @@ public class SubjectManager {
 					subjectDao.saveData(item);
 				} 
 				if (state.equals(EntityState.MODIFIED)|| state.equals(EntityState.MOVED)) {
+					
 					subjectDao.updateData(item);
 				} 
-				if(item.getChildren()!=null){
-					saveSubject(item.getChildren());
-				}
 				if (state.equals(EntityState.DELETED)) {
 					subjectDao.deleteData(item);
 				}
+				if (state.equals(EntityState.NONE)) {
+					 outlineexecutionManager.saveOutlineexecution(item.getOutlineexecution());
+				 }
+				if(item.getChildren()!=null){
+					 saveSubject(item.getChildren());
+					}
 			}
+			
 		}
 	}
 	public int countChildren(Map<String, Object> parameter) {

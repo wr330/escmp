@@ -14,6 +14,7 @@ public class  Root implements Serializable {
 	private String label ;
 
 	private List<Ftypes> categories;
+	private List<Subject> subject;
 	
 	public String getLabel() {
 		return label;
@@ -21,6 +22,14 @@ public class  Root implements Serializable {
 
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	public List<Subject> getOutlineExecution() {
+		return subject;
+	}
+
+	public void setOutlineExecution(List<Subject> subject) {
+		this.subject = subject;
 	}
 
 	public List<Ftypes> getCategories() {

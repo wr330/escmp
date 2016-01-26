@@ -46,7 +46,13 @@ public class OutlineexecutionManager {
 		return outlineexecutionDao.queryOutlineexecution(parameter);
 	}
 
-	
+	/**
+	 * @throws Exception
+	 */
+	public Collection<Outlineexecution> query(Map<String, Object> parameter) throws Exception {
+		return outlineexecutionDao.query(parameter);
+	}
+
 	/**                  
 	* 分页查询信息，带有criteria
 	* 将criteria转换为一个Map

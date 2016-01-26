@@ -37,25 +37,61 @@ public class OutlineexecutionDao extends HibernateBaseDao {
 	 */
 public Collection<Outlineexecution> queryOutlineexecution(Map<String, Object> parameter) throws Exception {
 		
-		Map<String,Object> map=new HashMap<String,Object>();
-		String parentnode=(String) parameter.get("parentnode");
-		String hql="from "+Outlineexecution.class.getName()+" u where 1=1";
-		String ftype =(String) parameter.get("ftype");
-		if(StringUtils.isEmpty(ftype)){
-			
-		}else
-			hql+=" and u.aircrafttype ='" + ftype + "'";
+	Map<String,Object> map=new HashMap<String,Object>();
+	String parentnode=(String) parameter.get("parentnode");
+	String hql="from "+Outlineexecution.class.getName()+" u where 1=1";
+	String ftype =(String) parameter.get("ftype");
+	if(StringUtils.isEmpty(ftype)){
 		
-		if(StringUtils.isEmpty(parentnode)){
-			hql+=" and u.parentnode is null order by u.orderno asc";
-			return this.query(hql,map);
-		}else{
-			map.put("parentnode",parentnode);
-			hql+=" and u.parentnode=:parentnode order by u.orderno asc";
-			return this.query(hql,map);			
-		}
-		
+	}else
+		hql+=" and u.aircrafttype ='" + ftype + "'";
+	
+	if(StringUtils.isEmpty(parentnode)){
+		hql+=" and u.parentnode is null order by u.orderno asc";
+		return this.query(hql,map);
+	}else{
+		map.put("parentnode",parentnode);
+		hql+=" and u.parentnode=:parentnode order by u.orderno asc";
+		return this.query(hql,map);			
 	}
+	}
+
+/**
+ * 同时也支持普通类型查询，在数据类型和日期类型支持区间查询
+ * 
+ * @param page
+ * @param parameter
+ * @param criteria
+ * @throws Exception
+ */
+public Collection<Outlineexecution> query(Map<String, Object> parameter) throws Exception {
+	
+	Map<String,Object> map=new HashMap<String,Object>();
+	
+	String hql="from "+Outlineexecution.class.getName()+" u where 1=1";
+	String ftype =(String) parameter.get("ftype");
+	String parentnode=(String) parameter.get("parentnode");
+	String subject =(String) parameter.get("subject");
+	if(StringUtils.isEmpty(ftype)){
+		
+	}else
+		hql+=" and u.aircrafttype ='" + ftype + "'";
+	if(StringUtils.isEmpty(subject)){
+		//hql+=" and u.parentnode is null order by u.orderno asc";
+	}else{
+		map.put("subject",subject);
+		hql+=" and u.project.oid=:subject";
+	}
+	if(StringUtils.isEmpty(parentnode)){
+		//hql+=" and u.parentnode is null order by u.orderno asc";
+		return this.query(hql,map);
+	}else{
+		map.put("parentnode",parentnode);
+		hql+=" and u.project.parentnode=:parentnode";
+		return this.query(hql,map);
+	}
+
+}
 	public void queryOutline(Page<Outlineexecution> page, Map<String, Object> parameter,Criteria criteria) throws Exception {
         Map<String, Object> args = new HashMap<String,Object>();
         StringBuffer coreHql = new StringBuffer("from " + Outlineexecution.class.getName()+" a where 1=1 ");

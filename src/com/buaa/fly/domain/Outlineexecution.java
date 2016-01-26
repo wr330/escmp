@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -47,6 +48,8 @@ public class Outlineexecution implements Serializable {
 	private String miji;
 	private Integer jiaci;
 	private Integer shijijiaci;
+	
+	private Subject project;
 	private List<Outlineexecution> children;
 	private Collection<CombineVehicle> combineVehicle;
 
@@ -67,6 +70,16 @@ public class Outlineexecution implements Serializable {
 
 	public void setAircrafttype(String aircrafttype) {
 		this.aircrafttype = aircrafttype;
+	}
+
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinColumn(name = "project")
+	public Subject getProject() {
+		return project;
+	}
+
+	public void setProject(Subject project) {
+		this.project = project;
 	}
 
 	@Column(name = "RemainState")
