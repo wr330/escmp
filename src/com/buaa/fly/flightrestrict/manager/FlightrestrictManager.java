@@ -80,6 +80,18 @@ public class FlightrestrictManager {
 							}
 		}
 	 }
+	 
+	 /**
+	  * 添加校验，判断文件编号唯一
+	  * 
+	  * @param id 使用限制表id
+	  * @param fno 文件编号
+	  * 
+	  */
+	 @Expose
+	 public String flightrestrictIsExists(String id,String fno) {
+		 return flightrestrictDao.flightrestrictIsExists(id,fno);
+	 }  
 	 //处理相关文件
 	 private void fileManager(Flightrestrict item){
 			String path = "/Fly_Flightrestrict/" + item.getId() + "/"+ item.getFname();

@@ -441,6 +441,9 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
     <PropertyDef name="fno">
       <Property name="dataType">String</Property>
       <Property name="label">文件编号</Property>
+      <Validator type="ajax">
+        <Property name="service">flightrestrictManager#flightrestrictIsExists</Property>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="maincontent">
       <Property name="dataType">String</Property>
@@ -486,6 +489,9 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
       <Property name="dataType">String</Property>
       <Property name="label">编号</Property>
       <Property name="required">true</Property>
+      <Validator type="ajax">
+        <Property name="service">shifeirequestaccManager#shifeirequestaccIsExists</Property>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="ftype">
       <Property name="dataType">String</Property>

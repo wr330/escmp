@@ -36,9 +36,9 @@ public class  Supportprogram implements Serializable {
 	private String oid ;
 	private String maker ;
 	private String troop ;
-	private String staffrequirement ;
+	private Integer staffrequirement ;
 	private String supporttype ;
-	private String changeperiod ;
+	private Integer changeperiod ;
 	private String workaddress ;
 	private Date worktime ;
 	private Date endtime ;
@@ -64,10 +64,10 @@ public class  Supportprogram implements Serializable {
 		this.troop=troop;
 	}
 	@Column(name="StaffRequirement")
-	public String getStaffrequirement() {
+	public Integer getStaffrequirement() {
 		return staffrequirement;
 	}
-	public void setStaffrequirement(String staffrequirement) {
+	public void setStaffrequirement(Integer staffrequirement) {
 		this.staffrequirement=staffrequirement;
 	}
 	@Column(name="SupportType")
@@ -78,10 +78,10 @@ public class  Supportprogram implements Serializable {
 		this.supporttype=supporttype;
 	}
 	@Column(name="ChangePeriod")
-	public String getChangeperiod() {
+	public Integer getChangeperiod() {
 		return changeperiod;
 	}
-	public void setChangeperiod(String changeperiod) {
+	public void setChangeperiod(Integer changeperiod) {
 		this.changeperiod=changeperiod;
 	}
 	@Column(name="WorkAddress")

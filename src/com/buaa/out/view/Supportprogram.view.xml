@@ -58,6 +58,8 @@
       </DataPilot>
       <ToolBarButton>
         <ClientEvent name="onClick">view.id('dsSupportprogram').getData().insert();&#xD;
+var cur=view.id('dsSupportprogram').getData('#');&#xD;
+cur.set(&quot;maker&quot;,&quot;${loginUsername}&quot;)&#xD;
 var dialog=view.id('diaSupportprogram');&#xD;
 dialog.set(&quot;caption&quot;,&quot;新增保障计划&quot;);&#xD;
 dialog.show();&#xD;
@@ -115,12 +117,17 @@ dialog.show();&#xD;
       <DataColumn name="worktime">
         <Property name="property">worktime</Property>
       </DataColumn>
+      <DataColumn name="endtime">
+        <Property name="property">endtime</Property>
+      </DataColumn>
       <DataColumn name="changeperiod">
         <Property name="property">changeperiod</Property>
       </DataColumn>
-      <DataColumn>
+      <DataColumn name="maker">
+        <Property name="property">maker</Property>
+      </DataColumn>
+      <DataColumn name="miji">
         <Property name="property">miji</Property>
-        <Property name="name">miji</Property>
       </DataColumn>
     </DataGrid>
     <Dialog id="diaSupportprogram">
@@ -181,6 +188,17 @@ view.id('diaSupportprogram').hide();&#xD;
           <AutoFormElement>
             <Property name="name">worktime</Property>
             <Property name="property">worktime</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">endtime</Property>
+            <Property name="property">endtime</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">maker</Property>
+            <Property name="property">maker</Property>
+            <Property name="readOnly">true</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>

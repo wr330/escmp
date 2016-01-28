@@ -7,7 +7,7 @@
       <Property name="label">部队</Property>
     </PropertyDef>
     <PropertyDef name="staffrequirement">
-      <Property name="dataType">String</Property>
+      <Property name="dataType">Integer</Property>
       <Property name="label">人员需求</Property>
     </PropertyDef>
     <PropertyDef name="supporttype">
@@ -15,7 +15,7 @@
       <Property name="label">保障类型</Property>
     </PropertyDef>
     <PropertyDef name="changeperiod">
-      <Property name="dataType">String</Property>
+      <Property name="dataType">Integer</Property>
       <Property name="label">更换周期</Property>
     </PropertyDef>
     <PropertyDef name="workaddress">

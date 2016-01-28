@@ -20,6 +20,7 @@ import com.common.HibernateBaseDao;
 
 import com.buaa.fly.domain.Dailyacc;
 import com.buaa.fly.domain.Shifeirequestacc;
+import com.buaa.out.domain.Technicaldocument;
 
 @Repository("shifeirequestaccDao")
 public class ShifeirequestaccDao extends HibernateBaseDao {
@@ -107,6 +108,25 @@ public class ShifeirequestaccDao extends HibernateBaseDao {
 			session.close();
 		}
 	}
+	
+	public String shifeirequestaccIsExists(String id,String fileno) {
+		String hql = "select count(*) from " + Shifeirequestacc.class.getName()
+				+ " u where u.fileno = :fileno";
+		Map<String, Object> parameterMap = new HashMap<String, Object>();
+		parameterMap.put("fileno", fileno);
+		if (id != null) {
+			hql += " and u.id != :id";
+			parameterMap.put("id", id);
+		}
+		int count = this.queryForInt(hql, parameterMap);
+
+		String returnStr = null;
+		if (count > 0) {
+			returnStr = "此编号已存在！";
+		}
+		return returnStr;
+	}       
+	
 	//通过ID查找记录
     public  Shifeirequestacc queryById(String id){
     	String hql="from " + Shifeirequestacc.class.getName()+" a where a.id='"+id+"'";

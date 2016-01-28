@@ -21,6 +21,7 @@ import com.common.HibernateBaseDao;
 
 import com.buaa.fly.domain.Fighterxzh;
 import com.buaa.fly.domain.Flightrestrict;
+import com.buaa.out.domain.Technicaldocument;
 
 @Repository("flightrestrictDao")
 public class FlightrestrictDao extends HibernateBaseDao {
@@ -126,6 +127,26 @@ public class FlightrestrictDao extends HibernateBaseDao {
 			session.close();
 		}
 	}
+	
+	public String flightrestrictIsExists(String id,String fno) {
+		String hql = "select count(*) from " + Flightrestrict.class.getName()
+				+ " u where u.fno = :fno";
+		Map<String, Object> parameterMap = new HashMap<String, Object>();
+		parameterMap.put("number", fno);
+		if (id != null) {
+			hql += " and u.oid != :id";
+			parameterMap.put("oid", id);
+		}
+		int count = this.queryForInt(hql, parameterMap);
+
+		String returnStr = null;
+		if (count > 0) {
+			returnStr = "此编号已存在！";
+		}
+		return returnStr;
+	}       
+	
+	
 	//通过ID查找记录
     public  Flightrestrict queryById(String id){
     	String hql="from " + Flightrestrict.class.getName()+" a where a.id="+id;

@@ -72,6 +72,19 @@ public class ShifeirequestaccManager {
 							}
 		}
 	 }
+	 
+	 /**
+	  * 添加校验，判断文件编号唯一
+	  * 
+	  * @param id 试飞文件表id
+	  * @param fileno 文件编号
+	  * 
+	  */
+	 @Expose
+	 public String shifeirequestaccIsExists(String id,String fileno) {
+		 return shifeirequestaccDao.shifeirequestaccIsExists(id,fileno);
+	 }  
+	 
 	 //处理相关文件
 	 private void fileManager(Shifeirequestacc item){
 		if (item.getFilename().isEmpty()) {

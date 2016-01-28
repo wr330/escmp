@@ -56,6 +56,7 @@ public class HandoverDao extends HibernateBaseDao {
         
         String countHql = "select count(*) " + coreHql.toString();
         String hql = coreHql.toString();
+        hql+="order by handovertime asc ";
 		this.pagingQuery(page, hql, countHql, args);
 	}
 	
