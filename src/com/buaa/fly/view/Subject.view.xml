@@ -9,7 +9,7 @@
         <Property name="dataProvider">subjectPR#querySubject</Property>
         <Property name="parameter">
           <Entity>
-            <Property name="parentnode">$${this.name}</Property>
+            <Property name="parentnode">$${this.oid}</Property>
             <Property name="ftype">$${this.ftype}</Property>
           </Entity>
         </Property>
@@ -165,12 +165,11 @@ cur1.set(&quot;ftype&quot;,cur);&#xD;
 var currentNode=tree.get(&quot;currentNode&quot;);&#xD;
 if(!currentNode){&#xD;
 	dorado.MessageBox.alert(&quot;请先选中一个父节点!&quot;);&#xD;
-	return;&#xD;
 }&#xD;
 var newOrder=view.buildOrder(currentNode.get(&quot;nodes&quot;));&#xD;
 var currentEntity=currentNode.get(&quot;data&quot;);&#xD;
 var newEntity=currentEntity.createChild(&quot;children&quot;,{&#xD;
-	parentnode:currentEntity.get(&quot;name&quot;),&#xD;
+	parentnode:currentEntity.get(&quot;oid&quot;),&#xD;
 	orderno:newOrder&#xD;
 });&#xD;
 currentNode.expand();&#xD;

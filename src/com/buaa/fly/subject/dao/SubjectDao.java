@@ -2,6 +2,7 @@ package com.buaa.fly.subject.dao;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -41,13 +42,29 @@ public class SubjectDao extends HibernateBaseDao {
 			hql+=" and u.ftype ='" + ftype + "'";
 		
 		if(StringUtils.isEmpty(parentnode)){
-			hql+=" and u.parentnode is null order by u.orderno asc";
+			hql+=" and u.parentnode is null ";
 			return this.query(hql,map);
 		}else{
 			map.put("parentnode",parentnode);
-			hql+=" and u.parentnode=:parentnode order by u.orderno asc";
+			hql+=" and u.parentnode=:parentnode ";
 			return this.query(hql,map);			
 		}
+		
+	}
+	
+	
+	/**
+	 * 同时也支持普通类型查询，在数据类型和日期类型支持区间查询
+	 * 
+	 * @param page
+	 * @param parameter
+	 * @param criteria
+	 * @throws Exception
+	 */
+	public Subject querySubjectbyId(String parameter) throws Exception {
+		String hql="from "+Subject.class.getName()+" u where oid='"+parameter+"'";
+			List<Subject> lst= this.query(hql);			
+			return lst.get(0);
 		
 	}
 public Collection<Subject> deleteSubject(Map<String, Object> parameter) throws Exception {

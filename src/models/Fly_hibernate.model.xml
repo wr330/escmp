@@ -48,7 +48,7 @@ arg.parameter = parameter;</ClientEvent>
           <Property name="ftype">$${this.ftype}</Property>
         </Entity>
       </Property>
-      <Property name="dataProvider">outlineexecutionPR#query</Property>
+      <Property name="dataProvider">outlineexecutionPR#queryOutlineexecutionforJDBC</Property>
     </Reference>
   </DataType>
   <DataType name="Tasklist" meta="x:287;y:10">
@@ -728,10 +728,6 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
       <Property name="dataType">String</Property>
       <Property name="label">序号</Property>
     </PropertyDef>
-    <PropertyDef name="subject">
-      <Property name="dataType">String</Property>
-      <Property name="label">试飞科目</Property>
-    </PropertyDef>
     <PropertyDef name="outlineFlights">
       <Property name="dataType">int</Property>
       <Property name="label">大纲架次</Property>
@@ -781,18 +777,6 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
       <Property name="dataProvider">combineVehiclePR#queryCombineVehicle</Property>
       <Property name="pageSize">20</Property>
     </Reference>
-    <PropertyDef name="orderno">
-      <Property name="dataType">Integer</Property>
-      <Property name="label">序号</Property>
-    </PropertyDef>
-    <PropertyDef name="parentnode">
-      <Property name="dataType">String</Property>
-      <Property name="label">上级科目</Property>
-    </PropertyDef>
-    <PropertyDef name="jiaci">
-      <Property name="dataType">Integer</Property>
-      <Property name="label">架次</Property>
-    </PropertyDef>
     <PropertyDef name="shijijiaci">
       <Property name="dataType">Integer</Property>
       <Property name="label">实际架次</Property>
@@ -822,7 +806,7 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
     </PropertyDef>
     <PropertyDef name="project">
       <Property name="dataType">Subject</Property>
-      <Property name="label">试飞科目树</Property>
+      <Property name="label">试飞科目</Property>
     </PropertyDef>
   </DataType>
   <DataType name="Sffault" meta="x:708;y:10">

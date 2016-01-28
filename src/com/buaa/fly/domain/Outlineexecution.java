@@ -36,7 +36,6 @@ public class Outlineexecution implements Serializable {
 	private Date execdate;
 	private String completestate;
 	private String parentnode;
-	private Integer orderno;
 	private String subject;
 	private int outlineFlights;
 	private int combineFlights;
@@ -203,14 +202,6 @@ public class Outlineexecution implements Serializable {
 
 	public void setParentnode(String parentnode) {
 		this.parentnode = parentnode;
-	}
-	@Column(name = "orderno")
-	public int getOrderno() {
-		return orderno;
-	}
-
-	public void setOrderno(int orderno) {
-		this.orderno = orderno;
 	}
 	@Transient
 	public List<Outlineexecution> getChildren() {
