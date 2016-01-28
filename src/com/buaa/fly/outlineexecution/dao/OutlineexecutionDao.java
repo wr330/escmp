@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.hibernate.Hibernate;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 import org.apache.commons.collections.ListUtils;
@@ -95,46 +97,18 @@ public Collection<Outlineexecution> query(Map<String, Object> parameter) throws 
 		return this.query(hql,map);
 	}
 }
+	@SuppressWarnings({ "deprecation", "unchecked" })
 	public void queryOutline(Page<Outlineexecution> page, Map<String, Object> parameter,Criteria criteria) throws Exception {
-        Map<String, Object> args = new HashMap<String,Object>();
+		String oid = (String)parameter.get("subject");
+		String sql = "with cte as(	select a.oid from Fly_Subject a where Oid='"+oid+
+				"'	union all select k.oid from Fly_Subject k inner join cte c on c.oid=k.ParentNode) select oid from cte";
+		Session session = this.getSessionFactory().openSession();
+		Query query = session.createSQLQuery(sql).addScalar("oid", Hibernate.STRING);//设置返回值类型，不然会报错
+        List<String> aa = query.list();
+		Map<String, Object> args = new HashMap<String,Object>();
         StringBuffer coreHql = new StringBuffer("from " + Outlineexecution.class.getName()+" a where 1=1 ");
-        
-        if(null != parameter && !parameter.isEmpty()){
-        	String ftype = (String)parameter.get("ftype");
-           	if(StringUtils.isNotEmpty( ftype )){
-        		coreHql.append(" and a.aircrafttype = :ft ");
-        		args.put("ft",  ftype );
-        	}
-           	List<String> subject = new ArrayList<String>();
-           	subject = (List<String>)parameter.get("subject");
-           	if((subject != null)){//判断subject是否为空
-           		if(subject.size() != 0){//判断subject中不含元素，避免用户没选科目，而进入查询。
-           			//初始化一个数组，放到in()中
-           			List<String>subjectString=new ArrayList<String>();
-            		for(int i = 0;i<subject.size();i ++){
-            			//subjectString += "'" + subject.get(i) + "',"; 拼SQL语句
-            			subjectString.add(subject.get(i));
-            		}
-            		//subjectString = subjectString.substring(0,subjectString.length()-1);
-            		//  原本想直接拼select *from Fly_OutlineExecution a where a.Subject in('大表数','爬升性能');
-            		// 但是这种方法只能实现科目的查询，无法实现与机型、完成状态的联合查询
-            		 
-            		args.put("su",subjectString);
-            		coreHql.append(" and a.subject in(:su)");//in查询以args映射时in的后面要方数组
-           		}
-        	}
-           	String completestate =(String)parameter.get("completestate");
-           	if(StringUtils.isNotEmpty( completestate )){
-        		coreHql.append(" and a.completestate = :cs");
-        		args.put("cs", completestate );
-        	}
-           	String aircraftStruct =(String)parameter.get("aircraftStruct");
-           	if(StringUtils.isNotEmpty( aircraftStruct )){
-        		coreHql.append(" and a.aircraftStruct = :as ");
-        		args.put("as", aircraftStruct );
-        	}
-           }
-		
+		coreHql.append(" and a.project.oid in(:aa)");
+		args.put("aa", aa );
 		if (null != criteria) {
 			ParseResult result = this.parseCriteria(criteria, true, "a");
 			if (null != result) {
@@ -142,10 +116,8 @@ public Collection<Outlineexecution> query(Map<String, Object> parameter) throws 
 				args.putAll(result.getValueMap());
 			}
 		}
-
-        
-        String countHql = "select count(*) " + coreHql.toString();
-        String hql = coreHql.toString();//+ "order by execdate desc";
+		String countHql = "select count(*) " + coreHql.toString();
+        String hql = coreHql.toString();
 		this.pagingQuery(page, hql, countHql, args);
 	}
 	

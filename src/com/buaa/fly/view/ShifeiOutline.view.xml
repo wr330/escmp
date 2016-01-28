@@ -192,7 +192,12 @@ dorado.MessageBox.alert(&quot;请选择删除的节点!&quot;);</ClientEvent>
                 <Editor/>
               </AutoFormElement>
             </AutoForm>
-            <ToolBar/>
+            <ToolBar>
+              <DataPilot>
+                <Property name="dataPath">!CURRENT_ROOT.outlineexecution</Property>
+                <Property name="dataSet">dataSetSubject</Property>
+              </DataPilot>
+            </ToolBar>
             <DataGrid>
               <Property name="readOnly">true</Property>
               <Property name="height">40%</Property>

@@ -48,7 +48,8 @@ arg.parameter = parameter;</ClientEvent>
           <Property name="ftype">$${this.ftype}</Property>
         </Entity>
       </Property>
-      <Property name="dataProvider">outlineexecutionPR#queryOutlineexecutionforJDBC</Property>
+      <Property name="dataProvider">outlineexecutionPR#queryOutline</Property>
+      <Property name="pageSize">20</Property>
     </Reference>
   </DataType>
   <DataType name="Tasklist" meta="x:287;y:10">
