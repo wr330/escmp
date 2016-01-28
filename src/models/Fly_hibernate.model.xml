@@ -40,6 +40,16 @@ arg.parameter = parameter;</ClientEvent>
       <Property name="dataType">String</Property>
       <Property name="label">机型</Property>
     </PropertyDef>
+    <Reference name="outlineexecution">
+      <Property name="dataType">[Outlineexecution]</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="subject">$${this.oid}</Property>
+          <Property name="ftype">$${this.ftype}</Property>
+        </Entity>
+      </Property>
+      <Property name="dataProvider">outlineexecutionPR#query</Property>
+    </Reference>
   </DataType>
   <DataType name="Tasklist" meta="x:287;y:10">
     <Property name="matchType">com.buaa.fly.domain.Tasklist</Property>
@@ -648,11 +658,14 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
       <Property name="pageSize">20</Property>
       <Property name="parameter">
         <Entity>
-          <Property name="piciname">$${this.piciname}</Property>
+          <Property name="piciname">$${this.piciID}</Property>
           <Property name="ftypename">$${this.ftypename}</Property>
         </Entity>
       </Property>
     </Reference>
+    <PropertyDef name="fTypeName">
+      <Property name="dataType">Ftypes</Property>
+    </PropertyDef>
   </DataType>
   <DataType name="Fighterinfo" meta="x:1366;y:10">
     <Property name="creationType">com.buaa.fly.domain.Fighterinfo</Property>
@@ -661,7 +674,7 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
       <Property name="label">飞机编号</Property>
     </PropertyDef>
     <PropertyDef name="piciid">
-      <Property name="dataType">Integer</Property>
+      <Property name="dataType">Fpici</Property>
       <Property name="label">piciid</Property>
     </PropertyDef>
     <PropertyDef name="firstFDate">
@@ -675,9 +688,6 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
     <PropertyDef name="outdate">
       <Property name="dataType">DateTime</Property>
       <Property name="label">转场日期</Property>
-    </PropertyDef>
-    <PropertyDef name="fpici">
-      <Property name="dataType">Fpici</Property>
     </PropertyDef>
   </DataType>
   <DataType name="CombineVehicle">
@@ -706,7 +716,6 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
     <PropertyDef name="aircrafttype">
       <Property name="dataType">String</Property>
       <Property name="label">机型</Property>
-      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="remainstate">
       <Property name="dataType">String</Property>
@@ -716,12 +725,10 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
     <PropertyDef name="execdate">
       <Property name="dataType">Date</Property>
       <Property name="label">执行日期</Property>
-      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="completestate">
       <Property name="dataType">String</Property>
       <Property name="label">完成状态</Property>
-      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="oid">
       <Property name="dataType">String</Property>
@@ -734,7 +741,6 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
     <PropertyDef name="outlineFlights">
       <Property name="dataType">int</Property>
       <Property name="label">大纲架次</Property>
-      <Property name="required">true</Property>
       <Validator type="range">
         <Property name="maxValue">100</Property>
         <Property name="minValue">0</Property>
@@ -745,7 +751,6 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
     <PropertyDef name="combineFlights">
       <Property name="dataType">int</Property>
       <Property name="label">结合架次</Property>
-      <Property name="required">true</Property>
       <Validator type="range">
         <Property name="maxValue">100</Property>
         <Property name="minValue">0</Property>
@@ -762,7 +767,6 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
     <PropertyDef name="testStatus">
       <Property></Property>
       <Property name="label">试飞状态</Property>
-      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="engineState">
       <Property></Property>
@@ -821,6 +825,10 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
         </Property>
       </Property>
       <Property name="defaultValue">0</Property>
+    </PropertyDef>
+    <PropertyDef name="project">
+      <Property name="dataType">Subject</Property>
+      <Property name="label">试飞科目树</Property>
     </PropertyDef>
   </DataType>
   <DataType name="Sffault" meta="x:708;y:10">

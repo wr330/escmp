@@ -20,7 +20,7 @@
         <Property name="icon">url(>skin>common/icons.gif) -180px -140px</Property>
       </IFrameTab>
       <IFrameTab>
-        <Property name="path">com.buaa.fly.view.Outlineexecution.d</Property>
+        <Property name="path">com.buaa.fly.view.ShifeiOutline.d</Property>
         <Property name="caption">试飞大纲的执行情况</Property>
         <Property name="icon">url(>skin>common/icons.gif) -160px -40px</Property>
       </IFrameTab>

@@ -3,9 +3,12 @@ package com.buaa.fly.domain;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -27,6 +30,7 @@ public class  Subject implements Serializable {
 	private String parentnode ;
 	private String ftype ;
 	private List<Subject> children;
+	private List<Outlineexecution> outlineexecution ;
 
 	@Id
 		@Column(name = "Oid", unique = true, nullable = false)
@@ -72,6 +76,13 @@ public class  Subject implements Serializable {
 	}
 	public void setFtype(String ftype) {
 		this.ftype = ftype;
+	}
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY,mappedBy = "project")
+	public List<Outlineexecution> getOutlineexecution() {
+		return outlineexecution;
+	}
+	public void setOutlineexecution(List<Outlineexecution> outlineexecution) {
+		this.outlineexecution = outlineexecution;
 	}
 	@Transient
 	public List<Subject> getChildren() {
