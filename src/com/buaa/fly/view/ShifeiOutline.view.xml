@@ -12,7 +12,7 @@
         <Property name="dataProvider">subjectPR#querySubject</Property>
         <Property name="parameter">
           <Entity>
-            <Property name="parentnode">$${this.name}</Property>
+            <Property name="parentnode">$${this.oid}</Property>
             <Property name="ftype">$${this.ftype}</Property>
           </Entity>
         </Property>
@@ -36,17 +36,6 @@
       <Property name="dataProvider">ftypesPR#queryFtypes</Property>
       <Property name="pageSize">20</Property>
       <Property name="loadMode">onReady</Property>
-    </DataSet>
-    <DataSet id="dsOutlineexecution">
-      <Property name="dataType">[Outlineexecution]</Property>
-      <Property name="dataProvider">outlineexecutionPR#query</Property>
-      <Property name="parameter">
-        <Entity>
-          <Property name="ftype"></Property>
-          <Property name="parentnode"></Property>
-          <Property name="subject"></Property>
-        </Entity>
-      </Property>
     </DataSet>
     <UpdateAction id="uaSubject">
       <Property name="dataResolver">subjectPR#saveSubject</Property>
@@ -143,11 +132,13 @@ dorado.MessageBox.alert(&quot;请选择删除的节点!&quot;);</ClientEvent>
               <AutoFormElement>
                 <Property name="name">aircrafttype</Property>
                 <Property name="property">aircrafttype</Property>
+                <Property name="readOnly">true</Property>
                 <Editor/>
               </AutoFormElement>
               <AutoFormElement>
                 <Property name="name">project</Property>
                 <Property name="property">project.name</Property>
+                <Property name="readOnly">true</Property>
                 <Editor/>
               </AutoFormElement>
               <AutoFormElement>
@@ -156,28 +147,8 @@ dorado.MessageBox.alert(&quot;请选择删除的节点!&quot;);</ClientEvent>
                 <Editor/>
               </AutoFormElement>
               <AutoFormElement>
-                <Property name="name">execdate</Property>
-                <Property name="property">execdate</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement>
                 <Property name="name">completestate</Property>
                 <Property name="property">completestate</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement>
-                <Property name="name">subject</Property>
-                <Property name="property">subject</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement>
-                <Property name="name">outlineFlights</Property>
-                <Property name="property">outlineFlights</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement>
-                <Property name="name">aircraftStruct</Property>
-                <Property name="property">aircraftStruct</Property>
                 <Editor/>
               </AutoFormElement>
               <AutoFormElement>
@@ -196,13 +167,23 @@ dorado.MessageBox.alert(&quot;请选择删除的节点!&quot;);</ClientEvent>
                 <Editor/>
               </AutoFormElement>
               <AutoFormElement>
-                <Property name="name">jiaci</Property>
-                <Property name="property">jiaci</Property>
+                <Property name="name">aircraftStruct</Property>
+                <Property name="property">aircraftStruct</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">outlineFlights</Property>
+                <Property name="property">outlineFlights</Property>
                 <Editor/>
               </AutoFormElement>
               <AutoFormElement>
                 <Property name="name">shijijiaci</Property>
                 <Property name="property">shijijiaci</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">execdate</Property>
+                <Property name="property">execdate</Property>
                 <Editor/>
               </AutoFormElement>
               <AutoFormElement>
@@ -214,11 +195,12 @@ dorado.MessageBox.alert(&quot;请选择删除的节点!&quot;);</ClientEvent>
             <ToolBar/>
             <DataGrid>
               <Property name="readOnly">true</Property>
-              <Property name="dataSet">dsOutlineexecution</Property>
               <Property name="height">40%</Property>
               <Property name="filterMode">serverSide</Property>
               <Property name="rowHeight">22</Property>
               <Property name="dataType">Outlineexecution</Property>
+              <Property name="dataPath">!CURRENT_ROOT.outlineexecution</Property>
+              <Property name="dataSet">dataSetSubject</Property>
               <RowNumColumn/>
               <DataColumn name="project">
                 <Property name="property">project.name</Property>
@@ -235,11 +217,14 @@ dorado.MessageBox.alert(&quot;请选择删除的节点!&quot;);</ClientEvent>
               <DataColumn name="completestate">
                 <Property name="property">completestate</Property>
               </DataColumn>
-              <DataColumn name="subject">
-                <Property name="property">subject</Property>
-              </DataColumn>
               <DataColumn name="outlineFlights">
                 <Property name="property">outlineFlights</Property>
+              </DataColumn>
+              <DataColumn name="combineFlights">
+                <Property name="property">combineFlights</Property>
+              </DataColumn>
+              <DataColumn name="combineSubject">
+                <Property name="property">combineSubject</Property>
               </DataColumn>
               <DataColumn name="aircraftStruct">
                 <Property name="property">aircraftStruct</Property>
@@ -253,17 +238,14 @@ dorado.MessageBox.alert(&quot;请选择删除的节点!&quot;);</ClientEvent>
               <DataColumn name="testMethod">
                 <Property name="property">testMethod</Property>
               </DataColumn>
-              <DataColumn name="orderno">
-                <Property name="property">orderno</Property>
-              </DataColumn>
-              <DataColumn name="parentnode">
-                <Property name="property">parentnode</Property>
-              </DataColumn>
-              <DataColumn name="jiaci">
-                <Property name="property">jiaci</Property>
+              <DataColumn name="combineVehicle">
+                <Property name="property">combineVehicle</Property>
               </DataColumn>
               <DataColumn name="shijijiaci">
                 <Property name="property">shijijiaci</Property>
+              </DataColumn>
+              <DataColumn name="miji">
+                <Property name="property">miji</Property>
               </DataColumn>
             </DataGrid>
           </Children>
@@ -287,15 +269,6 @@ dorado.DataPath.registerInterceptor(&quot;CURRENT_ROOT&quot;, function(data) {&#
 </ClientEvent>
             <ClientEvent name="onCurrentChange">//var entity = self.get(&quot;currentNode.data&quot;);&#xD;
 var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT.#outlineexecution&quot;);&#xD;
-var entity=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT&quot;);&#xD;
-if(entity!=null&amp;&amp;entity.get(&quot;ftype&quot;)!=null){&#xD;
-view.id('dsOutlineexecution').set(&quot;parameter&quot;, {&#xD;
-	parentnode: entity.get(&quot;name&quot;),&#xD;
-	ftype:entity.get(&quot;ftype&quot;)&#xD;
-});&#xD;
-}&#xD;
-view.id('dsOutlineexecution').flushAsync();&#xD;
-&#xD;
 if(cur){&#xD;
 		view.set({&#xD;
 		&quot;^onDirtyNode.disabled&quot; : false,&#xD;
@@ -339,7 +312,7 @@ if(cur){&#xD;
           <ClientEvent name="onClick">view.id('uaSubject').execute(function(){
 			   view.id('diaOutlineexecution').hide();
            });
-		   
+		   //view.id('dataSetSubject').flushAsync();
          </ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
@@ -347,6 +320,7 @@ if(cur){&#xD;
         <Button>
           <ClientEvent name="onClick">var cur=view.id('dataSetSubject').getData('#');
 				cur.cancel();
+				view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT.outlineexecution&quot;).cancel();
 				view.id('diaOutlineexecution').hide();</ClientEvent>
           <Property name="caption">取消</Property>
           <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
@@ -361,7 +335,7 @@ if(cur){&#xD;
           <Property name="dataType">Outlineexecution</Property>
           <AutoFormElement>
             <Property name="name">project</Property>
-            <Property name="property">project.oid</Property>
+            <Property name="property">project.name</Property>
             <Property name="readOnly">true</Property>
             <Editor/>
           </AutoFormElement>
@@ -387,16 +361,6 @@ if(cur){&#xD;
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="name">subject</Property>
-            <Property name="property">subject</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">outlineFlights</Property>
-            <Property name="property">outlineFlights</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
             <Property name="name">aircraftStruct</Property>
             <Property name="property">aircraftStruct</Property>
             <Editor/>
@@ -417,18 +381,8 @@ if(cur){&#xD;
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="name">orderno</Property>
-            <Property name="property">orderno</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">parentnode</Property>
-            <Property name="property">parentnode</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">jiaci</Property>
-            <Property name="property">jiaci</Property>
+            <Property name="name">outlineFlights</Property>
+            <Property name="property">outlineFlights</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>

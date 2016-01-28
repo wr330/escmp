@@ -26,6 +26,7 @@ import com.buaa.fly.domain.Subject;
 import com.buaa.fly.domain.Tasklist;
 
 import com.buaa.fly.outlineexecution.dao.OutlineexecutionDao;
+import com.buaa.fly.outlineexecution.dao.OutlineexecutionDaoforJDBC;
 
 import com.buaa.fly.tasklist.dao.TasklistDao;
 import com.common.FileHelper;
@@ -35,10 +36,14 @@ public class OutlineexecutionManager {
 	
 	@Resource
 	private OutlineexecutionDao outlineexecutionDao;
+	
+	@Resource
+	private OutlineexecutionDaoforJDBC outlineexecutionDaoforJDBC;
 	@Resource
 	private TasklistDao tasklistDao;
 	@Resource
 	private CombineVehicleManager combineVehicleManager;
+
 	/**
 	 * @throws Exception
 	 */
@@ -51,6 +56,13 @@ public class OutlineexecutionManager {
 	 */
 	public Collection<Outlineexecution> query(Map<String, Object> parameter) throws Exception {
 		return outlineexecutionDao.query(parameter);
+	}
+	
+	/**
+	 * @throws Exception
+	 */
+	public Collection<Outlineexecution> queryOutlineexecutionforJDBC(Map<String, Object> parameter) throws Exception {
+		return outlineexecutionDaoforJDBC.query(parameter);
 	}
 
 	/**                  

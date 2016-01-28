@@ -45,6 +45,14 @@ public class OutlineexecutionPR{
    	public Collection<Outlineexecution> query(Map<String, Object> parameter) throws Exception {
    		return outlineexecutionManager.query(parameter);   
    	}
+   	
+    /**                  
+   	* @throws Exception
+   	*/
+   	@DataProvider
+   	public Collection<Outlineexecution> queryOutlineexecutionforJDBC(Map<String, Object> parameter) throws Exception {
+   		return outlineexecutionManager.queryOutlineexecutionforJDBC(parameter);   
+   	}
     /**                  
  	* 分页查询信息，带有criteria
  	* @param page    

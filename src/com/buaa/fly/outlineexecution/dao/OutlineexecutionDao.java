@@ -23,6 +23,7 @@ import com.buaa.fly.domain.Dailyacc;
 import com.buaa.fly.domain.Outlineexecution;
 import com.buaa.fly.domain.Sfstatistic;
 import com.buaa.fly.domain.Subject;
+import com.buaa.fly.outlineexecution.dao.OutlineexecutionDaoforJDBC.OutlineexecutionRowMapper;
 
 @Repository("outlineexecutionDao")
 public class OutlineexecutionDao extends HibernateBaseDao {
@@ -51,6 +52,7 @@ public Collection<Outlineexecution> queryOutlineexecution(Map<String, Object> pa
 		hql+=" and u.parentnode is null order by u.orderno asc";
 		return this.query(hql,map);
 	}else{
+		
 		map.put("parentnode",parentnode);
 		hql+=" and u.parentnode=:parentnode order by u.orderno asc";
 		return this.query(hql,map);			
@@ -92,7 +94,6 @@ public Collection<Outlineexecution> query(Map<String, Object> parameter) throws 
 		hql+=" and u.project.parentnode=:parentnode";
 		return this.query(hql,map);
 	}
-
 }
 	public void queryOutline(Page<Outlineexecution> page, Map<String, Object> parameter,Criteria criteria) throws Exception {
         Map<String, Object> args = new HashMap<String,Object>();
@@ -147,6 +148,7 @@ public Collection<Outlineexecution> query(Map<String, Object> parameter) throws 
         String hql = coreHql.toString();//+ "order by execdate desc";
 		this.pagingQuery(page, hql, countHql, args);
 	}
+	
 
 	/**
 	 * 数据添加
