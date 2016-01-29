@@ -210,15 +210,12 @@ public Collection<Subject> deleteSubject(Map<String, Object> parameter) throws E
 	
 	
 	
-	public String subjectIsOld(String oid,String pid) {
+	public String subjectIsOld(String pid) {
 		String hql = "select count(*) from " + Outlineexecution.class.getName()
 				+ " u where u.project.oid = :pid";
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
 		parameterMap.put("pid", pid);
 		String returnStr = null;
-		if (oid != null) {
-			return returnStr;
-		}
 		int count = this.queryForInt(hql, parameterMap);
 		if (count > 0) {
 			returnStr = "此科目已存在大纲条目！";

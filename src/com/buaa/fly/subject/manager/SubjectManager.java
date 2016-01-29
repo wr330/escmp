@@ -191,7 +191,7 @@ public class SubjectManager {
 			return subjectDao.subjectIsExists(oid,name,ftype);
 		} 
 	 @Expose
-		public String subjectIsOld(String oid,String pid) {
-			return subjectDao.subjectIsOld(oid,pid);
+		public String subjectIsOld(String pid) {
+			return subjectDao.subjectIsOld(pid);
 		} 
 }

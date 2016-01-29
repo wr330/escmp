@@ -44,6 +44,20 @@
         <Property name="dataSet">dataSetSubject</Property>
       </UpdateItem>
     </UpdateAction>
+    <AjaxAction id="ajaxActionCheck">
+      <ClientEvent name="onSuccess">var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT&quot;);&#xD;
+var result=self.get(&quot;returnValue&quot;);&#xD;
+if(!result){&#xD;
+	if (cur) {&#xD;
+	view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT.outlineexecution&quot;).insert({project:{oid:cur.get(&quot;oid&quot;),name:cur.get(&quot;name&quot;)},aircrafttype:cur.get(&quot;ftype&quot;)});&#xD;
+	view.id('diaOutlineexecution').show();&#xD;
+	}&#xD;
+}else&#xD;
+	dorado.MessageBox.alert(result);&#xD;
+</ClientEvent>
+      <Property name="service">subjectManager#subjectIsOld</Property>
+      <Property name="parameter"/>
+    </AjaxAction>
     <AjaxAction id="ajaxActionDownloadFile">
       <ClientEvent name="onSuccess">var cur=view.id(&quot;dsOutlineexecution&quot;).getData(&quot;#&quot;);&#xD;
 //window.open('/escmp/export/Fly_OutlineExecution/'+ arg.result );</ClientEvent>
@@ -84,10 +98,10 @@ dataSetSubject.flushAsync();</ClientEvent>
               <Separator/>
               <ToolBarButton>
                 <ClientEvent name="onClick">var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT&quot;);&#xD;
-if (cur) {&#xD;
-	view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT.outlineexecution&quot;).insert({project:{oid:cur.get(&quot;oid&quot;),name:cur.get(&quot;name&quot;)},aircrafttype:cur.get(&quot;ftype&quot;)});&#xD;
-	view.id('diaOutlineexecution').show();&#xD;
-	}&#xD;
+view.id('ajaxActionCheck').set(&quot;parameter&quot;,{&#xD;
+	pid:cur.get(&quot;oid&quot;)&#xD;
+}).execute();&#xD;
+&#xD;
 </ClientEvent>
                 <Property name="caption">新增</Property>
                 <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
@@ -254,9 +268,18 @@ if(cur){&#xD;
       <Property name="height">500</Property>
       <Buttons>
         <Button>
-          <ClientEvent name="onClick">view.id('uaSubject').execute(function(){
+          <ClientEvent name="onClick">var result=view.id('ajaxActionCheck').get(&quot;returnValue&quot;);
+alert(result);
+if(!result){
+view.id('uaSubject').execute(function(){
 			   view.id('diaOutlineexecution').hide();
            });
+		   }
+		   else{
+		   	dorado.MessageBox.alert(result);
+		   }
+		   	
+		   
 		   //view.id('dataSetSubject').flushAsync();
          </ClientEvent>
           <Property name="caption">确定</Property>
