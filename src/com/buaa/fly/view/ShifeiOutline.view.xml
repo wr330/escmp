@@ -44,11 +44,17 @@
         <Property name="dataSet">dataSetSubject</Property>
       </UpdateItem>
     </UpdateAction>
+    <AjaxAction id="ajaxActionDownloadFile">
+      <ClientEvent name="onSuccess">var cur=view.id(&quot;dsOutlineexecution&quot;).getData(&quot;#&quot;);&#xD;
+//window.open('/escmp/export/Fly_OutlineExecution/'+ arg.result );</ClientEvent>
+      <Property name="service">outlineexecutionManager#downloadFile</Property>
+    </AjaxAction>
     <DataSetDropDown id="dataSetDropDownAircraftType">
       <ClientEvent name="onValueSelect">var dataSetSubject = this.get(&quot;#dataSetSubject&quot;);&#xD;
 dataSetSubject.set(&quot;parameter&quot;, {&#xD;
 	ftype: arg.selectedValue&#xD;
 });&#xD;
+this.get(&quot;#dataTreeSubject&quot;).set(&quot;dataSet&quot;,&quot;dataSetSubject&quot;);&#xD;
 dataSetSubject.flushAsync();</ClientEvent>
       <Property name="autoOpen">true</Property>
       <Property name="dataSet">dsFtypes</Property>
@@ -79,14 +85,14 @@ dataSetSubject.flushAsync();</ClientEvent>
               <ToolBarButton>
                 <ClientEvent name="onClick">var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT&quot;);&#xD;
 if (cur) {&#xD;
-	view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT.outlineexecution&quot;).insert({project:{oid:cur.get(&quot;oid&quot;)},aircrafttype:cur.get(&quot;ftype&quot;)});&#xD;
+	view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT.outlineexecution&quot;).insert({project:{oid:cur.get(&quot;oid&quot;),name:cur.get(&quot;name&quot;)},aircrafttype:cur.get(&quot;ftype&quot;)});&#xD;
 	view.id('diaOutlineexecution').show();&#xD;
 	}&#xD;
 </ClientEvent>
                 <Property name="caption">新增</Property>
                 <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
                 <Property name="tags">onCurrentNode</Property>
-                <Property name="disabled">true</Property>
+                <Property name="disabled">false</Property>
               </ToolBarButton>
               <ToolBarButton>
                 <ClientEvent name="onClick">var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT.#outlineexecution&quot;);&#xD;
@@ -99,7 +105,7 @@ if (cur) {&#xD;
                 <Property name="icon"> url(>skin>common/icons.gif) -100px -0px</Property>
                 <Property name="tags">onDirtyNode</Property>
                 <Property name="width">57</Property>
-                <Property name="disabled">true</Property>
+                <Property name="disabled">false</Property>
               </ToolBarButton>
               <ToolBarButton>
                 <ClientEvent name="onClick">&#xD;
@@ -120,83 +126,20 @@ dorado.MessageBox.alert(&quot;请选择删除的节点!&quot;);</ClientEvent>
                 <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
                 <Property name="tags">onDirtyNode</Property>
                 <Property name="width">57</Property>
-                <Property name="disabled">true</Property>
+                <Property name="disabled">false</Property>
               </ToolBarButton>
-            </ToolBar>
-            <AutoForm>
-              <Property name="dataSet">dataSetSubject</Property>
-              <Property name="dataPath">!CURRENT_ROOT.#outlineexecution</Property>
-              <Property name="cols">*,*</Property>
-              <Property name="readOnly">true</Property>
-              <Property name="dataType">Outlineexecution</Property>
-              <AutoFormElement>
-                <Property name="name">aircrafttype</Property>
-                <Property name="property">aircrafttype</Property>
-                <Property name="readOnly">true</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement>
-                <Property name="name">project</Property>
-                <Property name="property">project.name</Property>
-                <Property name="readOnly">true</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement>
-                <Property name="name">remainstate</Property>
-                <Property name="property">remainstate</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement>
-                <Property name="name">completestate</Property>
-                <Property name="property">completestate</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement>
-                <Property name="name">testStatus</Property>
-                <Property name="property">testStatus</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement>
-                <Property name="name">engineState</Property>
-                <Property name="property">engineState</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement>
-                <Property name="name">testMethod</Property>
-                <Property name="property">testMethod</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement>
-                <Property name="name">aircraftStruct</Property>
-                <Property name="property">aircraftStruct</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement>
-                <Property name="name">outlineFlights</Property>
-                <Property name="property">outlineFlights</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement>
-                <Property name="name">shijijiaci</Property>
-                <Property name="property">shijijiaci</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement>
-                <Property name="name">execdate</Property>
-                <Property name="property">execdate</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement>
-                <Property name="name">miji</Property>
-                <Property name="property">miji</Property>
-                <Editor/>
-              </AutoFormElement>
-            </AutoForm>
-            <ToolBar>
-              <DataPilot>
-                <Property name="dataPath">!CURRENT_ROOT.outlineexecution</Property>
-                <Property name="dataSet">dataSetSubject</Property>
-              </DataPilot>
+              <Fill/>
+              <ToolBarButton>
+                <ClientEvent name="onClick">var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT&quot;);&#xD;
+if(cur){&#xD;
+    view.id(&quot;ajaxActionDownloadFile&quot;).set(&quot;parameter&quot;,{&#xD;
+		id: cur.get(&quot;oid&quot;),&#xD;
+		fname:cur.get(&quot;ftype&quot;)&#xD;
+	}).execute();&#xD;
+}</ClientEvent>
+                <Property name="caption">导出试飞大纲</Property>
+                <Property name="icon"> url(>skin>common/icons.gif) -120px -20px</Property>
+              </ToolBarButton>
             </ToolBar>
             <DataGrid>
               <Property name="readOnly">true</Property>
@@ -273,7 +216,7 @@ dorado.DataPath.registerInterceptor(&quot;CURRENT_ROOT&quot;, function(data) {&#
 &#xD;
 </ClientEvent>
             <ClientEvent name="onCurrentChange">//var entity = self.get(&quot;currentNode.data&quot;);&#xD;
-var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT.#outlineexecution&quot;);&#xD;
+/*var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT.#outlineexecution&quot;);&#xD;
 if(cur){&#xD;
 		view.set({&#xD;
 		&quot;^onDirtyNode.disabled&quot; : false,&#xD;
@@ -283,12 +226,9 @@ if(cur){&#xD;
 		&quot;^onDirtyNode.disabled&quot; : true,&#xD;
 		&quot;^onCurrentNode.disabled&quot;:false});&#xD;
 }&#xD;
-&#xD;
-&#xD;
-			&#xD;
+		*/	&#xD;
 </ClientEvent>
             <Property name="currentNodeDataPath">currentSubject</Property>
-            <Property name="dataSet">dataSetSubject</Property>
             <BindingConfigs>
               <BindingConfig>
                 <Property name="tipProperty">description</Property>

@@ -62,6 +62,15 @@ public class SubjectPR{
 	public int countChildren(Map<String, Object> parameter) {
 		return subjectManager.countChildren(parameter);
 	}
+	 
+	 @Expose
+	public void copyAll(Map<String, Object> parameter) {
+		try {
+			subjectManager.copyAll(parameter);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	 /**                  
 		* 分页查询信息，带有criteria
 		* @param page    

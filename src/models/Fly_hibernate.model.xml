@@ -814,6 +814,18 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
     <PropertyDef name="project">
       <Property name="dataType">Subject</Property>
       <Property name="label">试飞科目</Property>
+      <Validator type="ajax">
+        <ClientEvent name="beforeExecute">var oid = arg.entity.get(&quot;oid&quot;);&#xD;
+var pid = arg.entity.get(&quot;project.oid&quot;);&#xD;
+if(!oid)&#xD;
+    oid = null;&#xD;
+var parameter = {&#xD;
+		oid:oid,&#xD;
+		pid:pid&#xD;
+	};&#xD;
+arg.parameter = parameter;</ClientEvent>
+        <Property name="service">subjectManager#subjectIsOld</Property>
+      </Validator>
     </PropertyDef>
   </DataType>
   <DataType name="Sffault" meta="x:708;y:10">

@@ -36,17 +36,31 @@
         </Entity>
       </Property>
     </DataSet>
-    <DataSet id="dsSubject">
-      <Property name="dataType">[Subject]</Property>
-      <Property name="parameter"></Property>
-      <Property name="dataProvider">subjectPR#querygenericSubject</Property>
-      <Property name="pageSize">20</Property>
-    </DataSet>
     <DataSet id="dsUserOperationLog">
       <Property name="dataProvider">userOperationLogPR#queryUserOperationLog</Property>
       <Property name="dataType">[UserOperationLog]</Property>
       <Property name="pageSize">20</Property>
     </DataSet>
+    <DataSet id="dsFtypes">
+      <Property name="dataType">[Ftypes]</Property>
+      <Property name="dataProvider">ftypesPR#queryFtypes</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="loadMode">onReady</Property>
+    </DataSet>
+    <AjaxAction id="ajaxGetsubject">
+      <ClientEvent name="beforeExecute">var cur=view.id('ajaxGetsubject');&#xD;
+var ftype=view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
+cur.set(&quot;parameter&quot;,{&#xD;
+	ftype:ftype&#xD;
+	});</ClientEvent>
+      <ClientEvent name="onExecute">var cur=view.id('dataSetSubject');&#xD;
+var ftype=view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
+cur.set(&quot;parameter&quot;,{&#xD;
+	ftype:ftype&#xD;
+	});&#xD;
+cur.flushAsync();</ClientEvent>
+      <Property name="service">subjectPR#copyAll</Property>
+    </AjaxAction>
     <UpdateAction id="updateActionSubject">
       <Property name="dataResolver">subjectPR#saveSubject</Property>
       <Property name="successMessage">数据已保存</Property>
@@ -60,33 +74,34 @@
         <Property name="dataSet">dsUserOperationLog</Property>
       </UpdateItem>
     </UpdateAction>
-    <UpdateAction id="updateSubject">
-      <ClientEvent name="beforeExecute">var cur=view.id('dsSubject');&#xD;
-var ftype=view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
-//cur.set(&quot;parameter&quot;,{&#xD;
-//	});&#xD;
-//cur.flushAsync();&#xD;
-cur.getData().each(function(Subject){&#xD;
-	Subject.set(&quot;ftype&quot;,ftype);&#xD;
+    <AjaxAction id="ajaxActionCheckChildren">
+      <Property name="service">subjectPR#countChildren</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="ftype"></Property>
+          <Property name="parentnode"></Property>
+        </Entity>
+      </Property>
+    </AjaxAction>
+    <DataSetDropDown id="dataSetDropDownAircraftType">
+      <ClientEvent name="onValueSelect">var dataSetSubject = this.get(&quot;#dataSetSubject&quot;);&#xD;
+dataSetSubject.set(&quot;parameter&quot;, {&#xD;
+	ftype: arg.selectedValue&#xD;
 });&#xD;
-</ClientEvent>
-      <ClientEvent name="onExecute">var cur=view.id('dataSetSubject');&#xD;
-var ftype=view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
-cur.set(&quot;parameter&quot;,{&#xD;
-	ftype:ftype&#xD;
-	});&#xD;
-cur.flushAsync();&#xD;
-var cur1=view.id('dsSubject');&#xD;
-cur1.set(&quot;parameter&quot;,{&#xD;
-	});&#xD;
-cur1.flushAsync();</ClientEvent>
-      <Property name="dataResolver">subjectPR#copySubject</Property>
-      <Property name="successMessage">数据已关联</Property>
-      <Property name="parameter"></Property>
-      <UpdateItem>
-        <Property name="dataSet">dsSubject</Property>
-      </UpdateItem>
-    </UpdateAction>
+dataSetSubject.flushAsync();&#xD;
+if(arg.selectedValue)&#xD;
+	view.set({&#xD;
+		&quot;^Dirty.disabled&quot; : false});&#xD;
+else&#xD;
+	view.set({&#xD;
+		&quot;^Dirty.disabled&quot; : true});</ClientEvent>
+      <Property name="autoOpen">true</Property>
+      <Property name="dataSet">dsFtypes</Property>
+      <Property name="displayProperty">ftypename</Property>
+      <Property name="editable">false</Property>
+      <Property name="property">ftypename</Property>
+      <Property name="useEmptyItem">true</Property>
+    </DataSetDropDown>
     <SplitPanel>
       <Property name="position">270</Property>
       <MainControl>
@@ -100,7 +115,7 @@ cur1.flushAsync();</ClientEvent>
             </FormElement>
             <Button>
               <Property name="caption">关联通用试飞科目</Property>
-              <Property name="action">updateSubject</Property>
+              <Property name="action">ajaxGetsubject</Property>
               <Property name="disabled">true</Property>
               <Property name="tags">Dirty</Property>
             </Button>
@@ -309,39 +324,5 @@ view.set({&#xD;
         </Container>
       </SideControl>
     </SplitPanel>
-    <AjaxAction id="ajaxActionCheckChildren">
-      <Property name="service">subjectPR#countChildren</Property>
-      <Property name="parameter">
-        <Entity>
-          <Property name="ftype"></Property>
-          <Property name="parentnode"></Property>
-        </Entity>
-      </Property>
-    </AjaxAction>
-    <DataSetDropDown id="dataSetDropDownAircraftType">
-      <ClientEvent name="onValueSelect">var dataSetSubject = this.get(&quot;#dataSetSubject&quot;);&#xD;
-dataSetSubject.set(&quot;parameter&quot;, {&#xD;
-	ftype: arg.selectedValue&#xD;
-});&#xD;
-dataSetSubject.flushAsync();&#xD;
-if(arg.selectedValue)&#xD;
-	view.set({&#xD;
-		&quot;^Dirty.disabled&quot; : false});&#xD;
-else&#xD;
-	view.set({&#xD;
-		&quot;^Dirty.disabled&quot; : true});</ClientEvent>
-      <Property name="autoOpen">true</Property>
-      <Property name="dataSet">dsFtypes</Property>
-      <Property name="displayProperty">ftypename</Property>
-      <Property name="editable">false</Property>
-      <Property name="property">ftypename</Property>
-      <Property name="useEmptyItem">true</Property>
-    </DataSetDropDown>
-    <DataSet id="dsFtypes">
-      <Property name="dataType">[Ftypes]</Property>
-      <Property name="dataProvider">ftypesPR#queryFtypes</Property>
-      <Property name="pageSize">20</Property>
-      <Property name="loadMode">onReady</Property>
-    </DataSet>
   </View>
 </ViewConfig>

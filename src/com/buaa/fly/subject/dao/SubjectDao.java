@@ -15,6 +15,7 @@ import com.common.HibernateBaseDao;
 import com.bstek.bdf2.core.orm.ParseResult;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
+import com.buaa.fly.domain.Outlineexecution;
 import com.buaa.fly.domain.Sfstatistic;
 import com.buaa.fly.domain.Subject;
 import com.buaa.out.domain.Technicaldocument;
@@ -52,6 +53,25 @@ public class SubjectDao extends HibernateBaseDao {
 		
 	}
 	
+	/**
+	 * 指针对通用试飞科目
+	 * 
+	 * @param page
+	 * @param parameter
+	 * @param criteria
+	 * @throws Exception
+	 */
+	public Collection<Subject> queryChildren(String parameter) throws Exception {		
+		String hql="from "+Subject.class.getName()+" u where 1=1 and u.ftype is null";
+		if(StringUtils.isEmpty(parameter)){
+			hql+=" and u.parentnode is null ";
+			return this.query(hql);
+		}else{
+			hql+=" and u.parentnode='"+parameter+"'";
+			return this.query(hql);			
+		}
+		
+	}
 	
 	/**
 	 * 同时也支持普通类型查询，在数据类型和日期类型支持区间查询
@@ -63,6 +83,21 @@ public class SubjectDao extends HibernateBaseDao {
 	 */
 	public Subject querySubjectbyId(String parameter) throws Exception {
 		String hql="from "+Subject.class.getName()+" u where oid='"+parameter+"'";
+			List<Subject> lst= this.query(hql);			
+			return lst.get(0);
+		
+	}
+	
+	/**
+	 * 同时也支持普通类型查询，在数据类型和日期类型支持区间查询
+	 * 
+	 * @param page
+	 * @param parameter
+	 * @param criteria
+	 * @throws Exception
+	 */
+	public Subject queryCommonSubject() throws Exception {
+		String hql="from "+Subject.class.getName()+" u where u.ftype is null and u.parentnode is null ";
 			List<Subject> lst= this.query(hql);			
 			return lst.get(0);
 		
@@ -102,7 +137,6 @@ public Collection<Subject> deleteSubject(Map<String, Object> parameter) throws E
 	public void copyData(Subject detail) throws Exception {
 		Session session = this.getSessionFactory().openSession();
 		try {
-			detail.setOid(UUID.randomUUID().toString());
 			session.save(detail);
 		} finally {
 			session.flush();
@@ -170,6 +204,24 @@ public Collection<Subject> deleteSubject(Map<String, Object> parameter) throws E
 		String returnStr = null;
 		if (count > 0) {
 			returnStr = "此科目名已存在！";
+		}
+		return returnStr;
+	}  
+	
+	
+	
+	public String subjectIsOld(String oid,String pid) {
+		String hql = "select count(*) from " + Outlineexecution.class.getName()
+				+ " u where u.project.oid = :pid";
+		Map<String, Object> parameterMap = new HashMap<String, Object>();
+		parameterMap.put("pid", pid);
+		String returnStr = null;
+		if (oid != null) {
+			return returnStr;
+		}
+		int count = this.queryForInt(hql, parameterMap);
+		if (count > 0) {
+			returnStr = "此科目已存在大纲条目！";
 		}
 		return returnStr;
 	}  

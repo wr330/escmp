@@ -121,6 +121,22 @@ public Collection<Outlineexecution> query(Map<String, Object> parameter) throws 
 		this.pagingQuery(page, hql, countHql, args);
 	}
 	
+	
+	@SuppressWarnings({ "deprecation", "unchecked" })
+	public Collection<Outlineexecution> queryOutlineforText(String subjectOid) throws Exception {
+		String oid = subjectOid;
+		String sql = "with cte as(	select a.oid from Fly_Subject a where Oid='"+oid+
+				"'	union all select k.oid from Fly_Subject k inner join cte c on c.oid=k.ParentNode) select oid from cte";
+		Session session = this.getSessionFactory().openSession();
+		Query query = session.createSQLQuery(sql).addScalar("oid", Hibernate.STRING);//设置返回值类型，不然会报错
+        List<String> aa = query.list();
+		Map<String, Object> args = new HashMap<String,Object>();
+        StringBuffer coreHql = new StringBuffer("from " + Outlineexecution.class.getName()+" a where 1=1 ");
+		coreHql.append(" and a.project.oid in(:aa)");
+		args.put("aa", aa );
+        String hql = coreHql.toString();
+        return this.query(hql,args);
+	}
 
 	/**
 	 * 数据添加

@@ -100,17 +100,20 @@ public class OutlineexecutionManager {
 		}
 	 //下载文件
 	 @Expose
-	 public String downloadFile(String id,String fname) throws IOException{
+	 public String downloadFile(String id,String fname) throws Exception{
 		
 		
-			 Outlineexecution outlineexecution = outlineexecutionDao.queryById(id);
+			 Collection<Outlineexecution> outlineexecution = outlineexecutionDao.queryOutlineforText(id);
 			 //byte[] datablock=outlineexecution.getDatablock();
-			 String hql="from "+Tasklist.class.getName()+" a where a.subject like '%"+outlineexecution.getSubject()+"%'";
-			 List<Tasklist> tasklist=tasklistDao.query(hql);
-			 ExportOutline.generateTable(outlineexecution, tasklist);
+				if (null != outlineexecution && outlineexecution.size() > 0) {
+			    	for(Outlineexecution item : outlineexecution) {
+			    	//	Collection<Tasklist> task=tasklistDao.
+			    	}
+				}
+			// ExportOutline.generateTable(outlineexecution, tasklist);
 			
 		 
-			 return fname+"大纲.doc";
+			 return fname+"试飞大纲.doc";
     }
 	 
 	 /**

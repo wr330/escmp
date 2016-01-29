@@ -3,7 +3,9 @@ package com.buaa.fly.subject.manager;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
@@ -102,18 +104,55 @@ public class SubjectManager {
 			this.deleteSubject(ftype);
 			for (Subject item : details) {
 				String name = item.getName();
-				String parentnode = item.getParentnode();
-				if(name.equals("通用试飞科目"))
+				String oid=item.getOid();
+				String newid=UUID.randomUUID().toString();
+				//String parentnode = item.getParentnode();
+				Collection<Subject> tmp=subjectDao.queryChildren(oid);
+				item.setOid(newid);
+				/*if(name.equals("通用试飞科目"))
 					item.setName(item.getFtype());
+				List<Subject> lst=item.getChildren();
+	
 				if(parentnode != null)
 					if(parentnode.equals("通用试飞科目"))
 						item.setParentnode(item.getFtype());
-					subjectDao.copyData(item);
+					//subjectDao.copyData(item);
 				
-					
+					*/
 			}
 		}
 	}
+	
+	/**
+	 * 
+	 * @param details
+	 * @throws Exception
+	 */
+	public void copyAll(Map<String, Object> parameter) throws Exception {
+			String ftype=(String) parameter.get("ftype");
+			this.deleteSubject(ftype);
+			Subject item=subjectDao.queryCommonSubject();
+			String oid=item.getOid();
+			String newid=UUID.randomUUID().toString();
+			item.setFtype(ftype);
+			item.setOid(newid);
+			subjectDao.copyData(item);
+			this.recurcive(oid, newid, ftype);
+	}
+	public void recurcive(String oid,String newid,String ftype) throws Exception {	
+			Collection<Subject> tmp=subjectDao.queryChildren(oid);
+			if (null != tmp && tmp.size() > 0){
+				for (Subject sub : tmp) {
+					sub.setParentnode(newid);
+					sub.setFtype(ftype);
+					String id=sub.getOid();
+					String nid=UUID.randomUUID().toString();
+					sub.setOid(nid);
+					subjectDao.copyData(sub);
+					this.recurcive(id, nid, ftype);
+				}
+			}
+}
 	/**
 	 * 针对单个数据集操作 包括增删改
 	 * 
@@ -151,5 +190,8 @@ public class SubjectManager {
 		public String subjectIsExists(String oid,String name,String ftype) {
 			return subjectDao.subjectIsExists(oid,name,ftype);
 		} 
-	
+	 @Expose
+		public String subjectIsOld(String oid,String pid) {
+			return subjectDao.subjectIsOld(oid,pid);
+		} 
 }
