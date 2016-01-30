@@ -131,13 +131,16 @@ public class SubjectManager {
 	public void copyAll(Map<String, Object> parameter) throws Exception {
 			String ftype=(String) parameter.get("ftype");
 			this.deleteSubject(ftype);
-			Subject item=subjectDao.queryCommonSubject();
-			String oid=item.getOid();
-			String newid=UUID.randomUUID().toString();
-			item.setFtype(ftype);
-			item.setOid(newid);
-			subjectDao.copyData(item);
-			this.recurcive(oid, newid, ftype);
+			List<Subject> item=subjectDao.queryCommonSubject();
+			for(int i=0;i<item.size();i++){
+				String oid=item.get(i).getOid();
+				String newid=UUID.randomUUID().toString();
+				item.get(i).setFtype(ftype);
+				item.get(i).setOid(newid);
+				subjectDao.copyData(item.get(i));
+				this.recurcive(oid, newid, ftype);
+			}
+
 	}
 	public void recurcive(String oid,String newid,String ftype) throws Exception {	
 			Collection<Subject> tmp=subjectDao.queryChildren(oid);

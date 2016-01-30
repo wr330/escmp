@@ -1,6 +1,7 @@
 package com.buaa.fly.tasklist.dao;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,7 @@ import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 import com.common.HibernateBaseDao;
 
+import com.buaa.fly.domain.Subject;
 import com.buaa.fly.domain.Tasklist;
 
 @Repository("tasklistDao")
@@ -158,5 +160,26 @@ public class TasklistDao extends HibernateBaseDao {
 			returnStr = "此单号已存在！";
 		}
 		return returnStr;
+	}
+
+	public Collection<Tasklist> queryTaskOutline(Map<String, Object> parameter) {
+		
+		Map<String,Object> map=new HashMap<String,Object>();
+		String name=(String) parameter.get("subject");
+		String hql="from "+Tasklist.class.getName()+" u where 1=1";
+		String ftype =(String) parameter.get("ftype");
+		if(StringUtils.isEmpty(ftype)){
+			hql+=" and u.aircrafttype is null";
+		}else
+			hql+=" and u.aircrafttype ='" + ftype + "'";
+		
+		if(StringUtils.isEmpty(name)){
+			hql+=" and u.subject is null ";
+			return this.query(hql,map);
+		}else{
+			map.put("name",name);
+			hql+=" and u.subject=:name ";
+			return this.query(hql,map);			
+		}
 	}
 }

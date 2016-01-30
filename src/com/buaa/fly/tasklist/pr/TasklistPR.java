@@ -13,6 +13,7 @@ import com.bstek.dorado.annotation.DataResolver;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 
+import com.buaa.fly.domain.Subject;
 import com.buaa.fly.domain.Tasklist;
 import com.buaa.fly.tasklist.manager.TasklistManager;
 
@@ -35,6 +36,13 @@ public class TasklistPR{
 	}
 	
 	
+	   /**                  
+		* @throws Exception
+		*/
+		@DataProvider
+		public Collection<Tasklist> queryTaskOutline(Map<String, Object> parameter) throws Exception {
+			return tasklistManager.queryTaskOutline(parameter);   
+		}
 	/**
 	 * 数据保存，包括增删改
 	 * @param dataItems

@@ -123,7 +123,7 @@ public Collection<Outlineexecution> query(Map<String, Object> parameter) throws 
 	
 	
 	@SuppressWarnings({ "deprecation", "unchecked" })
-	public Collection<Outlineexecution> queryOutlineforText(String subjectOid) throws Exception {
+	public List<Outlineexecution> queryOutlineforText(String subjectOid) throws Exception {
 		String oid = subjectOid;
 		String sql = "with cte as(	select a.oid from Fly_Subject a where Oid='"+oid+
 				"'	union all select k.oid from Fly_Subject k inner join cte c on c.oid=k.ParentNode) select oid from cte";

@@ -4,6 +4,7 @@ package com.buaa.fly.outlineexecution.manager;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -103,15 +104,12 @@ public class OutlineexecutionManager {
 	 public String downloadFile(String id,String fname) throws Exception{
 		
 		
-			 Collection<Outlineexecution> outlineexecution = outlineexecutionDao.queryOutlineforText(id);
+			 List<Outlineexecution> outlineexecution = outlineexecutionDao.queryOutlineforText(id);
 			 //byte[] datablock=outlineexecution.getDatablock();
 				if (null != outlineexecution && outlineexecution.size() > 0) {
-			    	for(Outlineexecution item : outlineexecution) {
-			    	//	Collection<Tasklist> task=tasklistDao.
-			    	}
+					ExportOutline.generateOutlineexecution(outlineexecution);
 				}
-			// ExportOutline.generateTable(outlineexecution, tasklist);
-			
+
 		 
 			 return fname+"试飞大纲.doc";
     }

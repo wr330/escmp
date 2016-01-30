@@ -96,10 +96,10 @@ public class SubjectDao extends HibernateBaseDao {
 	 * @param criteria
 	 * @throws Exception
 	 */
-	public Subject queryCommonSubject() throws Exception {
+	public List<Subject> queryCommonSubject() throws Exception {
 		String hql="from "+Subject.class.getName()+" u where u.ftype is null and u.parentnode is null ";
 			List<Subject> lst= this.query(hql);			
-			return lst.get(0);
+			return lst;
 		
 	}
 public Collection<Subject> deleteSubject(Map<String, Object> parameter) throws Exception {

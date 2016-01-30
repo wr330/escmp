@@ -13,6 +13,7 @@ import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 
+import com.buaa.fly.domain.Subject;
 import com.buaa.fly.domain.Tasklist;
 import com.buaa.fly.sfstatistic.manager.SfstatisticManager;
 import com.buaa.fly.tasklist.dao.TasklistDao;
@@ -37,6 +38,13 @@ public class TasklistManager {
 	}
 	
 	
+	/**
+	 * @throws Exception
+	 */
+	public Collection<Tasklist> queryTaskOutline(Map<String, Object> parameter) throws Exception {
+		return tasklistDao.queryTaskOutline(parameter);
+	}
+	/**      
 	/**
 	 * 数据保存，对多个数据集的操作，包括增删改
 	 * @param dataItems
