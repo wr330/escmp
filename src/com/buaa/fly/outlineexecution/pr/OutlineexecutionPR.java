@@ -22,12 +22,18 @@ import com.buaa.fly.domain.Sfstatistic;
 import com.buaa.fly.domain.Subject;
 //import com.buaa.fly.domain.vo.OutlineStatistic;
 import com.buaa.fly.outlineexecution.manager.OutlineexecutionManager;
+import com.buaa.fly.sfstatistic.dao.SfstatisticDao;
+import com.buaa.fly.subject.manager.SubjectManager;
 
 @Component("outlineexecutionPR")
 public class OutlineexecutionPR{
 
     @Resource
 	private OutlineexecutionManager outlineexecutionManager;
+    @Resource
+    private SubjectManager subjectManager;
+    @Resource
+    private SfstatisticDao sfstatisticDao;
 
      
     /**                  
@@ -128,18 +134,29 @@ public class OutlineexecutionPR{
 	@DataProvider
 	public Collection<Map<String, Object>> statisticOutline(Map<String, Object> parameter) throws Exception {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-		Collection<Outlineexecution> dataItems = outlineexecutionManager.queryOutlineexecution(parameter);
-		for (Outlineexecution item : dataItems) {
+		Collection<Subject> dataItems0 = subjectManager.querySubject(parameter);
+		List<Subject> items = (ArrayList<Subject>) dataItems0;
+		Subject item0 = items.get(0);
+		HashMap<String, Object> map0 = new HashMap<String, Object>();
+		map0.put("parentnode", item0.getOid());
+		map0.put("ftype", item0.getFtype());
+		Collection<Subject> dataItems = subjectManager.querySubject(map0);
+		//Collection<Outlineexecution> dataItems = outlineexecutionManager.queryOutlineexecution(parameter);
+		for (Subject item : dataItems) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
-			Float statistic;
-			if(item.getShijijiaci() != null){
-				statistic = (float) (item.getShijijiaci())/(float)(item.getOutlineFlights());
+			Float statistic = (float) 0;
+			if(item.getOutlineexecution().size() > 0 && item.getOutlineexecution() != null)
+			if(item.getOutlineexecution().get(0).getShijijiaci() != null){
+				statistic = (float) (item.getOutlineexecution().get(0).getShijijiaci())/(float)(item.getOutlineexecution().get(0).getOutlineFlights());
 			}else{
-				statistic = (float) (item.getJiaci())/(float)(item.getOutlineFlights());
+				HashMap<String, Object> map1 = new HashMap<String, Object>();
+				map1.put("mainsubject", item.getName());
+				int num = sfstatisticDao.querySubjectnum(map1);
+				statistic = (float) (num)/(float)(item.getOutlineexecution().get(0).getOutlineFlights());
 			}
 			
 			map.put("price", statistic*100);
-			map.put("name", item.getSubject());
+			map.put("name", item.getName());
 			list.add(map);
 		}
 		return list;

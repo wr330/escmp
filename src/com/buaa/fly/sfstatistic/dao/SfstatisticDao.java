@@ -1,5 +1,6 @@
 package com.buaa.fly.sfstatistic.dao;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Date;
 import java.util.List;
@@ -63,6 +64,19 @@ public class SfstatisticDao extends HibernateBaseDao {
         hql=userService.checkUser(hql);//用户密级判断
         hql+= " order by timeqifei desc";
         this.pagingQuery(page, hql, countHql, args);
+	}
+	public int querySubjectnum(Map<String, Object> parameter) throws Exception {
+        Map<String, Object> args = new HashMap<String,Object>();
+        String Hql = "from " + Sfstatistic.class.getName()+" a where 1=1 ";
+        
+        if(null != parameter && !parameter.isEmpty()){
+        	String mainsubject = (String)parameter.get("mainsubject");
+        	if(StringUtils.isNotEmpty( mainsubject )){
+        		Hql += " and a.mainsubject ='" + mainsubject + "'";
+        	}
+        }
+        Collection<Sfstatistic> items = this.query(Hql, args);
+        return items.size();
 	}
 	
 	/**

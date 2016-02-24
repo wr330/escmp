@@ -77,7 +77,7 @@ public class  Subject implements Serializable {
 	public void setFtype(String ftype) {
 		this.ftype = ftype;
 	}
-	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY,mappedBy = "project")
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER,mappedBy = "project")
 	public List<Outlineexecution> getOutlineexecution() {
 		return outlineexecution;
 	}

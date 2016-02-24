@@ -84,7 +84,7 @@ public class FighterinfoDao extends HibernateBaseDao {
 	
 	public Collection<Fighterinfo> queryFighterinfobyPici(String parameter) {
 		String hql = " from " + Fighterinfo.class.getName()
-				+ " u where u.piciid.piciid like '"+parameter+"'";
+				+ " u where u.piciid like '"+parameter+"'";
 		Collection<Fighterinfo> info= this.query(hql);
 		return info;
 	} 
