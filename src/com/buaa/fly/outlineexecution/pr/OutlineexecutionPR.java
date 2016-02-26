@@ -134,13 +134,19 @@ public class OutlineexecutionPR{
 	@DataProvider
 	public Collection<Map<String, Object>> statisticOutline(Map<String, Object> parameter) throws Exception {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		String parentnode = (String) parameter.get("parentnode");
+		Collection<Subject> dataItems;
+		if(parentnode != null){
+			dataItems = subjectManager.querySubject(parameter);
+		}else{
 		Collection<Subject> dataItems0 = subjectManager.querySubject(parameter);
 		List<Subject> items = (ArrayList<Subject>) dataItems0;
 		Subject item0 = items.get(0);
 		HashMap<String, Object> map0 = new HashMap<String, Object>();
 		map0.put("parentnode", item0.getOid());
 		map0.put("ftype", item0.getFtype());
-		Collection<Subject> dataItems = subjectManager.querySubject(map0);
+		dataItems = subjectManager.querySubject(map0);
+		}
 		//Collection<Outlineexecution> dataItems = outlineexecutionManager.queryOutlineexecution(parameter);
 		for (Subject item : dataItems) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
@@ -154,7 +160,7 @@ public class OutlineexecutionPR{
 				int num = sfstatisticDao.querySubjectnum(map1);
 				statistic = (float) (num)/(float)(item.getOutlineexecution().get(0).getOutlineFlights());
 			}
-			
+			map.put("parentnode", item.getOid());
 			map.put("price", statistic*100);
 			map.put("name", item.getName());
 			list.add(map);

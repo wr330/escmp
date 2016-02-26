@@ -107,7 +107,7 @@ public static void generateOutlineexecution(List<Outlineexecution> tasklist){
 
 	for(int i=0;i<tasklist.size();i++){
 		str[0]=tasklist.get(i).getAircrafttype();
-		str[1]=tasklist.get(i).getSubject();
+		str[1]=tasklist.get(i).getProject().getName();
 		str[2]=tasklist.get(i).getAircraftStruct();
 		str[3]=tasklist.get(i).getTestStatus();
 		str[4]=tasklist.get(i).getEngineState();
@@ -117,7 +117,8 @@ public static void generateOutlineexecution(List<Outlineexecution> tasklist){
 		str[8]=tasklist.get(i).getCombineSubject();
 		str[9]=tasklist.get(i).getCompletestate();
 		str[10]=tasklist.get(i).getRemainstate();
-		wd.addContentRow(2, str, i+2);
+		wd.addRow(1);
+		wd.addContentRow(1, str, i+2);
 	}
 
 	String path = "/Fly_Outlineexecution/"+tasklist.get(0).getSubject()+"大纲.doc";

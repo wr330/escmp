@@ -455,7 +455,6 @@ dsOutlineexecution.flushAsync();&#xD;
 }&#xD;
 */</ClientEvent>
             <Property name="dataSet">dataSetSubject</Property>
-            <Property name="width">260</Property>
             <Property name="draggable">false</Property>
             <Property name="droppable">false</Property>
             <Property name="selectionMode">multiRows</Property>

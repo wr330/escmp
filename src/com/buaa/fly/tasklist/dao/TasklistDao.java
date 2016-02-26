@@ -77,7 +77,8 @@ public class TasklistDao extends HibernateBaseDao {
 				//coreHql.append(" and a.aircrafttype = :ac ");
 				coreHql.append(" and a.aircrafttype = '" + aircrafttype + "'");
 				//args.put("ac",  aircrafttype );
-			}
+			}else
+				coreHql.append(" and a.aircrafttype = null ");
 		}
 
 		if (null != criteria) {

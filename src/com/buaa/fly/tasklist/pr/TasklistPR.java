@@ -48,8 +48,8 @@ public class TasklistPR{
 	 * @param dataItems
 	 * @throws Exception
 	 */
-	 @SuppressWarnings("rawtypes")
-	 @DataResolver
+	@SuppressWarnings("rawtypes")
+	@DataResolver
 	 public void saveTasklist(Map<String, Collection> dataItems) throws Exception {
 	    tasklistManager.saveTasklist(dataItems);
 	 }

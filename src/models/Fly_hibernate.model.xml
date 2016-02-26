@@ -102,16 +102,32 @@ arg.parameter = parameter;</ClientEvent>
       </Property>
       <Property name="defaultValue">0</Property>
     </PropertyDef>
-    <Reference>
+    <Reference name="sfstatistic">
       <Property name="dataProvider">sfstatisticPR#querySfstatistic</Property>
       <Property name="pageSize">20</Property>
       <Property name="dataType">[Sfstatistic]</Property>
       <Property name="parameter">
         <Entity>
-          <Property name="oid">$${this.id}</Property>
+          <Property name="taskno">$${this.oid}</Property>
         </Entity>
       </Property>
+      <Property name="label">sfstatistic</Property>
     </Reference>
+    <PropertyDef name="taskcontent">
+      <Property name="dataType">String</Property>
+      <Property name="label">任务单内容</Property>
+    </PropertyDef>
+    <PropertyDef name="filename">
+      <Property name="dataType">String</Property>
+      <Property name="required">true</Property>
+      <Property name="ignored">false</Property>
+      <Property name="label">附件</Property>
+    </PropertyDef>
+    <PropertyDef name="bytes">
+      <Property name="dataType">String</Property>
+      <Property name="required">true</Property>
+      <Property name="label">bytes</Property>
+    </PropertyDef>
   </DataType>
   <DataType name="Sfstatistic" meta="x:426;y:10">
     <Property name="creationType">com.buaa.fly.domain.Sfstatistic</Property>

@@ -12,8 +12,8 @@
         <Property name="dataProvider">subjectPR#querySubject</Property>
         <Property name="parameter">
           <Entity>
+            <Property name="parentnode">$${this.oid}</Property>
             <Property name="ftype">$${this.ftype}</Property>
-            <Property name="parentnode">$${this.name}</Property>
           </Entity>
         </Property>
       </Reference>
@@ -32,15 +32,11 @@
       <Property name="dataType">[Tasklist]</Property>
       <Property name="dataProvider">tasklistPR#queryTasklist</Property>
       <Property name="pageSize">20</Property>
-    </DataSet>
-    <DataSet id="dataSetSubject">
-      <Property name="dataType">[dataTypeSubject]</Property>
-      <Property name="dataProvider">subjectPR#querySubject</Property>
-      <Property name="loadMode">onReady</Property>
       <Property name="parameter">
         <Entity>
-          <Property name="ftype"></Property>
-          <Property name="parentnode"></Property>
+          <Property name="aircrafttype"></Property>
+          <Property name="tasknumber"></Property>
+          <Property name="subject"></Property>
         </Entity>
       </Property>
     </DataSet>
@@ -53,18 +49,20 @@
         </Entity>
       </Property>
     </DataSet>
-    <DataSet id="dsUserOperationLog">
-      <Property name="dataProvider">userOperationLogPR#queryUserOperationLog</Property>
-      <Property name="dataType">[UserOperationLog]</Property>
-      <Property name="pageSize">20</Property>
+    <DataSet id="dataSetSubject">
+      <Property name="dataProvider">subjectPR#querySubject</Property>
+      <Property name="dataType">[dataTypeSubject]</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="parentnode"></Property>
+          <Property name="ftype"></Property>
+        </Entity>
+      </Property>
     </DataSet>
-    <UpdateAction id="uaUserOperationLog">
-      <Property name="dataResolver">userOperationLogPR#saveUserOperationLog</Property>
-      <UpdateItem>
-        <Property name="dataSet">dsUserOperationLog</Property>
-      </UpdateItem>
-    </UpdateAction>
     <UpdateAction id="uaTasklist">
+      <ClientEvent name="onGetUpdateData">//alert(arg.get(&quot;dsTasklist&quot;).getData().getTasknumber());&#xD;
+//alert(1);&#xD;
+</ClientEvent>
       <Property name="dataResolver">tasklistPR#saveTasklist</Property>
       <UpdateItem>
         <Property name="dataSet">dsTasklist</Property>
@@ -74,30 +72,27 @@
     <Dialog id="diaTasklist">
       <ClientEvent name="onClose">&#xD;
 //datatree获取选中行，迭代设置选中状态，清空选中&#xD;
-var nodes=view.get(&quot;#dataTreeSubject&quot;).getCheckedNodes();&#xD;
-nodes.each(function(node){&#xD;
-	node.set(&quot;checked&quot;,false);&#xD;
-});&#xD;
+//var nodes=view.get(&quot;#dataTreeSubject&quot;).getCheckedNodes();&#xD;
+//nodes.each(function(node){&#xD;
+//	node.set(&quot;checked&quot;,false);&#xD;
+//});&#xD;
 </ClientEvent>
-      <ClientEvent name="onReady">	&#xD;
-var dropDown=view.id(&quot;customDropDown1&quot;);&#xD;
-dropDown.execute(view.id(&quot;afSubject&quot;).get(&quot;editor&quot;));&#xD;
-dropDown.close();&#xD;
+      <ClientEvent name="onReady">//var dropDown=view.id(&quot;customDropDown1&quot;);&#xD;
+//dropDown.execute(view.id(&quot;afSubject&quot;).get(&quot;editor&quot;));&#xD;
+//dropDown.close();&#xD;
 </ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
       <Property name="width">800</Property>
       <Buttons>
         <Button>
-          <ClientEvent name="onClick">view.id('uaTasklist').execute(function(){
-               view.id('diaTasklist').hide();
-           });
-         </ClientEvent>
+          <ClientEvent name="onClick">view.id('uaTasklist').execute();
+view.id('diaTasklist').hide();        </ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
         </Button>
         <Button>
-          <ClientEvent name="onClick">view.set(&quot;#dataTreeGridSubject.selection&quot;,null);
+          <ClientEvent name="onClick">//view.set(&quot;#dataTreeGridSubject.selection&quot;,null);
 
 var cur=view.id('dsTasklist').getData('#');
 				cur.cancel();
@@ -105,8 +100,8 @@ var cur=view.id('dsTasklist').getData('#');
 	/*
 	 * 删除当前用户操作日志记录并保存
 	 */
-	view.id('dsUserOperationLog').getData().remove()
-	view.id('uaUserOperationLog').execute();
+	//view.id('dsUserOperationLog').getData().remove()
+	//view.id('uaUserOperationLog').execute();
 	         </ClientEvent>
           <Property name="caption">取消</Property>
           <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
@@ -134,12 +129,9 @@ var cur=view.id('dsTasklist').getData('#');
             <Property name="trigger">dataSetDropDownTaskExecution</Property>
           </AutoFormElement>
           <AutoFormElement id="afSubject">
-            <ClientEvent name="onReady">view.id(&quot;&quot;)&#xD;
-</ClientEvent>
             <Property name="name">Subject</Property>
             <Property name="property">subject</Property>
             <Property name="trigger">customDropDown1</Property>
-            <Editor/>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">TaskContent</Property>
@@ -150,20 +142,29 @@ var cur=view.id('dsTasklist').getData('#');
           <AutoFormElement>
             <Property name="name">miji</Property>
             <Property name="property">miji</Property>
-            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement layoutConstraint="colSpan:2;rowSpan:2">
+            <Property name="name">FileName</Property>
+            <Property name="property">filename</Property>
+            <Editor>
+              <Container>
+                <TextEditor layoutConstraint="center">
+                  <Property name="dataSet">dsTasklist</Property>
+                  <Property name="dataPath">#</Property>
+                  <Property name="property">filename</Property>
+                  <Property name="readOnly">true</Property>
+                </TextEditor>
+                <Button layoutConstraint="right padding:0,10,0,10">
+                  <Property name="caption">编辑</Property>
+                  <Property name="action">uaUpload</Property>
+                </Button>
+              </Container>
+            </Editor>
           </AutoFormElement>
         </AutoForm>
         <DataSetDropDown id="dataSetDropDownTaskExecution">
           <Property name="autoOpen">true</Property>
           <Property name="dataSet">dsDictionaryTaskExecution</Property>
-          <Property name="displayProperty">name</Property>
-          <Property name="editable">false</Property>
-          <Property name="property">name</Property>
-          <Property name="useEmptyItem">true</Property>
-        </DataSetDropDown>
-        <DataSetDropDown id="dataSetDropDownAircraftType">
-          <Property name="autoOpen">true</Property>
-          <Property name="dataSet">dsDictionaryAircraftType</Property>
           <Property name="displayProperty">name</Property>
           <Property name="editable">false</Property>
           <Property name="property">name</Property>
@@ -460,30 +461,6 @@ if(value){&#xD;
         <Property name="dataPath"></Property>
       </DataPilot>
       <ToolBarButton>
-        <ClientEvent name="onClick">    dialog=view.id('diaTasklist');
-    dialog.set(&quot;caption&quot;,&quot;新增试飞任务单&quot;);
-	var cur = view.id('formElement1').get(&quot;value&quot;);
-	view.id('dsTasklist').getData().insert({
-		aircrafttype : cur
-		});
-	view.id('diaTasklist').show();
-	
-	/*
- 	 * 对用户新增操作进行记录，在用户操作日志表中新增一条记录。
-     */
-	var myDate = new Date();
-	view.id('dsUserOperationLog').getData().insert({
-		logOperationType:&quot;0&quot;,
-		operationPerson: &quot;${loginUsername}&quot;,
-		operationContent:&quot;对试飞任务单管理表新增一条记录&quot;,
-		operationTime:myDate
-	});
-	view.id('uaUserOperationLog').execute();
-</ClientEvent>
-        <Property name="caption">新增</Property>
-        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
-      </ToolBarButton>
-      <ToolBarButton>
         <ClientEvent name="onClick">    
     dialog=view.id('diaTasklist');
     dialog.set(&quot;caption&quot;,&quot;修改试飞任务单&quot;);
@@ -506,6 +483,23 @@ if(value){&#xD;
 </ClientEvent>
         <Property name="caption">修改</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">    dialog=view.id('diaTasklist');
+    dialog.set(&quot;caption&quot;,&quot;新增试飞任务单&quot;);
+	var cur = view.id('formElement1').get(&quot;value&quot;);
+	if(cur){
+	view.id('dsTasklist').getData().insert({
+		aircrafttype : cur
+		});
+	view.id('diaTasklist').show();
+	}else
+	{
+		alert(&quot;请先选择机型&quot;);
+	}
+</ClientEvent>
+        <Property name="caption">新增</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsTasklist').getData('#');
@@ -635,7 +629,6 @@ dsTasklist.flushAsync();&#xD;
       <DataColumn>
         <Property name="width">120</Property>
         <Property name="property">miji</Property>
-        <Editor/>
       </DataColumn>
     </DataGrid>
     <DataSetDropDown id="chooseAircraft">
@@ -646,8 +639,7 @@ dsTasklist.set(&quot;parameter&quot;, {&#xD;
 dsTasklist.flushAsync();&#xD;
 var dataSetSubject = this.get(&quot;#dataSetSubject&quot;);&#xD;
 dataSetSubject.set(&quot;parameter&quot;, {&#xD;
-	ftype: arg.selectedValue,&#xD;
-	parentnode: arg.selectedValue&#xD;
+	ftype: arg.selectedValue&#xD;
 });&#xD;
 dataSetSubject.flushAsync();&#xD;
 &#xD;
@@ -702,6 +694,7 @@ arg.processDefault = false;</ClientEvent>
       <Property name="editable">false</Property>
       <Property name="height">200</Property>
       <Container>
+        <Property name="height">200</Property>
         <ToolBar>
           <ToolBarButton>
             <ClientEvent name="onClick">var dataTree = this.get(&quot;#subjectDataTree&quot;);&#xD;
@@ -749,34 +742,40 @@ view.get(&quot;#chooseSubject&quot;).close();&#xD;
           </ToolBarButton>
         </ToolBar>
         <DataTree id="subjectDataTree">
-          <ClientEvent name="onDataRowClick">/*var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
-var node = self.get(&quot;currentNode&quot;);&#xD;
-&#xD;
-if (node ) {&#xD;
-var dsOutlineexecution = this.get(&quot;#dsTasklist&quot;);&#xD;
-dropDown.close(node.get(&quot;data.name&quot;));&#xD;
-dsOutlineexecution.set(&quot;parameter&quot;, {&#xD;
-	subject: node.get(&quot;data.name&quot;)&#xD;
-});&#xD;
-&#xD;
-dsOutlineexecution.flushAsync();&#xD;
-}*/&#xD;
-</ClientEvent>
           <Property name="dataSet">dataSetSubject</Property>
+          <Property name="selectionMode">multiRows</Property>
           <Property name="width">260</Property>
           <BindingConfigs>
             <BindingConfig>
-              <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
               <Property name="tipProperty">description</Property>
-              <Property name="expandLevel">3</Property>
-              <Property name="recursive">true</Property>
-              <Property name="childrenProperty">children</Property>
               <Property name="labelProperty">name</Property>
+              <Property name="recursive">true</Property>
+              <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
+              <Property name="expandLevel">3</Property>
+              <Property name="childrenProperty">children</Property>
               <Property name="checkable">true</Property>
             </BindingConfig>
           </BindingConfigs>
         </DataTree>
       </Container>
     </CustomDropDown>
+    <UploadAction id="uaUpload">
+      <ClientEvent name="onFilesAdded">var cur=view.id('dsTasklist').getData('#');&#xD;
+var value = &quot;/Fly_Tasklist/&quot; + cur.get(&quot;id&quot;) + &quot;/&quot;;&#xD;
+self.set(&quot;multipartParams&quot;, {record: value});</ClientEvent>
+      <ClientEvent name="onFileUploaded">var returnValue = arg.file.name;&#xD;
+var cur=view.id('dsTasklist').getData('#');&#xD;
+cur.set(&quot;filename&quot;,returnValue);</ClientEvent>
+      <ClientEvent name="onError">	var error = arg.error;&#xD;
+	dorado.MessageBox.show({&#xD;
+		title:error.message,&#xD;
+		message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
+		icon: &quot;WARNING&quot;,&#xD;
+		buttons: [&quot;ok&quot;]&#xD;
+	});</ClientEvent>
+      <Property name="url">>dorado/uploader/fileupload</Property>
+      <Property name="maxFileSize">100MB</Property>
+      <Filters/>
+    </UploadAction>
   </View>
 </ViewConfig>

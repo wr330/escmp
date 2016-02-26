@@ -28,12 +28,36 @@ public class  Tasklist implements Serializable {
 	private String aircrafttype ;
 	private String taskcontent ;
 
-	private String subject;
-	private String miji; 
+	private String subject ;
+	private Integer miji ; 
 	private Collection<Sfstatistic> sfstatistic;
-
+	private byte[] datablock ;
+	private String filename ;
+	private Integer bytes ;
+	
+	@Column(name="Datablock")
+	public byte[] getDatablock() {
+		return datablock;
+	}
+	public void setDatablock(byte[] datablock) {
+		this.datablock = datablock;
+	}
+	@Column(name="Filename")
+	public String getFilename() {
+		return filename;
+	}
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+	@Column(name="Bytes")
+	public Integer getBytes() {
+		return bytes;
+	}
+	public void setBytes(Integer bytes) {
+		this.bytes = bytes;
+	}
 	@Id
-		@Column(name = "Oid", unique = true, nullable = false)
+	@Column(name = "Oid", unique = true, nullable = false)
 	public String getOid() {
 		return oid;
 	}
@@ -79,10 +103,10 @@ public class  Tasklist implements Serializable {
 		this.subject=subject;
 	}
 	@Column(name = "miji")
-	public String getMiji() {
+	public Integer getMiji() {
 		return miji;
 	}
-	public void setMiji(String miji) {
+	public void setMiji(Integer miji) {
 		this.miji = miji;
 	}
 

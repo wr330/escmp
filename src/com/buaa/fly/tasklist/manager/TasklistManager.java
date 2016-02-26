@@ -13,10 +13,12 @@ import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 
+import com.buaa.fly.domain.Sfstatistic;
 import com.buaa.fly.domain.Subject;
 import com.buaa.fly.domain.Tasklist;
 import com.buaa.fly.sfstatistic.manager.SfstatisticManager;
 import com.buaa.fly.tasklist.dao.TasklistDao;
+import com.common.FileHelper;
 
 @Component("tasklistManager")
 public class TasklistManager {
@@ -71,12 +73,16 @@ public class TasklistManager {
 					//System.out.println(tasklistIsExists(item.getTasknumber()));
 					if(tasklistIsExists(item.getTasknumber()).equals("此单号已存在！"))
 					throw new Exception("此单号已存在！");
-					
+					String tempId = item.getOid();
+					fileManager(item);
 					tasklistDao.saveData(item);
+					FileHelper.changeFolderById("/Fly_Tasklist/" +tempId,"/Fly_Tasklist/" +item.getOid());//替换以临时ID命名的文件夹
 									} else if (state.equals(EntityState.MODIFIED)) {
-					tasklistDao.updateData(item);
+										fileManager(item);
+										tasklistDao.updateData(item);
 									} else if (state.equals(EntityState.DELETED)) {
 										tasklistDao.deleteData(item);
+										FileHelper.deleteFile("/Fly_Tasklist/" +item.getOid());//删除相关文件
 				} else if (state.equals(EntityState.NONE)) {
 						EntityState subjectState = EntityUtils.getState(item.getSubject());
 		
@@ -99,5 +105,16 @@ public class TasklistManager {
 		public String tasklistIsExists(String tasknumber) {
 			return tasklistDao.tasklistIsExists(tasknumber);
 		}
+		 //处理相关文件
+		 private void fileManager(Tasklist item){
+				String path1 = "/Fly_Tasklist/" + item.getOid() + "/"+ item.getFilename();
+				FileHelper.fileToData(path1);
+				if(FileHelper.bytes != 0){
+				    item.setBytes(FileHelper.bytes);
+				    item.setDatablock(FileHelper.datablock);//文件存储到数据库中
+				    FileHelper.bytes = 0;
+				    FileHelper.datablock = null;
+				}
+		 }	
 	
 }
