@@ -58,10 +58,10 @@ public class ShifeirequestaccDao extends HibernateBaseDao {
         String hql = coreHql.toString();
         hql=userService.checkUser(hql);
 		this.pagingQuery(page, hql, countHql, args);
-		Session session = this.getSessionFactory().openSession();
+		/*Session session = this.getSessionFactory().openSession();
 		List a = session.createSQLQuery("select datablock from Fly_Shifeirequestacc").list();
 		byte[] datablock =(byte[]) a.get(0);
-		int aa  = datablock.length;
+		int aa  = datablock.length;*/
 	}
 	
 	/**

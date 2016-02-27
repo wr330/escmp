@@ -44,6 +44,15 @@
       <Property name="displayProperty">name</Property>
       <Property name="editable">false</Property>
     </DataSetDropDown>
+    <DataSetDropDown id="dataSetDropDownT">
+      <ClientEvent name="onOpen">view.id(&quot;dsDictionary&quot;).set(&quot;parameter&quot;,{dictype:&quot;Dic_Troop&quot;,status:0}).flushAsync();</ClientEvent>
+      <Property name="property">name</Property>
+      <Property name="editable">false</Property>
+      <Property name="displayProperty">name</Property>
+      <Property name="dataSet">dsDictionary</Property>
+      <Property name="autoOpen">true</Property>
+      <Property name="useEmptyItem">true</Property>
+    </DataSetDropDown>
     <UpdateAction id="uaSupportprogram">
       <Property name="dataResolver">supportprogramPR#saveSupportprogram</Property>
       <UpdateItem>
@@ -161,6 +170,7 @@ view.id('diaSupportprogram').hide();&#xD;
           <AutoFormElement>
             <Property name="name">troop</Property>
             <Property name="property">troop</Property>
+            <Property name="trigger">dataSetDropDownT</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>

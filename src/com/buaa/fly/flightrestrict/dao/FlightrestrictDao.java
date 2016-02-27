@@ -132,10 +132,10 @@ public class FlightrestrictDao extends HibernateBaseDao {
 		String hql = "select count(*) from " + Flightrestrict.class.getName()
 				+ " u where u.fno = :fno";
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
-		parameterMap.put("number", fno);
+		parameterMap.put("fno", fno);
 		if (id != null) {
-			hql += " and u.oid != :id";
-			parameterMap.put("oid", id);
+			hql += " and u.id != :id";
+			parameterMap.put("id", id);
 		}
 		int count = this.queryForInt(hql, parameterMap);
 
