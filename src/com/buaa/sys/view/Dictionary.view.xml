@@ -148,6 +148,11 @@ dataset.set(&quot;parameter&quot;,parameter).flushAsync();&#xD;
                   <Property name="label">收发类型</Property>
                   <Property name="userData">Dic_SendReceiveType</Property>
                 </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="label">部队</Property>
+                  <Property name="userData">Dic_Troop</Property>
+                </Node>
               </Node>
               <Node>
                 <Property name="expanded">true</Property>
@@ -202,11 +207,11 @@ dataset.set(&quot;parameter&quot;,parameter).flushAsync();&#xD;
                   <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
                   <Property name="userData">Dic_Gzfs</Property>
                   <Property name="label">跟踪方式</Property>
-                  <Node>
-                    <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
-                    <Property name="userData">Dic_DutyType</Property>
-                    <Property name="label">问题责任</Property>
-                  </Node>
+                </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="userData">Dic_DutyType</Property>
+                  <Property name="label">问题责任</Property>
                 </Node>
                 <Node>
                   <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
