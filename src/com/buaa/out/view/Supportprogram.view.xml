@@ -30,6 +30,9 @@
       <Property name="dataProvider">supportprogramPR#querySupportprogram</Property>
       <Property name="pageSize">20</Property>
     </DataSet>
+    <DataSet id="dsStatisticSupport">
+      <Property name="dataProvider">supportprogramPR#statisticSupport</Property>
+    </DataSet>
     <DataSetDropDown id="dataSetDropDown1">
       <Property name="autoOpen">true</Property>
       <Property name="dataSet">dsDictionary</Property>
@@ -102,6 +105,11 @@ dialog.show();&#xD;
         <ClientEvent name="onClick">view.id('dgSupportprogram').set(&quot;showFilterBar&quot;,!view.id('dgSupportprogram').get(&quot;showFilterBar&quot;));</ClientEvent>
         <Property name="caption">自定义查询</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">view.id(&quot;SupportGraph&quot;).show();</ClientEvent>
+        <Property name="icon">url(>skin>common/icons.gif) -280px -40px</Property>
+        <Property name="caption">统计查看</Property>
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgSupportprogram">
@@ -217,6 +225,69 @@ view.id('diaSupportprogram').hide();&#xD;
             <Editor/>
           </AutoFormElement>
         </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="SupportGraph">
+      <Property name="width">60%</Property>
+      <Property name="height">80%</Property>
+      <Property name="caption">年度最大保障人数</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id(&quot;SupportGraph&quot;).hide();</ClientEvent>
+          <Property name="caption">关闭</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <Container>
+          <FormElement id="yearForm" layoutConstraint="center padding:10">
+            <ClientEvent name="onReady">var date = new Date();&#xD;
+var year = date.getFullYear(); &#xD;
+self.set(&quot;value&quot;,year);&#xD;
+var dsStatisticSupport = view.get(&quot;#dsStatisticSupport&quot;)&#xD;
+dsStatisticSupport.set(&quot;parameter&quot;, {&#xD;
+	year: year&#xD;
+});</ClientEvent>
+            <Property name="label">选择年份:</Property>
+            <Property name="trigger">yearDropDown1</Property>
+            <Property name="readOnly">false</Property>
+            <Property name="width">250</Property>
+            <Property name="height">50</Property>
+            <Editor/>
+          </FormElement>
+          <YearDropDown id="yearDropDown1">
+            <ClientEvent name="onValueSelect">var year = arg.selectedValue;&#xD;
+var dsStatisticSupport = view.get(&quot;#dsStatisticSupport&quot;)&#xD;
+dsStatisticSupport.set(&quot;parameter&quot;, {&#xD;
+	year: year&#xD;
+});&#xD;
+dsStatisticSupport.flushAsync();</ClientEvent>
+            <Property name="autoOpen">true</Property>
+          </YearDropDown>
+          <Chart>
+            <Axes>
+              <CategoryAxis>
+                <Property name="dataSet">dsStatisticSupport</Property>
+                <Property name="properties">month</Property>
+              </CategoryAxis>
+              <NumbericAxis>
+                <Property name="min">0</Property>
+                <Property name="title">保障人数</Property>
+                <Property name="steps">5</Property>
+              </NumbericAxis>
+            </Axes>
+            <Series>
+              <Line>
+                <Property name="title">保障人数</Property>
+                <Property name="dataSet">dsStatisticSupport</Property>
+                <Property name="bindingConfig">
+                  <Property name="yProperty">num</Property>
+                </Property>
+              </Line>
+            </Series>
+          </Chart>
+        </Container>
       </Children>
       <Tools/>
     </Dialog>

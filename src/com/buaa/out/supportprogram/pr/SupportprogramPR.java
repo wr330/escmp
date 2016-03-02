@@ -3,6 +3,7 @@ package com.buaa.out.supportprogram.pr;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -59,15 +60,15 @@ public class SupportprogramPR{
 		);
 	}
 	 /**                  
-		* 分页查询信息，带有criteria
-		* @param page    
-		* @param map
-		* @throws Exception
-		*/
-		@DataProvider
-		public Collection<Supportitem> queryRenyuan(Map<String, Object> parameter) throws Exception {
-		    return supportprogramManager.queryRenyuan(parameter);
-		}
+	   * 分页查询信息，带有criteria
+	   * @param page    
+	   * @param map
+	   * @throws Exception
+	   */
+	@DataProvider
+	public Collection<Supportitem> queryRenyuan(Map<String, Object> parameter) throws Exception {
+		   return supportprogramManager.queryRenyuan(parameter);
+	}
 	
 	/**
 	 * 数据保存，包括增删改
@@ -101,9 +102,72 @@ public class SupportprogramPR{
 				   list.add(map);
 			   }
 		   }
-		
-
 		   return list;
 		}
 		
+		/**                  
+		  * 分页查询信息，带有criteria
+		  * @param page    
+		  * @param map
+		  * @throws Exception
+		  */
+		@DataProvider
+		public Collection<Map<String, Object>> statisticSupport(Map<String, Object> parameter) throws Exception {
+			List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+			Collection<Supportprogram> dataItems = supportprogramManager.queryProgram(parameter);
+			Integer yearInt = (Integer)parameter.get("year");
+			Integer num[] = new Integer[12];
+			for(int i = 0; i < 12; i++){
+					num[i] = 0;
+			}
+			for (Supportprogram item : dataItems) {
+				Calendar start = Calendar.getInstance();
+				Calendar end = Calendar.getInstance();
+				start.setTime(item.getWorktime());
+				end.setTime(item.getEndtime());
+				int people = item.getStaffrequirement();
+				int yearst = start.get(Calendar.YEAR);
+				int yearen = end.get(Calendar.YEAR);
+				int monthst = start.get(Calendar.MONTH);
+				int monthen = end.get(Calendar.MONTH);
+				if(yearst != yearen){
+					if((yearst != yearInt)&&(yearen == yearInt)){
+						for(int i = 0;i <= monthen;i ++){
+							num[i] = num[i] + people;
+						}
+					}
+					else if((yearst == yearInt)&&(yearen != yearInt)){
+						for(int i = monthst;i <= 11;i ++){
+							num[i] = num[i] + people;
+						}
+					}
+					else{
+						for(int i = 0;i <= 11;i ++){
+							num[i] = num[i] + people;
+						}
+					}
+				}
+				else{
+					if(monthen == monthst){
+						num[monthen] = num[monthen] + people;
+					}
+					else{
+						for(int i = 0; i < 12; i++){
+							if(monthst<=i&&i<=monthen){
+								num[i] = num[i] + people;
+							}
+						}
+					}
+				}	
+			}	
+			for(int i = 0; i < 12; i++){
+				HashMap<String, Object> map = new HashMap<String, Object>();
+				Integer yue = i + 1;
+				String month = yue.toString() +"月";
+				map.put("month", month);
+				map.put("num", num[i]);
+				list.add(map);
+			}
+			return list;
+		}	
 }
