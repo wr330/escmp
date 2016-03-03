@@ -9,6 +9,7 @@
     <PropertyDef name="staffrequirement">
       <Property name="dataType">Integer</Property>
       <Property name="label">人员需求</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="supporttype">
       <Property name="dataType">String</Property>
@@ -28,6 +29,7 @@
     <PropertyDef name="worktime">
       <Property name="dataType">Date</Property>
       <Property name="label">制定日期</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="oid">
       <Property name="dataType">String</Property>

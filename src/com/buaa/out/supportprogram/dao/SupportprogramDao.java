@@ -126,12 +126,10 @@ public class SupportprogramDao extends HibernateBaseDao {
 		Map<String,Object> map=new HashMap<String,Object>();
 		String hql="from "+Supportprogram.class.getName()+" u where 1=1";
 		Integer year = (Integer)parameter.get("year");
-		//Date now = new Date();
-		//SimpleDateFormat df = new SimpleDateFormat("yyyy");
 		String time = year + "/01/01";
 		String time1 = year + "/12/31";
-		//hql+=" and u.worktime <='"+ time + "' and u.endtime >= '"+ time1 +"'";
-		hql+=" and ((u.worktime>='" + time + "' and u.endtime<='" + time1 + "') or (u.worktime<'" + time + "' and u.endtime>'" + time + "')or (u.worktime>='" + time + "' and u.worktime<'" + time1 + "'and u.endtime>'" + time1 + "'))";
+		//hql+=" and ((u.worktime>='" + time + "' and u.endtime<='" + time1 + "') or (u.worktime<'" + time + "' and u.endtime>'" + time + "') or (u.worktime>='" + time + "' and u.worktime<'" + time1 + "'and u.endtime >'" + time1 + "') or (u.worktime >='" + time + "' and u.worktime < '" + time1 +"'))";
+		hql+=" and ((u.worktime<'" + time + "' and u.endtime>'" + time +  "') or (u.worktime >='" + time + "' and u.worktime < '" + time1 +"'))";
 		return this.query(hql,map);						
 	}
 	

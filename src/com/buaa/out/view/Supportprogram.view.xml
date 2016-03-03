@@ -5,25 +5,22 @@
   </Property>
   <Arguments/>
   <Context/>
-  <Model/>
+  <Model>
+    <DataType name="dtS">
+      <PropertyDef name="data">
+        <Property name="dataType">[Map]</Property>
+      </PropertyDef>
+      <PropertyDef name="maxMonth">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
+      <PropertyDef name="maxNumber">
+        <Property name="dataType">Integer</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
   <View>
     <DataSet id="dsDictionary">
       <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
-      <Property name="parameter">
-        <Entity>
-          <Property name="dictype">Dic_Outfield</Property>
-          <Property name="status">0</Property>
-        </Entity>
-      </Property>
-    </DataSet>
-    <DataSet id="dsDictionary2">
-      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
-      <Property name="parameter">
-        <Entity>
-          <Property name="dictype">Dic_Plantype</Property>
-          <Property name="status">0</Property>
-        </Entity>
-      </Property>
     </DataSet>
     <DataSet id="dsSupportprogram">
       <Property name="dataType">[Supportprogram]</Property>
@@ -31,18 +28,25 @@
       <Property name="pageSize">20</Property>
     </DataSet>
     <DataSet id="dsStatisticSupport">
+      <ClientEvent name="onLoadData">if(self.getData().get(&quot;data&quot;).isEmpty()){&#xD;
+	dorado.MessageBox.alert(&quot;本年度没有数据&quot;);&#xD;
+}&#xD;
+</ClientEvent>
       <Property name="dataProvider">supportprogramPR#statisticSupport</Property>
+      <Property name="dataType">dtS</Property>
     </DataSet>
-    <DataSetDropDown id="dataSetDropDown1">
+    <DataSetDropDown id="dataSetDropDownD">
+      <ClientEvent name="onOpen">view.id(&quot;dsDictionary&quot;).set(&quot;parameter&quot;,{dictype:&quot;Dic_Outfield&quot;,status:0}).flushAsync();</ClientEvent>
       <Property name="autoOpen">true</Property>
       <Property name="dataSet">dsDictionary</Property>
       <Property name="property">name</Property>
       <Property name="displayProperty">name</Property>
       <Property name="editable">false</Property>
     </DataSetDropDown>
-    <DataSetDropDown id="dataSetDropDown2">
+    <DataSetDropDown id="dataSetDropDownS">
+      <ClientEvent name="onOpen">view.id(&quot;dsDictionary&quot;).set(&quot;parameter&quot;,{dictype:&quot;Dic_Plantype&quot;,status:0}).flushAsync();</ClientEvent>
       <Property name="autoOpen">true</Property>
-      <Property name="dataSet">dsDictionary2</Property>
+      <Property name="dataSet">dsDictionary</Property>
       <Property name="property">name</Property>
       <Property name="displayProperty">name</Property>
       <Property name="editable">false</Property>
@@ -54,7 +58,6 @@
       <Property name="displayProperty">name</Property>
       <Property name="dataSet">dsDictionary</Property>
       <Property name="autoOpen">true</Property>
-      <Property name="useEmptyItem">true</Property>
     </DataSetDropDown>
     <UpdateAction id="uaSupportprogram">
       <Property name="dataResolver">supportprogramPR#saveSupportprogram</Property>
@@ -189,7 +192,7 @@ view.id('diaSupportprogram').hide();&#xD;
           <AutoFormElement>
             <Property name="name">supporttype</Property>
             <Property name="property">supporttype</Property>
-            <Property name="trigger">dataSetDropDown2</Property>
+            <Property name="trigger">dataSetDropDownS</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
@@ -200,7 +203,7 @@ view.id('diaSupportprogram').hide();&#xD;
           <AutoFormElement>
             <Property name="name">workaddress</Property>
             <Property name="property">workaddress</Property>
-            <Property name="trigger">dataSetDropDown1</Property>
+            <Property name="trigger">dataSetDropDownD</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
@@ -229,7 +232,15 @@ view.id('diaSupportprogram').hide();&#xD;
       <Tools/>
     </Dialog>
     <Dialog id="SupportGraph">
-      <Property name="width">60%</Property>
+      <ClientEvent name="onShow">var date = new Date();&#xD;
+var year = date.getFullYear(); &#xD;
+this.get(&quot;#yearForm&quot;).set(&quot;value&quot;,year);&#xD;
+var dsStatisticSupport = view.get(&quot;#dsStatisticSupport&quot;)&#xD;
+dsStatisticSupport.set(&quot;parameter&quot;, {&#xD;
+	year: year&#xD;
+});&#xD;
+dsStatisticSupport.flushAsync();</ClientEvent>
+      <Property name="width">61.8%</Property>
       <Property name="height">80%</Property>
       <Property name="caption">年度最大保障人数</Property>
       <Buttons>
@@ -241,28 +252,47 @@ view.id('diaSupportprogram').hide();&#xD;
       </Buttons>
       <Children>
         <Container>
-          <FormElement id="yearForm" layoutConstraint="center padding:10">
-            <ClientEvent name="onReady">var date = new Date();&#xD;
+          <AutoForm>
+            <Property name="cols">*,*,*</Property>
+            <AutoFormElement id="yearForm">
+              <ClientEvent name="onReady">var date = new Date();&#xD;
 var year = date.getFullYear(); &#xD;
-self.set(&quot;value&quot;,year);&#xD;
+this.get(&quot;#yearForm&quot;).set(&quot;value&quot;,year);&#xD;
 var dsStatisticSupport = view.get(&quot;#dsStatisticSupport&quot;)&#xD;
 dsStatisticSupport.set(&quot;parameter&quot;, {&#xD;
 	year: year&#xD;
 });</ClientEvent>
-            <Property name="label">选择年份:</Property>
-            <Property name="trigger">yearDropDown1</Property>
-            <Property name="readOnly">false</Property>
-            <Property name="width">250</Property>
-            <Property name="height">50</Property>
-            <Editor/>
-          </FormElement>
+              <Property name="trigger">yearDropDown1</Property>
+              <Property name="label">选择年份:</Property>
+              <Property name="labelWidth">80</Property>
+              <Editor/>
+            </AutoFormElement>
+            <AutoFormElement id="monthForm">
+              <Property name="property">maxMonth</Property>
+              <Property name="dataSet">dsStatisticSupport</Property>
+              <Property name="label">年度最大保障月份:</Property>
+              <Property name="labelWidth">120</Property>
+              <Property name="readOnly">true</Property>
+              <Editor/>
+            </AutoFormElement>
+            <AutoFormElement id="numberForm">
+              <Property name="property">maxNumber</Property>
+              <Property name="dataSet">dsStatisticSupport</Property>
+              <Property name="label">年度最大保障人数:</Property>
+              <Property name="labelWidth">120</Property>
+              <Property name="readOnly">true</Property>
+              <Editor/>
+            </AutoFormElement>
+          </AutoForm>
           <YearDropDown id="yearDropDown1">
             <ClientEvent name="onValueSelect">var year = arg.selectedValue;&#xD;
 var dsStatisticSupport = view.get(&quot;#dsStatisticSupport&quot;)&#xD;
 dsStatisticSupport.set(&quot;parameter&quot;, {&#xD;
 	year: year&#xD;
 });&#xD;
-dsStatisticSupport.flushAsync();</ClientEvent>
+dsStatisticSupport.flushAsync();&#xD;
+&#xD;
+</ClientEvent>
             <Property name="autoOpen">true</Property>
           </YearDropDown>
           <Chart>
@@ -270,11 +300,11 @@ dsStatisticSupport.flushAsync();</ClientEvent>
               <CategoryAxis>
                 <Property name="dataSet">dsStatisticSupport</Property>
                 <Property name="properties">month</Property>
+                <Property name="dataPath">#.data</Property>
               </CategoryAxis>
               <NumbericAxis>
                 <Property name="min">0</Property>
                 <Property name="title">保障人数</Property>
-                <Property name="steps">5</Property>
               </NumbericAxis>
             </Axes>
             <Series>
@@ -284,6 +314,7 @@ dsStatisticSupport.flushAsync();</ClientEvent>
                 <Property name="bindingConfig">
                   <Property name="yProperty">num</Property>
                 </Property>
+                <Property name="dataPath">#.data</Property>
               </Line>
             </Series>
           </Chart>
