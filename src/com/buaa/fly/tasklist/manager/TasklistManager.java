@@ -1,4 +1,3 @@
-
 package com.buaa.fly.tasklist.manager;
 
 import java.util.Collection;
@@ -16,105 +15,117 @@ import com.bstek.dorado.data.provider.Page;
 import com.buaa.fly.domain.Sfstatistic;
 import com.buaa.fly.domain.Subject;
 import com.buaa.fly.domain.Tasklist;
+import com.buaa.fly.sfstatistic.dao.SfstatisticDao;
 import com.buaa.fly.sfstatistic.manager.SfstatisticManager;
 import com.buaa.fly.tasklist.dao.TasklistDao;
 import com.common.FileHelper;
 
 @Component("tasklistManager")
 public class TasklistManager {
-	
+
 	@Resource
 	private TasklistDao tasklistDao;
 	@Resource
 	private SfstatisticManager sfstatisticManager;
-		
-	/**                  
-	* 分页查询信息，带有criteria
-	* 将criteria转换为一个Map
-	* @param page    
-	* @param map
-	* @throws Exception
-	*/
-	public void queryTasklist(Page<Tasklist> page,Map<String, Object> parameter,Criteria criteria) throws Exception {
-	    tasklistDao.queryTasklist(page,parameter,criteria);
-	}
-	
-	
+	@Resource
+	private SfstatisticDao sfstatisticDao;
+
 	/**
+	 * 分页查询信息，带有criteria 将criteria转换为一个Map
+	 * 
+	 * @param page
+	 * @param map
 	 * @throws Exception
 	 */
-	public Collection<Tasklist> queryTaskOutline(Map<String, Object> parameter) throws Exception {
+	public void queryTasklist(Page<Tasklist> page,
+			Map<String, Object> parameter, Criteria criteria) throws Exception {
+		tasklistDao.queryTasklist(page, parameter, criteria);
+	}
+
+	/**
+	 * 任务管理单查询
+	 * 
+	 * @param parameter
+	 * @throws Exception
+	 */ 
+	public Collection<Tasklist> queryTaskOutline(Map<String, Object> parameter)
+			throws Exception {
 		return tasklistDao.queryTaskOutline(parameter);
 	}
-	/**      
+
 	/**
 	 * 数据保存，对多个数据集的操作，包括增删改
+	 * 
 	 * @param dataItems
 	 * @throws Exception
 	 */
-	 @SuppressWarnings({ "rawtypes", "unchecked" })
-	 public void saveTasklist(Map<String, Collection> dataItems) throws Exception {
-	    Collection<Tasklist> details =(Collection<Tasklist>) dataItems.get("dsTasklist");
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void saveTasklist(Map<String, Collection> dataItems)
+			throws Exception {
+		Collection<Tasklist> details = (Collection<Tasklist>) dataItems
+				.get("dsTasklist");
 		this.saveTasklist(details);
-	 }
-	 
-	 
-	 /**
+	}
+
+	/**
 	 * 针对单个数据集操作 包括增删改
 	 * 
 	 * @param details
 	 * @throws Exception
 	 */
-	 public void saveTasklist(Collection<Tasklist> details) throws Exception {
+	public void saveTasklist(Collection<Tasklist> details) throws Exception {
 		if (null != details && details.size() > 0) {
-	    	for(Tasklist item : details) {
+			for (Tasklist item : details) {
 				EntityState state = EntityUtils.getState(item);
 				if (state.equals(EntityState.NEW)) {
-					//System.out.println(tasklistIsExists(item.getTasknumber()));
-					if(tasklistIsExists(item.getTasknumber()).equals("此单号已存在！"))
-					throw new Exception("此单号已存在！");
-					String tempId = item.getOid();
+					if (tasklistIsExists(item.getTasknumber())
+							.equals("此单号已存在！"))
+						throw new Exception("此单号已存在！");
 					fileManager(item);
 					tasklistDao.saveData(item);
-					FileHelper.changeFolderById("/Fly_Tasklist/" +tempId,"/Fly_Tasklist/" +item.getOid());//替换以临时ID命名的文件夹
-									} else if (state.equals(EntityState.MODIFIED)) {
-										fileManager(item);
-										tasklistDao.updateData(item);
-									} else if (state.equals(EntityState.DELETED)) {
-										tasklistDao.deleteData(item);
-										FileHelper.deleteFile("/Fly_Tasklist/" +item.getOid());//删除相关文件
+				} else if (state.equals(EntityState.MODIFIED)) {
+					fileManager(item);
+					tasklistDao.updateData(item);
+				} else if (state.equals(EntityState.DELETED)) {
+					if (sfstatisticDao.statisticIsExists(item.getTasknumber())
+							.equals("该任务管理单关联飞行统计数据，不能删除！"))
+						throw new Exception("该任务管理单关联飞行统计数据，不能删除！");
+					tasklistDao.deleteData(item);
+					FileHelper.deleteFile("/Fly_Tasklist/" + item.getOid());// 删除相关文件
 				} else if (state.equals(EntityState.NONE)) {
-						EntityState subjectState = EntityUtils.getState(item.getSubject());
-		
-	if(subjectState.equals(EntityState.MODIFIED)){
-	tasklistDao.updateData(item);
-	}
-									}
+					EntityState subjectState = EntityUtils.getState(item
+							.getSubject());
+					if (subjectState.equals(EntityState.MODIFIED)) {
+						tasklistDao.updateData(item);
+					}
+				}
 				sfstatisticManager.saveSfstatistic(item.getSfstatistic());
 			}
 		}
-	 }
-	 
-		/**
-		 * 这个方法用来判断在添加新软件时型号是否已经存在
-		 * 
-		 * @param tasknumber
-		 *            用户输入的任务单号
-		 */
-		@Expose
-		public String tasklistIsExists(String tasknumber) {
-			return tasklistDao.tasklistIsExists(tasknumber);
+	}
+
+	/**
+	 * 这个方法用来判断在添加新软件时型号是否已经存在
+	 * 
+	 * @param tasknumber
+	 *            用户输入的任务单号
+	 */
+	@Expose
+	public String tasklistIsExists(String tasknumber) {
+		return tasklistDao.tasklistIsExists(tasknumber);
+	}
+
+	// 处理相关文件
+	private void fileManager(Tasklist item) {
+		String path1 = "/Fly_Tasklist/" + item.getOid() + "/"
+				+ item.getFilename();
+		FileHelper.fileToData(path1);
+		if (FileHelper.bytes != 0) {
+			item.setBytes(FileHelper.bytes);
+			item.setDatablock(FileHelper.datablock);// 文件存储到数据库中
+			FileHelper.bytes = 0;
+			FileHelper.datablock = null;
 		}
-		 //处理相关文件
-		 private void fileManager(Tasklist item){
-				String path1 = "/Fly_Tasklist/" + item.getOid() + "/"+ item.getFilename();
-				FileHelper.fileToData(path1);
-				if(FileHelper.bytes != 0){
-				    item.setBytes(FileHelper.bytes);
-				    item.setDatablock(FileHelper.datablock);//文件存储到数据库中
-				    FileHelper.bytes = 0;
-				    FileHelper.datablock = null;
-				}
-		 }	
-	
+	}
+
 }

@@ -136,8 +136,10 @@ public class OutlineexecutionPR{
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		String parentnode = (String) parameter.get("parentnode");
 		Collection<Subject> dataItems;
+		List<Integer> num = new ArrayList<Integer>();
 		if(parentnode != null){
 			dataItems = subjectManager.querySubject(parameter);
+			num = sfstatisticDao.querySubjectJiaci(parameter);
 		}else{
 		Collection<Subject> dataItems0 = subjectManager.querySubject(parameter);
 		List<Subject> items = (ArrayList<Subject>) dataItems0;
@@ -146,24 +148,23 @@ public class OutlineexecutionPR{
 		map0.put("parentnode", item0.getOid());
 		map0.put("ftype", item0.getFtype());
 		dataItems = subjectManager.querySubject(map0);
+		num = sfstatisticDao.querySubjectJiaci(map0);
 		}
 		//Collection<Outlineexecution> dataItems = outlineexecutionManager.queryOutlineexecution(parameter);
 		for (Subject item : dataItems) {
+			int i = 0;
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			Float statistic = (float) 0;
 			if(item.getOutlineexecution().size() > 0 && item.getOutlineexecution() != null)
 			if(item.getOutlineexecution().get(0).getShijijiaci() != null){
 				statistic = (float) (item.getOutlineexecution().get(0).getShijijiaci())/(float)(item.getOutlineexecution().get(0).getOutlineFlights());
 			}else{
-				HashMap<String, Object> map1 = new HashMap<String, Object>();
-				map1.put("mainsubject", item.getName());
-				int num = sfstatisticDao.querySubjectnum(map1);
-				statistic = (float) (num)/(float)(item.getOutlineexecution().get(0).getOutlineFlights());
+				statistic = (float) (num.get(i))/(float)(item.getOutlineexecution().get(0).getOutlineFlights());
 			}
-			map.put("parentnode", item.getOid());
 			map.put("price", statistic*100);
 			map.put("name", item.getName());
 			list.add(map);
+			i++;
 		}
 		return list;
 	}
