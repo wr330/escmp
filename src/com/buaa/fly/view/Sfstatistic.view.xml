@@ -205,7 +205,7 @@ view.id(&quot;imageBaoXian&quot;).set(&quot;image&quot;,&quot;>images/baoxian/ba
     <DataSetDropDown id="chooseListNumber">
       <ClientEvent name="onValueSelect">var tasklist = view.id(&quot;dsTasklist&quot;).getData(&quot;#&quot;);&#xD;
 view.id(&quot;dsSfstatistic&quot;).getData(&quot;#&quot;).set(&quot;taskNo&quot;,tasklist.toJSON());&#xD;
-</ClientEvent>
+view.id(&quot;dsSfstatistic&quot;).getData(&quot;#&quot;).reset(&quot;taskNo&quot;);//重置刷新</ClientEvent>
       <ClientEvent name="onOpen">var dsTasklist = this.get(&quot;#dsTasklist&quot;);&#xD;
 dsTasklist.set(&quot;parameter&quot;, {&#xD;
 	aircrafttype: view.id(&quot;formElement1&quot;).get(&quot;value&quot;)&#xD;

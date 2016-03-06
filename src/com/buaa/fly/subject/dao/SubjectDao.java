@@ -43,11 +43,11 @@ public class SubjectDao extends HibernateBaseDao {
 			hql+=" and u.ftype ='" + ftype + "'";
 		
 		if(StringUtils.isEmpty(parentnode)){
-			hql+=" and u.parentnode is null ";
+			hql+=" and u.parentnode is null order by OrderNo";
 			return this.query(hql,map);
 		}else{
 			map.put("parentnode",parentnode);
-			hql+=" and u.parentnode=:parentnode ";
+			hql+=" and u.parentnode=:parentnode order by OrderNo";
 			return this.query(hql,map);			
 		}
 		
