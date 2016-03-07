@@ -25,8 +25,8 @@ public class ShifeirequestaccManager {
 	private ShifeirequestaccDao shifeirequestaccDao;
 		
 	/**                  
-	* 分页查询信息，带有criteria
-	* 将criteria转换为一个Map
+	* 分页查询信息，带有criteria将criteria转换为一个Map
+	* 
 	* @param page    
 	* @param map
 	* @throws Exception
@@ -38,6 +38,7 @@ public class ShifeirequestaccManager {
 	
 	/**
 	 * 数据保存，对多个数据集的操作，包括增删改
+	 * 
 	 * @param dataItems
 	 * @throws Exception
 	 */

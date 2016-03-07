@@ -740,7 +740,7 @@ else if(current.value == &quot;部门常用&quot;){&#xD;
 	 iFrame.set(&quot;path&quot;, &quot;view.comm.d&quot;);&#xD;
 }&#xD;
 else if(current.value == &quot;平台基础&quot;){&#xD;
-	var managerUrl=&quot;bdf2.core.view.frame.main.MainFrame1.d&quot;;&#xD;
+	var managerUrl=&quot;view.Main.d&quot;;&#xD;
 	open(managerUrl,&quot;_blank&quot;);&#xD;
 }</ClientEvent>
               <Property name="items">

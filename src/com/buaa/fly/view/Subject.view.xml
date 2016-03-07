@@ -272,7 +272,7 @@ var parentNode=draggingInfo.get(&quot;targetObject&quot;);//targetObject，对�
 if(!parentNode){&#xD;
 	return true;&#xD;
 }&#xD;
-var parentId=parentNode.get(&quot;data.name&quot;);//父节点ID&#xD;
+var parentId=parentNode.get(&quot;data.oid&quot;);//父节点ID&#xD;
 var order=1;&#xD;
 parentNode.get(&quot;nodes&quot;).each(function(node){//遍历所有子节点&#xD;
 	var data=node.get(&quot;data&quot;);&#xD;

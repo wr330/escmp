@@ -17,34 +17,47 @@ import com.buaa.fly.domain.Sfstatistic;
 import com.buaa.fly.sfstatistic.manager.SfstatisticManager;
 
 @Component("sfstatisticPR")
-public class SfstatisticPR{
+public class SfstatisticPR {
 
-    @Resource
+	@Resource
 	private SfstatisticManager sfstatisticManager;
 
-     
-   /**                  
-	* 分页查询信息，带有criteria
-	* @param page    
-	* @param map
-	* @throws Exception
-	*/
+	/**
+	 * 分页查询信息，带有criteria
+	 * 
+	 * @param page
+	 * @param map
+	 * @throws Exception
+	 */
 	@DataProvider
-	public void querySfstatistic(Page<Sfstatistic> page,Map<String, Object> parameter,Criteria criteria) throws Exception {
-	    sfstatisticManager.querySfstatistic(page,parameter,criteria);
+	public void querySfstatistic(Page<Sfstatistic> page,
+			Map<String, Object> parameter, Criteria criteria) throws Exception {
+		sfstatisticManager.querySfstatistic(page, parameter, criteria);
 	}
-	
-	
+
 	/**
 	 * 数据保存，包括增删改
+	 * 
 	 * @param dataItems
 	 * @throws Exception
 	 */
-	 @SuppressWarnings("rawtypes")
-	 @DataResolver
-	 public void saveSfstatistic(Map<String, Collection> dataItems) throws Exception {
-	    sfstatisticManager.saveSfstatistic(dataItems);
-	 }
-	
-	 
+	@SuppressWarnings("rawtypes")
+	@DataResolver
+	public void saveSfstatistic(Map<String, Collection> dataItems)
+			throws Exception {
+		sfstatisticManager.saveSfstatistic(dataItems);
+	}
+
+	/**
+	 * 根据试飞科目查询架次数
+	 * 
+	 * @param page
+	 * @param map
+	 * @throws Exception
+	 */
+	@DataProvider
+	public Collection<Map<String, Object>> queryJiacinum(
+			Map<String, Object> parameter) throws Exception {
+		return sfstatisticManager.queryJiacinum(parameter);
+	}
 }

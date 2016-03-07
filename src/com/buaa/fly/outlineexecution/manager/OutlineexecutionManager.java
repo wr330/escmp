@@ -1,4 +1,3 @@
-
 package com.buaa.fly.outlineexecution.manager;
 
 import java.io.ByteArrayOutputStream;
@@ -34,10 +33,10 @@ import com.common.FileHelper;
 
 @Component("outlineexecutionManager")
 public class OutlineexecutionManager {
-	
+
 	@Resource
 	private OutlineexecutionDao outlineexecutionDao;
-	
+
 	@Resource
 	private OutlineexecutionDaoforJDBC outlineexecutionDaoforJDBC;
 	@Resource
@@ -48,118 +47,135 @@ public class OutlineexecutionManager {
 	/**
 	 * @throws Exception
 	 */
-	public Collection<Outlineexecution> queryOutlineexecution(Map<String, Object> parameter) throws Exception {
+	public Collection<Outlineexecution> queryOutlineexecution(
+			Map<String, Object> parameter) throws Exception {
 		return outlineexecutionDao.queryOutlineexecution(parameter);
 	}
 
 	/**
 	 * @throws Exception
 	 */
-	public Collection<Outlineexecution> query(Map<String, Object> parameter) throws Exception {
+	public Collection<Outlineexecution> query(Map<String, Object> parameter)
+			throws Exception {
 		return outlineexecutionDao.query(parameter);
 	}
-	
+
 	/**
 	 * @throws Exception
 	 */
-	public Collection<Outlineexecution> queryOutlineexecutionforJDBC(Map<String, Object> parameter) throws Exception {
+	public Collection<Outlineexecution> queryOutlineexecutionforJDBC(
+			Map<String, Object> parameter) throws Exception {
 		return outlineexecutionDaoforJDBC.query(parameter);
 	}
 
-	/**                  
-	* 分页查询信息，带有criteria
-	* 将criteria转换为一个Map
-	* @param page    
-	* @param map
-	* @throws Exception
-	*/
-	public void queryOutline(Page<Outlineexecution> page,Map<String, Object> parameter,Criteria criteria) throws Exception {
-		outlineexecutionDao.queryOutline(page,parameter,criteria);
+	/**
+	 * 分页查询信息，带有criteria 将criteria转换为一个Map
+	 * 
+	 * @param page
+	 * @param map
+	 * @throws Exception
+	 */
+	public void queryOutline(Page<Outlineexecution> page,
+			Map<String, Object> parameter, Criteria criteria) throws Exception {
+		outlineexecutionDao.queryOutline(page, parameter, criteria);
 	}
+
 	/**
 	 * 数据保存，对多个数据集的操作，包括增删改
+	 * 
 	 * @param dataItems
 	 * @throws Exception
 	 */
-	 @SuppressWarnings({ "rawtypes", "unchecked" })
-	 public void saveOutlineexecution(Map<String, Collection> dataItems) throws Exception {
-	    Collection<Outlineexecution> details =(Collection<Outlineexecution>) dataItems.get("dataSetOutlineexecution");
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void saveOutlineexecution(Map<String, Collection> dataItems)
+			throws Exception {
+		Collection<Outlineexecution> details = (Collection<Outlineexecution>) dataItems
+				.get("dataSetOutlineexecution");
 		this.saveOutlineexecution(details);
-	 }
-	 /**
-		 * 数据保存，对多个数据集的操作，包括增删改
-		 * @param dataItems
-		 * @throws Exception
-		 */
-		 @SuppressWarnings({ "rawtypes", "unchecked" })
-		 public void saveOutline(Map<String, Collection> dataItems) throws Exception {
-		    Collection<Outlineexecution> details =(Collection<Outlineexecution>) dataItems.get("dsOutlineexecution");
-			this.saveOutlineexecution(details);
-		 }
-		public int countChildren(Map<String, Object> parameter) {
-			return outlineexecutionDao.countChildren(parameter);
-		}
-	 //下载文件
-	 @Expose
-	 public String downloadFile(String id,String fname) throws Exception{
-		
-		
-			 List<Outlineexecution> outlineexecution = outlineexecutionDao.queryOutlineforText(id);
-			 //byte[] datablock=outlineexecution.getDatablock();
-				if (null != outlineexecution && outlineexecution.size() > 0) {
-					ExportOutline.generateOutlineexecution(outlineexecution);
-				}
+	}
 
-		 
-			 return fname+"试飞大纲.doc";
-    }
-	 
-	 /**
+	/**
+	 * 数据保存，对多个数据集的操作，包括增删改
+	 * 
+	 * @param dataItems
+	 * @throws Exception
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void saveOutline(Map<String, Collection> dataItems) throws Exception {
+		Collection<Outlineexecution> details = (Collection<Outlineexecution>) dataItems
+				.get("dsOutlineexecution");
+		this.saveOutlineexecution(details);
+	}
+
+	public int countChildren(Map<String, Object> parameter) {
+		return outlineexecutionDao.countChildren(parameter);
+	}
+
+	// 下载文件
+	@Expose
+	public String downloadFile(String id, String fname) throws Exception {
+
+		List<Outlineexecution> outlineexecution = outlineexecutionDao
+				.queryOutlineforText(id);
+		// byte[] datablock=outlineexecution.getDatablock();
+		if (null != outlineexecution && outlineexecution.size() > 0) {
+			ExportOutline.generateOutlineexecution(outlineexecution);
+		}
+
+		return fname + "试飞大纲.doc";
+	}
+
+	/**
 	 * 针对单个数据集操作 包括增删改
 	 * 
 	 * @param details
 	 * @throws Exception
 	 */
-	 public void saveOutlineexecution(Collection<Outlineexecution> details) throws Exception {
+	public void saveOutlineexecution(Collection<Outlineexecution> details)
+			throws Exception {
 		if (null != details && details.size() > 0) {
-	    	for(Outlineexecution item : details) {
-				EntityState state = EntityUtils.getState(item);	
+			for (Outlineexecution item : details) {
+				EntityState state = EntityUtils.getState(item);
 				if (state.equals(EntityState.NEW)) {
 					outlineexecutionDao.saveData(item);
-									} else if (state.equals(EntityState.MODIFIED)) {
+				} else if (state.equals(EntityState.MODIFIED)) {
 					outlineexecutionDao.updateData(item);
-									} else if (state.equals(EntityState.DELETED)) {
-										outlineexecutionDao.deleteData(item);
+				} else if (state.equals(EntityState.DELETED)) {
+					outlineexecutionDao.deleteData(item);
 				} else if (state.equals(EntityState.NONE)) {
-						EntityState subjectState = EntityUtils.getState(item.getSubject());
-						if(item.getChildren()!=null){
-							saveOutlineexecution(item.getChildren());
-						}
-						if(subjectState.equals(EntityState.MODIFIED)){
-							outlineexecutionDao.updateData(item);
-						}
-				}
-				combineVehicleManager.saveCombineVehicle(item.getCombineVehicle());
-			}
-		}
-	 }
-	 /**
-		 * 数据保存，对多个数据集的操作，包括增删改
-		 * @param dataItems
-		 * @throws Exception
-		 */
-		
-
-		 public void statisticOutlineexecution(Collection<Outlineexecution> details) throws Exception {
-				if (null != details && details.size() > 0) {
-			    	for(Outlineexecution item : details) {
-						if(item.getParentnode()==null){
-							outlineexecutionDao.statisticMainSubject(item); 
-						}else{
-							outlineexecutionDao.statisticSubject(item); 
-						}
+					EntityState subjectState = EntityUtils.getState(item
+							.getSubject());
+					if (item.getChildren() != null) {
+						saveOutlineexecution(item.getChildren());
+					}
+					if (subjectState.equals(EntityState.MODIFIED)) {
+						outlineexecutionDao.updateData(item);
 					}
 				}
-			 }
-	
+				combineVehicleManager.saveCombineVehicle(item
+						.getCombineVehicle());
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param dataItems
+	 * @throws Exception
+	 */
+
+	public void statisticOutlineexecution(Collection<Outlineexecution> details)
+			throws Exception {
+		if (null != details && details.size() > 0) {
+			for (Outlineexecution item : details) {
+				if (item.getParentnode() == null) {
+					outlineexecutionDao.statisticMainSubject(item);
+				} else {
+					outlineexecutionDao.statisticSubject(item);
+				}
+			}
+		}
+	}
+
 }

@@ -30,7 +30,7 @@ public class  Sfstatistic implements Serializable {
 	private Date fdate ;
 	private String id ;
 	private Tasklist taskNo ;
-	private String jiaci ;
+	private Integer jiaci ;
 	private String config ;
 	private String address ;
 	private String subject ;
@@ -114,10 +114,10 @@ public class  Sfstatistic implements Serializable {
 	}
 	
 	@Column(name="JiaCi")
-	public String getJiaci() {
+	public Integer getJiaci() {
 		return jiaci;
 	}
-	public void setJiaci(String jiaci) {
+	public void setJiaci(Integer jiaci) {
 		this.jiaci=jiaci;
 	}
 	@Column(name="config")
