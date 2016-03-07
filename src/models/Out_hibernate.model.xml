@@ -5,6 +5,7 @@
     <PropertyDef name="troop">
       <Property name="dataType">String</Property>
       <Property name="label">部队</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="staffrequirement">
       <Property name="dataType">Integer</Property>
@@ -93,6 +94,7 @@
     <PropertyDef name="startexecutiontime">
       <Property name="dataType">Date</Property>
       <Property name="label">开始时间</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="endexecutiontime">
       <Property name="dataType">Date</Property>

@@ -29,9 +29,15 @@
     </DataSet>
     <DataSet id="dsStatisticSupport">
       <ClientEvent name="onLoadData">if(self.getData().get(&quot;data&quot;).isEmpty()){&#xD;
-	dorado.MessageBox.alert(&quot;本年度没有数据&quot;);&#xD;
+	dorado.MessageBox.alert(&quot;本年度没有制定保障计划&quot;);&#xD;
 }&#xD;
 </ClientEvent>
+      <ClientEvent name="onReady">var date = new Date();&#xD;
+var year = date.getFullYear(); &#xD;
+var dsStatisticSupport = view.get(&quot;#dsStatisticSupport&quot;)&#xD;
+dsStatisticSupport.set(&quot;parameter&quot;, {&#xD;
+	year: year&#xD;
+});</ClientEvent>
       <Property name="dataProvider">supportprogramPR#statisticSupport</Property>
       <Property name="dataType">dtS</Property>
     </DataSet>
@@ -110,7 +116,10 @@ dialog.show();&#xD;
         <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
       </ToolBarButton>
       <ToolBarButton>
-        <ClientEvent name="onClick">view.id(&quot;SupportGraph&quot;).show();</ClientEvent>
+        <ClientEvent name="onClick">var dsStatisticSupport = view.get(&quot;#dsStatisticSupport&quot;);&#xD;
+dsStatisticSupport.flushAsync();&#xD;
+view.id(&quot;SupportGraph&quot;).show();&#xD;
+</ClientEvent>
         <Property name="icon">url(>skin>common/icons.gif) -280px -40px</Property>
         <Property name="caption">统计查看</Property>
       </ToolBarButton>
@@ -232,14 +241,6 @@ view.id('diaSupportprogram').hide();&#xD;
       <Tools/>
     </Dialog>
     <Dialog id="SupportGraph">
-      <ClientEvent name="onShow">var date = new Date();&#xD;
-var year = date.getFullYear(); &#xD;
-this.get(&quot;#yearForm&quot;).set(&quot;value&quot;,year);&#xD;
-var dsStatisticSupport = view.get(&quot;#dsStatisticSupport&quot;)&#xD;
-dsStatisticSupport.set(&quot;parameter&quot;, {&#xD;
-	year: year&#xD;
-});&#xD;
-dsStatisticSupport.flushAsync();</ClientEvent>
       <Property name="width">61.8%</Property>
       <Property name="height">80%</Property>
       <Property name="caption">年度最大保障人数</Property>
@@ -258,10 +259,7 @@ dsStatisticSupport.flushAsync();</ClientEvent>
               <ClientEvent name="onReady">var date = new Date();&#xD;
 var year = date.getFullYear(); &#xD;
 this.get(&quot;#yearForm&quot;).set(&quot;value&quot;,year);&#xD;
-var dsStatisticSupport = view.get(&quot;#dsStatisticSupport&quot;)&#xD;
-dsStatisticSupport.set(&quot;parameter&quot;, {&#xD;
-	year: year&#xD;
-});</ClientEvent>
+</ClientEvent>
               <Property name="trigger">yearDropDown1</Property>
               <Property name="label">选择年份:</Property>
               <Property name="labelWidth">80</Property>

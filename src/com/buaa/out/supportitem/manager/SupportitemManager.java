@@ -15,6 +15,7 @@ import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 import com.buaa.out.domain.Supportitem;
+import com.buaa.out.domain.Supportprogram;
 import com.buaa.out.supportitem.dao.SupportitemDao;
 import com.buaa.sys.userOperationLog.manager.UserOperationLogManager;
 
@@ -39,8 +40,27 @@ public class SupportitemManager {
 	public void querySupportitem(Page<Supportitem> page,Map<String, Object> parameter,Criteria criteria) throws Exception {
 	    supportitemDao.querySupportitem(page,parameter,criteria);
 	}
+	
 	public Collection<Supportitem> queryRenyuan(Map<String, Object> parameter) throws Exception {
 	    return supportitemDao.queryRenyuan(parameter);
+	}
+	
+	/**                  
+	* 根据参数查询保障计划信息    
+	* @param map
+	* @throws Exception
+	*/
+	public Collection<Supportprogram> queryProgram(Map<String, Object> parameter) throws Exception {
+		return supportitemDao.queryProgram(parameter);
+	}
+	
+	/**                  
+	* 根据参数查询保障条目信息    
+	* @param map
+	* @throws Exception
+	*/
+	public Collection<Supportitem> queryItem(Map<String, Object> parameter) throws Exception {
+		return supportitemDao.queryItem(parameter);
 	}
 	
 	/**

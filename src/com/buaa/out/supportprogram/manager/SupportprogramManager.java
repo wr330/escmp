@@ -56,10 +56,8 @@ public class SupportprogramManager {
 	}
 	
 	/**                  
-	* 分页查询信息，带有criteria
-	* 将criteria转换为一个Map
-	* @param page    
-	* @param map
+	* 搜索计划开始时间到结束时间涉及本年度的保障计划
+	* @param parameter    
 	* @throws Exception
 	*/
 	public Collection<Supportprogram> queryProgram(Map<String, Object> parameter) throws Exception {

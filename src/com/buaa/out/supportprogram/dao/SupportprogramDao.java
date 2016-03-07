@@ -122,6 +122,11 @@ public class SupportprogramDao extends HibernateBaseDao {
 		return items;
 	}
 	
+	/**                  
+	* 搜索计划开始时间到结束时间涉及本年度的保障计划
+	* @param parameter    
+	* @throws Exception
+	*/
 	public Collection<Supportprogram> queryProgram(Map<String, Object> parameter) throws Exception {
 		Map<String,Object> map=new HashMap<String,Object>();
 		String hql="from "+Supportprogram.class.getName()+" u where 1=1";

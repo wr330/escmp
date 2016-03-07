@@ -106,8 +106,7 @@ public class SupportprogramPR{
 		}
 		
 		/**                  
-		  * 分页查询信息，带有criteria
-		  * @param page    
+		  * 保障计划的最大保障人数的统计    
 		  * @param map
 		  * @throws Exception
 		  */
