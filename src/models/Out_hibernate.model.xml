@@ -67,6 +67,18 @@
     <PropertyDef name="endtime">
       <Property name="dataType">Date</Property>
       <Property name="label">终止日期</Property>
+      <Validator type="custom">
+        <ClientEvent name="onValidate">var worktime = arg.entity.get(&quot;worktime&quot;);&#xD;
+var endtime = arg.data;&#xD;
+if(worktime){&#xD;
+	if (endtime > worktime) {&#xD;
+	arg.result = { state:&quot;ok&quot;}&#xD;
+	} &#xD;
+	else{&#xD;
+		arg.result = { state:&quot;error&quot;, text: &quot;终止日期小于等于制定时间&quot;};	&#xD;
+	}&#xD;
+}</ClientEvent>
+      </Validator>
     </PropertyDef>
     <Reference name="supportitem">
       <Property name="dataProvider">supportitemPR#querySupportitem</Property>
@@ -99,6 +111,20 @@
     <PropertyDef name="endexecutiontime">
       <Property name="dataType">Date</Property>
       <Property name="label">结束时间</Property>
+      <Validator type="custom">
+        <ClientEvent name="onValidate">var startexecutiontime = arg.entity.get(&quot;startexecutiontime&quot;);&#xD;
+var endexecutiontime = arg.data;&#xD;
+if(startexecutiontime){&#xD;
+	if (endexecutiontime > startexecutiontime) {&#xD;
+	arg.result = { state:&quot;ok&quot;}&#xD;
+	} &#xD;
+	else{&#xD;
+		arg.result = { state:&quot;error&quot;, text: &quot;结束时间小于等于开始时间&quot;};	&#xD;
+	}&#xD;
+}&#xD;
+&#xD;
+</ClientEvent>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="registrationexecutor">
       <Property name="dataType">String</Property>
