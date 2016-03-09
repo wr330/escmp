@@ -31,6 +31,18 @@
       <Property name="dataType">Date</Property>
       <Property name="label">制定日期</Property>
       <Property name="required">true</Property>
+      <Validator type="custom">
+        <ClientEvent name="onValidate">var endtime = arg.entity.get(&quot;endtime&quot;);&#xD;
+var worktime = arg.data;&#xD;
+if(endtime){&#xD;
+	if ((endtime > worktime)) {&#xD;
+	arg.result = { state:&quot;ok&quot;}&#xD;
+	} &#xD;
+	else{&#xD;
+		arg.result = { state:&quot;error&quot;, text: &quot;终止日期小于等于制定时间&quot;};	&#xD;
+	}&#xD;
+}</ClientEvent>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="oid">
       <Property name="dataType">String</Property>
@@ -71,7 +83,7 @@
         <ClientEvent name="onValidate">var worktime = arg.entity.get(&quot;worktime&quot;);&#xD;
 var endtime = arg.data;&#xD;
 if(worktime){&#xD;
-	if (endtime > worktime) {&#xD;
+	if ((endtime > worktime) || (endtime == null)) {&#xD;
 	arg.result = { state:&quot;ok&quot;}&#xD;
 	} &#xD;
 	else{&#xD;
@@ -107,6 +119,19 @@ if(worktime){&#xD;
       <Property name="dataType">Date</Property>
       <Property name="label">开始时间</Property>
       <Property name="required">true</Property>
+      <Validator type="custom">
+        <ClientEvent name="onValidate">var endexecutiontime = arg.entity.get(&quot;endexecutiontime&quot;);&#xD;
+var startexecutiontime = arg.data;&#xD;
+if(endexecutiontime){&#xD;
+	if ((endexecutiontime > startexecutiontime)) {&#xD;
+	arg.result = { state:&quot;ok&quot;}&#xD;
+	} &#xD;
+	else{&#xD;
+		arg.result = { state:&quot;error&quot;, text: &quot;结束时间小于等于开始时间&quot;};	&#xD;
+	}&#xD;
+}&#xD;
+</ClientEvent>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="endexecutiontime">
       <Property name="dataType">Date</Property>
@@ -115,7 +140,7 @@ if(worktime){&#xD;
         <ClientEvent name="onValidate">var startexecutiontime = arg.entity.get(&quot;startexecutiontime&quot;);&#xD;
 var endexecutiontime = arg.data;&#xD;
 if(startexecutiontime){&#xD;
-	if (endexecutiontime > startexecutiontime) {&#xD;
+	if ((endexecutiontime > startexecutiontime) || (endexecutiontime == null)) {&#xD;
 	arg.result = { state:&quot;ok&quot;}&#xD;
 	} &#xD;
 	else{&#xD;
