@@ -47,8 +47,7 @@ var icon=&quot;${configure.getString(&quot;bdf2.mainFrame.welcomeIcon&quot;)}&qu
 var title=&quot;${configure.getString(&quot;bdf2.mainFrame.welcomeTitle&quot;)}&quot;;&#xD;
 if(path){&#xD;
 	window.openUrlInFrameTab(path,title,icon,true);&#xD;
-}&#xD;
-</ClientEvent>
+}</ClientEvent>
     <Property name="packages">tree</Property>
     <DataSet id="dataSetUrl">
       <ClientEvent name="onReady">String.prototype.replaceAll = function(reallyDo, replaceWith, ignoreCase) {&#xD;
@@ -58,121 +57,67 @@ if(path){&#xD;
 	    return this.replace(reallyDo, replaceWith);&#xD;
 	}&#xD;
 }&#xD;
-&#xD;
-var cardBookNav=view.id(&quot;cardBookNav&quot;);&#xD;
-var toolbar=view.id(&quot;toolBarNav&quot;);&#xD;
+var expanded=&quot;${configure.getBoolean(&quot;bdf2.mainFrameMenuExpanded&quot;)}&quot;;&#xD;
+var accordionNav=view.id(&quot;accordionNav&quot;);&#xD;
 var listArray = [];&#xD;
 var treeJson={};&#xD;
 var data=self.getData();&#xD;
 if(!data){&#xD;
 	return;&#xD;
 }&#xD;
-var count=0;&#xD;
 data.each(function(url){&#xD;
-	var button=new dorado.widget.toolbar.Button();&#xD;
-	button.set(&quot;caption&quot;,url.get(&quot;name&quot;));&#xD;
+	var section=new dorado.widget.Section();&#xD;
+	section.set(&quot;caption&quot;,url.get(&quot;name&quot;));&#xD;
 	if(url.get(&quot;desc&quot;)){&#xD;
-		button.set(&quot;tip&quot;,url.get(&quot;desc&quot;));&#xD;
+		section.set(&quot;tip&quot;,url.get(&quot;desc&quot;));	&#xD;
 	}&#xD;
 	if(url.get(&quot;icon&quot;)){&#xD;
-		button.set(&quot;icon&quot;,url.get(&quot;icon&quot;));&#xD;
+		section.set(&quot;icon&quot;,url.get(&quot;icon&quot;));	&#xD;
 	}&#xD;
-	var id=url.get(&quot;id&quot;);&#xD;
-	button.set(&quot;userData&quot;,url);&#xD;
-	button.set(&quot;toggleable&quot;,true);&#xD;
-	if(count==0){&#xD;
-		button.set(&quot;toggled&quot;,true);&#xD;
-		buildSections(url);&#xD;
-	}&#xD;
-	button.set(&quot;onClick&quot;,function(){&#xD;
-		listArray.each(function(b){&#xD;
-			b.set(&quot;toggled&quot;,false);			&#xD;
-		});&#xD;
-		button.set(&quot;toggled&quot;,true);&#xD;
-		buildSections(url);&#xD;
-	});&#xD;
-	toolbar.addItem(button);&#xD;
-	listArray.push(button);&#xD;
-	count++;&#xD;
+	section.set(&quot;name&quot;,url.get(&quot;id&quot;));&#xD;
+	section.set(&quot;control&quot;,new dorado.widget.Tree());&#xD;
+	section.set(&quot;userData&quot;,url);&#xD;
+	accordionNav.addSection(section);&#xD;
 });&#xD;
 &#xD;
-function buildSections(url){&#xD;
-	var id=url.get(&quot;id&quot;);&#xD;
-	var newId=&quot;accordion&quot;+id.replaceAll(&quot;-&quot;,&quot;&quot;);&#xD;
-	var accordion=cardBookNav.getControl(newId);&#xD;
-	if(accordion){&#xD;
-		cardBookNav.set(&quot;currentControl&quot;,accordion);&#xD;
+accordionNav.set(&quot;onCurrentSectionChange&quot;,function(accrodion,arg){&#xD;
+	var section=arg.newSection;&#xD;
+	var id=section.get(&quot;name&quot;);&#xD;
+	if(treeJson[id]){&#xD;
 		return;&#xD;
 	}&#xD;
-	var newAccordion=new dorado.widget.Accordion({id:newId});&#xD;
-	addAccordionEvent(newAccordion);&#xD;
-	var sections=[];&#xD;
+	treeJson[id]=&quot;tree&quot;;&#xD;
+	var url=section.get(&quot;userData&quot;);&#xD;
 	var cdata=url.get(&quot;children&quot;);&#xD;
 	if(!cdata){&#xD;
 		return;&#xD;
 	}&#xD;
-	cdata.each(function(urlData){&#xD;
-		var section=new dorado.widget.Section();&#xD;
-		section.set(&quot;caption&quot;,urlData.get(&quot;name&quot;));&#xD;
-		if(urlData.get(&quot;desc&quot;)){&#xD;
-			section.set(&quot;tip&quot;,urlData.get(&quot;desc&quot;));	&#xD;
+	var tree=section.get(&quot;control&quot;);&#xD;
+	tree.set(&quot;onClick&quot;,function(self,arg){&#xD;
+		var node=self.get(&quot;currentNode&quot;);&#xD;
+		var data=node.get(&quot;userData&quot;);&#xD;
+		if(data.get(&quot;url&quot;)){&#xD;
+			window.openUrlInFrameTab(data.get(&quot;url&quot;),data.get(&quot;name&quot;),data.get(&quot;icon&quot;));&#xD;
 		}&#xD;
-		if(urlData.get(&quot;icon&quot;)){&#xD;
-			section.set(&quot;icon&quot;,urlData.get(&quot;icon&quot;));	&#xD;
-		}&#xD;
-		section.set(&quot;userData&quot;,urlData);&#xD;
-		section.set(&quot;name&quot;,urlData.get(&quot;id&quot;));&#xD;
-		sections.push(section);&#xD;
 	});&#xD;
-	rebuildAccordion(sections);&#xD;
-	newAccordion.set(&quot;sections&quot;,sections);&#xD;
-	newAccordion.set(&quot;userData&quot;,url);&#xD;
-	cardBookNav.addControl(newAccordion);&#xD;
-	cardBookNav.set(&quot;currentControl&quot;,newAccordion);&#xD;
-}&#xD;
-function rebuildAccordion(sections){&#xD;
-	sections.each(function(section){&#xD;
-		var tree=new dorado.widget.Tree();&#xD;
-		section.set(&quot;control&quot;,tree);&#xD;
-	});&#xD;
-}&#xD;
-function addAccordionEvent(accordion){&#xD;
-	accordion.set(&quot;onCurrentSectionChange&quot;,function(accrodionObj,arg){&#xD;
-		var section=arg.newSection;&#xD;
-		var id=section.get(&quot;name&quot;);&#xD;
-		if(treeJson[id]){&#xD;
-			return;&#xD;
+	tree.set(&quot;onDoubleClick&quot;,function(self,arg){&#xD;
+		var node=self.get(&quot;currentNode&quot;);&#xD;
+		var data=node.get(&quot;userData&quot;);&#xD;
+		if(data.get(&quot;url&quot;)){&#xD;
+			window.openUrlInFrameTab(data.get(&quot;url&quot;),data.get(&quot;name&quot;),data.get(&quot;icon&quot;),true);&#xD;
 		}&#xD;
-		treeJson[id]=&quot;tree&quot;;&#xD;
-		var url=section.get(&quot;userData&quot;);&#xD;
-		var cdata=url.get(&quot;children&quot;);&#xD;
-		if(!cdata){&#xD;
-			return;&#xD;
-		}&#xD;
-		var tree=section.get(&quot;control&quot;);&#xD;
-		tree.set(&quot;onDataRowClick&quot;,function(self,arg){&#xD;
-			var node=self.get(&quot;currentNode&quot;);&#xD;
-			var data=node.get(&quot;userData&quot;);&#xD;
-			if(data.get(&quot;url&quot;)){&#xD;
-				window.openUrlInFrameTab(data.get(&quot;url&quot;),data.get(&quot;name&quot;),data.get(&quot;icon&quot;));&#xD;
-			}&#xD;
-		});&#xD;
-		tree.set(&quot;onDataRowDoubleClick&quot;,function(self,arg){&#xD;
-			var node=self.get(&quot;currentNode&quot;);&#xD;
-			var data=node.get(&quot;userData&quot;);&#xD;
-			if(data.get(&quot;url&quot;)){&#xD;
-				window.openUrlInFrameTab(data.get(&quot;url&quot;),data.get(&quot;name&quot;),data.get(&quot;icon&quot;),true);&#xD;
-			}&#xD;
-		});			&#xD;
-		var rootNode=tree.get(&quot;root&quot;);&#xD;
-		cdata.each(function(d){&#xD;
-			buildTree(rootNode,d);&#xD;
-		});&#xD;
+	});		&#xD;
+	var rootNode=tree.get(&quot;root&quot;);&#xD;
+	cdata.each(function(d){&#xD;
+		buildTree(rootNode,d);&#xD;
 	});&#xD;
-}&#xD;
+});&#xD;
 &#xD;
 function buildTree(topNode,url){&#xD;
 	var node=new dorado.widget.tree.Node();&#xD;
+	if(expanded==&quot;true&quot;){&#xD;
+		node.set(&quot;expanded&quot;,true);&#xD;
+	}&#xD;
 	node.set(&quot;label&quot;,url.get(&quot;name&quot;));&#xD;
 	if(url.get(&quot;desc&quot;)){&#xD;
 		node.set(&quot;tip&quot;,url.get(&quot;desc&quot;));&#xD;
@@ -188,17 +133,18 @@ function buildTree(topNode,url){&#xD;
 	}&#xD;
 	cdata.each(function(d){&#xD;
 		buildTree(node,d);&#xD;
-	});	&#xD;
+	});&#xD;
 }&#xD;
 </ClientEvent>
-      <Property name="dataProvider">bdf2.mainFrame#loadMeunUrls</Property>
+      <Property name="dataProvider">menuDao#loadMeunUrls</Property>
       <Property name="dataType">[dataTypeUrl]</Property>
       <Property name="loadMode">onReady</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="module">平台基础功能，系统权限管理</Property>
+        </Entity>
+      </Property>
     </DataSet>
-    <SubViewHolder id="subViewHolderTop" layoutConstraint="top">
-      <Property name="subView">${configure.getString(&quot;bdf2.mainFrameTopView&quot;)}</Property>
-    </SubViewHolder>
-    <ToolBar id="toolBarNav" layoutConstraint="top"/>
     <Menu id="menuForTab">
       <MenuItem>
         <ClientEvent name="onClick">setTimeout(function(){&#xD;
@@ -245,7 +191,7 @@ function buildTree(topNode,url){&#xD;
       </MainControl>
       <SideControl>
         <Container>
-          <CardBook id="cardBookNav"/>
+          <Accordion id="accordionNav"/>
         </Container>
       </SideControl>
     </SplitPanel>
