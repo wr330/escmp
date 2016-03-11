@@ -103,11 +103,16 @@ public class SupportprogramDao extends HibernateBaseDao {
 			String time = df.format(now);
 			map.put("oid",oid);
 			hql+=" and u.supportprogram.oid =:oid";
-			hql+=" and u.startexecutiontime < '"+ time +"' and u.endexecutiontime > '"+ time +"'";
+			hql+=" and ((u.startexecutiontime < '"+ time +"' and u.endexecutiontime > '"+ time +"') or (u.startexecutiontime < '"+ time +"' and u.endexecutiontime = null))";
 			return this.query(hql,map);	
 		}
 	}
 
+	/**                  
+	* 根据地点搜索本年度的保障计划
+	* @param parameter    
+	* @throws Exception
+	*/
 	public Collection<Supportitem> queryRenyuan(Map<String, Object> parameter) throws Exception {
 	    String address = (String)parameter.get("address");
 	    Collection<Supportprogram> details = this.queryAddress(address);

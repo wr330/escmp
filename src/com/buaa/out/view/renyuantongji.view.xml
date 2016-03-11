@@ -28,12 +28,12 @@
     </DataSet>
     <SplitPanel>
       <Property name="position">208</Property>
-      <Property name="height">50%</Property>
       <MainControl>
         <DataGrid id="dgRenyuan">
           <Property name="dataSet">dsRenyuantongji</Property>
           <Property name="filterMode">serverSide</Property>
           <Property name="readOnly">true</Property>
+          <Property name="rowHeight">22</Property>
           <RowNumColumn/>
           <DataColumn>
             <Property name="property">registrationexecutor</Property>
@@ -70,6 +70,10 @@
             <Property name="property">supportprogram.worktime</Property>
             <Editor/>
           </DataColumn>
+          <DataColumn>
+            <Property name="property">supportprogram.endtime</Property>
+            <Editor/>
+          </DataColumn>
         </DataGrid>
       </MainControl>
       <SideControl>
@@ -86,6 +90,7 @@ dsRenyuantongji.flushAsync();&#xD;
           <Property name="readOnly">true</Property>
           <Property name="height">300</Property>
           <Property name="width">200</Property>
+          <Property name="rowHeight">22</Property>
           <DataColumn name="name">
             <Property name="property">name</Property>
             <Property name="width">200</Property>
@@ -94,30 +99,5 @@ dsRenyuantongji.flushAsync();&#xD;
         </DataGrid>
       </SideControl>
     </SplitPanel>
-    <Chart id="chartA">
-      <Axes>
-        <CategoryAxis>
-          <Property name="dataSet">statisticRenyuan</Property>
-          <Property name="properties">mouth</Property>
-        </CategoryAxis>
-        <NumbericAxis>
-          <Property name="min">0</Property>
-          <Property name="title">人数</Property>
-        </NumbericAxis>
-      </Axes>
-      <Series>
-        <Line>
-          <Property name="dataSet">statisticRenyuan</Property>
-          <Property name="title">人员需求</Property>
-          <Property name="bindingConfig">
-            <Property name="yProperty">num</Property>
-          </Property>
-        </Line>
-      </Series>
-    </Chart>
-    <DataSet id="statisticRenyuan">
-      <Property name="dataProvider">supportitemPR#statisticRenyuan</Property>
-      <Property name="parameter"></Property>
-    </DataSet>
   </View>
 </ViewConfig>
