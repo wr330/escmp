@@ -1,4 +1,3 @@
-
 package com.buaa.fly.fighterxzh.manager;
 
 import java.util.Collection;
@@ -17,61 +16,72 @@ import com.buaa.fly.fighterxzh.dao.FighterxzhDao;
 
 @Component("fighterxzhManager")
 public class FighterxzhManager {
-	
+
 	@Resource
 	private FighterxzhDao fighterxzhDao;
-		
-	/**                  
-	* 分页查询信息，带有criteria
-	* 将criteria转换为一个Map
-	* @param page    
-	* @param map
-	* @throws Exception
-	*/
-	public void queryFighterxzh(Page<Fighterxzh> page,Map<String, Object> parameter,Criteria criteria) throws Exception {
-	    fighterxzhDao.queryFighterxzh(page,parameter,criteria);
+
+	/**
+	 * 分页查询信息，带有criteria 将criteria转换为一个Map
+	 * 
+	 * @param page
+	 * @param map
+	 * @throws Exception
+	 */
+	public void queryFighterxzh(Page<Fighterxzh> page,
+			Map<String, Object> parameter, Criteria criteria) throws Exception {
+		fighterxzhDao.queryFighterxzh(page, parameter, criteria);
 	}
-	
-	
+
 	/**
 	 * 数据保存，对多个数据集的操作，包括增删改
+	 * 
 	 * @param dataItems
 	 * @throws Exception
 	 */
-	 @SuppressWarnings({ "rawtypes", "unchecked" })
-	 public void saveFighterxzh(Map<String, Collection> dataItems) throws Exception {
-	    Collection<Fighterxzh> details =(Collection<Fighterxzh>) dataItems.get("dsfighterxzh");
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void saveFighterxzh(Map<String, Collection> dataItems)
+			throws Exception {
+		Collection<Fighterxzh> details = (Collection<Fighterxzh>) dataItems
+				.get("dsfighterxzh");
 		this.saveFighterxzh(details);
-	 }
-	 
-	 
-	 /**
+	}
+
+	/**
 	 * 针对单个数据集操作 包括增删改
 	 * 
 	 * @param details
 	 * @throws Exception
 	 */
-	 public void saveFighterxzh(Collection<Fighterxzh> details) throws Exception {
+	public void saveFighterxzh(Collection<Fighterxzh> details) throws Exception {
 		if (null != details && details.size() > 0) {
-	    	for(Fighterxzh item : details) {
+			for (Fighterxzh item : details) {
 				EntityState state = EntityUtils.getState(item);
 				if (state.equals(EntityState.NEW)) {
 					fighterxzhDao.saveData(item);
-									} else if (state.equals(EntityState.MODIFIED)) {
+				} else if (state.equals(EntityState.MODIFIED)) {
 					fighterxzhDao.updateData(item);
-									} else if (state.equals(EntityState.DELETED)) {
-										fighterxzhDao.deleteData(item);
+				} else if (state.equals(EntityState.DELETED)) {
+					fighterxzhDao.deleteData(item);
 				} else if (state.equals(EntityState.NONE)) {
-					EntityState flightRestrictState = EntityUtils.getState(item.getFlightRestrict());
-
+					EntityState flightRestrictState = EntityUtils.getState(item
+							.getFlightRestrict());
 					if (flightRestrictState.equals(EntityState.MODIFIED)) {
 						fighterxzhDao.updateData(item);
-					}									
+					}
 				}
 			}
 		}
-	 }
-	 
-	 
-	
+	}
+
+	/**
+	 * 删除该使用限制下所有的飞机关联信息
+	 * 
+	 * @param parameter
+	 * @throws Exception
+	 */
+	public void deleteFighterxzh(Map<String, Object> parameter)
+			throws Exception {
+		fighterxzhDao.deleteFighterxzh(parameter);
+	}
+
 }

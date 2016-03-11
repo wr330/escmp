@@ -10,6 +10,8 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 import org.apache.commons.lang.StringUtils;
@@ -133,7 +135,7 @@ public class TasklistDao extends HibernateBaseDao {
 	}
 	
 	/**
-	 * 这个方法用来判断在添加新软件时型号是否已经存在
+	 * 这个方法用来判断在添加时任务单是否已经存在
 	 * 
 	 * @param tasknumber
 	 *            用户输入的任务单号
@@ -158,7 +160,6 @@ public class TasklistDao extends HibernateBaseDao {
 	 * @throws Exception
 	 */
 	public Collection<Tasklist> queryTaskOutline(Map<String, Object> parameter) {
-		Map<String, Object> map = new HashMap<String, Object>();
 		String name = (String) parameter.get("subject");
 		String hql = "from " + Tasklist.class.getName() + " u where 1=1";
 		String ftype = (String) parameter.get("ftype");
@@ -167,12 +168,10 @@ public class TasklistDao extends HibernateBaseDao {
 		} else
 			hql += " and u.aircrafttype ='" + ftype + "'";
 		if (StringUtils.isEmpty(name)) {
-			hql += " and u.subject is null ";
-			return this.query(hql, map);
+			hql += "";
 		} else {
-			map.put("name", name);
-			hql += " and u.subject=:name ";
-			return this.query(hql, map);
+			hql += "";
 		}
+		return this.query(hql);
 	}
 }

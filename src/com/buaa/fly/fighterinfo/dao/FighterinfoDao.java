@@ -17,51 +17,36 @@ import com.common.HibernateBaseDao;
 
 import com.buaa.fly.domain.Fighterinfo;
 import com.buaa.fly.domain.Fpici;
+import com.buaa.fly.domain.Ftypes;
 
 @Repository("fighterinfoDao")
 public class FighterinfoDao extends HibernateBaseDao {
 
 	/**
-	 * 同时也支持普通类型查询，在数据类型和日期类型支持区间查询
+	 * 信息查询
 	 * 
-	 * @param page
 	 * @param parameter
-	 * @param criteria
 	 * @throws Exception
 	 */
-	public void queryFighterinfo(Page<Fighterinfo> page, Map<String, Object> parameter,Criteria criteria) throws Exception {
-        Map<String, Object> args = new HashMap<String,Object>();
-        StringBuffer coreHql = new StringBuffer("from " + Fighterinfo.class.getName()+" a where 1=1 ");
-        
-        if(null != parameter && !parameter.isEmpty()){
-	String piciname = (String)parameter.get("piciname");
-	if(StringUtils.isNotEmpty( piciname )){
-		coreHql.append(" and a.piciid.piciID like :piciname ");
-		args.put("piciname",piciname);	
-	}
- 	/*String ftypename = (String)parameter.get("ftypename");
-	if(StringUtils.isNotEmpty( ftypename )){
-		coreHql.append(" and a.ftypes.ftypename like :ftypename ");
-		args.put("ftypename",ftypename);	
-	}*/
-           }
-		
-		if (null != criteria) {
-			ParseResult result = this.parseCriteria(criteria, true, "a");
-			if (null != result) {
-				coreHql.append(" and "+ result.getAssemblySql());
-				args.putAll(result.getValueMap());
+	public Collection<Fighterinfo> queryFighterinfo(
+			Map<String, Object> parameter) throws Exception {
+		Map<String, Object> args = new HashMap<String, Object>();
+		String hql = "from " + Fighterinfo.class.getName() + " a where 1=1 ";
+
+		if (null != parameter && !parameter.isEmpty()) {
+			String piciname = (String) parameter.get("piciname");
+			if (StringUtils.isNotEmpty(piciname)) {
+				hql += " and a.piciid.piciID like :piciname ";
+				args.put("piciname", piciname);
 			}
 		}
 
-        
-        String countHql = "select count(*) " + coreHql.toString();
-        String hql = coreHql.toString();
-		this.pagingQuery(page, hql, countHql, args);
+		 return this.query(hql, args);
 	}
-	
+
 	/**
 	 * 数据添加
+	 * 
 	 * @param detail
 	 * @throws Exception
 	 */
@@ -75,29 +60,61 @@ public class FighterinfoDao extends HibernateBaseDao {
 		}
 	}
 
+	/**
+	 * 根据飞机编号查询信息
+	 * 
+	 * @param parameter
+	 * @throws Exception
+	 */
 	public Fighterinfo queryFighterinfo1(String parameter) {
 		String hql = " from " + Fighterinfo.class.getName()
-				+ " u where u.outfactoryno like '"+parameter+"'";
-		List<Fighterinfo> info= this.query(hql);
+				+ " u where u.outfactoryno like '" + parameter + "'";
+		List<Fighterinfo> info = this.query(hql);
 		return info.get(0);
-	} 
-	
+	}
+
+	/**
+	 * 根据批次查询飞机信息
+	 * 
+	 * @param parameter
+	 * @throws Exception
+	 */
 	public Collection<Fighterinfo> queryFighterinfobyPici(String parameter) {
 		String hql = " from " + Fighterinfo.class.getName()
-				+ " u where u.piciid like '"+parameter+"'";
-		Collection<Fighterinfo> info= this.query(hql);
+				+ " u where u.piciid like '" + parameter + "'";
+		Collection<Fighterinfo> info = this.query(hql);
 		return info;
-	} 
+	}
 	
-
+	/**
+	 * 根据机型查询飞机信息
+	 * 
+	 * @param parameter
+	 * @throws Exception
+	 */
+	public Collection<Fighterinfo> queryFighterinfobyFtype(Map<String, Object> parameter) {
+		String ftype = (String) parameter.get("ftype");
+		String hql = " from " + Fighterinfo.class.getName()
+				+ " u where u.piciid.fTypeName.ftypename like '" + ftype + "'";
+		Collection<Fighterinfo> info = this.query(hql);
+		return info;
+	}
+	
+	/**
+	 * 查询飞机信息条目数
+	 * 
+	 * @throws Exception
+	 */
 	public Integer conlumIdentity() {
 		String hql = "select count(*) from " + Fighterinfo.class.getName()
 				+ " u where 1=1";
 		int count = this.queryForInt(hql);
-		return count+1;
-	} 
+		return count + 1;
+	}
+
 	/**
 	 * 数据修改
+	 * 
 	 * @param detail
 	 * @throws Exception
 	 */
@@ -113,6 +130,7 @@ public class FighterinfoDao extends HibernateBaseDao {
 
 	/**
 	 * 数据删除
+	 * 
 	 * @param detail
 	 * @throws Exception
 	 */
@@ -125,5 +143,24 @@ public class FighterinfoDao extends HibernateBaseDao {
 			session.close();
 		}
 	}
-        
+	
+	/**
+	 * 这个方法用来判断在添加时，该飞机编号是否已经存在
+	 * 
+	 * @param fighterinfo
+	 *            用户输入的飞机编号
+	 */
+	public String fighterinfoIsExists(String fighterinfo) {
+		String hql = "select count(*) from " + Fighterinfo.class.getName()
+				+ " u where u.outfactoryno = :fighterinfo";
+		Map<String, Object> parameterMap = new HashMap<String, Object>();
+		parameterMap.put("fighterinfo", fighterinfo);
+		int count = this.queryForInt(hql, parameterMap);
+		String returnStr = "1";
+		if (count > 0) {
+			returnStr = "此飞机已存在！";
+		}
+		return returnStr;
+	}
+
 }

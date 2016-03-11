@@ -30,7 +30,6 @@ public class Outlineexecution implements Serializable {
 	}
 
 	private String oid;
-
 	private String aircrafttype;
 	private String remainstate;
 	private Date execdate;
@@ -47,7 +46,6 @@ public class Outlineexecution implements Serializable {
 	private String miji;
 	private Integer jiaci;
 	private Integer shijijiaci;
-	
 	private Subject project;
 	private List<Outlineexecution> children;
 	private Collection<CombineVehicle> combineVehicle;
@@ -179,6 +177,7 @@ public class Outlineexecution implements Serializable {
 	public void setTestMethod(String testMethod) {
 		this.testMethod = testMethod;
 	}
+
 	@Column(name = "miji")
 	public String getMiji() {
 		return miji;
@@ -187,7 +186,8 @@ public class Outlineexecution implements Serializable {
 	public void setMiji(String miji) {
 		this.miji = miji;
 	}
-	@OneToMany(cascade = {CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "outlineExecution")
+
+	@OneToMany(cascade = { CascadeType.REMOVE }, fetch = FetchType.LAZY, mappedBy = "outlineExecution")
 	public Collection<CombineVehicle> getCombineVehicle() {
 		return combineVehicle;
 	}
@@ -195,6 +195,7 @@ public class Outlineexecution implements Serializable {
 	public void setCombineVehicle(Collection<CombineVehicle> combineVehicle) {
 		this.combineVehicle = combineVehicle;
 	}
+
 	@Column(name = "parentnode")
 	public String getParentnode() {
 		return parentnode;
@@ -203,6 +204,7 @@ public class Outlineexecution implements Serializable {
 	public void setParentnode(String parentnode) {
 		this.parentnode = parentnode;
 	}
+
 	@Transient
 	public List<Outlineexecution> getChildren() {
 		return children;
@@ -211,10 +213,12 @@ public class Outlineexecution implements Serializable {
 	public void setChildren(List<Outlineexecution> children) {
 		this.children = children;
 	}
+
 	@Column(name = "jiaci")
 	public Integer getJiaci() {
 		return jiaci;
 	}
+
 	@Column(name = "shijijiaci")
 	public void setJiaci(Integer jiaci) {
 		this.jiaci = jiaci;
@@ -227,6 +231,5 @@ public class Outlineexecution implements Serializable {
 	public void setShijijiaci(Integer shijijiaci) {
 		this.shijijiaci = shijijiaci;
 	}
-	
 
 }

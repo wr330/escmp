@@ -17,36 +17,47 @@ import com.buaa.fly.domain.Flightrestrict;
 import com.buaa.fly.flightrestrict.manager.FlightrestrictManager;
 
 @Component("flightrestrictPR")
-public class FlightrestrictPR{
+public class FlightrestrictPR {
 
-    @Resource
+	@Resource
 	private FlightrestrictManager flightrestrictManager;
 
-     
-   /**                  
-	* 分页查询信息，带有criteria
-	* @param page    
-	* @param map
-	* @throws Exception
-	*/
+	/**
+	 * 分页查询信息，带有criteria
+	 * 
+	 * @param page
+	 * @param map
+	 * @throws Exception
+	 */
 	@DataProvider
-	public void queryFlightrestrict(Page<Flightrestrict> page,Map<String, Object> parameter,Criteria criteria) throws Exception {
-	    flightrestrictManager.queryFlightrestrict(page,parameter,criteria);
+	public void queryFlightrestrict(Page<Flightrestrict> page,
+			Map<String, Object> parameter, Criteria criteria) throws Exception {
+		flightrestrictManager.queryFlightrestrict(page, parameter, criteria);
 	}
+
+	/**
+	 * 查询使用限制信息方法
+	 * 
+	 * @param parameter
+	 * @throws Exception
+	 */
 	@DataProvider
-	public Collection<Flightrestrict> queryshfxzh(Map<String, Object> parameter) throws Exception {
-	    return flightrestrictManager.queryshfxzh(parameter);
+	public Collection<Flightrestrict> queryshfxzh(Map<String, Object> parameter)
+			throws Exception {
+		return flightrestrictManager.queryshfxzh(parameter);
 	}
-	
+
 	/**
 	 * 数据保存，包括增删改
+	 * 
 	 * @param dataItems
 	 * @throws Exception
 	 */
-	 @SuppressWarnings("rawtypes")
-	 @DataResolver
-	 public void saveFlightrestrict(Map<String, Collection> dataItems) throws Exception {
-	    flightrestrictManager.saveFlightrestrict(dataItems);
-	 }
-	
+	@SuppressWarnings("rawtypes")
+	@DataResolver
+	public void saveFlightrestrict(Map<String, Collection> dataItems)
+			throws Exception {
+		flightrestrictManager.saveFlightrestrict(dataItems);
+	}
+
 }

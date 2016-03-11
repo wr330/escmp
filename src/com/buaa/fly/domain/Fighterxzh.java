@@ -21,35 +21,42 @@ import java.math.BigDecimal;
 import com.buaa.fly.domain.Fpici;
 
 @Entity
-@Table(name="Fly_Fighterxzh")
-public class  Fighterxzh implements Serializable {
+@Table(name = "Fly_Fighterxzh")
+public class Fighterxzh implements Serializable {
 	private static final long serialVersionUID = 1L;
-    public Fighterxzh(){}
-    
-	private Flightrestrict flightRestrict ;
-	private String id ;
-	private String referenceName ;
+
+	public Fighterxzh() {
+	}
+
+	private Flightrestrict flightRestrict;
+	private String id;
+	private String referenceName;
 
 	@Id
-	@Column(name="Oid", unique = true, nullable = false) 
+	@Column(name = "Oid", unique = true, nullable = false)
 	public String getId() {
 		return id;
 	}
+
 	public void setId(String id) {
-		this.id=id;
+		this.id = id;
 	}
+
 	@Column(name = "ReferenceName")
 	public String getReferenceName() {
 		return referenceName;
 	}
+
 	public void setReferenceName(String referenceName) {
 		this.referenceName = referenceName;
 	}
+
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn(name = "FlightRestrict")
-    public Flightrestrict getFlightRestrict() {
+	public Flightrestrict getFlightRestrict() {
 		return flightRestrict;
 	}
+
 	public void setFlightRestrict(Flightrestrict flightRestrict) {
 		this.flightRestrict = flightRestrict;
 	}

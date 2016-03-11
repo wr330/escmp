@@ -1,8 +1,8 @@
-
 package com.buaa.fly.flightrestrict.manager;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -21,86 +21,115 @@ import com.common.FileHelper;
 
 @Component("flightrestrictManager")
 public class FlightrestrictManager {
-	
+
 	@Resource
 	private FlightrestrictDao flightrestrictDao;
 	@Resource
-	private FighterxzhManager fighterxzhManager;	
-	/**                  
-	* 分页查询信息，带有criteria
-	* 将criteria转换为一个Map
-	* @param page    
-	* @param map
-	* @throws Exception
-	*/
-	public void queryFlightrestrict(Page<Flightrestrict> page,Map<String, Object> parameter,Criteria criteria) throws Exception {
-	    flightrestrictDao.queryFlightrestrict(page,parameter,criteria);
-	}
-	public Collection<Flightrestrict> queryshfxzh(Map<String, Object> parameter) throws Exception {
-	     return flightrestrictDao.queryshfxzh(parameter);
+	private FighterxzhManager fighterxzhManager;
+
+	/**
+	 * 分页查询信息，带有criteria 将criteria转换为一个Map
+	 * 
+	 * @param page
+	 * @param map
+	 * @throws Exception
+	 */
+	public void queryFlightrestrict(Page<Flightrestrict> page,
+			Map<String, Object> parameter, Criteria criteria) throws Exception {
+		flightrestrictDao.queryFlightrestrict(page, parameter, criteria);
 	}
 	
 	/**
+	 * 查询使用限制信息方法
+	 * 
+	 * @param parameter
+	 * @throws Exception
+	 */
+	public Collection<Flightrestrict> queryshfxzh(Map<String, Object> parameter)
+			throws Exception {
+		return flightrestrictDao.queryshfxzh(parameter);
+	}
+
+	/**
 	 * 数据保存，对多个数据集的操作，包括增删改
+	 * 
 	 * @param dataItems
 	 * @throws Exception
 	 */
-	 @SuppressWarnings({ "rawtypes", "unchecked" })
-	 public void saveFlightrestrict(Map<String, Collection> dataItems) throws Exception {
-	    Collection<Flightrestrict> details =(Collection<Flightrestrict>) dataItems.get("dsFlightrestrict");
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void saveFlightrestrict(Map<String, Collection> dataItems)
+			throws Exception {
+		Collection<Flightrestrict> details = (Collection<Flightrestrict>) dataItems
+				.get("dsFlightrestrict");
 		this.saveFlightrestrict(details);
-	 }
-	 
-	 
-	 /**
+	}
+
+	/**
 	 * 针对单个数据集操作 包括增删改
 	 * 
 	 * @param details
 	 * @throws Exception
 	 */
-	 public void saveFlightrestrict(Collection<Flightrestrict> details) throws Exception {
+	public void saveFlightrestrict(Collection<Flightrestrict> details)
+			throws Exception {
 		if (null != details && details.size() > 0) {
-	    	for(Flightrestrict item : details) {
+			for (Flightrestrict item : details) {
 				EntityState state = EntityUtils.getState(item);
 				if (state.equals(EntityState.NEW)) {
-					String tempId = item.getId();
 					fileManager(item);
 					flightrestrictDao.saveData(item);
-					FileHelper.changeFolderById("/Fly_Flightrestrict/" +tempId,"/Fly_Flightrestrict/" +item.getId());//替换以临时ID命名的文件夹
 				} else if (state.equals(EntityState.MODIFIED)) {
+					Map<String, Object> parameter = new HashMap<String, Object>();
+					parameter.put("id", item.getId());
+					fighterxzhManager.deleteFighterxzh(parameter);
+					flightrestrictDao.deleteData(item);
 					fileManager(item);
 					flightrestrictDao.updateData(item);
 				} else if (state.equals(EntityState.DELETED)) {
+					Map<String, Object> parameter = new HashMap<String, Object>();
+					parameter.put("id", item.getId());
+					fighterxzhManager.deleteFighterxzh(parameter);
 					flightrestrictDao.deleteData(item);
-					FileHelper.deleteFile("/Fly_Flightrestrict/" +item.getId());//删除相关文件
+					FileHelper
+							.deleteFile("/Fly_Flightrestrict/" + item.getId());// 删除相关文件
 				} else if (state.equals(EntityState.NONE)) {
-					
+					Map<String, Object> parameter = new HashMap<String, Object>();
+					parameter.put("id", item.getId());
+					fighterxzhManager.deleteFighterxzh(parameter);
 				}
 				fighterxzhManager.saveFighterxzh(item.getFighterxzh());
-							}
-		}
-	 }
-	 
-	 /**
-	  * 添加校验，判断文件编号唯一
-	  * 
-	  * @param id 使用限制表id
-	  * @param fno 文件编号
-	  * 
-	  */
-	 @Expose
-	 public String flightrestrictIsExists(String id,String fno) {
-		 return flightrestrictDao.flightrestrictIsExists(id,fno);
-	 }  
-	 //处理相关文件
-	 private void fileManager(Flightrestrict item){
-			String path = "/Fly_Flightrestrict/" + item.getId() + "/"+ item.getFname();
-			FileHelper.fileToData(path);
-			if(FileHelper.bytes != 0){
-			    item.setBytes(FileHelper.bytes);
-			    item.setDatablock(FileHelper.datablock);//文件存储到数据库中
-			    FileHelper.bytes = 0;
-			    FileHelper.datablock = null;
 			}
-	 }
+		}
+	}
+
+	/**
+	 * 添加校验，判断文件编号唯一
+	 * 
+	 * @param id
+	 *            使用限制表id
+	 * @param fno
+	 *            文件编号
+	 * 
+	 */
+	@Expose
+	public String flightrestrictIsExists(String id, String fno) {
+		return flightrestrictDao.flightrestrictIsExists(id, fno);
+	}
+
+	/**
+	 * 处理相关文件
+	 * 
+	 * @param item
+	 */
+	private void fileManager(Flightrestrict item) {
+		String path = "/Fly_Flightrestrict/" + item.getId() + "/"
+				+ item.getFilename();
+		FileHelper.fileToData(path);
+		if (FileHelper.bytes != 0) {
+			item.setBytes(FileHelper.bytes);
+			item.setDatablock(FileHelper.datablock);// 文件存储到数据库中
+			FileHelper.bytes = 0;
+			FileHelper.datablock = null;
+		}
+	}
 }

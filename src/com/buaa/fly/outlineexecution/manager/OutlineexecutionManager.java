@@ -18,7 +18,9 @@ import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 
+import com.buaa.fly.combineVehicle.dao.CombineVehicleDao;
 import com.buaa.fly.combineVehicle.manager.CombineVehicleManager;
+import com.buaa.fly.domain.CombineVehicle;
 import com.buaa.fly.domain.Dailyacc;
 import com.buaa.fly.domain.Outlineexecution;
 import com.buaa.fly.domain.Sfstatistic;
@@ -36,15 +38,19 @@ public class OutlineexecutionManager {
 
 	@Resource
 	private OutlineexecutionDao outlineexecutionDao;
-
 	@Resource
 	private OutlineexecutionDaoforJDBC outlineexecutionDaoforJDBC;
 	@Resource
 	private TasklistDao tasklistDao;
 	@Resource
 	private CombineVehicleManager combineVehicleManager;
+	@Resource
+	private CombineVehicleDao combineVehicleDao;
 
 	/**
+	 * 大纲查询方法，该方法没有应用
+	 * 
+	 * @param parameter
 	 * @throws Exception
 	 */
 	public Collection<Outlineexecution> queryOutlineexecution(
@@ -53,6 +59,9 @@ public class OutlineexecutionManager {
 	}
 
 	/**
+	 * 大纲查询方法，该方法没有应用
+	 * 
+	 * @param parameter
 	 * @throws Exception
 	 */
 	public Collection<Outlineexecution> query(Map<String, Object> parameter)
@@ -61,6 +70,9 @@ public class OutlineexecutionManager {
 	}
 
 	/**
+	 * 大纲查询方法，该方法没有应用
+	 * 
+	 * @param parameter
 	 * @throws Exception
 	 */
 	public Collection<Outlineexecution> queryOutlineexecutionforJDBC(
@@ -95,7 +107,7 @@ public class OutlineexecutionManager {
 	}
 
 	/**
-	 * 数据保存，对多个数据集的操作，包括增删改
+	 * 数据保存，对多个数据集的操作，包括增删改，该方法没有应用
 	 * 
 	 * @param dataItems
 	 * @throws Exception
@@ -107,21 +119,31 @@ public class OutlineexecutionManager {
 		this.saveOutlineexecution(details);
 	}
 
+	/**
+	 * 查询大纲树是否有子节点，该方法没有应用
+	 * 
+	 * @param parameter
+	 * @throws Exception
+	 */
 	public int countChildren(Map<String, Object> parameter) {
 		return outlineexecutionDao.countChildren(parameter);
 	}
-
-	// 下载文件
+	
+	/**
+	 * 下载文件
+	 * 
+	 * @param id
+	 * @param fname
+	 * @throws Exception
+	 */
 	@Expose
 	public String downloadFile(String id, String fname) throws Exception {
 
 		List<Outlineexecution> outlineexecution = outlineexecutionDao
 				.queryOutlineforText(id);
-		// byte[] datablock=outlineexecution.getDatablock();
 		if (null != outlineexecution && outlineexecution.size() > 0) {
 			ExportOutline.generateOutlineexecution(outlineexecution);
 		}
-
 		return fname + "试飞大纲.doc";
 	}
 
@@ -141,6 +163,8 @@ public class OutlineexecutionManager {
 				} else if (state.equals(EntityState.MODIFIED)) {
 					outlineexecutionDao.updateData(item);
 				} else if (state.equals(EntityState.DELETED)) {
+					Collection<CombineVehicle> cv = combineVehicleDao.queryCVbyOutline(item.getOid());
+					this.deleteCombineVehicle(cv);
 					outlineexecutionDao.deleteData(item);
 				} else if (state.equals(EntityState.NONE)) {
 					EntityState subjectState = EntityUtils.getState(item
@@ -159,12 +183,11 @@ public class OutlineexecutionManager {
 	}
 
 	/**
+	 * 架次完成图方法，该方法没有应用
 	 * 
-	 * 
-	 * @param dataItems
+	 * @param parameter
 	 * @throws Exception
 	 */
-
 	public void statisticOutlineexecution(Collection<Outlineexecution> details)
 			throws Exception {
 		if (null != details && details.size() > 0) {
@@ -177,5 +200,19 @@ public class OutlineexecutionManager {
 			}
 		}
 	}
-
+	/**
+	 * 删除结合架次方法
+	 * 
+	 * @param parameter
+	 * @throws Exception
+	 */
+	public void deleteCombineVehicle(Collection<CombineVehicle> details)
+			throws Exception {
+		if (null != details && details.size() > 0) {
+			for (CombineVehicle item : details) {
+				combineVehicleDao.deleteData(item);
+			}
+		}
+	}
+	
 }

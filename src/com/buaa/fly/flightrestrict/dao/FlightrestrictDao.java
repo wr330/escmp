@@ -27,6 +27,7 @@ import com.buaa.out.domain.Technicaldocument;
 public class FlightrestrictDao extends HibernateBaseDao {
 	@Resource
 	private QueryUserData userService;
+
 	/**
 	 * 同时也支持普通类型查询，在数据类型和日期类型支持区间查询
 	 * 
@@ -35,62 +36,75 @@ public class FlightrestrictDao extends HibernateBaseDao {
 	 * @param criteria
 	 * @throws Exception
 	 */
-	public void queryFlightrestrict(Page<Flightrestrict> page, Map<String, Object> parameter,Criteria criteria) throws Exception {
-        Map<String, Object> args = new HashMap<String,Object>();
-        StringBuffer coreHql = new StringBuffer("from " + Flightrestrict.class.getName()+" a where 1=1 ");
-        
-        if(null != parameter && !parameter.isEmpty()){
-        	String ftype = (String)parameter.get("ftype");
-        	if(StringUtils.isNotEmpty( ftype )){
-        		coreHql.append(" and a.ftype ='" + ftype + "'");
-        	}
-        }
-		
+	public void queryFlightrestrict(Page<Flightrestrict> page,
+			Map<String, Object> parameter, Criteria criteria) throws Exception {
+		Map<String, Object> args = new HashMap<String, Object>();
+		StringBuffer coreHql = new StringBuffer("from "
+				+ Flightrestrict.class.getName() + " a where 1=1 ");
+
+		if (null != parameter && !parameter.isEmpty()) {
+			String ftype = (String) parameter.get("ftype");
+			if (StringUtils.isNotEmpty(ftype)) {
+				coreHql.append(" and a.ftype ='" + ftype + "'");
+			}
+		}
+
 		if (null != criteria) {
 			ParseResult result = this.parseCriteria(criteria, true, "a");
 			if (null != result) {
-				coreHql.append(" and "+ result.getAssemblySql());
+				coreHql.append(" and " + result.getAssemblySql());
 				args.putAll(result.getValueMap());
 			}
 		}
 
-        
-        String countHql = "select count(*) " + coreHql.toString();
-        String hql = coreHql.toString();
-        hql=userService.checkUser(hql);
+		String countHql = "select count(*) " + coreHql.toString();
+		String hql = coreHql.toString();
+		hql = userService.checkUser(hql);
 		this.pagingQuery(page, hql, countHql, args);
 	}
-	
-	public Collection<Flightrestrict> queryshfxzh(Map<String, Object> parameter) throws Exception {
-        String Hql = "from " + Flightrestrict.class.getName()+" a where 1=1 ";
-        if(null != parameter && !parameter.isEmpty()){
-        	String ftype = (String)parameter.get("ftypename");
-        	if(StringUtils.isNotEmpty( ftype )){
-        		Hql += " and a.ftype ='" + ftype + "'";
-        	}
-        	String piciname = (String)parameter.get("piciname");
-        	if(StringUtils.isNotEmpty( piciname )){
-        		Hql += " and a.filename in ( select filename from " + Fighterxzh.class.getName() + " b where b.piciname = '" 
-        				+ piciname + "')";
-        	}
-        	String outfactoryno = (String)parameter.get("outfactoryno");
-        	if(StringUtils.isNotEmpty( outfactoryno )){
-        		Hql += " and a.filename in ( select filename from " + Fighterxzh.class.getName() + " b where b.outfactoryno = '" 
-        				+ outfactoryno + "')";
-        	}
-        }
-        Hql=userService.checkUser(Hql);
+
+	/**
+	 * 查询使用限制信息方法
+	 * 
+	 * @param parameter
+	 * @throws Exception
+	 */
+	public Collection<Flightrestrict> queryshfxzh(Map<String, Object> parameter)
+			throws Exception {
+		String Hql = "from " + Flightrestrict.class.getName() + " a where 1=1 ";
+		if (null != parameter && !parameter.isEmpty()) {
+			String ftype = (String) parameter.get("ftypename");
+			if (StringUtils.isNotEmpty(ftype)) {
+				Hql += " and a.id in ( select flightRestrict from "
+						+ Fighterxzh.class.getName()
+						+ " b where b.referenceName = '" + ftype + "')";
+			}
+			String piciID = (String) parameter.get("piciID");
+			if (StringUtils.isNotEmpty(piciID)) {
+				Hql += " and a.id in ( select flightRestrict from "
+						+ Fighterxzh.class.getName()
+						+ " b where b.referenceName = '" + piciID + "')";
+			}
+			String outfactoryno = (String) parameter.get("outfactoryno");
+			if (StringUtils.isNotEmpty(outfactoryno)) {
+				Hql += " and a.id in ( select flightRestrict from "
+						+ Fighterxzh.class.getName()
+						+ " b where b.referenceName = '" + outfactoryno + "')";
+			}
+		}
+		Hql = userService.checkUser(Hql);
 		return this.query(Hql);
 	}
+
 	/**
 	 * 数据添加
+	 * 
 	 * @param detail
 	 * @throws Exception
 	 */
 	public void saveData(Flightrestrict detail) throws Exception {
 		Session session = this.getSessionFactory().openSession();
 		try {
-			detail.setId(UUID.randomUUID().toString());
 			session.save(detail);
 		} finally {
 			session.flush();
@@ -100,6 +114,7 @@ public class FlightrestrictDao extends HibernateBaseDao {
 
 	/**
 	 * 数据修改
+	 * 
 	 * @param detail
 	 * @throws Exception
 	 */
@@ -115,6 +130,7 @@ public class FlightrestrictDao extends HibernateBaseDao {
 
 	/**
 	 * 数据删除
+	 * 
 	 * @param detail
 	 * @throws Exception
 	 */
@@ -128,7 +144,16 @@ public class FlightrestrictDao extends HibernateBaseDao {
 		}
 	}
 	
-	public String flightrestrictIsExists(String id,String fno) {
+	/**
+	 * 添加校验，判断文件编号唯一
+	 * 
+	 * @param id
+	 *            使用限制表id
+	 * @param fno
+	 *            文件编号
+	 * 
+	 */
+	public String flightrestrictIsExists(String id, String fno) {
 		String hql = "select count(*) from " + Flightrestrict.class.getName()
 				+ " u where u.fno = :fno";
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
@@ -144,12 +169,16 @@ public class FlightrestrictDao extends HibernateBaseDao {
 			returnStr = "此编号已存在！";
 		}
 		return returnStr;
-	}       
-	
-	
-	//通过ID查找记录
-    public  Flightrestrict queryById(String id){
-    	String hql="from " + Flightrestrict.class.getName()+" a where a.id="+id;
+	}
+
+	/**
+	 * 通过ID查找记录
+	 * 
+	 * @param id
+	 */
+	public Flightrestrict queryById(String id) {
+		String hql = "from " + Flightrestrict.class.getName()
+				+ " a where a.id=" + id;
 		return (Flightrestrict) this.query(hql).get(0);
-    }
+	}
 }

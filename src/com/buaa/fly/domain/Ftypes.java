@@ -28,7 +28,7 @@ public class  Ftypes implements Serializable {
 	private Collection<Fpici> fpici;
 	
 	@Id
-		@Column(name = "ftypename", unique = true, nullable = false)
+	@Column(name = "ftypename", unique = true, nullable = false)
 	public String getFtypename() {
 		return ftypename;
 	}

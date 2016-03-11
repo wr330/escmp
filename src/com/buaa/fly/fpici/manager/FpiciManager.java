@@ -6,12 +6,14 @@ import java.util.Map;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
+import com.bstek.dorado.annotation.Expose;
 import com.bstek.dorado.data.entity.EntityState;
 import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 
 import com.buaa.fly.domain.Fpici;
+import com.buaa.fly.domain.Ftypes;
 import com.buaa.fly.fpici.dao.FpiciDao;
 import com.buaa.fly.fighterinfo.manager.FighterinfoManager;
 
@@ -24,15 +26,14 @@ public class FpiciManager {
 	private FighterinfoManager fighterinfoManager;
 
 	/**
-	 * 分页查询信息，带有criteria 将criteria转换为一个Map
+	 * 查询信息
 	 * 
-	 * @param page
-	 * @param map
+	 * @param parameter
 	 * @throws Exception
 	 */
-	public void queryFpici(Page<Fpici> page, Map<String, Object> parameter,
-			Criteria criteria) throws Exception {
-		fpiciDao.queryFpici(page, parameter, criteria);
+	public Collection<Fpici> queryFpici(Map<String, Object> parameter) 
+			throws Exception {
+		return fpiciDao.queryFpici(parameter);
 	}
 
 	/**
@@ -59,6 +60,9 @@ public class FpiciManager {
 			for (Fpici item : details) {
 				EntityState state = EntityUtils.getState(item);
 				if (state.equals(EntityState.NEW)) {
+					if (fpiciIsExists(item.getfTypeName().getFtypename(), item.getPiciName())
+							.equals("此批次已存在！"))
+						throw new Exception("此批次已存在！");
 					fpiciDao.saveData(item);
 				} else if (state.equals(EntityState.MODIFIED)) {
 					fpiciDao.updateData(item);
@@ -75,6 +79,18 @@ public class FpiciManager {
 				fighterinfoManager.saveFighterinfo(item.getFighterinfo());
 			}
 		}
+	}
+	
+	/**
+	 * 这个方法用来判断在添加时，该机型中该批次是否已经存在
+	 * 
+	 * @param ftype
+	 * @param fpici
+	 *            用户输入的批次
+	 */
+	@Expose
+	public String fpiciIsExists(String ftype, String fpici) {
+		return fpiciDao.fpiciIsExists(ftype,fpici);
 	}
 
 }
