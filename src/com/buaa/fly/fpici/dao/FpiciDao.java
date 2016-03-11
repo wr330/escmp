@@ -26,50 +26,45 @@ import com.buaa.fly.fighterinfo.dao.FighterinfoDao;
 @Repository("fpiciDao")
 public class FpiciDao extends HibernateBaseDao {
 	@Resource
-private	FighterinfoDao fighterinfoDao;
+	private FighterinfoDao fighterinfoDao;
+
 	/**
-	 * 同时也支持普通类型查询，在数据类型和日期类型支持区间查询
+	 * 信息查询
 	 * 
-	 * @param page
 	 * @param parameter
-	 * @param criteria
 	 * @throws Exception
 	 */
-	public void queryFpici(Page<Fpici> page, Map<String, Object> parameter,Criteria criteria) throws Exception {
-        Map<String, Object> args = new HashMap<String,Object>();
-        StringBuffer coreHql = new StringBuffer("from " + Fpici.class.getName()+" a where 1=1 ");
-        
-        if(null != parameter && !parameter.isEmpty()){
-	String ftypename = (String)parameter.get("ftypename");
-	if(StringUtils.isNotEmpty( ftypename )){
-		coreHql.append(" and a.fTypeName.ftypename = :ftypename ");
-		args.put("ftypename", ftypename );	
-	}
-           }
-		
-		if (null != criteria) {
-			ParseResult result = this.parseCriteria(criteria, true, "a");
-			if (null != result) {
-				coreHql.append(" and "+ result.getAssemblySql());
-				args.putAll(result.getValueMap());
+	public Collection<Fpici> queryFpici(Map<String, Object> parameter)
+			throws Exception {
+		Map<String, Object> args = new HashMap<String, Object>();
+		String hql = "from " + Fpici.class.getName() + " a where 1=1 ";
+
+		if (null != parameter && !parameter.isEmpty()) {
+			String ftypename = (String) parameter.get("ftypename");
+			if (StringUtils.isNotEmpty(ftypename)) {
+				hql += " and a.fTypeName.ftypename = :ftypename ";
+				args.put("ftypename", ftypename);
 			}
 		}
-
-        
-        String countHql = "select count(*) " + coreHql.toString();
-        String hql = coreHql.toString();
-		this.pagingQuery(page, hql, countHql, args);
+		return this.query(hql, args);
 	}
 	
-	
+	/**
+	 * 根据机型查询批次，该方法没有用到
+	 * 
+	 * @param parameter
+	 * @throws Exception
+	 */
 	public Collection<Fpici> queryFighterinfobyType(String parameter) {
 		String hql = " from " + Fpici.class.getName()
-				+ " u where u.fTypeName.ftypename like '"+parameter+"'";
-		Collection<Fpici> info= this.query(hql);
+				+ " u where u.fTypeName.ftypename like '" + parameter + "'";
+		Collection<Fpici> info = this.query(hql);
 		return info;
-	} 
+	}
+
 	/**
 	 * 数据添加
+	 * 
 	 * @param detail
 	 * @throws Exception
 	 */
@@ -83,16 +78,22 @@ private	FighterinfoDao fighterinfoDao;
 			session.close();
 		}
 	}
-
 	
+	/**
+	 * 查询批次数据的条目数，该方法没有用到
+	 * 
+	 * @throws Exception
+	 */
 	public Integer conlumIdentity() {
 		String hql = "select count(*) from " + Fpici.class.getName()
 				+ " u where 1=1";
 		int count = this.queryForInt(hql);
-		return count+1;
-	} 
+		return count + 1;
+	}
+
 	/**
 	 * 数据修改
+	 * 
 	 * @param detail
 	 * @throws Exception
 	 */
@@ -108,14 +109,16 @@ private	FighterinfoDao fighterinfoDao;
 
 	/**
 	 * 数据删除
+	 * 
 	 * @param detail
 	 * @throws Exception
 	 */
 	public void deleteData(Fpici detail) throws Exception {
 		Session session = this.getSessionFactory().openSession();
-		Collection<Fighterinfo> items=fighterinfoDao.queryFighterinfobyPici(detail.getPiciID());
-		if(items!=null){
-			for(Fighterinfo item:items){
+		Collection<Fighterinfo> items = fighterinfoDao
+				.queryFighterinfobyPici(detail.getPiciID());
+		if (items != null) {
+			for (Fighterinfo item : items) {
 				fighterinfoDao.deleteData(item);
 			}
 		}
@@ -126,18 +129,43 @@ private	FighterinfoDao fighterinfoDao;
 			session.close();
 		}
 	}
-
+	
+	/**
+	 * 删除批次数据，该方法没有用到
+	 * 
+	 * @param detail
+	 * @throws Exception
+	 */
 	public void deleteData(Collection<Fpici> fpici) {
 		if (null != fpici && fpici.size() > 0) {
 			for (Fpici item : fpici) {
-			try {
-				this.deleteData(item);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				try {
+					this.deleteData(item);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
-        
+	/**
+	 * 这个方法用来判断在添加时，该机型中该批次是否已经存在
+	 * 
+	 * @param ftype
+	 * @param fpici
+	 *            用户输入的批次
+	 */
+	public String fpiciIsExists(String ftype, String fpici) {
+		String hql = "select count(*) from " + Fpici.class.getName()
+				+ " u where u.fTypeName.ftypename = :ftypename and u.piciName = :fpici";
+		Map<String, Object> parameterMap = new HashMap<String, Object>();
+		parameterMap.put("ftypename", ftype);
+		parameterMap.put("fpici", fpici);
+		int count = this.queryForInt(hql, parameterMap);
+		String returnStr = "1";
+		if (count > 0) {
+			returnStr = "此批次已存在！";
+		}
+		return returnStr;
+	}
+
 }

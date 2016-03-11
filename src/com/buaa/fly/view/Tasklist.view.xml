@@ -26,7 +26,6 @@
     <DataSet id="dsFtypes">
       <Property name="dataProvider">ftypesPR#queryFtypes</Property>
       <Property name="dataType">[Ftypes]</Property>
-      <Property name="pageSize">20</Property>
     </DataSet>
     <DataSet id="dsTasklist">
       <Property name="dataType">[Tasklist]</Property>
@@ -429,19 +428,19 @@ dorado.MessageBox.show({&#xD;
       <Filters/>
     </UploadAction>
     <Dialog id="diaTasklist">
-      <ClientEvent name="onClose">&#xD;
-//datatree获取选中行，迭代设置选中状态，清空选中&#xD;
-//var nodes=view.get(&quot;#dataTreeSubject&quot;).getCheckedNodes();&#xD;
-//nodes.each(function(node){&#xD;
-//	node.set(&quot;checked&quot;,false);&#xD;
-//});&#xD;
-</ClientEvent>
+      <ClientEvent name="onClose">var cur=view.id('dsTasklist').getData('#');&#xD;
+if(cur){&#xD;
+	cur.cancel();&#xD;
+	view.id('diaTasklist').hide();&#xD;
+	view.id(&quot;TasknoForm&quot;).set(&quot;editable&quot;, true);&#xD;
+	}</ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
       <Property name="width">800</Property>
       <Buttons>
         <Button>
           <ClientEvent name="onClick">view.id('uaTasklist').execute(function(){
+	view.id(&quot;TasknoForm&quot;).set(&quot;editable&quot;, true);
 	view.id('diaTasklist').hide();    
 });       </ClientEvent>
           <Property name="caption">确定</Property>
@@ -452,6 +451,7 @@ dorado.MessageBox.show({&#xD;
 if(cur){
 	cur.cancel();
 	view.id('diaTasklist').hide();
+	view.id(&quot;TasknoForm&quot;).set(&quot;editable&quot;, true);
 	}
 	         </ClientEvent>
           <Property name="caption">取消</Property>
@@ -470,7 +470,7 @@ if(cur){
             <Property name="trigger">chooseAircraft</Property>
             <Property name="readOnly">true</Property>
           </AutoFormElement>
-          <AutoFormElement>
+          <AutoFormElement id="TasknoForm">
             <Property name="name">TaskNumber</Property>
             <Property name="property">tasknumber</Property>
           </AutoFormElement>
@@ -532,7 +532,7 @@ for(var i=1;i&lt;=32;i++){
 	if((i==8)||(i==12)||(i==16)||(i==20))
 		  guid += &quot;-&quot;;
 }
-dialog=view.id('diaTasklist');
+dialog = view.id('diaTasklist');
 dialog.set(&quot;caption&quot;,&quot;新增试飞任务单&quot;);
 var cur = view.id('formElement1').get(&quot;value&quot;);
 if(cur){
@@ -541,20 +541,35 @@ if(cur){
 		oid : guid
 	});
 	view.id('diaTasklist').show();
+	var link = view.id(&quot;lefile&quot;);
+	link.set(&quot;visible&quot;,false);
 }
 else{
-	alert(&quot;请先选择机型&quot;);
+	dorado.MessageBox.alert(&quot;请先选择机型&quot;);
 }
 </ClientEvent>
         <Property name="caption">新增</Property>
         <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
       </ToolBarButton>
       <ToolBarButton>
-        <ClientEvent name="onClick">dialog=view.id('diaTasklist');
+        <ClientEvent name="onClick">dialog = view.id('diaTasklist');
 dialog.set(&quot;caption&quot;,&quot;修改试飞任务单&quot;);
 var cur=view.id('dsTasklist').getData('#');
 if (cur) {
+	view.id(&quot;TasknoForm&quot;).set(&quot;editable&quot;, false);
 	view.id('diaTasklist').show();
+	var file = cur.get(&quot;filename&quot;);
+    var link = view.id(&quot;lefile&quot;);
+    if(file){
+        var oid = cur.get(&quot;id&quot;);
+		var href = &quot;ServletDownload?filename=Fly_Tasklist/&quot; + oid + &quot;/&quot; + file;
+        link.set({
+	       href: href,
+	       visible: true
+        });
+    }
+    else
+      link.set(&quot;visible&quot;,false);
 }</ClientEvent>
         <Property name="caption">修改</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>

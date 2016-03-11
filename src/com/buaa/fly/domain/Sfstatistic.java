@@ -76,7 +76,7 @@ public class  Sfstatistic implements Serializable {
 	private String filename1 ;
 	private byte[] datablock2 ;
 	private String content ;
-	private String miji ;
+	private Integer miji ;
 
 
 
@@ -429,10 +429,10 @@ public class  Sfstatistic implements Serializable {
 		this.datablock2=datablock2;
 	}
 	@Column(name="miji")
-	public String getMiji() {
+	public Integer getMiji() {
 		return miji;
 	}
-	public void setMiji(String miji) {
+	public void setMiji(Integer miji) {
 		this.miji = miji;
 	}
 	

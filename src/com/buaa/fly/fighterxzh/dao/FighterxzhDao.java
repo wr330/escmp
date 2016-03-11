@@ -1,5 +1,6 @@
 package com.buaa.fly.fighterxzh.dao;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Date;
 import java.util.List;
@@ -28,50 +29,37 @@ public class FighterxzhDao extends HibernateBaseDao {
 	 * @param criteria
 	 * @throws Exception
 	 */
-	public void queryFighterxzh(Page<Fighterxzh> page, Map<String, Object> parameter,Criteria criteria) throws Exception {
-        Map<String, Object> args = new HashMap<String,Object>();
-        StringBuffer coreHql = new StringBuffer("from " + Fighterxzh.class.getName()+" a where 1=1 ");
-        
-        if(null != parameter && !parameter.isEmpty()){
-        	String ftypename = (String)parameter.get("ftypename");
-        	if(StringUtils.isNotEmpty( ftypename )){
-        		coreHql.append(" and a.ftypename = :ftypename ");
-        		args.put("ftypename", ftypename );	
-        	}
-        	String filename = (String)parameter.get("filename");
-        	if(StringUtils.isNotEmpty( filename )){
-        		coreHql.append(" and a.filename = :filename ");
-        		args.put("filename", filename );	
-        	}
-        	String piciname = (String)parameter.get("piciname");
-        	if(StringUtils.isNotEmpty( piciname )){
-        		coreHql.append(" and a.piciname = :piciname ");
-        		args.put("piciname", piciname );	
-        	}
-        	String outfactoryno = (String)parameter.get("outfactoryno");
-        	if(StringUtils.isNotEmpty( outfactoryno )){
-        		coreHql.append(" and a.outfactoryno = :outfactoryno ");
-        		args.put("outfactoryno", outfactoryno );	
-        	}
-        	
-        }
-		
+	public void queryFighterxzh(Page<Fighterxzh> page,
+			Map<String, Object> parameter, Criteria criteria) throws Exception {
+		Map<String, Object> args = new HashMap<String, Object>();
+		StringBuffer coreHql = new StringBuffer("from "
+				+ Fighterxzh.class.getName() + " a where 1=1 ");
+
+		if (null != parameter && !parameter.isEmpty()) {
+			String id = (String) parameter.get("id");
+			if (StringUtils.isNotEmpty(id)) {
+				coreHql.append(" and a.flightRestrict.id = :id ");
+				args.put("id", id);
+			}
+
+		}
+
 		if (null != criteria) {
 			ParseResult result = this.parseCriteria(criteria, true, "a");
 			if (null != result) {
-				coreHql.append(" and "+ result.getAssemblySql());
+				coreHql.append(" and " + result.getAssemblySql());
 				args.putAll(result.getValueMap());
 			}
 		}
 
-        
-        String countHql = "select count(*) " + coreHql.toString();
-        String hql = coreHql.toString();
+		String countHql = "select count(*) " + coreHql.toString();
+		String hql = coreHql.toString();
 		this.pagingQuery(page, hql, countHql, args);
 	}
-	
+
 	/**
 	 * 数据添加
+	 * 
 	 * @param detail
 	 * @throws Exception
 	 */
@@ -88,6 +76,7 @@ public class FighterxzhDao extends HibernateBaseDao {
 
 	/**
 	 * 数据修改
+	 * 
 	 * @param detail
 	 * @throws Exception
 	 */
@@ -103,6 +92,7 @@ public class FighterxzhDao extends HibernateBaseDao {
 
 	/**
 	 * 数据删除
+	 * 
 	 * @param detail
 	 * @throws Exception
 	 */
@@ -115,5 +105,23 @@ public class FighterxzhDao extends HibernateBaseDao {
 			session.close();
 		}
 	}
-        
+
+	/**
+	 * 删除该使用限制下所有的飞机关联信息
+	 * 
+	 * @param parameter
+	 * @throws Exception
+	 */
+	public void deleteFighterxzh(Map<String, Object> parameter)
+			throws Exception {
+		String id = (String) parameter.get("id");
+		String hql = "from " + Fighterxzh.class.getName()
+				+ " a where a.flightRestrict.id = '" + id + "'";
+		Collection<Fighterxzh> details = this.query(hql);
+		if (null != details && details.size() > 0)
+			for (Fighterxzh item : details) {
+				this.deleteData(item);
+			}
+	}
+
 }

@@ -105,7 +105,7 @@ public class TasklistManager {
 	}
 
 	/**
-	 * 这个方法用来判断在添加新软件时型号是否已经存在
+	 * 这个方法用来判断在添加时任务单是否已经存在
 	 * 
 	 * @param tasknumber
 	 *            用户输入的任务单号

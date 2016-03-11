@@ -36,53 +36,10 @@
         </Entity>
       </Property>
     </DataSet>
-    <DataSet id="dsUserOperationLog">
-      <Property name="dataProvider">userOperationLogPR#queryUserOperationLog</Property>
-      <Property name="dataType">[UserOperationLog]</Property>
-      <Property name="pageSize">20</Property>
-    </DataSet>
     <DataSet id="dsFtypes">
       <Property name="dataType">[Ftypes]</Property>
       <Property name="dataProvider">ftypesPR#queryFtypes</Property>
-      <Property name="pageSize">20</Property>
-      <Property name="loadMode">onReady</Property>
     </DataSet>
-    <AjaxAction id="ajaxGetsubject">
-      <ClientEvent name="beforeExecute">var cur=view.id('ajaxGetsubject');&#xD;
-var ftype=view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
-cur.set(&quot;parameter&quot;,{&#xD;
-	ftype:ftype&#xD;
-	});</ClientEvent>
-      <ClientEvent name="onExecute">var cur=view.id('dataSetSubject');&#xD;
-var ftype=view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
-cur.set(&quot;parameter&quot;,{&#xD;
-	ftype:ftype&#xD;
-	});&#xD;
-cur.flushAsync();</ClientEvent>
-      <Property name="service">subjectPR#copyAll</Property>
-    </AjaxAction>
-    <UpdateAction id="updateActionSubject">
-      <Property name="dataResolver">subjectPR#saveSubject</Property>
-      <Property name="successMessage">数据已保存</Property>
-      <UpdateItem>
-        <Property name="dataSet">dataSetSubject</Property>
-      </UpdateItem>
-    </UpdateAction>
-    <UpdateAction id="uaUserOperationLog">
-      <Property name="dataResolver">userOperationLogPR#saveUserOperationLog</Property>
-      <UpdateItem>
-        <Property name="dataSet">dsUserOperationLog</Property>
-      </UpdateItem>
-    </UpdateAction>
-    <AjaxAction id="ajaxActionCheckChildren">
-      <Property name="service">subjectPR#countChildren</Property>
-      <Property name="parameter">
-        <Entity>
-          <Property name="ftype"></Property>
-          <Property name="parentnode"></Property>
-        </Entity>
-      </Property>
-    </AjaxAction>
     <DataSetDropDown id="dataSetDropDownAircraftType">
       <ClientEvent name="onValueSelect">var dataSetSubject = this.get(&quot;#dataSetSubject&quot;);&#xD;
 dataSetSubject.set(&quot;parameter&quot;, {&#xD;
@@ -102,6 +59,36 @@ else&#xD;
       <Property name="property">ftypename</Property>
       <Property name="useEmptyItem">true</Property>
     </DataSetDropDown>
+    <UpdateAction id="updateActionSubject">
+      <Property name="dataResolver">subjectPR#saveSubject</Property>
+      <Property name="successMessage">数据已保存</Property>
+      <UpdateItem>
+        <Property name="dataSet">dataSetSubject</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <AjaxAction id="ajaxGetsubject">
+      <ClientEvent name="beforeExecute">var cur=view.id('ajaxGetsubject');&#xD;
+var ftype=view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
+cur.set(&quot;parameter&quot;,{&#xD;
+	ftype:ftype&#xD;
+	});</ClientEvent>
+      <ClientEvent name="onExecute">var cur=view.id('dataSetSubject');&#xD;
+var ftype=view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
+cur.set(&quot;parameter&quot;,{&#xD;
+	ftype:ftype&#xD;
+	});&#xD;
+cur.flushAsync();</ClientEvent>
+      <Property name="service">subjectPR#copyAll</Property>
+    </AjaxAction>
+    <AjaxAction id="ajaxActionCheckChildren">
+      <Property name="service">subjectPR#countChildren</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="ftype"></Property>
+          <Property name="parentnode"></Property>
+        </Entity>
+      </Property>
+    </AjaxAction>
     <SplitPanel>
       <Property name="position">270</Property>
       <MainControl>
@@ -114,8 +101,10 @@ else&#xD;
               <Editor/>
             </FormElement>
             <Button>
+              <ClientEvent name="onClick">dorado.MessageBox.confirm(&quot;关联试飞通用科目，将会覆盖原有科目，确认关联？&quot;,function(){&#xD;
+	view.id(&quot;ajaxGetsubject&quot;).execute();&#xD;
+});</ClientEvent>
               <Property name="caption">关联通用试飞科目</Property>
-              <Property name="action">ajaxGetsubject</Property>
               <Property name="disabled">true</Property>
               <Property name="tags">Dirty</Property>
             </Button>
@@ -128,6 +117,7 @@ else&#xD;
             <AutoFormElement>
               <Property name="name">ftype</Property>
               <Property name="property">ftype</Property>
+              <Property name="editable">false</Property>
               <Editor/>
             </AutoFormElement>
             <AutoFormElement>
@@ -193,15 +183,6 @@ var cur=view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
 var cur1=view.id(&quot;dataSetSubject&quot;).getData(&quot;!currentSubject&quot;);&#xD;
 cur1.set(&quot;ftype&quot;,cur);&#xD;
 &#xD;
-	var myDate = new Date();&#xD;
-	view.id('dsUserOperationLog').getData().insert({&#xD;
-		logOperationType:&quot;0&quot;,&#xD;
-		operationPerson: &quot;${loginUsername}&quot;,&#xD;
-		operationContent:&quot;对试飞科目表新增一条子节点记录&quot;,&#xD;
-		operationTime:myDate&#xD;
-	});&#xD;
-	view.id('uaUserOperationLog').execute();&#xD;
-&#xD;
 </ClientEvent>
                   <Property name="caption">添加子节点</Property>
                   <Property name="icon">url(skin>common/icons.gif) -120px 0px</Property>
@@ -212,29 +193,18 @@ cur1.set(&quot;ftype&quot;,cur);&#xD;
 var entity=tree.get(&quot;currentEntity&quot;);&#xD;
 if(entity){&#xD;
 	view.id(&quot;ajaxActionCheckChildren&quot;).set(&quot;parameter&quot;, {&#xD;
-		parentnode:entity.get(&quot;name&quot;),&#xD;
+		parentnode:entity.get(&quot;oid&quot;),&#xD;
 		ftype:entity.get(&quot;ftype&quot;)&#xD;
 		}).execute(function(count){&#xD;
 		if (count>0){&#xD;
 			dorado.MessageBox.alert(&quot;请先删除子节点&quot;);&#xD;
 		} else {&#xD;
-			dorado.MessageBox.confirm(&quot;真的要删除当前节点？&quot;,function(){&#xD;
-			&#xD;
-				var myDate = new Date();&#xD;
-				view.id('dsUserOperationLog').getData().insert({&#xD;
-					logOperationType:&quot;2&quot;,&#xD;
-					operationPerson: &quot;${loginUsername}&quot;,&#xD;
-					operationContent:&quot;对试飞科目表删除所选节点&quot;,&#xD;
-					operationTime:myDate&#xD;
-				});&#xD;
-				view.id('uaUserOperationLog').execute();&#xD;
-			&#xD;
+			dorado.MessageBox.confirm(&quot;真的要删除当前节点？&quot;,function(){			&#xD;
 				entity.remove();&#xD;
 				var firstNode=tree.get(&quot;firstNode&quot;);&#xD;
 				if(firstNode){&#xD;
 					tree.set(&quot;currentNode&quot;,firstNode);&#xD;
 				}&#xD;
-				//view.id(&quot;updateActionSubject&quot;).execute();&#xD;
 			});&#xD;
 		}&#xD;
 	});&#xD;
@@ -259,8 +229,7 @@ if(node){&#xD;
 		if(data.validate()!=&quot;ok&quot;){&#xD;
 			arg.processDefault=false;&#xD;
 		}&#xD;
-	}&#xD;
-	&#xD;
+	}	&#xD;
 }&#xD;
 &#xD;
 </ClientEvent>
@@ -272,7 +241,7 @@ var parentNode=draggingInfo.get(&quot;targetObject&quot;);//targetObject，对�
 if(!parentNode){&#xD;
 	return true;&#xD;
 }&#xD;
-var parentId=parentNode.get(&quot;data.oid&quot;);//父节点ID&#xD;
+var parentId=parentNode.get(&quot;data.name&quot;);//父节点ID&#xD;
 var order=1;&#xD;
 parentNode.get(&quot;nodes&quot;).each(function(node){//遍历所有子节点&#xD;
 	var data=node.get(&quot;data&quot;);&#xD;
@@ -281,25 +250,18 @@ parentNode.get(&quot;nodes&quot;).each(function(node){//遍历所有子节点&#x
 });&#xD;
 view.id(&quot;updateActionSubject&quot;).execute();&#xD;
 </ClientEvent>
-            <ClientEvent name="onContextMenu">view.id(&quot;menuOperate&quot;).show({&#xD;
-	position: {&#xD;
-		left: arg.event.pageX,&#xD;
-		top: arg.event.pageY&#xD;
-	}&#xD;
-});&#xD;
-</ClientEvent>
             <ClientEvent name="onCurrentChange">var dataTree = this.get(&quot;#dataTreeSubject&quot;);&#xD;
 var node = dataTree.get(&quot;currentNode&quot;);&#xD;
 if(node){&#xD;
-	var name = node.get(&quot;data&quot;).get(&quot;name&quot;);&#xD;
-	if(name == &quot;通用试飞科目&quot;){&#xD;
+	var name = node.get(&quot;data&quot;).get(&quot;parentnode&quot;);&#xD;
+	if(name != null){&#xD;
 	view.set({&#xD;
-		&quot;^DirtyNode.disabled&quot;: true&#xD;
+		&quot;^DirtyNode.disabled&quot;: false&#xD;
 	});&#xD;
 }&#xD;
 else&#xD;
 view.set({&#xD;
-		&quot;^DirtyNode.disabled&quot;: false&#xD;
+		&quot;^DirtyNode.disabled&quot;: true&#xD;
 	});&#xD;
 	&#xD;
 }</ClientEvent>

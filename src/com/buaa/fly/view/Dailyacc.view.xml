@@ -20,14 +20,38 @@
     <DataSet id="dsFtypes">
       <Property name="dataType">[Ftypes]</Property>
       <Property name="dataProvider">ftypesPR#queryFtypes</Property>
-      <Property name="pageSize">20</Property>
-      <Property name="loadMode">onReady</Property>
     </DataSet>
-    <DataSet id="dsUserOperationLog">
-      <Property name="dataProvider">userOperationLogPR#queryUserOperationLog</Property>
-      <Property name="dataType">[UserOperationLog]</Property>
-      <Property name="pageSize">20</Property>
-    </DataSet>
+    <DataSetDropDown id="chooseAircraftType">
+      <ClientEvent name="onValueSelect">var dsDailyacc = this.get(&quot;#dsDailyacc&quot;);&#xD;
+dsDailyacc.set(&quot;parameter&quot;, {&#xD;
+	ftype: arg.selectedValue&#xD;
+});&#xD;
+dsDailyacc.flushAsync();&#xD;
+var dsSfstatistic = this.get(&quot;#dsSfstatistic&quot;);&#xD;
+dsSfstatistic.set(&quot;parameter&quot;, {&#xD;
+	ftype: arg.selectedValue&#xD;
+});&#xD;
+dsSfstatistic.flushAsync();</ClientEvent>
+      <Property name="autoOpen">true</Property>
+      <Property name="dataSet">dsFtypes</Property>
+      <Property name="displayProperty">ftypename</Property>
+      <Property name="editable">false</Property>
+      <Property name="property">ftypename</Property>
+      <Property name="reloadDataOnOpen">true</Property>
+    </DataSetDropDown>
+    <AjaxAction id="deleteFileAction">
+      <ClientEvent name="beforeExecute">var cur=view.id('dsDailyacc').getData('#');&#xD;
+var value = &quot;/Fly_Dailyacc/&quot; + cur.get(&quot;id&quot;) + &quot;/&quot;;&#xD;
+var file = cur.get(&quot;filename&quot;);&#xD;
+self.set(&quot;parameter&quot;,{&#xD;
+	record: value,&#xD;
+	filename: file&#xD;
+});&#xD;
+cur.set(&quot;filename&quot;,null);&#xD;
+var link = view.id(&quot;lefile&quot;);&#xD;
+link.set(&quot;visible&quot;,false);</ClientEvent>
+      <Property name="service">defaultUploadProcessor#deleteFile</Property>
+    </AjaxAction>
     <UpdateAction id="uaDailyacc">
       <Property name="dataResolver">dailyaccPR#saveDailyacc</Property>
       <UpdateItem>
@@ -37,20 +61,6 @@
     <UpdateAction id="uaFighterinfo">
       <ClientEvent name="onGetUpdateData">var grid1=view.id(&quot;dgSfstatistic&quot;);&#xD;
 arg.data=grid1.get(&quot;selection&quot;);&#xD;
-/*var ii = self.get(&quot;userData&quot;);&#xD;
-var grid=view.id(&quot;dgFighterinfo&quot;);&#xD;
-var grid1=view.id(&quot;dgSfstatistic&quot;);&#xD;
-var obj=[];&#xD;
-obj=self.get(&quot;updateItems&quot;);&#xD;
-if(self.get(&quot;userData&quot;) == 0){&#xD;
-	arg.data=grid.get(&quot;selection&quot;);&#xD;
-	self.set(&quot;userData&quot;, 1);&#xD;
-}else{&#xD;
-	&#xD;
-	arg.data=grid1.get(&quot;selection&quot;);&#xD;
-	self.set(&quot;userData&quot;, 0);&#xD;
-}*/&#xD;
-&#xD;
 &#xD;
 &#xD;
 &#xD;
@@ -67,175 +77,42 @@ if(self.get(&quot;userData&quot;) == 0){&#xD;
         <Property name="alias">sta</Property>
       </UpdateItem>
     </UpdateAction>
-    <UpdateAction id="uaUserOperationLog">
-      <Property name="dataResolver">userOperationLogPR#saveUserOperationLog</Property>
-      <UpdateItem>
-        <Property name="dataSet">dsUserOperationLog</Property>
-      </UpdateItem>
-    </UpdateAction>
-    <ToolBar>
-      <FormElement id="formElement1">
-        <Property name="property">name</Property>
-        <Property name="trigger">chooseAircraftType</Property>
-        <Property name="label">选择机型:</Property>
-        <Editor/>
-      </FormElement>
-      <DataPilot>
-        <Property name="itemCodes">pages</Property>
-        <Property name="dataSet">dsDailyacc</Property>
-        <Property name="dataPath"></Property>
-      </DataPilot>
-      <ToolBarButton>
-        <ClientEvent name="onClick">	var myDate = new Date();
-    var mytime= myDate.toLocaleTimeString();
-    var a=mytime.split(&quot;:&quot;);
-
-	var hour=myDate.getHours();
-    var tempId = hour*60*60*1000+a[1]*60*1000+a[2]*1000;//当前时间的毫秒数作为临时ID
-    var ftype = view.id(&quot;formElement1&quot;).get(&quot;value&quot;);
-	
-	view.id('dsDailyacc').getData().insert({id: tempId,ftype: ftype});
-	view.id('diaDailyacc').show();
-	
-	/*
- 	 * 对用户新增操作进行记录，在用户操作日志表中新增一条记录。
-     */
-	var myDate = new Date();
-	view.id('dsUserOperationLog').getData().insert({
-		logOperationType:&quot;0&quot;,
-		operationPerson: &quot;${loginUsername}&quot;,
-		operationContent:&quot;对现场汇报表新增一条记录&quot;,
-		operationTime:myDate
-	});
-	view.id('uaUserOperationLog').execute();
-	</ClientEvent>
-        <Property name="caption">新增</Property>
-        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
-      </ToolBarButton>
-      <ToolBarButton>
-        <ClientEvent name="onClick">
-	var cur=view.id('dsDailyacc').getData('#');
-	if (cur) {
-		view.id('diaDailyacc').show();
-	}
-	
-	/*
- 	 * 对用户修改操作进行记录，在用户操作日志表中新增一条记录。
- 	 */
-	var myDate = new Date();
-	view.id('dsUserOperationLog').getData().insert({
-		logOperationType:&quot;1&quot;,
-		operationPerson: &quot;${loginUsername}&quot;,
-		operationContent:&quot;对现场汇报表修改选定记录&quot;,
-		operationTime:myDate
-	});
-	view.id('uaUserOperationLog').execute();
-	</ClientEvent>
-        <Property name="caption">修改</Property>
-        <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
-      </ToolBarButton>
-      <ToolBarButton>
-        <ClientEvent name="onClick">var cur=view.id('dsDailyacc').getData('#');
-	var ua=view.id('uaDailyacc');
-	if(cur){
-		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
-			
-			/*
- 			 * 对用户删除操作进行记录，在用户操作日志表中新增一条记录。
- 			 */
-			var myDate = new Date();
-			view.id('dsUserOperationLog').getData().insert({
-				logOperationType:&quot;2&quot;,
-				operationPerson: &quot;${loginUsername}&quot;,
-				operationContent:&quot;对现场汇报表删除所选记录&quot;,
-				operationTime:myDate
-			});
-			view.id('uaUserOperationLog').execute();
-			
-			cur.remove();
-			ua.execute();
-				}); 
-			} 
-	</ClientEvent>
-        <Property name="caption">删除</Property>
-        <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
-      </ToolBarButton>
-      <ToolBarButton>
-        <ClientEvent name="onClick">var cur=view.id(&quot;dsDailyacc&quot;).getData(&quot;#&quot;);&#xD;
-if(cur &amp;&amp; cur.get(&quot;filename&quot;)){&#xD;
-	var fileURL='Fly_Dailyacc/'+ cur.get(&quot;id&quot;) + '/' + cur.get(&quot;filename&quot;);&#xD;
-	var url = encodeURI(fileURL);&#xD;
-	window.open('ServletDownload?filename='+ url);&#xD;
-}&#xD;
-&#xD;
-	/*&#xD;
- 	 * 对用户下载操作进行记录，在用户操作日志表中新增一条记录。&#xD;
- 	 */&#xD;
-	var myDate = new Date();&#xD;
-	view.id('dsUserOperationLog').getData().insert({&#xD;
-		logOperationType:&quot;3&quot;,&#xD;
-		operationPerson: &quot;${loginUsername}&quot;,&#xD;
-		operationContent:&quot;对现场汇报表下载所选记录的附件&quot;,&#xD;
-		operationTime:myDate&#xD;
+    <UploadAction id="uaUpload">
+      <ClientEvent name="onFilesAdded">var cur=view.id('dsDailyacc').getData('#');&#xD;
+var value = &quot;/Fly_Dailyacc/&quot; + cur.get(&quot;id&quot;) + &quot;/&quot;;&#xD;
+self.set(&quot;multipartParams&quot;, {record: value});</ClientEvent>
+      <ClientEvent name="onFileUploaded">var returnValue = arg.file.name;&#xD;
+var cur=view.id('dsDailyacc').getData('#');&#xD;
+cur.set(&quot;filename&quot;,returnValue);&#xD;
+var link = view.id(&quot;lefile&quot;);&#xD;
+if(returnValue){&#xD;
+	var oid = cur.get(&quot;id&quot;);&#xD;
+    var href = &quot;ServletDownload?filename=Fly_Dailyacc/&quot; + oid + &quot;/&quot; + returnValue;&#xD;
+    link.set({&#xD;
+		href: href,&#xD;
+		visible: true&#xD;
 	});&#xD;
-	view.id('uaUserOperationLog').execute();</ClientEvent>
-        <Property name="caption">下载</Property>
-        <Property name="icon">url(>skin>common/icons.gif) -140px -280px</Property>
-      </ToolBarButton>
-      <ToolBarButton>
-        <ClientEvent name="onClick">	&#xD;
-	&#xD;
-	view.id('diaTemplate').show();</ClientEvent>
-        <Property name="caption">生成模板</Property>
-        <Property name="icon"> url(>skin>common/icons.gif) -220px -60px</Property>
-      </ToolBarButton>
-      <ToolBarButton>
-        <ClientEvent name="onClick"> 	//upload/Fly_Shifeirequestacc/
-	var filename = view.id('dsDailyacc').getData(&quot;#&quot;).get(&quot;filename&quot;);
-	var fileURL='upload/Fly_Dailyacc/'+ view.id('dsDailyacc').getData(&quot;#&quot;).get(&quot;id&quot;) + '/'+ filename;
-	var url = encodeURI(fileURL);
-	var path=&quot;a.jsp?url='&quot;+ url +&quot;'&quot;;	
-	open(path,&quot;_blank&quot;);
-//	var path=&quot;a.jsp?url='&quot;+fileURL+&quot;'&quot;;
-//		alert(path);
-//	iframe.set(&quot;path&quot;,path);
-//	view.id('diaWord').show();
-</ClientEvent>
-        <Property name="caption">查看文档</Property>
-        <Property name="icon"> url(>skin>common/icons.gif) -120px -140px</Property>
-      </ToolBarButton>
-    </ToolBar>
-    <DataGrid id="dgDailyacc">
-      <Property name="readOnly">true</Property>
-      <Property name="dataSet">dsDailyacc</Property>
-      <Property name="dataPath"></Property>
-      <Property name="filterMode">clientSide</Property>
-      <Property name="showFilterBar">false</Property>
-      <Property name="rowHeight">22</Property>
-      <RowNumColumn/>
-      <DataColumn name="ftype">
-        <Property name="property">ftype</Property>
-        <Property name="width">200</Property>
-      </DataColumn>
-      <DataColumn name="filename">
-        <Property name="property">filename</Property>
-        <Property name="width">300</Property>
-      </DataColumn>
-      <DataColumn name="summary">
-        <Property name="property">summary</Property>
-        <Property name="width">400</Property>
-      </DataColumn>
-      <DataColumn>
-        <Property name="property">miji</Property>
-        <Property name="name">miji</Property>
-        <Property name="width">120</Property>
-        <Editor/>
-      </DataColumn>
-    </DataGrid>
+}&#xD;
+else{&#xD;
+    link.set(&quot;visible&quot;,false);&#xD;
+}</ClientEvent>
+      <ClientEvent name="onError">	var error = arg.error;&#xD;
+	dorado.MessageBox.show({&#xD;
+		title:error.message,&#xD;
+		message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
+		icon: &quot;WARNING&quot;,&#xD;
+		buttons: [&quot;ok&quot;]&#xD;
+	});</ClientEvent>
+      <Property name="url">>dorado/uploader/fileupload</Property>
+      <Property name="maxFileSize">100MB</Property>
+      <Filters/>
+    </UploadAction>
     <Dialog id="diaDailyacc">
       <ClientEvent name="onClose">var cur=view.id('dsDailyacc').getData('#');&#xD;
-				cur.cancel();&#xD;
-				view.id('diaDailyacc').hide();</ClientEvent>
+if(cur){&#xD;
+	cur.cancel();&#xD;
+	view.id('diaDailyacc').hide();&#xD;
+}</ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
       <Property name="width">500</Property>
@@ -243,23 +120,18 @@ if(cur &amp;&amp; cur.get(&quot;filename&quot;)){&#xD;
       <Buttons>
         <Button>
           <ClientEvent name="onClick">view.id('uaDailyacc').execute(function(){
-               view.id('diaDailyacc').hide();
-           });
+	view.id('diaDailyacc').hide();
+	});
          </ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
         </Button>
         <Button>
           <ClientEvent name="onClick">var cur=view.id('dsDailyacc').getData('#');
-				cur.cancel();
-				view.id('diaDailyacc').hide();
-				
-	/*
-	 * 删除当前用户操作日志记录并保存
-	 */
-	view.id('dsUserOperationLog').getData().remove()
-	view.id('uaUserOperationLog').execute();
-	         </ClientEvent>
+if(cur){
+	cur.cancel();
+	view.id('diaDailyacc').hide();
+}</ClientEvent>
           <Property name="caption">取消</Property>
           <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
         </Button>
@@ -274,14 +146,16 @@ if(cur &amp;&amp; cur.get(&quot;filename&quot;)){&#xD;
             <Property name="property">filename</Property>
             <Editor>
               <Container>
-                <TextEditor layoutConstraint="center">
+                <Link id="lefile" layoutConstraint="center">
                   <Property name="dataSet">dsDailyacc</Property>
-                  <Property name="dataPath">#</Property>
                   <Property name="property">filename</Property>
-                  <Property name="readOnly">true</Property>
-                </TextEditor>
+                </Link>
+                <Button layoutConstraint="right">
+                  <Property name="caption">删除</Property>
+                  <Property name="action">deleteFileAction</Property>
+                </Button>
                 <Button layoutConstraint="right padding:0,10,0,10">
-                  <Property name="caption">编辑</Property>
+                  <Property name="caption">上传</Property>
                   <Property name="action">uaUpload</Property>
                 </Button>
               </Container>
@@ -291,7 +165,6 @@ if(cur &amp;&amp; cur.get(&quot;filename&quot;)){&#xD;
             <Property name="name">ftype</Property>
             <Property name="property">ftype</Property>
             <Property name="editable">false</Property>
-            <Property name="trigger">chooseAircraftType</Property>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">summary</Property>
@@ -304,52 +177,15 @@ if(cur &amp;&amp; cur.get(&quot;filename&quot;)){&#xD;
             <Editor/>
           </AutoFormElement>
         </AutoForm>
-        <DataSetDropDown id="dataSetDropDownAircraftType">
-          <Property name="autoOpen">true</Property>
-          <Property name="dataSet">dsDictionaryAircraftType</Property>
-          <Property name="displayProperty">name</Property>
-          <Property name="editable">false</Property>
-          <Property name="property">name</Property>
-          <Property name="reloadDataOnOpen">true</Property>
-        </DataSetDropDown>
       </Children>
       <Tools/>
     </Dialog>
-    <UploadAction id="uaUpload">
-      <ClientEvent name="onFilesAdded">var cur=view.id('dsDailyacc').getData('#');&#xD;
-var value = &quot;/Fly_Dailyacc/&quot; + cur.get(&quot;id&quot;) + &quot;/&quot;;&#xD;
-self.set(&quot;multipartParams&quot;, {record: value});</ClientEvent>
-      <ClientEvent name="onFileUploaded">var returnValue = arg.file.name;&#xD;
-var cur=view.id('dsDailyacc').getData('#');&#xD;
-cur.set(&quot;filename&quot;,returnValue);</ClientEvent>
-      <ClientEvent name="onError">	var error = arg.error;&#xD;
-	dorado.MessageBox.show({&#xD;
-		title:error.message,&#xD;
-		message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
-		icon: &quot;WARNING&quot;,&#xD;
-		buttons: [&quot;ok&quot;]&#xD;
-	});</ClientEvent>
-      <Property name="url">>dorado/uploader/fileupload</Property>
-      <Property name="maxFileSize">100MB</Property>
-      <Filters/>
-    </UploadAction>
-    <DataSetDropDown id="chooseAircraftType">
-      <ClientEvent name="onValueSelect">var dsDailyacc = this.get(&quot;#dsDailyacc&quot;);&#xD;
-dsDailyacc.set(&quot;parameter&quot;, {&#xD;
-	ftype: arg.selectedValue&#xD;
-});&#xD;
-dsDailyacc.flushAsync();</ClientEvent>
-      <Property name="autoOpen">true</Property>
-      <Property name="dataSet">dsFtypes</Property>
-      <Property name="displayProperty">ftypename</Property>
-      <Property name="editable">false</Property>
-      <Property name="property">ftypename</Property>
-      <Property name="reloadDataOnOpen">true</Property>
-    </DataSetDropDown>
     <Dialog id="diaTemplate">
       <ClientEvent name="onClose">var cur=view.id('dsSfstatistic').getData('#');&#xD;
-				cur.cancel();&#xD;
-				view.id('diaTemplate').hide();</ClientEvent>
+if(cur){&#xD;
+	cur.cancel();&#xD;
+	view.id('diaTemplate').hide();&#xD;
+}</ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
       <Property name="width">80%</Property>
@@ -366,9 +202,9 @@ dsDailyacc.flushAsync();</ClientEvent>
         <Button>
           <ClientEvent name="onClick">var cur=view.id('dsSfstatistic').getData('#');
 if(cur){
-				cur.cancel();
-				view.id('diaTemplate').hide();
-	         }</ClientEvent>
+	cur.cancel();
+}
+	view.id('diaTemplate').hide();</ClientEvent>
           <Property name="caption">取消生成</Property>
           <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
         </Button>
@@ -421,15 +257,20 @@ if(cur){
             <Property name="name">timefly</Property>
           </DataColumn>
           <DataColumn name="taskno">
-            <Property name="property">taskno</Property>
+            <Property name="property">taskNo.tasknumber</Property>
             <Property name="width">120</Property>
           </DataColumn>
-          <DataColumn name="mainsubject">
-            <Property name="property">mainsubject</Property>
+          <DataColumn>
+            <Property name="property">taskNo.taskcontent</Property>
             <Property name="width">120</Property>
+            <Property name="name">content</Property>
           </DataColumn>
           <DataColumn name="subject">
-            <Property name="property">subject</Property>
+            <Property name="property">taskNo.subject</Property>
+            <Property name="width">120</Property>
+          </DataColumn>
+          <DataColumn name="result">
+            <Property name="property">taskNo.taskexecution</Property>
             <Property name="width">120</Property>
           </DataColumn>
           <DataColumn name="config">
@@ -444,34 +285,146 @@ if(cur){
             <Property name="property">feixingqk</Property>
             <Property name="width">120</Property>
           </DataColumn>
-          <DataColumn name="result">
-            <Property name="property">result</Property>
-            <Property name="width">120</Property>
-          </DataColumn>
           <DataColumn name="summary">
             <Property name="property">summary</Property>
             <Property name="width">120</Property>
-          </DataColumn>
-          <DataColumn name="filename3">
-            <Property name="property">filename3</Property>
-            <Property name="width">120</Property>
-          </DataColumn>
-          <DataColumn name="filename4">
-            <Property name="property">filename4</Property>
-            <Property name="width">120</Property>
-          </DataColumn>
-          <DataColumn name="filename5">
-            <Property name="property">filename5</Property>
-            <Property name="width">120</Property>
-          </DataColumn>
-          <DataColumn>
-            <Property name="property">content</Property>
-            <Property name="width">120</Property>
-            <Property name="name">content</Property>
           </DataColumn>
         </DataGrid>
       </Children>
       <Tools/>
     </Dialog>
+    <ToolBar>
+      <FormElement id="formElement1">
+        <Property name="property">name</Property>
+        <Property name="trigger">chooseAircraftType</Property>
+        <Property name="label">选择机型:</Property>
+        <Editor/>
+      </FormElement>
+      <DataPilot>
+        <Property name="itemCodes">pages</Property>
+        <Property name="dataSet">dsDailyacc</Property>
+        <Property name="dataPath"></Property>
+      </DataPilot>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var guid = &quot;&quot;;
+for(var i=1;i&lt;=32;i++){
+	var n = Math.floor(Math.random()*16.0).toString(16);
+	guid += n;
+	if((i==8)||(i==12)||(i==16)||(i==20))
+		  guid += &quot;-&quot;;
+}
+dialog = view.id('diaDailyacc');
+dialog.set(&quot;caption&quot;,&quot;新增现场汇报&quot;);
+var ftype = view.id(&quot;formElement1&quot;).get(&quot;value&quot;);
+if(ftype){
+	view.id('dsDailyacc').getData().insert({
+		id: guid,
+		ftype: ftype
+	});
+	view.id('diaDailyacc').show();
+	var link = view.id(&quot;lefile&quot;);
+	link.set(&quot;visible&quot;,false);
+}else{
+	dorado.MessageBox.alert(&quot;请先选择机型&quot;);
+}
+</ClientEvent>
+        <Property name="caption">新增</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">dialog = view.id('diaDailyacc');
+dialog.set(&quot;caption&quot;,&quot;修改现场汇报&quot;);
+var cur=view.id('dsDailyacc').getData('#');
+if (cur) {
+	view.id('diaDailyacc').show();
+	var file = cur.get(&quot;filename&quot;);
+    var link = view.id(&quot;lefile&quot;);
+    if(file){
+        var oid = cur.get(&quot;id&quot;);
+		var href = &quot;ServletDownload?filename=Fly_Shifeirequestacc/&quot; + oid + &quot;/&quot; + file;
+        link.set({
+	       href: href,
+	       visible: true
+        });
+    }
+    else
+      link.set(&quot;visible&quot;,false);
+}
+	</ClientEvent>
+        <Property name="caption">修改</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsDailyacc').getData('#');
+var ua=view.id('uaDailyacc');
+if(cur){
+	dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+		cur.remove();
+		ua.execute();
+	}); 
+} 
+	</ClientEvent>
+        <Property name="caption">删除</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var ftype = view.id(&quot;formElement1&quot;).get(&quot;value&quot;);&#xD;
+if(ftype){&#xD;
+	view.id('diaTemplate').show();&#xD;
+}else{&#xD;
+	dorado.MessageBox.alert(&quot;请先选择机型&quot;);&#xD;
+}&#xD;
+</ClientEvent>
+        <Property name="caption">生成模板</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -220px -60px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var filename = view.id('dsDailyacc').getData(&quot;#&quot;).get(&quot;filename&quot;);
+var fileURL='upload/Fly_Dailyacc/'+ view.id('dsDailyacc').getData(&quot;#&quot;).get(&quot;id&quot;) + '/'+ filename;
+var url = encodeURI(fileURL);
+var path=&quot;a.jsp?url='&quot;+ url +&quot;'&quot;;	
+open(path,&quot;_blank&quot;);
+
+</ClientEvent>
+        <Property name="caption">查看文档</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -120px -140px</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid id="dgDailyacc">
+      <Property name="readOnly">true</Property>
+      <Property name="dataSet">dsDailyacc</Property>
+      <Property name="dataPath"></Property>
+      <Property name="filterMode">clientSide</Property>
+      <Property name="showFilterBar">false</Property>
+      <Property name="rowHeight">22</Property>
+      <RowNumColumn/>
+      <DataColumn name="ftype">
+        <Property name="property">ftype</Property>
+        <Property name="width">200</Property>
+      </DataColumn>
+      <DataColumn name="filename">
+        <ClientEvent name="onRenderCell">jQuery(arg.dom).empty();&#xD;
+var file = arg.data.get(&quot;filename&quot;);&#xD;
+var oid = arg.data.get(&quot;id&quot;);&#xD;
+var href = &quot;ServletDownload?filename=Fly_Dailyacc/&quot; + oid + &quot;/&quot; + file;&#xD;
+jQuery(arg.dom).xCreate({&#xD;
+	tagName:&quot;A&quot;,&#xD;
+	href:href,&#xD;
+	content:arg.data.get(&quot;filename&quot;)&#xD;
+});</ClientEvent>
+        <Property name="property">filename</Property>
+        <Property name="width">300</Property>
+      </DataColumn>
+      <DataColumn name="summary">
+        <Property name="property">summary</Property>
+        <Property name="width">400</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">miji</Property>
+        <Property name="name">miji</Property>
+        <Property name="width">120</Property>
+        <Editor/>
+      </DataColumn>
+    </DataGrid>
   </View>
 </ViewConfig>

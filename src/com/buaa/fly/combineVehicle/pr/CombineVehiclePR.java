@@ -18,33 +18,35 @@ import com.buaa.fly.combineVehicle.dao.CombineVehicleDao;
 import com.buaa.fly.combineVehicle.manager.CombineVehicleManager;
 
 @Component("combineVehiclePR")
-public class CombineVehiclePR{
+public class CombineVehiclePR {
 
-    @Resource
+	@Resource
 	private CombineVehicleManager combineVehicleManager;
 
-     
-   /**                  
-	* 分页查询信息，带有criteria
-	* @param page    
-	* @param map
-	* @throws Exception
-	*/
+	/**
+	 * 分页查询信息，带有criteria
+	 * 
+	 * @param page
+	 * @param map
+	 * @throws Exception
+	 */
 	@DataProvider
-	public void queryCombineVehicle(Page<CombineVehicle> page,Map<String, Object> parameter,Criteria criteria) throws Exception {
-		combineVehicleManager.queryCombineVehicle(page,parameter,criteria);
+	public void queryCombineVehicle(Page<CombineVehicle> page,
+			Map<String, Object> parameter, Criteria criteria) throws Exception {
+		combineVehicleManager.queryCombineVehicle(page, parameter, criteria);
 	}
-	
-	
+
 	/**
 	 * 数据保存，包括增删改
+	 * 
 	 * @param dataItems
 	 * @throws Exception
 	 */
-	 @SuppressWarnings("rawtypes")
-	 @DataResolver
-	 public void saveCombineVehicle(Map<String, Collection> dataItems) throws Exception {
-		 combineVehicleManager.saveCombineVehicle(dataItems);
-	 }
-	
+	@SuppressWarnings("rawtypes")
+	@DataResolver
+	public void saveCombineVehicle(Map<String, Collection> dataItems)
+			throws Exception {
+		combineVehicleManager.saveCombineVehicle(dataItems);
+	}
+
 }

@@ -22,8 +22,10 @@ import com.buaa.fly.domain.Dailyacc;
 
 @Repository("dailyaccDao")
 public class DailyaccDao extends HibernateBaseDao {
+	
 	@Resource
 	private QueryUserData userService;
+
 	/**
 	 * 同时也支持普通类型查询，在数据类型和日期类型支持区间查询
 	 * 
@@ -32,41 +34,44 @@ public class DailyaccDao extends HibernateBaseDao {
 	 * @param criteria
 	 * @throws Exception
 	 */
-	public void queryDailyacc(Page<Dailyacc> page, Map<String, Object> parameter,Criteria criteria) throws Exception {
-        Map<String, Object> args = new HashMap<String,Object>();
-        StringBuffer coreHql = new StringBuffer("from " + Dailyacc.class.getName()+" a where 1=1 ");
-        
-        if(null != parameter && !parameter.isEmpty()){
-        	String ftype = (String)parameter.get("ftype");
-        	if(StringUtils.isNotEmpty( ftype )){
-        		coreHql.append(" and a.ftype ='" + ftype + "'");
-        	}
-        }
-		
+	public void queryDailyacc(Page<Dailyacc> page,
+			Map<String, Object> parameter, Criteria criteria) throws Exception {
+		Map<String, Object> args = new HashMap<String, Object>();
+		StringBuffer coreHql = new StringBuffer("from "
+				+ Dailyacc.class.getName() + " a where 1=1 ");
+
+		if (null != parameter && !parameter.isEmpty()) {
+			String ftype = (String) parameter.get("ftype");
+			if (StringUtils.isNotEmpty(ftype)) {
+				coreHql.append(" and a.ftype ='" + ftype + "'");
+			}else{
+				coreHql.append(" and a.ftype = null");
+			}
+		}
+
 		if (null != criteria) {
 			ParseResult result = this.parseCriteria(criteria, true, "a");
 			if (null != result) {
-				coreHql.append(" and "+ result.getAssemblySql());
+				coreHql.append(" and " + result.getAssemblySql());
 				args.putAll(result.getValueMap());
 			}
 		}
 
-        
-        String countHql = "select count(*) " + coreHql.toString();
-        String hql = coreHql.toString();
-        hql=userService.checkUser(hql);
+		String countHql = "select count(*) " + coreHql.toString();
+		String hql = coreHql.toString();
+		hql = userService.checkUser(hql);
 		this.pagingQuery(page, hql, countHql, args);
 	}
-	
+
 	/**
 	 * 数据添加
+	 * 
 	 * @param detail
 	 * @throws Exception
 	 */
 	public void saveData(Dailyacc detail) throws Exception {
 		Session session = this.getSessionFactory().openSession();
 		try {
-			detail.setId(UUID.randomUUID().toString());
 			session.save(detail);
 		} finally {
 			session.flush();
@@ -76,6 +81,7 @@ public class DailyaccDao extends HibernateBaseDao {
 
 	/**
 	 * 数据修改
+	 * 
 	 * @param detail
 	 * @throws Exception
 	 */
@@ -91,6 +97,7 @@ public class DailyaccDao extends HibernateBaseDao {
 
 	/**
 	 * 数据删除
+	 * 
 	 * @param detail
 	 * @throws Exception
 	 */
@@ -103,9 +110,15 @@ public class DailyaccDao extends HibernateBaseDao {
 			session.close();
 		}
 	}
-	//通过ID查找记录
-    public  Dailyacc queryById(int id){
-    	String hql="from " + Dailyacc.class.getName()+" a where a.id="+id;
+
+	/**
+	 * 通过id查找数据
+	 * 
+	 * @param detail
+	 * @throws Exception
+	 */
+	public Dailyacc queryById(int id) {
+		String hql = "from " + Dailyacc.class.getName() + " a where a.id=" + id;
 		return (Dailyacc) this.query(hql).get(0);
-    }    
+	}
 }

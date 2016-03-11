@@ -15,7 +15,6 @@
     <DataSet id="dsFtypes">
       <Property name="dataProvider">ftypesPR#queryFtypes</Property>
       <Property name="dataType">[Ftypes]</Property>
-      <Property name="pageSize">20</Property>
     </DataSet>
     <UpdateAction id="uaShifeirequestacc">
       <Property name="dataResolver">shifeirequestaccPR#saveShifeirequestacc</Property>
@@ -23,10 +22,18 @@
         <Property name="dataSet">dsShifeirequestacc</Property>
       </UpdateItem>
     </UpdateAction>
-    <AjaxAction id="ajaxActionDownloadFile">
-      <ClientEvent name="onSuccess">var cur=view.id(&quot;dsShifeirequestacc&quot;).getData(&quot;#&quot;);&#xD;
-window.open('/escmp/upload/Fly_Shifeirequestacc/'+ cur.get(&quot;id&quot;) + '/' + arg.result);</ClientEvent>
-      <Property name="service">shifeirequestaccManager#downloadFile</Property>
+    <AjaxAction id="deleteFileAction">
+      <ClientEvent name="beforeExecute">var cur=view.id('dsShifeirequestacc').getData('#');&#xD;
+var value = &quot;/Fly_Shifeirequestacc/&quot; + cur.get(&quot;id&quot;) + &quot;/&quot;;&#xD;
+var file = cur.get(&quot;filename&quot;);&#xD;
+self.set(&quot;parameter&quot;,{&#xD;
+	record: value,&#xD;
+	filename: file&#xD;
+});&#xD;
+cur.set(&quot;filename&quot;,null);&#xD;
+var link = view.id(&quot;lefile&quot;);&#xD;
+link.set(&quot;visible&quot;,false);</ClientEvent>
+      <Property name="service">defaultUploadProcessor#deleteFile</Property>
     </AjaxAction>
     <UploadAction id="uaUpload">
       <ClientEvent name="onFilesAdded">var cur=view.id('dsShifeirequestacc').getData('#');&#xD;
@@ -47,30 +54,17 @@ if(returnValue){&#xD;
 else{&#xD;
     link.set(&quot;visible&quot;,false);&#xD;
 }</ClientEvent>
-      <ClientEvent name="onError">	var error = arg.error;&#xD;
-	dorado.MessageBox.show({&#xD;
-		title:error.message,&#xD;
-		message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
-		icon: &quot;WARNING&quot;,&#xD;
-		buttons: [&quot;ok&quot;]&#xD;
-	});</ClientEvent>
+      <ClientEvent name="onError">var error = arg.error;&#xD;
+dorado.MessageBox.show({&#xD;
+	title:error.message,&#xD;
+	message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
+	icon: &quot;WARNING&quot;,&#xD;
+	buttons: [&quot;ok&quot;]&#xD;
+});</ClientEvent>
       <Property name="url">>dorado/uploader/fileupload</Property>
       <Property name="maxFileSize">100MB</Property>
       <Filters/>
     </UploadAction>
-    <AjaxAction id="deleteFileAction">
-      <ClientEvent name="beforeExecute">var cur=view.id('dsShifeirequestacc').getData('#');&#xD;
-var value = &quot;/Fly_Shifeirequestacc/&quot; + cur.get(&quot;id&quot;) + &quot;/&quot;;&#xD;
-var file = cur.get(&quot;filename&quot;);&#xD;
-self.set(&quot;parameter&quot;,{&#xD;
-	record: value,&#xD;
-	filename: file&#xD;
-});&#xD;
-cur.set(&quot;filename&quot;,null);&#xD;
-var link = view.id(&quot;lefile&quot;);&#xD;
-link.set(&quot;visible&quot;,false);</ClientEvent>
-      <Property name="service">defaultUploadProcessor#deleteFile</Property>
-    </AjaxAction>
     <DataSetDropDown id="chooseAircraftType">
       <ClientEvent name="onValueSelect">var dsDailyacc = this.get(&quot;#dsShifeirequestacc&quot;);&#xD;
 dsDailyacc.set(&quot;parameter&quot;, {&#xD;
@@ -84,6 +78,100 @@ dsDailyacc.flushAsync();</ClientEvent>
       <Property name="property">ftypename</Property>
       <Property name="reloadDataOnOpen">true</Property>
     </DataSetDropDown>
+    <Dialog id="diaShifeirequestacc">
+      <ClientEvent name="onClose">var cur=view.id('dsShifeirequestacc').getData('#');&#xD;
+if(cur){&#xD;
+	cur.cancel();&#xD;
+	view.id('diaShifeirequestacc').hide();&#xD;
+}</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">500</Property>
+      <Property name="caption">试飞文件</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaShifeirequestacc').execute(function(){
+	view.id('diaShifeirequestacc').hide();
+});
+         </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsShifeirequestacc').getData('#');
+if(cur){
+	cur.cancel();
+	view.id('diaShifeirequestacc').hide();
+}</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afShifeirequestacc">
+          <Property name="cols">*</Property>
+          <Property name="dataSet">dsShifeirequestacc</Property>
+          <Property name="dataPath">#</Property>
+          <AutoFormElement>
+            <Property name="name">ftype</Property>
+            <Property name="property">ftype</Property>
+            <Property name="trigger">dataSetDropDownAircraftType</Property>
+            <Property name="editable">false</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">FileNo</Property>
+            <Property name="property">fileno</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">type</Property>
+            <Property name="property">type</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">author</Property>
+            <Property name="property">author</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">date</Property>
+            <Property name="property">date</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">filename</Property>
+            <Property name="property">filename</Property>
+            <Editor>
+              <Container>
+                <Link id="lefile" layoutConstraint="center">
+                  <Property name="dataSet">dsShifeirequestacc</Property>
+                  <Property name="property">filename</Property>
+                </Link>
+                <Button layoutConstraint="right">
+                  <Property name="caption">删除</Property>
+                  <Property name="action">deleteFileAction</Property>
+                </Button>
+                <Button layoutConstraint="right padding:0,10,0,10">
+                  <Property name="caption">上传</Property>
+                  <Property name="action">uaUpload</Property>
+                </Button>
+              </Container>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaWord">
+      <Property name="width">70%</Property>
+      <Property name="height">80%</Property>
+      <Buttons/>
+      <Children>
+        <IFrame id="iframe"/>
+      </Children>
+      <Tools/>
+    </Dialog>
     <ToolBar>
       <FormElement id="formElement1">
         <Property name="property">name</Property>
@@ -97,23 +185,30 @@ dsDailyacc.flushAsync();</ClientEvent>
         <Property name="dataPath"></Property>
       </DataPilot>
       <ToolBarButton>
-        <ClientEvent name="onClick">    var guid = &quot;&quot;;
-	for(var i=1;i&lt;=32;i++){
-		var n = Math.floor(Math.random()*16.0).toString(16);
-		guid += n;
-		if((i==8)||(i==12)||(i==16)||(i==20))
-		   guid += &quot;-&quot;;
-	}
-    var ftype = view.id(&quot;formElement1&quot;).get(&quot;value&quot;);
-	view.id('dsShifeirequestacc').getData().insert({ftype: ftype,id: guid});
-	view.id('diaShifeirequestacc').show();
-	var link = view.id(&quot;lefile&quot;);
-    link.set(&quot;visible&quot;,false);</ClientEvent>
+        <ClientEvent name="onClick">var guid = &quot;&quot;;
+for(var i=1;i&lt;=32;i++){
+	var n = Math.floor(Math.random()*16.0).toString(16);
+	guid += n;
+	if((i==8)||(i==12)||(i==16)||(i==20))
+		guid += &quot;-&quot;;
+}
+dialog = view.id('diaShifeirequestacc');
+dialog.set(&quot;caption&quot;,&quot;新增试飞文件&quot;);
+var ftype = view.id(&quot;formElement1&quot;).get(&quot;value&quot;);
+view.id('dsShifeirequestacc').getData().insert({
+	ftype: ftype,
+	id: guid
+});
+view.id('diaShifeirequestacc').show();
+var link = view.id(&quot;lefile&quot;);
+link.set(&quot;visible&quot;,false);</ClientEvent>
         <Property name="caption">新增</Property>
         <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsShifeirequestacc').getData('#');
+dialog = view.id('diaShifeirequestacc');
+dialog.set(&quot;caption&quot;,&quot;修改试飞文件&quot;);
 if (cur) {
 	view.id('diaShifeirequestacc').show();
 	var file = cur.get(&quot;filename&quot;);
@@ -134,26 +229,16 @@ if (cur) {
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsShifeirequestacc').getData('#');
-	var ua=view.id('uaShifeirequestacc');
-	if(cur){
-		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
-			cur.remove();
-			ua.execute();
-				}); 
-			} 
+var ua=view.id('uaShifeirequestacc');
+if(cur){
+	dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+		cur.remove();
+		ua.execute();
+	}); 
+} 
 	</ClientEvent>
         <Property name="caption">删除</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
-      </ToolBarButton>
-      <ToolBarButton>
-        <ClientEvent name="onClick">var cur=view.id(&quot;dsShifeirequestacc&quot;).getData(&quot;#&quot;);&#xD;
-if(cur &amp;&amp; cur.get(&quot;filename&quot;)){&#xD;
-	var fileURL='Fly_Shifeirequestacc/'+ cur.get(&quot;id&quot;) + '/' + cur.get(&quot;filename&quot;);&#xD;
-	var url = encodeURI(fileURL);&#xD;
-	window.open('ServletDownload?filename='+ url);&#xD;
-}</ClientEvent>
-        <Property name="caption">下载</Property>
-        <Property name="icon">url(>skin>common/icons.gif) -140px -280px</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick"> 	var iframe=view.id(&quot;iframe&quot;);//upload/Fly_Shifeirequestacc/
@@ -217,111 +302,5 @@ jQuery(arg.dom).xCreate({&#xD;
         <Editor/>
       </DataColumn>
     </DataGrid>
-    <Dialog id="diaShifeirequestacc">
-      <ClientEvent name="onClose">var cur=view.id('dsShifeirequestacc').getData('#');&#xD;
-				cur.cancel();&#xD;
-				view.id('diaShifeirequestacc').hide();&#xD;
-	         </ClientEvent>
-      <Property name="center">true</Property>
-      <Property name="modal">true</Property>
-      <Property name="width">500</Property>
-      <Property name="caption">试飞文件</Property>
-      <Buttons>
-        <Button>
-          <ClientEvent name="onClick">view.id('uaShifeirequestacc').execute(function(){
-               view.id('diaShifeirequestacc').hide();
-           });
-         </ClientEvent>
-          <Property name="caption">确定</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
-        </Button>
-        <Button>
-          <ClientEvent name="onClick">var cur=view.id('dsShifeirequestacc').getData('#');
-				cur.cancel();
-				view.id('diaShifeirequestacc').hide();
-				
-	/*
-	 * 删除当前用户操作日志记录并保存
-	 */
-	view.id('dsUserOperationLog').getData().remove()
-	view.id('uaUserOperationLog').execute();
-	         </ClientEvent>
-          <Property name="caption">取消</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
-        </Button>
-      </Buttons>
-      <Children>
-        <AutoForm id="afShifeirequestacc">
-          <Property name="cols">*</Property>
-          <Property name="dataSet">dsShifeirequestacc</Property>
-          <Property name="dataPath">#</Property>
-          <AutoFormElement>
-            <Property name="name">ftype</Property>
-            <Property name="property">ftype</Property>
-            <Property name="trigger">dataSetDropDownAircraftType</Property>
-            <Property name="editable">false</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">FileNo</Property>
-            <Property name="property">fileno</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">type</Property>
-            <Property name="property">type</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">author</Property>
-            <Property name="property">author</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">date</Property>
-            <Property name="property">date</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">filename</Property>
-            <Property name="property">filename</Property>
-            <Editor>
-              <Container>
-                <Link id="lefile" layoutConstraint="center">
-                  <Property name="dataSet">dsShifeirequestacc</Property>
-                  <Property name="property">filename</Property>
-                </Link>
-                <Button layoutConstraint="right">
-                  <Property name="caption">删除</Property>
-                  <Property name="action">deleteFileAction</Property>
-                </Button>
-                <Button layoutConstraint="right padding:0,10,0,10">
-                  <Property name="caption">上传</Property>
-                  <Property name="action">uaUpload</Property>
-                </Button>
-              </Container>
-            </Editor>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">miji</Property>
-            <Property name="property">miji</Property>
-            <Editor/>
-          </AutoFormElement>
-        </AutoForm>
-        <DataSetDropDown id="dataSetDropDownAircraftType">
-          <Property name="autoOpen">true</Property>
-          <Property name="dataSet">dsFtypes</Property>
-          <Property name="displayProperty">ftypename</Property>
-          <Property name="editable">false</Property>
-          <Property name="property">ftypename</Property>
-          <Property name="reloadDataOnOpen">true</Property>
-        </DataSetDropDown>
-      </Children>
-      <Tools/>
-    </Dialog>
-    <Dialog id="diaWord">
-      <Property name="width">70%</Property>
-      <Property name="height">80%</Property>
-      <Buttons/>
-      <Children>
-        <IFrame id="iframe"/>
-      </Children>
-      <Tools/>
-    </Dialog>
   </View>
 </ViewConfig>

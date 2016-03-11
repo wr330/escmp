@@ -26,6 +26,7 @@ import com.buaa.out.domain.Technicaldocument;
 public class ShifeirequestaccDao extends HibernateBaseDao {
 	@Resource
 	private QueryUserData userService;
+
 	/**
 	 * 同时也支持普通类型查询，在数据类型和日期类型支持区间查询
 	 * 
@@ -34,38 +35,36 @@ public class ShifeirequestaccDao extends HibernateBaseDao {
 	 * @param criteria
 	 * @throws Exception
 	 */
-	public void queryShifeirequestacc(Page<Shifeirequestacc> page, Map<String, Object> parameter,Criteria criteria) throws Exception {
-        Map<String, Object> args = new HashMap<String,Object>();
-        StringBuffer coreHql = new StringBuffer("from " + Shifeirequestacc.class.getName()+" a where 1=1 ");
-        
-        if(null != parameter && !parameter.isEmpty()){
-        	String ftype = (String)parameter.get("ftype");
-        	if(StringUtils.isNotEmpty( ftype )){
-        		coreHql.append(" and a.ftype ='" + ftype + "'");
-        	}
-        }
-		
+	public void queryShifeirequestacc(Page<Shifeirequestacc> page,
+			Map<String, Object> parameter, Criteria criteria) throws Exception {
+		Map<String, Object> args = new HashMap<String, Object>();
+		StringBuffer coreHql = new StringBuffer("from "
+				+ Shifeirequestacc.class.getName() + " a where 1=1 ");
+
+		if (null != parameter && !parameter.isEmpty()) {
+			String ftype = (String) parameter.get("ftype");
+			if (StringUtils.isNotEmpty(ftype)) {
+				coreHql.append(" and a.ftype ='" + ftype + "'");
+			}
+		}
+
 		if (null != criteria) {
 			ParseResult result = this.parseCriteria(criteria, true, "a");
 			if (null != result) {
-				coreHql.append(" and "+ result.getAssemblySql());
+				coreHql.append(" and " + result.getAssemblySql());
 				args.putAll(result.getValueMap());
 			}
 		}
 
-        
-        String countHql = "select count(*) " + coreHql.toString();
-        String hql = coreHql.toString();
-        hql=userService.checkUser(hql);
+		String countHql = "select count(*) " + coreHql.toString();
+		String hql = coreHql.toString();
+		hql = userService.checkUser(hql);
 		this.pagingQuery(page, hql, countHql, args);
-		/*Session session = this.getSessionFactory().openSession();
-		List a = session.createSQLQuery("select datablock from Fly_Shifeirequestacc").list();
-		byte[] datablock =(byte[]) a.get(0);
-		int aa  = datablock.length;*/
 	}
-	
+
 	/**
 	 * 数据添加
+	 * 
 	 * @param detail
 	 * @throws Exception
 	 */
@@ -81,6 +80,7 @@ public class ShifeirequestaccDao extends HibernateBaseDao {
 
 	/**
 	 * 数据修改
+	 * 
 	 * @param detail
 	 * @throws Exception
 	 */
@@ -96,6 +96,7 @@ public class ShifeirequestaccDao extends HibernateBaseDao {
 
 	/**
 	 * 数据删除
+	 * 
 	 * @param detail
 	 * @throws Exception
 	 */
@@ -109,7 +110,16 @@ public class ShifeirequestaccDao extends HibernateBaseDao {
 		}
 	}
 	
-	public String shifeirequestaccIsExists(String id,String fileno) {
+	/**
+	 * 添加校验，判断文件编号唯一
+	 * 
+	 * @param id
+	 *            试飞文件表id
+	 * @param fileno
+	 *            文件编号
+	 * 
+	 */
+	public String shifeirequestaccIsExists(String id, String fileno) {
 		String hql = "select count(*) from " + Shifeirequestacc.class.getName()
 				+ " u where u.fileno = :fileno";
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
@@ -125,11 +135,18 @@ public class ShifeirequestaccDao extends HibernateBaseDao {
 			returnStr = "此编号已存在！";
 		}
 		return returnStr;
-	}       
-	
-	//通过ID查找记录
-    public  Shifeirequestacc queryById(String id){
-    	String hql="from " + Shifeirequestacc.class.getName()+" a where a.id='"+id+"'";
+	}
+
+	/**
+	 * 通过ID查找记录
+	 * 
+	 * @param id
+	 *            试飞文件表id
+	 * 
+	 */
+	public Shifeirequestacc queryById(String id) {
+		String hql = "from " + Shifeirequestacc.class.getName()
+				+ " a where a.id='" + id + "'";
 		return (Shifeirequestacc) this.query(hql).get(0);
-    }           
+	}
 }

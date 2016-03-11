@@ -5,35 +5,432 @@
   </Property>
   <Arguments/>
   <Context/>
-  <Model/>
+  <Model>
+    <DataType name="Root">
+      <Property name="creationType">com.buaa.fly.domain.Root</Property>
+      <PropertyDef name="label"/>
+      <Reference name="categories">
+        <Property name="dataProvider">ftypesPR#currentTree</Property>
+        <Property name="dataType">[Ftypes]</Property>
+        <Property name="activeOnNewEntity">true</Property>
+      </Reference>
+    </DataType>
+  </Model>
   <View>
     <DataSet id="dsFlightrestrict">
       <Property name="dataType">[Flightrestrict]</Property>
-      <Property name="dataProvider">flightrestrictPR#queryFlightrestrict</Property>
-      <Property name="pageSize">20</Property>
+      <Property name="dataProvider">flightrestrictPR#queryshfxzh</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="ftypename"/>
+          <Property name="piciID"/>
+          <Property name="outfactoryno"/>
+        </Entity>
+      </Property>
     </DataSet>
-    <DataSet id="dsUserOperationLog">
-      <Property name="dataProvider">userOperationLogPR#queryUserOperationLog</Property>
-      <Property name="dataType">[UserOperationLog]</Property>
-      <Property name="pageSize">20</Property>
+    <DataSet id="dsExamples">
+      <ClientEvent name="onReady">self.insert({&#xD;
+	label: &quot;机型&quot;&#xD;
+});</ClientEvent>
+      <Property name="dataType">[Root]</Property>
     </DataSet>
+    <DataSetDropDown id="chooseAircraft">
+      <ClientEvent name="onValueSelect">var dsTasklist = this.get(&quot;#dsFlightrestrict&quot;);&#xD;
+dsTasklist.set(&quot;parameter&quot;, {&#xD;
+	aircrafttype: arg.selectedValue&#xD;
+});&#xD;
+dsTasklist.flushAsync();&#xD;
+</ClientEvent>
+      <Property name="dataSet">dsFtypes</Property>
+      <Property name="property">ftypename</Property>
+      <Property name="useEmptyItem">true</Property>
+      <Property name="editable">false</Property>
+      <Property name="autoOpen">true</Property>
+    </DataSetDropDown>
+    <ListDropDown id="ddTrueorFalse">
+      <Property name="autoOpen">true</Property>
+      <Property name="editable">false</Property>
+      <Property name="useEmptyItem">true</Property>
+      <Property name="items">是,否</Property>
+    </ListDropDown>
+    <CustomDropDown id="showCustomDropDown">
+      <ClientEvent name="onClose">var doopDown = this.get(&quot;#&quot;)&#xD;
+</ClientEvent>
+      <Property name="autoOpen">true</Property>
+      <Property name="height">200</Property>
+      <Property name="editable">false</Property>
+      <DataTree id="dTFtypes1" layoutConstraint="right">
+        <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
+var dataTree1 = this.get(&quot;#dTFtypes1&quot;);&#xD;
+var NodeType = dataTree1.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+var info = this.get(&quot;#info&quot;);&#xD;
+if(NodeType==&quot;label&quot;){&#xD;
+	var label = dataTree1.get(&quot;currentNode.data&quot;).get(&quot;label&quot;);&#xD;
+	dropDown.close(label);&#xD;
+	view.id('dsFlightrestrict').set(&quot;parameter&quot;,{&#xD;
+	});&#xD;
+	view.id('dsFlightrestrict').flushAsync();&#xD;
+	info.set(&quot;value&quot;,label);&#xD;
+}&#xD;
+if(NodeType==&quot;name&quot;){&#xD;
+	var ftypename = dataTree1.get(&quot;currentNode.data&quot;).get(&quot;ftypename&quot;);&#xD;
+	dropDown.close(ftypename);&#xD;
+	view.id('dsFlightrestrict').set(&quot;parameter&quot;,{&#xD;
+		ftypename:ftypename&#xD;
+	});&#xD;
+	view.id('dsFlightrestrict').flushAsync();&#xD;
+	info.set(&quot;value&quot;,ftypename);&#xD;
+}&#xD;
+if(NodeType==&quot;pname&quot;){&#xD;
+	var piciname = dataTree1.get(&quot;currentNode.data&quot;).get(&quot;piciName&quot;);&#xD;
+	dropDown.close(piciname);&#xD;
+	view.id('dsFlightrestrict').set(&quot;parameter&quot;,{&#xD;
+			piciID: dataTree1.get(&quot;currentNode.data&quot;).get(&quot;piciID&quot;)&#xD;
+	});&#xD;
+	view.id('dsFlightrestrict').flushAsync();&#xD;
+	info.set(&quot;value&quot;,piciname);&#xD;
+}&#xD;
+if(NodeType==&quot;flight&quot;){&#xD;
+	var outfactoryno = dataTree1.get(&quot;currentNode.data&quot;).get(&quot;outfactoryno&quot;);&#xD;
+	dropDown.close(outfactoryno);&#xD;
+	view.id('dsFlightrestrict').set(&quot;parameter&quot;,{&#xD;
+			outfactoryno:outfactoryno&#xD;
+		});&#xD;
+	view.id('dsFlightrestrict').flushAsync();&#xD;
+	info.set(&quot;value&quot;,outfactoryno);&#xD;
+}</ClientEvent>
+        <Property name="dataSet">dsExamples</Property>
+        <Property name="currentNodeDataPath">CURRENT_NODE</Property>
+        <Property name="expandingMode">async</Property>
+        <Property name="selectionMode">none</Property>
+        <BindingConfigs>
+          <BindingConfig>
+            <Property name="labelProperty">label</Property>
+            <Property name="expandLevel">1</Property>
+            <Property name="icon"> url(>skin>common/icons.gif) -220px -80px</Property>
+            <Property name="name">label</Property>
+            <BindingConfig>
+              <Property name="labelProperty">ftypename</Property>
+              <Property name="name">name</Property>
+              <Property name="childrenProperty">categories</Property>
+              <Property name="expandLevel">1</Property>
+              <Property name="icon"> url(>skin>common/icons.gif) -220px -80px</Property>
+              <BindingConfig>
+                <Property name="childrenProperty">fpici</Property>
+                <Property name="icon"> url(>skin>common/icons.gif) -240px -160px</Property>
+                <Property name="labelProperty">piciName</Property>
+                <Property name="name">pname</Property>
+                <Property name="expandLevel">1</Property>
+                <BindingConfig>
+                  <Property name="childrenProperty">fighterinfo</Property>
+                  <Property name="labelProperty">outfactoryno</Property>
+                  <Property name="name">flight</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -20px -100px</Property>
+                </BindingConfig>
+              </BindingConfig>
+            </BindingConfig>
+          </BindingConfig>
+        </BindingConfigs>
+      </DataTree>
+    </CustomDropDown>
+    <AjaxAction id="deleteFileAction">
+      <ClientEvent name="beforeExecute">var cur=view.id('dsFlightrestrict').getData('#');&#xD;
+var value = &quot;/Fly_Flightrestrict/&quot; + cur.get(&quot;id&quot;) + &quot;/&quot;;&#xD;
+var file = cur.get(&quot;filename&quot;);&#xD;
+self.set(&quot;parameter&quot;,{&#xD;
+	record: value,&#xD;
+	filename: file&#xD;
+});&#xD;
+cur.set(&quot;filename&quot;,null);&#xD;
+var link = view.id(&quot;lefile&quot;);&#xD;
+link.set(&quot;visible&quot;,false);</ClientEvent>
+      <Property name="service">defaultUploadProcessor#deleteFile</Property>
+    </AjaxAction>
     <UpdateAction id="uaFlightrestrict">
+      <ClientEvent name="onSuccess">view.id(&quot;dsFlightrestrict&quot;).getData(&quot;#&quot;).reset(&quot;fighterxzh&quot;);&#xD;
+var nodes=view.get(&quot;#dTFtypes&quot;).getCheckedNodes();&#xD;
+nodes.each(function(node){&#xD;
+	node.set(&quot;checked&quot;,false);&#xD;
+}); </ClientEvent>
       <Property name="dataResolver">flightrestrictPR#saveFlightrestrict</Property>
       <UpdateItem>
         <Property name="dataSet">dsFlightrestrict</Property>
       </UpdateItem>
     </UpdateAction>
-    <UpdateAction id="uaUserOperationLog">
-      <Property name="dataResolver">userOperationLogPR#saveUserOperationLog</Property>
-      <UpdateItem>
-        <Property name="dataSet">dsUserOperationLog</Property>
-      </UpdateItem>
-    </UpdateAction>
+    <UploadAction id="uaUpload">
+      <ClientEvent name="onFilesAdded">var cur=view.id('dsFlightrestrict').getData('#');&#xD;
+var value = &quot;/Fly_Flightrestrict/&quot; + cur.get(&quot;id&quot;) + &quot;/&quot;;&#xD;
+self.set(&quot;multipartParams&quot;, {record: value});</ClientEvent>
+      <ClientEvent name="onFileUploaded">var returnValue = arg.file.name;&#xD;
+var cur=view.id('dsFlightrestrict').getData('#');&#xD;
+cur.set(&quot;filename&quot;,returnValue);&#xD;
+var link = view.id(&quot;lefile&quot;);&#xD;
+if(returnValue){&#xD;
+	var oid = cur.get(&quot;id&quot;);&#xD;
+    var href = &quot;ServletDownload?filename=Fly_Flightrestrict/&quot; + oid + &quot;/&quot; + returnValue;&#xD;
+    link.set({&#xD;
+		href: href,&#xD;
+		visible: true&#xD;
+	});&#xD;
+}&#xD;
+else{&#xD;
+    link.set(&quot;visible&quot;,false);&#xD;
+}</ClientEvent>
+      <ClientEvent name="onError">var error = arg.error;&#xD;
+dorado.MessageBox.show({&#xD;
+	title:error.message,&#xD;
+	message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
+	icon: &quot;WARNING&quot;,&#xD;
+	buttons: [&quot;ok&quot;]&#xD;
+});</ClientEvent>
+      <Property name="url">>dorado/uploader/fileupload</Property>
+      <Property name="maxFileSize">100MB</Property>
+      <Filters/>
+    </UploadAction>
+    <Dialog id="diaWord">
+      <Property name="width">70%</Property>
+      <Property name="height">80%</Property>
+      <Buttons/>
+      <Children>
+        <IFrame id="iframe"/>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaFlightrestrict">
+      <ClientEvent name="onClose">var cur=view.id('dsFlightrestrict').getData('#');&#xD;
+if(cur){&#xD;
+	cur.cancel();&#xD;
+	view.id('diaFlightrestrict').hide();&#xD;
+}&#xD;
+var nodes=view.get(&quot;#dTFtypes&quot;).getCheckedNodes();&#xD;
+nodes.each(function(node){&#xD;
+	node.set(&quot;checked&quot;,false);&#xD;
+});</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">500</Property>
+      <Property name="caption">使用限制</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">var cur = view.id(&quot;dsFlightrestrict&quot;).getData(&quot;#&quot;);
+var selections = view.get(&quot;#dTFtypes&quot;).getCheckedNodes();
+var tmpList = selections.slice(0);
+if(tmpList.length != 0){
+	selections.each(function(entity){
+		if(entity.get(&quot;bindingConfig.name&quot;) == &quot;name&quot;)
+			view.id(&quot;dsFlightrestrict&quot;).getData(&quot;#.fighterxzh&quot;).insert({
+				flightRestrict: {id: cur.get(&quot;id&quot;)},
+				referenceName: entity.get(&quot;data.ftypename&quot;)
+			});
+		if(entity.get(&quot;bindingConfig.name&quot;) == &quot;pname&quot;)
+			view.id(&quot;dsFlightrestrict&quot;).getData(&quot;#.fighterxzh&quot;).insert({
+				flightRestrict: {id: cur.get(&quot;id&quot;)},
+				referenceName: entity.get(&quot;data.piciID&quot;)
+			});
+		if(entity.get(&quot;bindingConfig.name&quot;) == &quot;flight&quot;)
+			view.id(&quot;dsFlightrestrict&quot;).getData(&quot;#.fighterxzh&quot;).insert({
+				flightRestrict: {id: cur.get(&quot;id&quot;)},
+				referenceName: entity.get(&quot;data.outfactoryno&quot;)
+			});
+	});
+}
+view.id('uaFlightrestrict').execute(function(){
+    view.id('diaFlightrestrict').hide();
+});</ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsFlightrestrict').getData('#');
+if(cur){
+	cur.cancel();
+	view.id('diaFlightrestrict').hide();
+}
+var nodes=view.get(&quot;#dTFtypes&quot;).getCheckedNodes();
+nodes.each(function(node){
+	node.set(&quot;checked&quot;,false);
+});</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <TabControl id="tab">
+          <Property name="currentTab">0</Property>
+          <ControlTab>
+            <Property name="caption">基本信息</Property>
+            <AutoForm id="afFlightrestrict">
+              <Property name="cols">*</Property>
+              <Property name="dataSet">dsFlightrestrict</Property>
+              <Property name="dataPath">#</Property>
+              <AutoFormElement>
+                <Property name="name">fname</Property>
+                <Property name="property">fname</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">fno</Property>
+                <Property name="property">fno</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">maincontent</Property>
+                <Property name="property">maincontent</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">major</Property>
+                <Property name="property">major</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">begindate</Property>
+                <Property name="property">begindate</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">affect</Property>
+                <Property name="property">affect</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">modifydate</Property>
+                <Property name="property">modifydate</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">isnew</Property>
+                <Property name="property">isnew</Property>
+                <Property name="trigger">ddTrueorFalse</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">filename</Property>
+                <Property name="property">filename</Property>
+                <Editor>
+                  <Container>
+                    <Link id="lefile" layoutConstraint="center">
+                      <Property name="dataSet">dsFlightrestrict</Property>
+                      <Property name="property">filename</Property>
+                    </Link>
+                    <Button layoutConstraint="right">
+                      <Property name="caption">删除</Property>
+                      <Property name="action">deleteFileAction</Property>
+                    </Button>
+                    <Button layoutConstraint="right padding:0,10,0,10">
+                      <Property name="caption">上传</Property>
+                      <Property name="action">uaUpload</Property>
+                    </Button>
+                  </Container>
+                </Editor>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">isaffect</Property>
+                <Property name="property">isaffect</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">miji</Property>
+                <Property name="property">miji</Property>
+                <Editor/>
+              </AutoFormElement>
+            </AutoForm>
+          </ControlTab>
+          <ControlTab>
+            <ClientEvent name="onClick">var fighterxzh = view.id('dsFlightrestrict').getData('#.fighterxzh');&#xD;
+function select(nodes) {&#xD;
+    nodes.each(function(node) {&#xD;
+        select(node.get(&quot;nodes&quot;));&#xD;
+        if(node.get(&quot;bindingConfig.name&quot;) == &quot;flight&quot;){&#xD;
+			fighterxzh.each(function(entity){&#xD;
+				if(entity.get(&quot;referenceName&quot;) == node.get(&quot;data.outfactoryno&quot;))&#xD;
+					node.set(&quot;checked&quot;, true);&#xD;
+			});&#xD;
+		}&#xD;
+		if(node.get(&quot;bindingConfig.name&quot;) == &quot;pname&quot;){&#xD;
+			fighterxzh.each(function(entity){&#xD;
+				if(entity.get(&quot;referenceName&quot;) == node.get(&quot;data.piciID&quot;))&#xD;
+					node.set(&quot;checked&quot;,true);&#xD;
+			});&#xD;
+		}&#xD;
+		if(node.get(&quot;bindingConfig.name&quot;) == &quot;name&quot;){&#xD;
+			fighterxzh.each(function(entity){&#xD;
+				if(entity.get(&quot;referenceName&quot;) == node.get(&quot;data.ftypename&quot;))&#xD;
+					node.set(&quot;checked&quot;,true);&#xD;
+			});&#xD;
+		}&#xD;
+    });&#xD;
+}&#xD;
+select(this.get(&quot;#dTFtypes.nodes&quot;));</ClientEvent>
+            <Property name="caption">飞机关联信息</Property>
+            <DataTree id="dTFtypes" layoutConstraint="right">
+              <ClientEvent name="onReady">var Root = view.get(&quot;@Root&quot;);&#xD;
+var ProductTree = view.get(&quot;@Ftypes&quot;);&#xD;
+var Equipment = view.get(&quot;@Fpici&quot;);&#xD;
+var FLIGHT = view.get(&quot;@Fighterinfo&quot;);&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_ROOT&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == Root) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return Root;&#xD;
+	});&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_TYPE&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == ProductTree) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return ProductTree;&#xD;
+	});&#xD;
+	dorado.DataPath.registerInterceptor(&quot;CURRENT_PICI&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == Equipment) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return Equipment;&#xD;
+	});&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_FLIGHT&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == FLIGHT) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return FLIGHT;&#xD;
+	});</ClientEvent>
+              <Property name="dataSet">dsExamples</Property>
+              <Property name="currentNodeDataPath">CURRENT_NODE</Property>
+              <Property name="expandingMode">async</Property>
+              <Property name="selectionMode">multiRows</Property>
+              <BindingConfigs>
+                <BindingConfig>
+                  <Property name="labelProperty">label</Property>
+                  <Property name="expandLevel">1</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -220px -80px</Property>
+                  <Property name="name">label</Property>
+                  <Property name="checkable">true</Property>
+                  <BindingConfig>
+                    <Property name="labelProperty">ftypename</Property>
+                    <Property name="name">name</Property>
+                    <Property name="childrenProperty">categories</Property>
+                    <Property name="expandLevel">1</Property>
+                    <Property name="icon"> url(>skin>common/icons.gif) -220px -80px</Property>
+                    <Property name="checkable">true</Property>
+                    <BindingConfig>
+                      <Property name="childrenProperty">fpici</Property>
+                      <Property name="icon"> url(>skin>common/icons.gif) -240px -160px</Property>
+                      <Property name="labelProperty">piciName</Property>
+                      <Property name="name">pname</Property>
+                      <Property name="expandLevel">1</Property>
+                      <Property name="checkable">true</Property>
+                      <BindingConfig>
+                        <Property name="childrenProperty">fighterinfo</Property>
+                        <Property name="labelProperty">outfactoryno</Property>
+                        <Property name="name">flight</Property>
+                        <Property name="icon"> url(>skin>common/icons.gif) -20px -100px</Property>
+                        <Property name="checkable">true</Property>
+                      </BindingConfig>
+                    </BindingConfig>
+                  </BindingConfig>
+                </BindingConfig>
+              </BindingConfigs>
+            </DataTree>
+          </ControlTab>
+        </TabControl>
+      </Children>
+      <Tools/>
+    </Dialog>
     <ToolBar>
-      <FormElement id="formElement1">
+      <FormElement id="info">
         <Property name="property">name</Property>
-        <Property name="trigger">chooseAircraft</Property>
-        <Property name="label">选择机型:</Property>
+        <Property name="label">选择飞机信息:</Property>
+        <Property name="trigger">showCustomDropDown</Property>
+        <Property name="labelWidth">100</Property>
         <Editor/>
       </FormElement>
       <DataPilot>
@@ -42,109 +439,72 @@
         <Property name="dataPath"></Property>
       </DataPilot>
       <ToolBarButton>
-        <ClientEvent name="onClick">	var myDate = new Date();
-    var mytime= myDate.toLocaleTimeString();
-    var a=mytime.split(&quot;:&quot;);
-	var hour=myDate.getHours();
-    var tempId = hour*60*60*1000+a[1]*60*1000+a[2]*1000;//当前时间的毫秒数作为临时ID
-    var ftype = view.id(&quot;formElement1&quot;).get(&quot;value&quot;);
-	view.id('dsFlightrestrict').getData().insert({id: tempId,ftype: ftype});
-	view.id('diaFlightrestrict').show();
-	
-	/*
- 	 * 对用户新增操作进行记录，在用户操作日志表中新增一条记录。
-     */
-	var myDate = new Date();
-	view.id('dsUserOperationLog').getData().insert({
-		logOperationType:&quot;0&quot;,
-		operationPerson: &quot;${loginUsername}&quot;,
-		operationContent:&quot;对使用限制表新增一条记录&quot;,
-		operationTime:myDate
-	});
-	view.id('uaUserOperationLog').execute();</ClientEvent>
+        <ClientEvent name="onClick">var nodes=view.get(&quot;#dTFtypes&quot;).getCheckedNodes();
+nodes.each(function(node){
+	node.set(&quot;checked&quot;,false);
+});
+view.id(&quot;tab&quot;).set(&quot;currentTab&quot;, 0);
+var guid = &quot;&quot;;
+for(var i=1;i&lt;=32;i++){
+	var n = Math.floor(Math.random()*16.0).toString(16);
+	guid += n;
+	if((i==8)||(i==12)||(i==16)||(i==20))
+		  guid += &quot;-&quot;;
+}
+dialog = view.id('diaFlightrestrict');
+dialog.set(&quot;caption&quot;,&quot;新增使用限制&quot;);
+view.id('dsFlightrestrict').getData().insert({
+	id: guid
+});
+var link = view.id(&quot;lefile&quot;);
+link.set(&quot;visible&quot;,false);
+view.id('diaFlightrestrict').show();
+</ClientEvent>
         <Property name="caption">新增</Property>
         <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
       </ToolBarButton>
       <ToolBarButton>
-        <ClientEvent name="onClick">
-	var cur=view.id('dsFlightrestrict').getData('#');
-	if (cur) {
-		view.id('diaFlightrestrict').show();
-	}
-	
-	/*
- 	 * 对用户修改操作进行记录，在用户操作日志表中新增一条记录。
- 	 */
-	var myDate = new Date();
-	view.id('dsUserOperationLog').getData().insert({
-		logOperationType:&quot;1&quot;,
-		operationPerson: &quot;${loginUsername}&quot;,
-		operationContent:&quot;对使用限制表修改选定记录&quot;,
-		operationTime:myDate
-	});
-	view.id('uaUserOperationLog').execute();</ClientEvent>
+        <ClientEvent name="onClick">dialog = view.id('diaFlightrestrict');
+dialog.set(&quot;caption&quot;,&quot;修改使用限制&quot;);
+var cur = view.id('dsFlightrestrict').getData('#');
+if (cur) {
+	view.id(&quot;tab&quot;).set(&quot;currentTab&quot;, 0);
+	view.id('diaFlightrestrict').show();
+	var file = cur.get(&quot;filename&quot;);
+    var link = view.id(&quot;lefile&quot;);
+    if(file){
+        var oid = cur.get(&quot;id&quot;);
+		var href = &quot;ServletDownload?filename=Fly_Flightrestrict/&quot; + oid + &quot;/&quot; + file;
+        link.set({
+	       href: href,
+	       visible: true
+        });
+    }
+    else
+      link.set(&quot;visible&quot;,false);
+}
+view.id(&quot;dsFlightrestrict&quot;).getData(&quot;#&quot;).reset(&quot;fighterxzh&quot;);</ClientEvent>
         <Property name="caption">修改</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
       </ToolBarButton>
       <ToolBarButton>
-        <ClientEvent name="onClick">var cur=view.id('dsFlightrestrict').getData('#');
-	var ua=view.id('uaFlightrestrict');
-	if(cur){
-		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
-			
-			/*
- 			 * 对用户删除操作进行记录，在用户操作日志表中新增一条记录。
- 			 */
-			var myDate = new Date();
-			view.id('dsUserOperationLog').getData().insert({
-				logOperationType:&quot;2&quot;,
-				operationPerson: &quot;${loginUsername}&quot;,
-				operationContent:&quot;对试飞文件管理表删除所选记录&quot;,
-				operationTime:myDate
-			});
-			view.id('uaUserOperationLog').execute();
-			
-			cur.remove();
-			ua.execute();
-				}); 
-			} 
+        <ClientEvent name="onClick">var cur = view.id('dsFlightrestrict').getData('#');
+var ua=view.id('uaFlightrestrict');
+if(cur){
+	dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+		cur.remove();
+		ua.execute();
+	}); 
+} 
 	</ClientEvent>
         <Property name="caption">删除</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
       </ToolBarButton>
       <ToolBarButton>
-        <ClientEvent name="onClick">var cur=view.id(&quot;dsFlightrestrict&quot;).getData(&quot;#&quot;);&#xD;
-if(cur &amp;&amp; cur.get(&quot;fname&quot;)){&#xD;
-   /* view.id(&quot;ajaxActionDownloadFile&quot;).set(&quot;parameter&quot;,{&#xD;
-		id: cur.get(&quot;id&quot;),&#xD;
-		fname: cur.get(&quot;fname&quot;)&#xD;
-	}).execute();*/&#xD;
-	var fileURL='Fly_Flightrestrict/'+ cur.get(&quot;id&quot;) + '/' + cur.get(&quot;fname&quot;);&#xD;
-	var url = encodeURI(fileURL);&#xD;
-	window.open('ServletDownload?filename='+ url);&#xD;
-}&#xD;
-&#xD;
-	/*&#xD;
- 	 * 对用户下载操作进行记录，在用户操作日志表中新增一条记录。&#xD;
- 	 */&#xD;
-	var myDate = new Date();&#xD;
-	view.id('dsUserOperationLog').getData().insert({&#xD;
-		logOperationType:&quot;3&quot;,&#xD;
-		operationPerson: &quot;${loginUsername}&quot;,&#xD;
-		operationContent:&quot;对使用限制表下载所选记录的附件&quot;,&#xD;
-		operationTime:myDate&#xD;
-	});&#xD;
-	view.id('uaUserOperationLog').execute();</ClientEvent>
-        <Property name="caption">下载</Property>
-        <Property name="icon">url(>skin>common/icons.gif) -140px -280px</Property>
-      </ToolBarButton>
-      <ToolBarButton>
-        <ClientEvent name="onClick"> 	
-	var fileURL=&quot;upload/Fly_Flightrestrict/&quot;+view.id('dsFlightrestrict').getData(&quot;#&quot;).get(&quot;id&quot;)+&quot;/&quot;+view.id('dsFlightrestrict').getData(&quot;#&quot;).get(&quot;fname&quot;);
-	var url = encodeURI(fileURL);
-	var path=&quot;a.jsp?url='&quot;+ url +&quot;'&quot;;
-	//alert(path);		
-	open(path,&quot;_blank&quot;);
+        <ClientEvent name="onClick">var fileURL=&quot;upload/Fly_Flightrestrict/&quot;+view.id('dsFlightrestrict').getData(&quot;#&quot;).get(&quot;id&quot;)+&quot;/&quot;+view.id('dsFlightrestrict').getData(&quot;#&quot;).get(&quot;filename&quot;);
+var url = encodeURI(fileURL);
+var path=&quot;a.jsp?url='&quot;+ url +&quot;'&quot;;
+open(path,&quot;_blank&quot;);
 </ClientEvent>
         <Property name="caption">查看文档</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -120px -140px</Property>
@@ -158,12 +518,8 @@ if(cur &amp;&amp; cur.get(&quot;fname&quot;)){&#xD;
       <Property name="showFilterBar">false</Property>
       <Property name="rowHeight">22</Property>
       <RowNumColumn/>
-      <DataColumn name="ftype">
-        <Property name="property">ftype</Property>
-        <Property name="width">120</Property>
-      </DataColumn>
-      <DataColumn name="filename">
-        <Property name="property">filename</Property>
+      <DataColumn name="fname">
+        <Property name="property">fname</Property>
         <Property name="width">120</Property>
       </DataColumn>
       <DataColumn name="begindate">
@@ -172,10 +528,6 @@ if(cur &amp;&amp; cur.get(&quot;fname&quot;)){&#xD;
       </DataColumn>
       <DataColumn name="isnew">
         <Property name="property">isnew</Property>
-        <Property name="width">120</Property>
-      </DataColumn>
-      <DataColumn name="fname">
-        <Property name="property">fname</Property>
         <Property name="width">120</Property>
       </DataColumn>
       <DataColumn name="isaffect">
@@ -194,6 +546,19 @@ if(cur &amp;&amp; cur.get(&quot;fname&quot;)){&#xD;
         <Property name="property">modifydate</Property>
         <Property name="width">120</Property>
       </DataColumn>
+      <DataColumn name="filename">
+        <ClientEvent name="onRenderCell">jQuery(arg.dom).empty();&#xD;
+var file = arg.data.get(&quot;filename&quot;);&#xD;
+var oid = arg.data.get(&quot;id&quot;);&#xD;
+var href = &quot;ServletDownload?filename=Fly_Flightrestrict/&quot; + oid + &quot;/&quot; + file;&#xD;
+jQuery(arg.dom).xCreate({&#xD;
+	tagName:&quot;A&quot;,&#xD;
+	href:href,&#xD;
+	content:arg.data.get(&quot;filename&quot;)&#xD;
+});</ClientEvent>
+        <Property name="property">filename</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
       <DataColumn name="fno">
         <Property name="property">fno</Property>
         <Property name="width">120</Property>
@@ -208,437 +573,5 @@ if(cur &amp;&amp; cur.get(&quot;fname&quot;)){&#xD;
         <Editor/>
       </DataColumn>
     </DataGrid>
-    <Dialog id="diaFlightrestrict">
-      <ClientEvent name="onClose">var cur=view.id('dsFlightrestrict').getData('#');&#xD;
-				cur.cancel();&#xD;
-				view.id('diaFlightrestrict').hide();&#xD;
-	         </ClientEvent>
-      <Property name="center">true</Property>
-      <Property name="modal">true</Property>
-      <Property name="width">500</Property>
-      <Property name="caption">使用限制</Property>
-      <Buttons>
-        <Button>
-          <ClientEvent name="onClick">view.id('uaFlightrestrict').execute(function(){
-    view.id('diaFlightrestrict').hide();  
-});</ClientEvent>
-          <Property name="caption">确定</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
-        </Button>
-        <Button>
-          <ClientEvent name="onClick">var cur=view.id('dsFlightrestrict').getData('#');
-				cur.cancel();
-				view.id('diaFlightrestrict').hide();
-				
-	/*
-	 * 删除当前用户操作日志记录并保存
-	 */
-	view.id('dsUserOperationLog').getData().remove()
-	view.id('uaUserOperationLog').execute();
-	         </ClientEvent>
-          <Property name="caption">取消</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
-        </Button>
-        <Button>
-          <ClientEvent name="onClick">var cur = view.id(&quot;dsFlightrestrict&quot;).getData(&quot;#&quot;);&#xD;
-if(cur){&#xD;
-	var dsfighterxzh = view.id(&quot;dsfighterxzh&quot;);&#xD;
-	dsfighterxzh.set(&quot;parameter&quot;,{&#xD;
-		ftypename:cur.get(&quot;ftype&quot;),&#xD;
-		filename:cur.get(&quot;filename&quot;)&#xD;
-	});&#xD;
-	dsfighterxzh.flushAsync();&#xD;
-	view.id('diaxzh').show();&#xD;
-}&#xD;
-&#xD;
-</ClientEvent>
-          <Property name="caption">关联飞机信息</Property>
-        </Button>
-      </Buttons>
-      <Children>
-        <AutoForm id="afFlightrestrict">
-          <Property name="cols">*</Property>
-          <Property name="dataSet">dsFlightrestrict</Property>
-          <Property name="dataPath">#</Property>
-          <AutoFormElement>
-            <Property name="name">ftype</Property>
-            <Property name="property">ftype</Property>
-            <Property name="editable">false</Property>
-            <Property name="trigger">chooseAircraft</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">filename</Property>
-            <Property name="property">filename</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">fno</Property>
-            <Property name="property">fno</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">maincontent</Property>
-            <Property name="property">maincontent</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">major</Property>
-            <Property name="property">major</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">begindate</Property>
-            <Property name="property">begindate</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">affect</Property>
-            <Property name="property">affect</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">modifydate</Property>
-            <Property name="property">modifydate</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">isnew</Property>
-            <Property name="property">isnew</Property>
-            <Property name="trigger">listDropDown1</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">fname</Property>
-            <Property name="property">fname</Property>
-            <Editor>
-              <Container>
-                <TextEditor layoutConstraint="center">
-                  <Property name="dataSet">dsFlightrestrict</Property>
-                  <Property name="dataPath">#</Property>
-                  <Property name="property">fname</Property>
-                  <Property name="readOnly">true</Property>
-                </TextEditor>
-                <Button layoutConstraint="right padding:0,10,0,10">
-                  <Property name="caption">编辑</Property>
-                  <Property name="action">uaUpload</Property>
-                </Button>
-              </Container>
-            </Editor>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">isaffect</Property>
-            <Property name="property">isaffect</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">miji</Property>
-            <Property name="property">miji</Property>
-            <Editor/>
-          </AutoFormElement>
-        </AutoForm>
-        <DataSetDropDown id="dataSetDropDownAircraftType">
-          <ClientEvent name="onValueSelect">var dsFpici = this.get(&quot;#dsFpici&quot;);&#xD;
-dsFpici.set(&quot;parameter&quot;, {&#xD;
-	ftypename: arg.selectedValue&#xD;
-});&#xD;
-dsFpici.flushAsync();&#xD;
-var dsFighterinfo = this.get(&quot;#dsFighterinfo&quot;);&#xD;
-dsFighterinfo.set(&quot;parameter&quot;, {&#xD;
-	ftypename: arg.selectedValue&#xD;
-});&#xD;
-dsFighterinfo.flushAsync();</ClientEvent>
-          <Property name="autoOpen">true</Property>
-          <Property name="dataSet">dsDictionaryAircraftType</Property>
-          <Property name="displayProperty">name</Property>
-          <Property name="editable">false</Property>
-          <Property name="property">name</Property>
-          <Property name="reloadDataOnOpen">true</Property>
-        </DataSetDropDown>
-        <ListDropDown id="listDropDown1">
-          <Property name="autoOpen">true</Property>
-          <Property name="editable">false</Property>
-          <Property name="useEmptyItem">true</Property>
-          <Property name="items">是,否</Property>
-        </ListDropDown>
-      </Children>
-      <Tools/>
-    </Dialog>
-    <AjaxAction id="ajaxActionDownloadFile">
-      <ClientEvent name="onSuccess">var cur=view.id(&quot;dsFlightrestrict&quot;).getData(&quot;#&quot;);&#xD;
-window.open('upload/Fly_Flightrestrict/'+ cur.get(&quot;id&quot;) + '/' + arg.result);&#xD;
-alert('upload/Fly_Flightrestrict/'+ cur.get(&quot;id&quot;) + '/' + arg.result);</ClientEvent>
-      <Property name="service">flightrestrictManager#downloadFile</Property>
-    </AjaxAction>
-    <UploadAction id="uaUpload">
-      <ClientEvent name="onFilesAdded">var cur=view.id('dsFlightrestrict').getData('#');&#xD;
-var value = &quot;/Fly_Flightrestrict/&quot; + cur.get(&quot;id&quot;) + &quot;/&quot;;&#xD;
-self.set(&quot;multipartParams&quot;, {record: value});</ClientEvent>
-      <ClientEvent name="onFileUploaded">var returnValue = arg.file.name;&#xD;
-var cur=view.id('dsFlightrestrict').getData('#');&#xD;
-cur.set(&quot;fname&quot;,returnValue);</ClientEvent>
-      <ClientEvent name="onError">	var error = arg.error;&#xD;
-	dorado.MessageBox.show({&#xD;
-		title:error.message,&#xD;
-		message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
-		icon: &quot;WARNING&quot;,&#xD;
-		buttons: [&quot;ok&quot;]&#xD;
-	});</ClientEvent>
-      <Property name="url">>dorado/uploader/fileupload</Property>
-      <Property name="maxFileSize">100MB</Property>
-      <Filters/>
-    </UploadAction>
-    <DataSet id="dsDictionaryAircraftType">
-      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
-      <Property name="parameter">
-        <Entity>
-          <Property name="dictype">Dic_AircraftType</Property>
-          <Property name="status">0</Property>
-        </Entity>
-      </Property>
-    </DataSet>
-    <DataSetDropDown id="chooseAircraftType">
-      <ClientEvent name="onValueSelect">var dsFlightrestrict = this.get(&quot;#dsFlightrestrict&quot;);&#xD;
-dsFlightrestrict.set(&quot;parameter&quot;, {&#xD;
-	ftype: arg.selectedValue&#xD;
-});&#xD;
-dsFlightrestrict.flushAsync();&#xD;
-var dsFpici = this.get(&quot;#dsFpici&quot;);&#xD;
-dsFpici.set(&quot;parameter&quot;, {&#xD;
-	ftypename: arg.selectedValue&#xD;
-});&#xD;
-dsFpici.flushAsync();&#xD;
-var dsFighterinfo = this.get(&quot;#dsFighterinfo&quot;);&#xD;
-dsFighterinfo.set(&quot;parameter&quot;, {&#xD;
-	ftypename: arg.selectedValue&#xD;
-});&#xD;
-dsFighterinfo.flushAsync();</ClientEvent>
-      <Property name="autoOpen">true</Property>
-      <Property name="dataSet">dsDictionaryAircraftType</Property>
-      <Property name="displayProperty">name</Property>
-      <Property name="editable">false</Property>
-      <Property name="property">name</Property>
-      <Property name="reloadDataOnOpen">true</Property>
-    </DataSetDropDown>
-    <Dialog id="diaWord">
-      <Property name="width">70%</Property>
-      <Property name="height">80%</Property>
-      <Buttons/>
-      <Children>
-        <IFrame id="iframe"/>
-      </Children>
-      <Tools/>
-    </Dialog>
-    <Dialog id="diaxzh">
-      <Property name="height">300</Property>
-      <Property name="width">500</Property>
-      <Buttons>
-        <Button>
-          <ClientEvent name="onClick"> view.id('diaxzh').hide();</ClientEvent>
-          <Property name="caption">OK</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
-        </Button>
-      </Buttons>
-      <Children>
-        <ToolBar>
-          <DataPilot>
-            <Property name="itemCodes">pages</Property>
-            <Property name="dataSet">dsfighterxzh</Property>
-            <Property name="dataPath"></Property>
-          </DataPilot>
-          <ToolBarButton>
-            <ClientEvent name="onClick">	var cur = view.id(&quot;dsFlightrestrict&quot;).getData(&quot;#&quot;);
-	if(cur){
-	view.id('dsfighterxzh').getData().insert({ftypename: cur.get(&quot;ftype&quot;),filename: cur.get(&quot;filename&quot;)});
-	view.id('diafxzh').show();
-	}</ClientEvent>
-            <Property name="caption">新增</Property>
-            <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
-          </ToolBarButton>
-          <ToolBarButton>
-            <ClientEvent name="onClick">
-	var cur=view.id('dsfighterxzh').getData(&quot;#&quot;);
-	if (cur) {
-		view.id('diafxzh').show();
-	}
-	</ClientEvent>
-            <Property name="caption">修改</Property>
-            <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
-          </ToolBarButton>
-          <ToolBarButton>
-            <ClientEvent name="onClick">var cur=view.id('dsfighterxzh').getData(&quot;#&quot;);
-var ua=view.id('uafighterxzh');
-if(cur){
-	dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
-		cur.remove();
-		ua.execute();
-			}); 
-		}</ClientEvent>
-            <Property name="caption">删除</Property>
-            <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
-          </ToolBarButton>
-        </ToolBar>
-        <DataGrid>
-          <Property name="dataSet">dsfighterxzh</Property>
-          <Property name="readOnly">true</Property>
-          <RowNumColumn/>
-          <DataColumn>
-            <Property name="property">ftypename</Property>
-            <Property name="name">ftypename</Property>
-            <Editor/>
-          </DataColumn>
-          <DataColumn>
-            <Property name="name">filename</Property>
-            <Property name="property">filename</Property>
-            <Editor/>
-          </DataColumn>
-          <DataColumn>
-            <Property name="name">piciname</Property>
-            <Property name="property">piciname</Property>
-            <Editor/>
-          </DataColumn>
-          <DataColumn>
-            <Property name="property">outfactoryno</Property>
-            <Property name="name">outfactoryno</Property>
-            <Editor/>
-          </DataColumn>
-        </DataGrid>
-      </Children>
-      <Tools/>
-    </Dialog>
-    <DataSet id="dsfighterxzh">
-      <Property name="dataType">[Fighterxzh]</Property>
-      <Property name="dataProvider">fighterxzhPR#queryFighterxzh</Property>
-      <Property name="pageSize">20</Property>
-      <Property name="parameter">
-        <Entity>
-          <Property name="ftypename"></Property>
-          <Property name="filename"></Property>
-          <Property name="piciname"></Property>
-          <Property name="outfactoryno"></Property>
-        </Entity>
-      </Property>
-    </DataSet>
-    <Dialog id="diafxzh">
-      <Property name="height">200</Property>
-      <Property name="width">500</Property>
-      <Buttons>
-        <Button>
-          <ClientEvent name="onClick">view.id('uaxzh').execute(function(){
-    view.id('diafxzh').hide();  
-});</ClientEvent>
-          <Property name="caption">确定</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
-        </Button>
-        <Button>
-          <ClientEvent name="onClick">var cur=view.id('dsfighterxzh').getData('#');
-				cur.cancel();
-				view.id('diafxzh').hide();
-	         </ClientEvent>
-          <Property name="caption">取消</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
-        </Button>
-      </Buttons>
-      <Children>
-        <AutoForm>
-          <Property name="dataSet">dsfighterxzh</Property>
-          <Property name="dataPath">#</Property>
-          <Property name="cols">*</Property>
-          <AutoFormElement>
-            <Property name="property">ftypename</Property>
-            <Property name="name">ftypename</Property>
-            <Property name="readOnly">true</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="property">filename</Property>
-            <Property name="name">filename</Property>
-            <Property name="readOnly">true</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="property">piciname</Property>
-            <Property name="name">piciname</Property>
-            <Property name="trigger">dataSetDropDownFpici</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="property">outfactoryno</Property>
-            <Property name="name">outfactoryno</Property>
-            <Property name="trigger">dataSetDropDownFighterinfo</Property>
-            <Editor/>
-          </AutoFormElement>
-        </AutoForm>
-      </Children>
-      <Tools/>
-    </Dialog>
-    <UpdateAction id="uaxzh">
-      <Property name="dataResolver">fighterxzhPR#saveFighterxzh</Property>
-      <UpdateItem>
-        <Property name="dataSet">dsfighterxzh</Property>
-      </UpdateItem>
-    </UpdateAction>
-    <DataSet id="dsFpici">
-      <Property name="dataType">[Fpici]</Property>
-      <Property name="dataProvider">fpiciPR#queryFpici</Property>
-      <Property name="parameter">
-        <Entity>
-          <Property name="ftypename"></Property>
-        </Entity>
-      </Property>
-      <Property name="pageSize">20</Property>
-    </DataSet>
-    <DataSet id="dsFighterinfo">
-      <Property name="dataType">[Fighterinfo]</Property>
-      <Property name="dataProvider">fighterinfoPR#queryFighterinfo</Property>
-      <Property name="parameter">
-        <Entity>
-          <Property name="piciname"></Property>
-          <Property name="ftypename"></Property>
-        </Entity>
-      </Property>
-      <Property name="pageSize">20</Property>
-    </DataSet>
-    <DataSetDropDown id="dataSetDropDownFpici">
-      <ClientEvent name="onValueSelect">var dsFighterinfo = this.get(&quot;#dsFighterinfo&quot;);&#xD;
-var dsFpici = this.get(&quot;#dsFpici&quot;);&#xD;
-dsFighterinfo.set(&quot;parameter&quot;, {&#xD;
-	ftypename:dsFpici.getData('#').get(&quot;ftypename&quot;),&#xD;
-	piciname:dsFpici.getData('#').get(&quot;piciname&quot;)&#xD;
-});&#xD;
-dsFighterinfo.flushAsync();</ClientEvent>
-      <Property name="dataSet">dsFpici</Property>
-      <Property name="displayProperty">piciname</Property>
-      <Property name="property">piciname</Property>
-      <Property name="reloadDataOnOpen">true</Property>
-      <Property name="editable">false</Property>
-      <Property name="autoOpen">true</Property>
-    </DataSetDropDown>
-    <DataSetDropDown id="dataSetDropDownFighterinfo">
-      <Property name="autoOpen">true</Property>
-      <Property name="dataSet">dsFighterinfo</Property>
-      <Property name="displayProperty">outfactoryno</Property>
-      <Property name="property">outfactoryno</Property>
-      <Property name="reloadDataOnOpen">true</Property>
-      <Property name="editable">false</Property>
-    </DataSetDropDown>
-    <DataSet id="dsFtypes">
-      <Property name="dataProvider">ftypesPR#queryFtypes</Property>
-      <Property name="dataType">[Ftypes]</Property>
-      <Property name="pageSize">20</Property>
-    </DataSet>
-    <DataSetDropDown id="chooseAircraft">
-      <ClientEvent name="onValueSelect">var dsTasklist = this.get(&quot;#dsFlightrestrict&quot;);&#xD;
-dsTasklist.set(&quot;parameter&quot;, {&#xD;
-	aircrafttype: arg.selectedValue&#xD;
-});&#xD;
-dsTasklist.flushAsync();&#xD;
-var dsFpici = this.get(&quot;#dsFpici&quot;);&#xD;
-dsFpici.set(&quot;parameter&quot;, {&#xD;
-	ftypename: arg.selectedValue&#xD;
-});&#xD;
-dsFpici.flushAsync();&#xD;
-var dsFighterinfo = this.get(&quot;#dsFighterinfo&quot;);&#xD;
-dsFighterinfo.set(&quot;parameter&quot;, {&#xD;
-	ftypename: arg.selectedValue&#xD;
-});&#xD;
-dsFighterinfo.flushAsync();&#xD;
-</ClientEvent>
-      <Property name="dataSet">dsFtypes</Property>
-      <Property name="property">ftypename</Property>
-      <Property name="useEmptyItem">true</Property>
-      <Property name="editable">false</Property>
-      <Property name="autoOpen">true</Property>
-    </DataSetDropDown>
   </View>
 </ViewConfig>
