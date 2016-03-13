@@ -64,11 +64,18 @@
       </UpdateItem>
     </UpdateAction>
     <AjaxAction id="ajaxActionCheck">
-      <ClientEvent name="onSuccess">var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT&quot;);&#xD;
+      <ClientEvent name="onSuccess">var guid = &quot;&quot;;&#xD;
+for(var i=1;i&lt;=32;i++){&#xD;
+	var n = Math.floor(Math.random()*16.0).toString(16);&#xD;
+	guid += n;&#xD;
+	if((i==8)||(i==12)||(i==16)||(i==20))&#xD;
+		  guid += &quot;-&quot;;&#xD;
+}&#xD;
+var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT&quot;);&#xD;
 var result=self.get(&quot;returnValue&quot;);&#xD;
 if(!result){&#xD;
 	if (cur) {&#xD;
-	view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT.outlineexecution&quot;).insert({project:{oid:cur.get(&quot;oid&quot;),name:cur.get(&quot;name&quot;)},aircrafttype:cur.get(&quot;ftype&quot;)});&#xD;
+	view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT.outlineexecution&quot;).insert({project:{oid:cur.get(&quot;oid&quot;),name:cur.get(&quot;name&quot;)},aircrafttype:cur.get(&quot;ftype&quot;),oid:guid});&#xD;
 	view.id('diaOutlineexecution').show();&#xD;
 	}&#xD;
 }else&#xD;
@@ -97,41 +104,83 @@ statisticjiaci.flushAsync();</ClientEvent>
       <Property name="displayProperty">ftypename</Property>
       <Property name="editable">false</Property>
       <Property name="property">ftypename</Property>
-      <Property name="useEmptyItem">true</Property>
     </DataSetDropDown>
     <SplitPanel>
       <Property name="position">200</Property>
       <MainControl>
-        <Container>
-          <Panel>
-            <Property name="caption">试飞大纲信息</Property>
-            <Buttons/>
-            <Children>
-              <ToolBar>
-                <ToolBarButton>
-                  <ClientEvent name="onClick">var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT&quot;);&#xD;
+        <SplitPanel>
+          <Property name="direction">top</Property>
+          <Property name="position">60%</Property>
+          <MainControl>
+            <Panel>
+              <Property name="caption">试飞任务单信息</Property>
+              <Buttons/>
+              <Children>
+                <DataGrid>
+                  <Property name="readOnly">true</Property>
+                  <Property name="rowHeight">22</Property>
+                  <Property name="dataPath">!CURRENT_ROOT.#outlineexecution.tasklist</Property>
+                  <Property name="dataSet">dataSetSubject</Property>
+                  <Property name="dataType">Tasklist</Property>
+                  <RowNumColumn/>
+                  <DataColumn name="subject">
+                    <Property name="property">subject</Property>
+                  </DataColumn>
+                  <DataColumn name="aircrafttype">
+                    <Property name="property">aircrafttype</Property>
+                  </DataColumn>
+                  <DataColumn name="tasknumber">
+                    <Property name="property">tasknumber</Property>
+                  </DataColumn>
+                  <DataColumn name="taskcontent">
+                    <Property name="property">taskcontent</Property>
+                  </DataColumn>
+                  <DataColumn name="taskexecution">
+                    <Property name="property">taskexecution</Property>
+                  </DataColumn>
+                  <DataColumn name="miji">
+                    <Property name="property">miji</Property>
+                  </DataColumn>
+                </DataGrid>
+              </Children>
+              <Tools/>
+            </Panel>
+          </MainControl>
+          <SideControl>
+            <Panel>
+              <Property name="caption">试飞大纲信息</Property>
+              <Buttons/>
+              <Children>
+                <Container>
+                  <ToolBar>
+                    <DataPilot>
+                      <Property name="dataPath">!CURRENT_ROOT.outlineexecution</Property>
+                      <Property name="dataSet">dataSetSubject</Property>
+                    </DataPilot>
+                    <ToolBarButton>
+                      <ClientEvent name="onClick">var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT&quot;);&#xD;
 view.id('ajaxActionCheck').set(&quot;parameter&quot;,{&#xD;
 	pid:cur.get(&quot;oid&quot;)&#xD;
 }).execute();</ClientEvent>
-                  <Property name="caption">新增</Property>
-                  <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
-                  <Property name="tags">onCurrentNode</Property>
-                  <Property name="disabled">false</Property>
-                </ToolBarButton>
-                <ToolBarButton>
-                  <ClientEvent name="onClick">var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT.#outlineexecution&quot;);&#xD;
+                      <Property name="caption">新增</Property>
+                      <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+                      <Property name="tags">onCurrentNode</Property>
+                      <Property name="disabled">false</Property>
+                    </ToolBarButton>
+                    <ToolBarButton>
+                      <ClientEvent name="onClick">var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT.#outlineexecution&quot;);&#xD;
 if (cur) {&#xD;
 	view.id('diaOutlineexecution').show();	&#xD;
 }&#xD;
 </ClientEvent>
-                  <Property name="caption">修改</Property>
-                  <Property name="icon"> url(>skin>common/icons.gif) -100px -0px</Property>
-                  <Property name="tags">onDirtyNode</Property>
-                  <Property name="width">57</Property>
-                  <Property name="disabled">false</Property>
-                </ToolBarButton>
-                <ToolBarButton>
-                  <ClientEvent name="onClick">var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT.#outlineexecution&quot;);&#xD;
+                      <Property name="caption">修改</Property>
+                      <Property name="icon"> url(>skin>common/icons.gif) -100px -0px</Property>
+                      <Property name="tags">onDirtyNode</Property>
+                      <Property name="width">57</Property>
+                      <Property name="disabled">false</Property>
+                    </ToolBarButton>
+                    <ToolBarButton>
+                      <ClientEvent name="onClick">var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT.#outlineexecution&quot;);&#xD;
 var uaSubject = view.id('uaSubject');&#xD;
 if(cur){&#xD;
 	dorado.MessageBox.confirm('您是否确认删除此大纲内容?', function(){&#xD;
@@ -140,119 +189,86 @@ if(cur){&#xD;
 		}); &#xD;
 }else&#xD;
 	dorado.MessageBox.alert(&quot;请选择删除的节点!&quot;);</ClientEvent>
-                  <Property name="caption">删除</Property>
-                  <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
-                  <Property name="tags">onDirtyNode</Property>
-                  <Property name="width">57</Property>
-                  <Property name="disabled">false</Property>
-                </ToolBarButton>
-                <Fill/>
-                <ToolBarButton>
-                  <ClientEvent name="onClick">var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT&quot;);&#xD;
+                      <Property name="caption">删除</Property>
+                      <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                      <Property name="tags">onDirtyNode</Property>
+                      <Property name="width">57</Property>
+                      <Property name="disabled">false</Property>
+                    </ToolBarButton>
+                    <Fill/>
+                    <ToolBarButton>
+                      <ClientEvent name="onClick">var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT&quot;);&#xD;
 if(cur){&#xD;
     view.id(&quot;ajaxActionDownloadFile&quot;).set(&quot;parameter&quot;,{&#xD;
 		id: cur.get(&quot;oid&quot;),&#xD;
 		fname:cur.get(&quot;ftype&quot;)&#xD;
 	}).execute();&#xD;
 }</ClientEvent>
-                  <Property name="caption">导出试飞大纲</Property>
-                  <Property name="icon"> url(>skin>common/icons.gif) -120px -20px</Property>
-                </ToolBarButton>
-                <ToolBarButton>
-                  <ClientEvent name="onClick">var cur = view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
+                      <Property name="caption">导出试飞大纲</Property>
+                      <Property name="icon"> url(>skin>common/icons.gif) -120px -20px</Property>
+                    </ToolBarButton>
+                    <ToolBarButton>
+                      <ClientEvent name="onClick">var cur = view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
 if(cur){&#xD;
 	view.id(&quot;OutlineGraph&quot;).show();&#xD;
 }else{&#xD;
 	dorado.MessageBox.alert(&quot;请先选择机型&quot;);&#xD;
 }&#xD;
 </ClientEvent>
-                  <Property name="caption">试飞大纲完成图</Property>
-                </ToolBarButton>
-              </ToolBar>
-              <DataGrid>
-                <Property name="readOnly">true</Property>
-                <Property name="height">40%</Property>
-                <Property name="filterMode">serverSide</Property>
-                <Property name="rowHeight">22</Property>
-                <Property name="dataType">Outlineexecution</Property>
-                <Property name="dataPath">!CURRENT_ROOT.outlineexecution</Property>
-                <Property name="dataSet">dataSetSubject</Property>
-                <RowNumColumn/>
-                <DataColumn name="project">
-                  <Property name="property">project.name</Property>
-                </DataColumn>
-                <DataColumn name="aircrafttype">
-                  <Property name="property">aircrafttype</Property>
-                </DataColumn>
-                <DataColumn name="completestate">
-                  <Property name="property">completestate</Property>
-                </DataColumn>
-                <DataColumn name="remainstate">
-                  <Property name="property">remainstate</Property>
-                </DataColumn>
-                <DataColumn name="execdate">
-                  <Property name="property">execdate</Property>
-                </DataColumn>
-                <DataColumn name="outlineFlights">
-                  <Property name="property">outlineFlights</Property>
-                </DataColumn>
-                <DataColumn name="shijijiaci">
-                  <Property name="property">shijijiaci</Property>
-                </DataColumn>
-                <DataColumn name="testMethod">
-                  <Property name="property">testMethod</Property>
-                </DataColumn>
-                <DataColumn name="testStatus">
-                  <Property name="property">testStatus</Property>
-                </DataColumn>
-                <DataColumn name="aircraftStruct">
-                  <Property name="property">aircraftStruct</Property>
-                </DataColumn>
-                <DataColumn name="engineState">
-                  <Property name="property">engineState</Property>
-                </DataColumn>
-                <DataColumn name="miji">
-                  <Property name="property">miji</Property>
-                </DataColumn>
-              </DataGrid>
-              <Panel>
-                <Property name="caption">试飞任务单信息</Property>
-                <Buttons/>
-                <Children>
+                      <Property name="caption">试飞大纲完成图</Property>
+                    </ToolBarButton>
+                  </ToolBar>
                   <DataGrid>
                     <Property name="readOnly">true</Property>
-                    <Property name="height">40%</Property>
+                    <Property name="filterMode">serverSide</Property>
                     <Property name="rowHeight">22</Property>
-                    <Property name="dataPath">!CURRENT_ROOT.#outlineexecution.tasklist</Property>
+                    <Property name="dataType">Outlineexecution</Property>
+                    <Property name="dataPath">!CURRENT_ROOT.outlineexecution</Property>
                     <Property name="dataSet">dataSetSubject</Property>
-                    <Property name="dataType">Tasklist</Property>
                     <RowNumColumn/>
-                    <DataColumn name="subject">
-                      <Property name="property">subject</Property>
+                    <DataColumn name="project">
+                      <Property name="property">project.name</Property>
                     </DataColumn>
                     <DataColumn name="aircrafttype">
                       <Property name="property">aircrafttype</Property>
                     </DataColumn>
-                    <DataColumn name="tasknumber">
-                      <Property name="property">tasknumber</Property>
+                    <DataColumn name="completestate">
+                      <Property name="property">completestate</Property>
                     </DataColumn>
-                    <DataColumn name="taskcontent">
-                      <Property name="property">taskcontent</Property>
+                    <DataColumn name="remainstate">
+                      <Property name="property">remainstate</Property>
                     </DataColumn>
-                    <DataColumn name="taskexecution">
-                      <Property name="property">taskexecution</Property>
+                    <DataColumn name="execdate">
+                      <Property name="property">execdate</Property>
+                    </DataColumn>
+                    <DataColumn name="outlineFlights">
+                      <Property name="property">outlineFlights</Property>
+                    </DataColumn>
+                    <DataColumn name="shijijiaci">
+                      <Property name="property">shijijiaci</Property>
+                    </DataColumn>
+                    <DataColumn name="testMethod">
+                      <Property name="property">testMethod</Property>
+                    </DataColumn>
+                    <DataColumn name="testStatus">
+                      <Property name="property">testStatus</Property>
+                    </DataColumn>
+                    <DataColumn name="aircraftStruct">
+                      <Property name="property">aircraftStruct</Property>
+                    </DataColumn>
+                    <DataColumn name="engineState">
+                      <Property name="property">engineState</Property>
                     </DataColumn>
                     <DataColumn name="miji">
                       <Property name="property">miji</Property>
                     </DataColumn>
                   </DataGrid>
-                </Children>
-                <Tools/>
-              </Panel>
-            </Children>
-            <Tools/>
-          </Panel>
-        </Container>
+                </Container>
+              </Children>
+              <Tools/>
+            </Panel>
+          </SideControl>
+        </SplitPanel>
       </MainControl>
       <SideControl>
         <Container>
@@ -365,11 +381,13 @@ if(cur){
           <AutoFormElement>
             <Property name="name">outlineFlights</Property>
             <Property name="property">outlineFlights</Property>
+            <Property name="editorType">NumberSpinner</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">shijijiaci</Property>
             <Property name="property">shijijiaci</Property>
+            <Property name="editorType">NumberSpinner</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
@@ -445,15 +463,19 @@ if(cur){&#xD;
             <DataGrid id="dgCombineVehicle" layoutConstraint="center">
               <Property name="dataPath">!CURRENT_ROOT.#outlineexecution.combineVehicle</Property>
               <Property name="filterMode">serverSide</Property>
-              <Property name="width">100%</Property>
               <Property name="rowHeight">22</Property>
               <Property name="dataSet">dataSetSubject</Property>
               <Property name="readOnly">false</Property>
+              <RowNumColumn/>
               <DataColumn>
                 <Property name="property">combineSubject</Property>
+                <Property name="width">400</Property>
               </DataColumn>
               <DataColumn>
                 <Property name="property">combineNumber</Property>
+                <Property name="editorType">NumberSpinner</Property>
+                <Property name="align">left</Property>
+                <Property name="width">100</Property>
               </DataColumn>
             </DataGrid>
           </Children>

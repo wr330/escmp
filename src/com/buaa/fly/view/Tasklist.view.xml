@@ -561,7 +561,7 @@ if (cur) {
 	var file = cur.get(&quot;filename&quot;);
     var link = view.id(&quot;lefile&quot;);
     if(file){
-        var oid = cur.get(&quot;id&quot;);
+        var oid = cur.get(&quot;oid&quot;);
 		var href = &quot;ServletDownload?filename=Fly_Tasklist/&quot; + oid + &quot;/&quot; + file;
         link.set({
 	       href: href,

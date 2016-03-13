@@ -165,16 +165,21 @@ public class TasklistDao extends HibernateBaseDao {
 	public Collection<Tasklist> queryTaskOutline(String ftype,String subject) {
 		String sql = "select oid from (select oid,','+subject+',' as newsubject from Fly_Tasklist) a where a.newsubject like '%,"+subject+",%'";
 		Session session = this.getSessionFactory().openSession();
-		Query query = session.createSQLQuery(sql).addScalar("oid",Hibernate.STRING);// 设置返回值类型，不然会报错
-		List<String> result = query.list();
-		if(result.isEmpty())
-			return null;
-		Map<String, Object> args = new HashMap<String, Object>();
-		StringBuffer coreHql = new StringBuffer("from "	+ Tasklist.class.getName() + " a where 1=1 ");
-		coreHql.append(" and a.aircrafttype =:ftype");
-		args.put("ftype", ftype);
-		coreHql.append(" and a.oid in(:result)");
-		args.put("result", result);
-		return this.query(coreHql.toString(),args);
+		try {
+			Query query = session.createSQLQuery(sql).addScalar("oid",Hibernate.STRING);// 设置返回值类型，不然会报错
+			List<String> result = query.list();
+			if(result.isEmpty())
+				return null;
+			Map<String, Object> args = new HashMap<String, Object>();
+			StringBuffer coreHql = new StringBuffer("from "	+ Tasklist.class.getName() + " a where 1=1 ");
+			coreHql.append(" and a.aircrafttype =:ftype");
+			args.put("ftype", ftype);
+			coreHql.append(" and a.oid in(:result)");
+			args.put("result", result);
+			return this.query(coreHql.toString(),args);
+		} finally {
+			session.flush();
+			session.close();
+		}
 	}
 }

@@ -721,10 +721,12 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
       <Property></Property>
       <Property name="dataType">String</Property>
       <Property name="label">结合科目</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="combineNumber">
       <Property name="dataType">int</Property>
       <Property name="label">结合架次</Property>
+      <Property name="defaultValue">1</Property>
     </PropertyDef>
     <PropertyDef name="outlineExecution">
       <Property name="dataType">Outlineexecution</Property>
@@ -757,20 +759,11 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
     <PropertyDef name="outlineFlights">
       <Property name="dataType">int</Property>
       <Property name="label">大纲架次</Property>
-      <Validator type="range">
-        <Property name="maxValue">100</Property>
-        <Property name="minValue">0</Property>
-        <Property name="maxValueValidateMode">allowEquals</Property>
-        <Property name="minValueValidateMode">notAllowEquals</Property>
-      </Validator>
+      <Property name="defaultValue">1</Property>
     </PropertyDef>
     <PropertyDef name="combineFlights">
       <Property name="dataType">int</Property>
       <Property name="label">结合架次</Property>
-      <Validator type="range">
-        <Property name="maxValue">100</Property>
-        <Property name="minValue">0</Property>
-      </Validator>
     </PropertyDef>
     <PropertyDef name="combineSubject">
       <Property></Property>

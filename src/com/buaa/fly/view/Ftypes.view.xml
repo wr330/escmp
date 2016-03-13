@@ -369,31 +369,22 @@ if(cur){&#xD;
             <Children>
               <ToolBar>
                 <ToolBarButton>
-                  <ClientEvent name="onClick">function expand(nodes) {&#xD;
-    nodes.each(function(node) {&#xD;
-        if (!node.get(&quot;expanded&quot;)){&#xD;
-			node.expand();&#xD;
-		}&#xD;
-		expand(node.get(&quot;nodes&quot;));&#xD;
-    });&#xD;
-}&#xD;
-expand(this.get(&quot;#dTFtypes.nodes&quot;));&#xD;
-view.id(&quot;dsExamples&quot;).getData(&quot;#&quot;).reset(&quot;label&quot;);</ClientEvent>
+                  <ClientEvent name="onClick">var productTree = this.get(&quot;#dTFtypes&quot;);&#xD;
+var Nodes = productTree.get(&quot;nodes&quot;);&#xD;
+Nodes.each(function(Node){&#xD;
+	Node.expandAsync();&#xD;
+});</ClientEvent>
                   <Property name="caption">展开</Property>
                   <Property name="icon">url(>skin>common/icons.gif) -60px -0px</Property>
                   <Property name="width">57</Property>
                 </ToolBarButton>
                 <ToolBarButton>
-                  <ClientEvent name="onClick">function collapse(nodes) {&#xD;
-    nodes.each(function(node) {&#xD;
-        if (node.get(&quot;expanded&quot;)){&#xD;
-			node.collapse();&#xD;
-		}&#xD;
-		collapse(node.get(&quot;nodes&quot;));&#xD;
-    });&#xD;
-}&#xD;
-collapse(this.get(&quot;#dTFtypes.nodes&quot;));&#xD;
-view.id(&quot;dsExamples&quot;).getData(&quot;#&quot;).reset(&quot;label&quot;);</ClientEvent>
+                  <ClientEvent name="onClick">var nodes = this.get(&quot;#dTFtypes.nodes&quot;);&#xD;
+nodes.each(function(node) {&#xD;
+   if (node.get(&quot;expanded&quot;)){&#xD;
+	 node.collapse();&#xD;
+   }&#xD;
+});</ClientEvent>
                   <Property name="caption">收起</Property>
                   <Property name="icon">url(>skin>common/icons.gif) -80px -0px</Property>
                   <Property name="width">57</Property>
