@@ -189,8 +189,7 @@ public class SubjectManager {
 					subjectDao.updateData(item);
 				}
 				if (state.equals(EntityState.DELETED)) {
-					if (subjectDao.subjectIsOld(item.getOid())
-							.equals("此科目已存在大纲条目！"))
+					if (subjectDao.subjectIsOld(item.getOid()) != null)
 						throw new Exception("此科目已存在大纲条目！");
 					subjectDao.deleteData(item);
 				}

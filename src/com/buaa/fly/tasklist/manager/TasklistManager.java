@@ -48,9 +48,9 @@ public class TasklistManager {
 	 * @param parameter
 	 * @throws Exception
 	 */ 
-	public Collection<Tasklist> queryTaskOutline(Map<String, Object> parameter)
+	public Collection<Tasklist> queryTaskOutline(String ftype,String subject)
 			throws Exception {
-		return tasklistDao.queryTaskOutline(parameter);
+		return tasklistDao.queryTaskOutline(ftype,subject);
 	}
 
 	/**

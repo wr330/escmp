@@ -22,9 +22,9 @@
       <Property name="dataProvider">flightrestrictPR#queryshfxzh</Property>
       <Property name="parameter">
         <Entity>
-          <Property name="ftypename"/>
-          <Property name="piciID"/>
-          <Property name="outfactoryno"/>
+          <Property name="ftypename"></Property>
+          <Property name="piciID"></Property>
+          <Property name="outfactoryno"></Property>
         </Entity>
       </Property>
     </DataSet>
@@ -328,31 +328,6 @@ nodes.each(function(node){
             </AutoForm>
           </ControlTab>
           <ControlTab>
-            <ClientEvent name="onClick">var fighterxzh = view.id('dsFlightrestrict').getData('#.fighterxzh');&#xD;
-function select(nodes) {&#xD;
-    nodes.each(function(node) {&#xD;
-        select(node.get(&quot;nodes&quot;));&#xD;
-        if(node.get(&quot;bindingConfig.name&quot;) == &quot;flight&quot;){&#xD;
-			fighterxzh.each(function(entity){&#xD;
-				if(entity.get(&quot;referenceName&quot;) == node.get(&quot;data.outfactoryno&quot;))&#xD;
-					node.set(&quot;checked&quot;, true);&#xD;
-			});&#xD;
-		}&#xD;
-		if(node.get(&quot;bindingConfig.name&quot;) == &quot;pname&quot;){&#xD;
-			fighterxzh.each(function(entity){&#xD;
-				if(entity.get(&quot;referenceName&quot;) == node.get(&quot;data.piciID&quot;))&#xD;
-					node.set(&quot;checked&quot;,true);&#xD;
-			});&#xD;
-		}&#xD;
-		if(node.get(&quot;bindingConfig.name&quot;) == &quot;name&quot;){&#xD;
-			fighterxzh.each(function(entity){&#xD;
-				if(entity.get(&quot;referenceName&quot;) == node.get(&quot;data.ftypename&quot;))&#xD;
-					node.set(&quot;checked&quot;,true);&#xD;
-			});&#xD;
-		}&#xD;
-    });&#xD;
-}&#xD;
-select(this.get(&quot;#dTFtypes.nodes&quot;));</ClientEvent>
             <Property name="caption">飞机关联信息</Property>
             <DataTree id="dTFtypes" layoutConstraint="right">
               <ClientEvent name="onReady">var Root = view.get(&quot;@Root&quot;);&#xD;
@@ -383,6 +358,31 @@ dorado.DataPath.registerInterceptor(&quot;CURRENT_FLIGHT&quot;, function(data) {
 	}, function(dataType) {&#xD;
 		return FLIGHT;&#xD;
 	});</ClientEvent>
+              <ClientEvent name="onGetBindingData">var fighterxzh = view.id('dsFlightrestrict').getData('#.fighterxzh');&#xD;
+function select(nodes) {&#xD;
+    nodes.each(function(node) {&#xD;
+        select(node.get(&quot;nodes&quot;));&#xD;
+        if(node.get(&quot;bindingConfig.name&quot;) == &quot;flight&quot;){&#xD;
+			fighterxzh.each(function(entity){&#xD;
+				if(entity.get(&quot;referenceName&quot;) == node.get(&quot;data.outfactoryno&quot;))&#xD;
+					node.set(&quot;checked&quot;, true);&#xD;
+			});&#xD;
+		}&#xD;
+		if(node.get(&quot;bindingConfig.name&quot;) == &quot;pname&quot;){&#xD;
+			fighterxzh.each(function(entity){&#xD;
+				if(entity.get(&quot;referenceName&quot;) == node.get(&quot;data.piciID&quot;))&#xD;
+					node.set(&quot;checked&quot;,true);&#xD;
+			});&#xD;
+		}&#xD;
+		if(node.get(&quot;bindingConfig.name&quot;) == &quot;name&quot;){&#xD;
+			fighterxzh.each(function(entity){&#xD;
+				if(entity.get(&quot;referenceName&quot;) == node.get(&quot;data.ftypename&quot;))&#xD;
+					node.set(&quot;checked&quot;,true);&#xD;
+			});&#xD;
+		}&#xD;
+    });&#xD;
+}&#xD;
+select(this.get(&quot;#dTFtypes.nodes&quot;));</ClientEvent>
               <Property name="dataSet">dsExamples</Property>
               <Property name="currentNodeDataPath">CURRENT_NODE</Property>
               <Property name="expandingMode">async</Property>

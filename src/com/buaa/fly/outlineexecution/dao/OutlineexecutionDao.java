@@ -171,7 +171,6 @@ public class OutlineexecutionDao extends HibernateBaseDao {
 	public void saveData(Outlineexecution detail) throws Exception {
 		Session session = this.getSessionFactory().openSession();
 		try {
-			detail.setOid(UUID.randomUUID().toString());
 			session.save(detail);
 		} finally {
 			session.flush();

@@ -43,9 +43,9 @@ public class TasklistPR {
 	 * @throws Exception
 	 */
 	@DataProvider
-	public Collection<Tasklist> queryTaskOutline(Map<String, Object> parameter)
+	public Collection<Tasklist> queryTaskOutline(String ftype,String subject)
 			throws Exception {
-		return tasklistManager.queryTaskOutline(parameter);
+		return tasklistManager.queryTaskOutline(ftype,subject);
 	}
 
 	/**
