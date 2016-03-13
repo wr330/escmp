@@ -11,6 +11,11 @@
       <Property name="dataType">Integer</Property>
       <Property name="label">人员需求</Property>
       <Property name="required">true</Property>
+      <Property name="defaultValue">1</Property>
+      <Validator type="range">
+        <Property name="minValue">1</Property>
+        <Property name="minValueValidateMode">allowEquals</Property>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="supporttype">
       <Property name="dataType">String</Property>
@@ -18,7 +23,13 @@
     </PropertyDef>
     <PropertyDef name="changeperiod">
       <Property name="dataType">Integer</Property>
-      <Property name="label">更换周期</Property>
+      <Property name="label">更换周期(月)</Property>
+      <Property name="defaultValue">1</Property>
+      <Property name="required">true</Property>
+      <Validator type="range">
+        <Property name="minValue">1</Property>
+        <Property name="minValueValidateMode">allowEquals</Property>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="workaddress">
       <Property name="dataType">String</Property>
@@ -26,6 +37,7 @@
       <Property name="mapping">
         <Property name="mapValues"></Property>
       </Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="worktime">
       <Property name="dataType">Date</Property>

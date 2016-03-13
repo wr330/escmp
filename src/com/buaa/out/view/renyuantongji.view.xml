@@ -18,6 +18,12 @@
       <Property name="dataType">[Dictionary]</Property>
     </DataSet>
     <DataSet id="dsRenyuantongji">
+      <ClientEvent name="onReady">var dsRenyuantongji=view.id('dsRenyuantongji');&#xD;
+var cur = view.id('dsDictionaryAdrs').getData(&quot;#&quot;).get(&quot;name&quot;);&#xD;
+dsRenyuantongji.set(&quot;parameter&quot;,{&#xD;
+	address:cur&#xD;
+});&#xD;
+dsRenyuantongji.flushAsync();</ClientEvent>
       <Property name="dataProvider">supportprogramPR#queryRenyuan</Property>
       <Property name="parameter">
         <Entity>
