@@ -222,9 +222,8 @@ if(cur){&#xD;
                   <DataGrid>
                     <Property name="readOnly">true</Property>
                     <Property name="height">40%</Property>
-                    <Property name="filterMode">serverSide</Property>
                     <Property name="rowHeight">22</Property>
-                    <Property name="dataPath">!CURRENT_ROOT.tasklist</Property>
+                    <Property name="dataPath">!CURRENT_ROOT.#outlineexecution.tasklist</Property>
                     <Property name="dataSet">dataSetSubject</Property>
                     <Property name="dataType">Tasklist</Property>
                     <RowNumColumn/>
