@@ -104,225 +104,8 @@ statisticjiaci.flushAsync();</ClientEvent>
       <Property name="displayProperty">ftypename</Property>
       <Property name="editable">false</Property>
       <Property name="property">ftypename</Property>
+      <Property name="reloadDataOnOpen">true</Property>
     </DataSetDropDown>
-    <SplitPanel>
-      <Property name="position">200</Property>
-      <MainControl>
-        <SplitPanel>
-          <Property name="direction">top</Property>
-          <Property name="position">60%</Property>
-          <MainControl>
-            <Panel>
-              <Property name="caption">试飞任务单信息</Property>
-              <Buttons/>
-              <Children>
-                <DataGrid>
-                  <Property name="readOnly">true</Property>
-                  <Property name="rowHeight">22</Property>
-                  <Property name="dataPath">!CURRENT_ROOT.#outlineexecution.tasklist</Property>
-                  <Property name="dataSet">dataSetSubject</Property>
-                  <Property name="dataType">Tasklist</Property>
-                  <RowNumColumn/>
-                  <DataColumn name="subject">
-                    <Property name="property">subject</Property>
-                  </DataColumn>
-                  <DataColumn name="aircrafttype">
-                    <Property name="property">aircrafttype</Property>
-                  </DataColumn>
-                  <DataColumn name="tasknumber">
-                    <Property name="property">tasknumber</Property>
-                  </DataColumn>
-                  <DataColumn name="taskcontent">
-                    <Property name="property">taskcontent</Property>
-                  </DataColumn>
-                  <DataColumn name="taskexecution">
-                    <Property name="property">taskexecution</Property>
-                  </DataColumn>
-                  <DataColumn name="miji">
-                    <Property name="property">miji</Property>
-                  </DataColumn>
-                </DataGrid>
-              </Children>
-              <Tools/>
-            </Panel>
-          </MainControl>
-          <SideControl>
-            <Panel>
-              <Property name="caption">试飞大纲信息</Property>
-              <Buttons/>
-              <Children>
-                <Container>
-                  <ToolBar>
-                    <DataPilot>
-                      <Property name="dataPath">!CURRENT_ROOT.outlineexecution</Property>
-                      <Property name="dataSet">dataSetSubject</Property>
-                    </DataPilot>
-                    <ToolBarButton>
-                      <ClientEvent name="onClick">var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT&quot;);&#xD;
-view.id('ajaxActionCheck').set(&quot;parameter&quot;,{&#xD;
-	pid:cur.get(&quot;oid&quot;)&#xD;
-}).execute();</ClientEvent>
-                      <Property name="caption">新增</Property>
-                      <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
-                      <Property name="tags">onCurrentNode</Property>
-                      <Property name="disabled">false</Property>
-                    </ToolBarButton>
-                    <ToolBarButton>
-                      <ClientEvent name="onClick">var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT.#outlineexecution&quot;);&#xD;
-if (cur) {&#xD;
-	view.id('diaOutlineexecution').show();	&#xD;
-}&#xD;
-</ClientEvent>
-                      <Property name="caption">修改</Property>
-                      <Property name="icon"> url(>skin>common/icons.gif) -100px -0px</Property>
-                      <Property name="tags">onDirtyNode</Property>
-                      <Property name="width">57</Property>
-                      <Property name="disabled">false</Property>
-                    </ToolBarButton>
-                    <ToolBarButton>
-                      <ClientEvent name="onClick">var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT.#outlineexecution&quot;);&#xD;
-var uaSubject = view.id('uaSubject');&#xD;
-if(cur){&#xD;
-	dorado.MessageBox.confirm('您是否确认删除此大纲内容?', function(){&#xD;
-		cur.remove();&#xD;
-		uaSubject.execute();	&#xD;
-		}); &#xD;
-}else&#xD;
-	dorado.MessageBox.alert(&quot;请选择删除的节点!&quot;);</ClientEvent>
-                      <Property name="caption">删除</Property>
-                      <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
-                      <Property name="tags">onDirtyNode</Property>
-                      <Property name="width">57</Property>
-                      <Property name="disabled">false</Property>
-                    </ToolBarButton>
-                    <Fill/>
-                    <ToolBarButton>
-                      <ClientEvent name="onClick">var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT&quot;);&#xD;
-if(cur){&#xD;
-    view.id(&quot;ajaxActionDownloadFile&quot;).set(&quot;parameter&quot;,{&#xD;
-		id: cur.get(&quot;oid&quot;),&#xD;
-		fname:cur.get(&quot;ftype&quot;)&#xD;
-	}).execute();&#xD;
-}</ClientEvent>
-                      <Property name="caption">导出试飞大纲</Property>
-                      <Property name="icon"> url(>skin>common/icons.gif) -120px -20px</Property>
-                    </ToolBarButton>
-                    <ToolBarButton>
-                      <ClientEvent name="onClick">var cur = view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
-if(cur){&#xD;
-	view.id(&quot;OutlineGraph&quot;).show();&#xD;
-}else{&#xD;
-	dorado.MessageBox.alert(&quot;请先选择机型&quot;);&#xD;
-}&#xD;
-</ClientEvent>
-                      <Property name="caption">试飞大纲完成图</Property>
-                    </ToolBarButton>
-                  </ToolBar>
-                  <DataGrid>
-                    <Property name="readOnly">true</Property>
-                    <Property name="filterMode">serverSide</Property>
-                    <Property name="rowHeight">22</Property>
-                    <Property name="dataType">Outlineexecution</Property>
-                    <Property name="dataPath">!CURRENT_ROOT.outlineexecution</Property>
-                    <Property name="dataSet">dataSetSubject</Property>
-                    <RowNumColumn/>
-                    <DataColumn name="project">
-                      <Property name="property">project.name</Property>
-                    </DataColumn>
-                    <DataColumn name="aircrafttype">
-                      <Property name="property">aircrafttype</Property>
-                    </DataColumn>
-                    <DataColumn name="completestate">
-                      <Property name="property">completestate</Property>
-                    </DataColumn>
-                    <DataColumn name="remainstate">
-                      <Property name="property">remainstate</Property>
-                    </DataColumn>
-                    <DataColumn name="execdate">
-                      <Property name="property">execdate</Property>
-                    </DataColumn>
-                    <DataColumn name="outlineFlights">
-                      <Property name="property">outlineFlights</Property>
-                    </DataColumn>
-                    <DataColumn name="shijijiaci">
-                      <Property name="property">shijijiaci</Property>
-                    </DataColumn>
-                    <DataColumn name="testMethod">
-                      <Property name="property">testMethod</Property>
-                    </DataColumn>
-                    <DataColumn name="testStatus">
-                      <Property name="property">testStatus</Property>
-                    </DataColumn>
-                    <DataColumn name="aircraftStruct">
-                      <Property name="property">aircraftStruct</Property>
-                    </DataColumn>
-                    <DataColumn name="engineState">
-                      <Property name="property">engineState</Property>
-                    </DataColumn>
-                    <DataColumn name="miji">
-                      <Property name="property">miji</Property>
-                    </DataColumn>
-                  </DataGrid>
-                </Container>
-              </Children>
-              <Tools/>
-            </Panel>
-          </SideControl>
-        </SplitPanel>
-      </MainControl>
-      <SideControl>
-        <Container>
-          <FieldSet id="fsFtype" layoutConstraint="top">
-            <Property name="caption">机型管理</Property>
-            <Property name="collapsed">false</Property>
-            <Buttons/>
-            <Children>
-              <FormElement id="formelement">
-                <Property name="label">选择机型：</Property>
-                <Property name="droppable">false</Property>
-                <Property name="trigger">dataSetDropDownAircraftType</Property>
-                <Editor/>
-              </FormElement>
-            </Children>
-          </FieldSet>
-          <DataTree id="dataTreeSubject">
-            <ClientEvent name="onReady">var Root = view.get(&quot;@dataTypeSubject&quot;);&#xD;
-dorado.DataPath.registerInterceptor(&quot;CURRENT_ROOT&quot;, function(data) {&#xD;
-	var entity = self.get(&quot;currentNode.data&quot;);&#xD;
-	return (entity &amp;&amp; entity.dataType == Root) ? entity : null;&#xD;
-}, function(dataType) {&#xD;
-	return Root;&#xD;
-	});&#xD;
-	&#xD;
-&#xD;
-	&#xD;
-&#xD;
-</ClientEvent>
-            <ClientEvent name="onCurrentChange">var entity = self.get(&quot;currentNode.data&quot;);&#xD;
-var statisticjiaci = view.id(&quot;statisticjiaci&quot;);&#xD;
-var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT&quot;);&#xD;
-if(cur){&#xD;
-		statisticjiaci.set(&quot;parameter&quot;,{&#xD;
-		ftype:view.id('formelement').get(&quot;value&quot;),&#xD;
-		parentnode:entity.get('oid')&#xD;
-		});&#xD;
-		statisticjiaci.flushAsync();&#xD;
-}</ClientEvent>
-            <Property name="currentNodeDataPath">currentSubject</Property>
-            <BindingConfigs>
-              <BindingConfig>
-                <Property name="tipProperty">description</Property>
-                <Property name="labelProperty">name</Property>
-                <Property name="recursive">true</Property>
-                <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
-                <Property name="expandLevel">3</Property>
-                <Property name="childrenProperty">children</Property>
-              </BindingConfig>
-            </BindingConfigs>
-          </DataTree>
-        </Container>
-      </SideControl>
-    </SplitPanel>
     <Dialog id="diaOutlineexecution">
       <ClientEvent name="onClose">var cur=view.id('dataSetSubject').getData('#');&#xD;
 if(cur){&#xD;
@@ -332,7 +115,7 @@ if(cur){&#xD;
 }</ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
-      <Property name="width">900</Property>
+      <Property name="width">600</Property>
       <Property name="caption">试飞大纲执行情况</Property>
       <Property name="height">500</Property>
       <Buttons>
@@ -456,8 +239,7 @@ if(cur){&#xD;
             <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
           </ToolBarButton>
         </ToolBar>
-        <Panel layoutConstraint="center">
-          <Property name="width">100%</Property>
+        <Panel>
           <Buttons/>
           <Children>
             <DataGrid id="dgCombineVehicle" layoutConstraint="center">
@@ -469,13 +251,12 @@ if(cur){&#xD;
               <RowNumColumn/>
               <DataColumn>
                 <Property name="property">combineSubject</Property>
-                <Property name="width">400</Property>
               </DataColumn>
               <DataColumn>
                 <Property name="property">combineNumber</Property>
                 <Property name="editorType">NumberSpinner</Property>
                 <Property name="align">left</Property>
-                <Property name="width">100</Property>
+                <Property name="width">150</Property>
               </DataColumn>
             </DataGrid>
           </Children>
@@ -487,6 +268,7 @@ if(cur){&#xD;
     <Dialog id="OutlineGraph">
       <Property name="width">600</Property>
       <Property name="height">550</Property>
+      <Property name="caption">大纲架次完成图</Property>
       <Buttons>
         <Button>
           <ClientEvent name="onClick">view.id(&quot;OutlineGraph&quot;).hide();&#xD;
@@ -524,5 +306,259 @@ if(cur){&#xD;
       </Children>
       <Tools/>
     </Dialog>
+    <SplitPanel>
+      <Property name="position">200</Property>
+      <MainControl>
+        <SplitPanel>
+          <Property name="direction">top</Property>
+          <Property name="position">60%</Property>
+          <MainControl>
+            <Panel>
+              <Property name="caption">试飞任务单信息</Property>
+              <Buttons/>
+              <Children>
+                <DataGrid>
+                  <Property name="readOnly">true</Property>
+                  <Property name="rowHeight">22</Property>
+                  <Property name="dataPath">!CURRENT_ROOT.#outlineexecution.tasklist</Property>
+                  <Property name="dataSet">dataSetSubject</Property>
+                  <Property name="dataType">Tasklist</Property>
+                  <RowNumColumn/>
+                  <DataColumn name="subject">
+                    <Property name="property">subject</Property>
+                  </DataColumn>
+                  <DataColumn name="aircrafttype">
+                    <Property name="property">aircrafttype</Property>
+                  </DataColumn>
+                  <DataColumn name="tasknumber">
+                    <Property name="property">tasknumber</Property>
+                  </DataColumn>
+                  <DataColumn name="taskcontent">
+                    <Property name="property">taskcontent</Property>
+                  </DataColumn>
+                  <DataColumn name="taskexecution">
+                    <Property name="property">taskexecution</Property>
+                  </DataColumn>
+                  <DataColumn name="filename">
+                    <ClientEvent name="onRenderCell">jQuery(arg.dom).empty();&#xD;
+var file = arg.data.get(&quot;filename&quot;);&#xD;
+var oid = arg.data.get(&quot;oid&quot;);&#xD;
+var href = &quot;ServletDownload?filename=Fly_Tasklist/&quot; + oid + &quot;/&quot; + file;&#xD;
+jQuery(arg.dom).xCreate({&#xD;
+	tagName:&quot;A&quot;,&#xD;
+	href:href,&#xD;
+	content:arg.data.get(&quot;filename&quot;)&#xD;
+});</ClientEvent>
+                    <Property name="property">filename</Property>
+                    <Property name="width">200</Property>
+                  </DataColumn>
+                  <DataColumn name="miji">
+                    <Property name="property">miji</Property>
+                  </DataColumn>
+                </DataGrid>
+              </Children>
+              <Tools/>
+            </Panel>
+          </MainControl>
+          <SideControl>
+            <Panel>
+              <Property name="caption">试飞大纲信息</Property>
+              <Buttons/>
+              <Children>
+                <Container>
+                  <ToolBar>
+                    <DataPilot>
+                      <Property name="dataPath">!CURRENT_ROOT.outlineexecution</Property>
+                      <Property name="dataSet">dataSetSubject</Property>
+                    </DataPilot>
+                    <ToolBarButton>
+                      <ClientEvent name="onClick">var ftype = view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
+if(ftype){&#xD;
+	var subject = view.id(&quot;dataSetSubject&quot;).getData(&quot;!CURRENT_ROOT&quot;);&#xD;
+	var name = subject.get(&quot;parentnode&quot;);&#xD;
+	if(name){&#xD;
+		var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT&quot;);&#xD;
+		view.id('ajaxActionCheck').set(&quot;parameter&quot;,{&#xD;
+			pid:cur.get(&quot;oid&quot;)&#xD;
+		}).execute();&#xD;
+	}else{&#xD;
+		dorado.MessageBox.alert(&quot;根节点不能建立试飞大纲&quot;);&#xD;
+	}&#xD;
+}else{&#xD;
+	dorado.MessageBox.alert(&quot;请先选择机型&quot;);&#xD;
+}&#xD;
+</ClientEvent>
+                      <Property name="caption">新增</Property>
+                      <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+                      <Property name="tags">onCurrentNode</Property>
+                      <Property name="disabled">false</Property>
+                    </ToolBarButton>
+                    <ToolBarButton>
+                      <ClientEvent name="onClick">var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT.#outlineexecution&quot;);&#xD;
+if (cur) {&#xD;
+	view.id('diaOutlineexecution').show();	&#xD;
+}&#xD;
+</ClientEvent>
+                      <Property name="caption">修改</Property>
+                      <Property name="icon"> url(>skin>common/icons.gif) -100px -0px</Property>
+                      <Property name="tags">onDirtyNode</Property>
+                      <Property name="width">57</Property>
+                      <Property name="disabled">false</Property>
+                    </ToolBarButton>
+                    <ToolBarButton>
+                      <ClientEvent name="onClick">var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT.#outlineexecution&quot;);&#xD;
+var uaSubject = view.id('uaSubject');&#xD;
+if(cur){&#xD;
+	dorado.MessageBox.confirm('您是否确认删除此大纲内容?', function(){&#xD;
+		cur.remove();&#xD;
+		uaSubject.execute();	&#xD;
+		}); &#xD;
+}else&#xD;
+	dorado.MessageBox.alert(&quot;请选择删除的节点!&quot;);</ClientEvent>
+                      <Property name="caption">删除</Property>
+                      <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                      <Property name="tags">onDirtyNode</Property>
+                      <Property name="width">57</Property>
+                      <Property name="disabled">false</Property>
+                    </ToolBarButton>
+                    <ToolBarButton>
+                      <ClientEvent name="onClick">var dataSetSubject = view.id(&quot;dataSetSubject&quot;);&#xD;
+dataSetSubject.getData('!CURRENT_ROOT').reset(&quot;outlineexecution&quot;);&#xD;
+</ClientEvent>
+                      <Property name="caption">刷新</Property>
+                      <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+                      <Property name="width">57</Property>
+                    </ToolBarButton>
+                    <Fill/>
+                    <ToolBarButton>
+                      <ClientEvent name="onClick">var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT&quot;);&#xD;
+if(cur){&#xD;
+    view.id(&quot;ajaxActionDownloadFile&quot;).set(&quot;parameter&quot;,{&#xD;
+		id: cur.get(&quot;oid&quot;),&#xD;
+		fname:cur.get(&quot;ftype&quot;)&#xD;
+	}).execute();&#xD;
+}else{&#xD;
+	alert(&quot;请选择机型&quot;);&#xD;
+}&#xD;
+</ClientEvent>
+                      <Property name="caption">导出试飞大纲</Property>
+                      <Property name="icon"> url(>skin>common/icons.gif) -120px -20px</Property>
+                    </ToolBarButton>
+                    <ToolBarButton>
+                      <ClientEvent name="onClick">var cur = view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
+if(cur){&#xD;
+	view.id(&quot;OutlineGraph&quot;).show();&#xD;
+}else{&#xD;
+	dorado.MessageBox.alert(&quot;请先选择机型&quot;);&#xD;
+}&#xD;
+</ClientEvent>
+                      <Property name="caption">试飞大纲完成图</Property>
+                    </ToolBarButton>
+                  </ToolBar>
+                  <DataGrid>
+                    <Property name="readOnly">true</Property>
+                    <Property name="filterMode">serverSide</Property>
+                    <Property name="rowHeight">22</Property>
+                    <Property name="dataType">Outlineexecution</Property>
+                    <Property name="dataPath">!CURRENT_ROOT.outlineexecution</Property>
+                    <Property name="dataSet">dataSetSubject</Property>
+                    <RowNumColumn/>
+                    <DataColumn name="project">
+                      <Property name="property">project.name</Property>
+                    </DataColumn>
+                    <DataColumn name="aircrafttype">
+                      <Property name="property">aircrafttype</Property>
+                    </DataColumn>
+                    <DataColumn name="completestate">
+                      <Property name="property">completestate</Property>
+                    </DataColumn>
+                    <DataColumn name="remainstate">
+                      <Property name="property">remainstate</Property>
+                    </DataColumn>
+                    <DataColumn name="execdate">
+                      <Property name="property">execdate</Property>
+                    </DataColumn>
+                    <DataColumn name="outlineFlights">
+                      <Property name="property">outlineFlights</Property>
+                    </DataColumn>
+                    <DataColumn name="shijijiaci">
+                      <Property name="property">shijijiaci</Property>
+                    </DataColumn>
+                    <DataColumn name="testMethod">
+                      <Property name="property">testMethod</Property>
+                    </DataColumn>
+                    <DataColumn name="testStatus">
+                      <Property name="property">testStatus</Property>
+                    </DataColumn>
+                    <DataColumn name="aircraftStruct">
+                      <Property name="property">aircraftStruct</Property>
+                    </DataColumn>
+                    <DataColumn name="engineState">
+                      <Property name="property">engineState</Property>
+                    </DataColumn>
+                    <DataColumn name="miji">
+                      <Property name="property">miji</Property>
+                    </DataColumn>
+                  </DataGrid>
+                </Container>
+              </Children>
+              <Tools/>
+            </Panel>
+          </SideControl>
+        </SplitPanel>
+      </MainControl>
+      <SideControl>
+        <Container>
+          <FieldSet id="fsFtype" layoutConstraint="top">
+            <Property name="caption">机型管理</Property>
+            <Property name="collapsed">false</Property>
+            <Buttons/>
+            <Children>
+              <FormElement id="formelement">
+                <Property name="label">选择机型：</Property>
+                <Property name="droppable">false</Property>
+                <Property name="trigger">dataSetDropDownAircraftType</Property>
+                <Editor/>
+              </FormElement>
+            </Children>
+          </FieldSet>
+          <DataTree id="dataTreeSubject">
+            <ClientEvent name="onReady">var Root = view.get(&quot;@dataTypeSubject&quot;);&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_ROOT&quot;, function(data) {&#xD;
+	var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+	return (entity &amp;&amp; entity.dataType == Root) ? entity : null;&#xD;
+}, function(dataType) {&#xD;
+	return Root;&#xD;
+	});&#xD;
+	&#xD;
+&#xD;
+	&#xD;
+&#xD;
+</ClientEvent>
+            <ClientEvent name="onCurrentChange">var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+var statisticjiaci = view.id(&quot;statisticjiaci&quot;);&#xD;
+var cur=view.id('dataSetSubject').getData(&quot;!CURRENT_ROOT&quot;);&#xD;
+if(cur){&#xD;
+		statisticjiaci.set(&quot;parameter&quot;,{&#xD;
+		ftype:view.id('formelement').get(&quot;value&quot;),&#xD;
+		parentnode:entity.get('oid')&#xD;
+		});&#xD;
+		statisticjiaci.flushAsync();&#xD;
+}</ClientEvent>
+            <Property name="currentNodeDataPath">currentSubject</Property>
+            <BindingConfigs>
+              <BindingConfig>
+                <Property name="tipProperty">description</Property>
+                <Property name="labelProperty">name</Property>
+                <Property name="recursive">true</Property>
+                <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
+                <Property name="expandLevel">3</Property>
+                <Property name="childrenProperty">children</Property>
+              </BindingConfig>
+            </BindingConfigs>
+          </DataTree>
+        </Container>
+      </SideControl>
+    </SplitPanel>
   </View>
 </ViewConfig>

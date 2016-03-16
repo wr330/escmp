@@ -189,8 +189,8 @@ public class OutlineexecutionPR {
 			dataItems = subjectManager.querySubject(map0);
 			num = sfstatisticDao.querySubjectJiaci(map0);
 		}
+		int i = 0;
 		for (Subject item : dataItems) {
-			int i = 0;
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			Float statistic = (float) 0;
 			if (item.getOutlineexecution().size() > 0

@@ -10,6 +10,8 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 
+import org.hibernate.Hibernate;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 import org.apache.commons.lang.StringUtils;
@@ -56,7 +58,7 @@ public class SfstatisticDao extends HibernateBaseDao {
 		}
 
 		if (null != parameter && !parameter.isEmpty()) {
-			Integer id = (Integer) parameter.get("id");
+			String id = (String) parameter.get("id");
 			if (id != null) {
 				coreHql.append(" and a.id ='" + id + "'");
 			}
@@ -137,6 +139,7 @@ public class SfstatisticDao extends HibernateBaseDao {
 			}else{
 				hql += " and a.ftype = null ";
 			}
+			hql += " order by OrderNo ";
 			subjects = this.query(hql);
 			Integer i = 0;
 			for (Subject subject : subjects) {
@@ -158,7 +161,6 @@ public class SfstatisticDao extends HibernateBaseDao {
 	 * @throws Exception
 	 */
 	public Integer querySubject(Subject subject, Integer num) throws Exception {
-		Map<String, Object> args = new HashMap<String, Object>();
 		String hql = "from " + Subject.class.getName() + " a where 1=1 ";
 		if (StringUtils.isNotEmpty(subject.getOid())) {
 			hql += " and a.parentnode ='" + subject.getOid() + "'";
@@ -168,15 +170,14 @@ public class SfstatisticDao extends HibernateBaseDao {
 		}else{
 			hql += " and a.ftype = null ";
 		}
+		hql += " order by OrderNo ";
 		Collection<Subject> subjects = this.query(hql);
 		if (null != subjects && subjects.size() > 0) {
 			for (Subject item : subjects) {
 				num += querySubject(item, num);
 			}
 		} else {
-			args.put("subject", subject.getName());
-			args.put("ftype", subject.getFtype());
-			num += queryJiaci(args);
+			num = queryJiaci(subject.getName(), subject.getFtype());
 		}
 		return num;
 	}
@@ -206,24 +207,31 @@ public class SfstatisticDao extends HibernateBaseDao {
 	 * @param parameter
 	 * @throws Exception
 	 */
-	public int queryJiaci(Map<String, Object> parameter) throws Exception {
+	public int queryJiaci(String subject, String ftype) throws Exception {
 		Map<String, Object> args = new HashMap<String, Object>();
+		Collection<Sfstatistic> details = new ArrayList<Sfstatistic>();
 		int jiaci = 0;
-		String Hql = "from " + Sfstatistic.class.getName() + " a where 1=1 ";
-
-		if (null != parameter && !parameter.isEmpty()) {
-			String subject = (String) parameter.get("subject");
-			if (StringUtils.isNotEmpty(subject)) {
-				Hql += " and a.taskNo.subject like '%," + subject + ",%'";
+		String sql = "select oid from (select oid,','+subject+',' as newsubject from Fly_Tasklist) a where a.newsubject like '%,"
+				+ subject + ",%'";
+		Session session = this.getSessionFactory().openSession();
+		try {
+			Query query = session.createSQLQuery(sql).addScalar("oid",
+					Hibernate.STRING);// 设置返回值类型，不然会报错
+			List<String> result = query.list();
+			if (result.isEmpty()) {
+			} else {
+				StringBuffer coreHql = new StringBuffer("from "
+						+ Sfstatistic.class.getName() + " a where 1=1 ");
+				coreHql.append(" and a.ftype =:ftype");
+				args.put("ftype", ftype);
+				coreHql.append(" and a.taskNo.oid in(:result)");
+				args.put("result", result);
+				details = this.query(coreHql.toString(), args);
 			}
-			String ftype = (String) parameter.get("ftype");
-			if (StringUtils.isNotEmpty(ftype)) {
-				Hql += " and a.ftype ='" + ftype + "'";
-			}else{
-				Hql += " and a.ftype = null ";
-			}
+		} finally {
+			session.flush();
+			session.close();
 		}
-		Collection<Sfstatistic> details = this.query(Hql, args);
 		if (null != details && details.size() > 0) {
 			for (Sfstatistic item : details) {
 				jiaci += item.getJiaci();

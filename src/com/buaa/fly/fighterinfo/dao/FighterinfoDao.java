@@ -40,8 +40,8 @@ public class FighterinfoDao extends HibernateBaseDao {
 				args.put("piciname", piciname);
 			}
 		}
-
-		 return this.query(hql, args);
+		hql += "order by outfactoryno ";
+		return this.query(hql, args);
 	}
 
 	/**
@@ -156,7 +156,7 @@ public class FighterinfoDao extends HibernateBaseDao {
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
 		parameterMap.put("fighterinfo", fighterinfo);
 		int count = this.queryForInt(hql, parameterMap);
-		String returnStr = "1";
+		String returnStr = null;
 		if (count > 0) {
 			returnStr = "此飞机已存在！";
 		}

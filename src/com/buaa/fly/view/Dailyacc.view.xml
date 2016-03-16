@@ -11,6 +11,11 @@
       <Property name="dataType">[Dailyacc]</Property>
       <Property name="dataProvider">dailyaccPR#queryDailyacc</Property>
       <Property name="pageSize">20</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="ftype"/>
+        </Entity>
+      </Property>
     </DataSet>
     <DataSet id="dsSfstatistic">
       <Property name="dataType">[Sfstatistic]</Property>
@@ -165,6 +170,7 @@ if(cur){
             <Property name="name">ftype</Property>
             <Property name="property">ftype</Property>
             <Property name="editable">false</Property>
+            <Property name="readOnly">true</Property>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">summary</Property>
@@ -366,6 +372,13 @@ if(cur){
 	</ClientEvent>
         <Property name="caption">删除</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var dsDailyacc = view.id(&quot;dsDailyacc&quot;);&#xD;
+dsDailyacc.flushAsync();</ClientEvent>
+        <Property name="caption">刷新</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+        <Property name="width">57</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var ftype = view.id(&quot;formElement1&quot;).get(&quot;value&quot;);&#xD;
