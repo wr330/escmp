@@ -142,13 +142,14 @@ public class TasklistDao extends HibernateBaseDao {
 	 * @param tasknumber
 	 *            用户输入的任务单号
 	 */
-	public String tasklistIsExists(String tasknumber) {
+	public String tasklistIsExists(String oid,String tasknumber) {
 		String hql = "select count(*) from " + Tasklist.class.getName()
-				+ " u where u.tasknumber = :tasknumber";
+				+ " u where u.tasknumber = :tasknumber and u.oid != :oid";
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
 		parameterMap.put("tasknumber", tasknumber);
+		parameterMap.put("oid", oid);
 		int count = this.queryForInt(hql, parameterMap);
-		String returnStr = "1";
+		String returnStr = null;
 		if (count > 0) {
 			returnStr = "此单号已存在！";
 		}
@@ -162,21 +163,24 @@ public class TasklistDao extends HibernateBaseDao {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public Collection<Tasklist> queryTaskOutline(String ftype,String subject) {
-		String sql = "select oid from (select oid,','+subject+',' as newsubject from Fly_Tasklist) a where a.newsubject like '%,"+subject+",%'";
+	public Collection<Tasklist> queryTaskOutline(String ftype, String subject) {
+		String sql = "select oid from (select oid,','+subject+',' as newsubject from Fly_Tasklist) a where a.newsubject like '%,"
+				+ subject + ",%'";
 		Session session = this.getSessionFactory().openSession();
 		try {
-			Query query = session.createSQLQuery(sql).addScalar("oid",Hibernate.STRING);// 设置返回值类型，不然会报错
+			Query query = session.createSQLQuery(sql).addScalar("oid",
+					Hibernate.STRING);// 设置返回值类型，不然会报错
 			List<String> result = query.list();
-			if(result.isEmpty())
+			if (result.isEmpty())
 				return null;
 			Map<String, Object> args = new HashMap<String, Object>();
-			StringBuffer coreHql = new StringBuffer("from "	+ Tasklist.class.getName() + " a where 1=1 ");
+			StringBuffer coreHql = new StringBuffer("from "
+					+ Tasklist.class.getName() + " a where 1=1 ");
 			coreHql.append(" and a.aircrafttype =:ftype");
 			args.put("ftype", ftype);
 			coreHql.append(" and a.oid in(:result)");
 			args.put("result", result);
-			return this.query(coreHql.toString(),args);
+			return this.query(coreHql.toString(), args);
 		} finally {
 			session.flush();
 			session.close();

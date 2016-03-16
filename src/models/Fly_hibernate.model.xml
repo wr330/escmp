@@ -62,6 +62,15 @@ arg.parameter = parameter;</ClientEvent>
       <Property name="dataType">String</Property>
       <Property name="label">试飞任务单号</Property>
       <Property name="required">true</Property>
+      <Validator type="ajax">
+        <ClientEvent name="beforeExecute">var oid = arg.entity.get(&quot;oid&quot;);&#xD;
+var parameter = {&#xD;
+		oid: oid,&#xD;
+		tasknumber: arg.data&#xD;
+	};&#xD;
+arg.parameter = parameter;</ClientEvent>
+        <Property name="service">tasklistManager#tasklistIsExists</Property>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="aircrafttype">
       <Property name="dataType">String</Property>
@@ -519,6 +528,12 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
       <Property name="label">编号</Property>
       <Property name="required">true</Property>
       <Validator type="ajax">
+        <ClientEvent name="beforeExecute">var id = arg.entity.get(&quot;id&quot;);&#xD;
+var parameter = {&#xD;
+		id: id,&#xD;
+		fileno: arg.data&#xD;
+	};&#xD;
+arg.parameter = parameter;</ClientEvent>
         <Property name="service">shifeirequestaccManager#shifeirequestaccIsExists</Property>
       </Validator>
     </PropertyDef>
@@ -638,6 +653,9 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
     <PropertyDef name="ftypename">
       <Property name="dataType">String</Property>
       <Property name="label">飞机型号</Property>
+      <Validator type="ajax">
+        <Property name="service">ftypesManager#ftypeIsExists</Property>
+      </Validator>
     </PropertyDef>
     <Reference name="fpici">
       <Property name="dataProvider">fpiciPR#queryFpici</Property>
@@ -661,6 +679,15 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
       <Property></Property>
       <Property name="dataType">String</Property>
       <Property name="label">批次名</Property>
+      <Validator type="ajax">
+        <ClientEvent name="beforeExecute">var ftype = arg.entity.get(&quot;fTypeName.ftypename&quot;);&#xD;
+var parameter = {&#xD;
+		ftype:ftype,&#xD;
+		fpici:arg.data&#xD;
+	};&#xD;
+arg.parameter = parameter;</ClientEvent>
+        <Property name="service">fpiciManager#fpiciIsExists</Property>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="more">
       <Property name="dataType">String</Property>
@@ -690,6 +717,9 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
       <Property name="dataType">String</Property>
       <Property name="label">飞机编号</Property>
       <Property name="required">true</Property>
+      <Validator type="ajax">
+        <Property name="service">fighterinfoManager#fighterinfoIsExists</Property>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="piciid">
       <Property name="dataType">Fpici</Property>
@@ -968,7 +998,7 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
     </PropertyDef>
     <PropertyDef name="laiyuan">
       <Property name="dataType">String</Property>
-      <Property name="label">问题来源</Property>
+      <Property name="label">信息来源</Property>
     </PropertyDef>
     <PropertyDef name="judge">
       <Property name="dataType">String</Property>
@@ -1043,7 +1073,7 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
       <Property name="defaultValue">0</Property>
     </PropertyDef>
     <PropertyDef name="fdata">
-      <Property name="dataType">Integer</Property>
+      <Property name="dataType">String</Property>
       <Property name="label">fdata</Property>
     </PropertyDef>
   </DataType>

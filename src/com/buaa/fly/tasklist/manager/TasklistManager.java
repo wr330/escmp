@@ -78,9 +78,6 @@ public class TasklistManager {
 			for (Tasklist item : details) {
 				EntityState state = EntityUtils.getState(item);
 				if (state.equals(EntityState.NEW)) {
-					if (tasklistIsExists(item.getTasknumber())
-							.equals("此单号已存在！"))
-						throw new Exception("此单号已存在！");
 					fileManager(item);
 					tasklistDao.saveData(item);
 				} else if (state.equals(EntityState.MODIFIED)) {
@@ -111,8 +108,8 @@ public class TasklistManager {
 	 *            用户输入的任务单号
 	 */
 	@Expose
-	public String tasklistIsExists(String tasknumber) {
-		return tasklistDao.tasklistIsExists(tasknumber);
+	public String tasklistIsExists(String oid,String tasknumber) {
+		return tasklistDao.tasklistIsExists(oid,tasknumber);
 	}
 
 	// 处理相关文件

@@ -31,6 +31,180 @@
         <Property name="dataPath">!DIRTY_TREE</Property>
       </UpdateItem>
     </UpdateAction>
+    <Dialog id="diaFtypes">
+      <ClientEvent name="onClose">var cur=view.id('dsExamples').getData('!CURRENT_ROOT.#categories');&#xD;
+if(cur){&#xD;
+	cur.cancel();&#xD;
+	view.id(&quot;FtypeForm&quot;).set(&quot;editable&quot;, true);&#xD;
+	view.id('diaFtypes').hide();&#xD;
+}</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">400</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaFtypes').execute(function(){
+	view.id(&quot;FtypeForm&quot;).set(&quot;editable&quot;, true);
+	view.id('diaFtypes').hide();
+});       </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsExamples').getData('!CURRENT_ROOT.#categories');
+if(cur){
+	cur.cancel();
+	view.id(&quot;FtypeForm&quot;).set(&quot;editable&quot;, true);
+	view.id('diaFtypes').hide();
+}</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afFtypes">
+          <Property name="cols">*</Property>
+          <Property name="dataSet">dsExamples</Property>
+          <Property name="dataPath">!CURRENT_ROOT.#categories</Property>
+          <Property name="dataType">Ftypes</Property>
+          <AutoFormElement id="FtypeForm">
+            <Property name="name">ftypename</Property>
+            <Property name="property">ftypename</Property>
+            <Property name="readOnly">false</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">alias</Property>
+            <Property name="property">alias</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">moreinfo</Property>
+            <Property name="property">moreinfo</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaFpici">
+      <ClientEvent name="onClose">var cur=view.id('dsExamples').getData('!CURRENT_TYPE.#fpici');&#xD;
+if(cur){&#xD;
+	cur.cancel();&#xD;
+	view.id(&quot;piciForm&quot;).set(&quot;editable&quot;, true);&#xD;
+	view.id('diaFpici').hide();&#xD;
+}   &#xD;
+	         </ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">400</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaFtypes').execute(function(){
+	view.id(&quot;piciForm&quot;).set(&quot;editable&quot;, true);
+	view.id('diaFpici').hide();
+});
+         </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsExamples').getData('!CURRENT_TYPE.#fpici');
+if(cur){
+	cur.cancel();
+	view.id(&quot;piciForm&quot;).set(&quot;editable&quot;, true);
+	view.id('diaFpici').hide();
+}         </ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm>
+          <Property name="cols">*</Property>
+          <Property name="dataPath">!CURRENT_TYPE.#fpici</Property>
+          <Property name="dataSet">dsExamples</Property>
+          <Property name="dataType">Fpici</Property>
+          <AutoFormElement>
+            <Property name="property">fTypeName.ftypename</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement id="piciForm">
+            <Property name="name">piciName</Property>
+            <Property name="property">piciName</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">more</Property>
+            <Property name="property">more</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaFighterinfo">
+      <ClientEvent name="onClose">var cur=view.id('dsExamples').getData('!CURRENT_PICI.#fighterinfo');&#xD;
+if(cur){&#xD;
+	view.id(&quot;fighternoForm&quot;).set(&quot;editable&quot;, true);&#xD;
+	cur.cancel();&#xD;
+	view.id('diaFighterinfo').hide();&#xD;
+}	</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">600</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaFtypes').execute(function(){
+	view.id(&quot;fighternoForm&quot;).set(&quot;editable&quot;, true);
+	view.id('diaFighterinfo').hide();
+});
+</ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsExamples').getData('!CURRENT_PICI.#fighterinfo');
+if(cur){
+	view.id(&quot;fighternoForm&quot;).set(&quot;editable&quot;, true);
+	cur.cancel();
+	view.id('diaFighterinfo').hide();
+}	</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afFighterinfo">
+          <Property name="cols">*,*</Property>
+          <Property name="dataSet">dsExamples</Property>
+          <Property name="dataPath">!CURRENT_PICI.#fighterinfo</Property>
+          <Property name="dataType">Fighterinfo</Property>
+          <AutoFormElement id="fighternoForm">
+            <Property name="name">outfactoryno</Property>
+            <Property name="property">outfactoryno</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">userno</Property>
+            <Property name="property">userno</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">firstFDate</Property>
+            <Property name="property">firstFDate</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">outdate</Property>
+            <Property name="property">outDate</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
     <SplitPanel>
       <Property name="position">200</Property>
       <MainControl>
@@ -70,7 +244,7 @@ var uaFtypes = view.id('uaFtypes');&#xD;
 if(cur){&#xD;
 	var fpici = cur.get(&quot;fpici&quot;);&#xD;
 	if(fpici.toJSON().length)&#xD;
-		dorado.MessageBox.confirm(&quot;请先删除机型&quot; + cur.get(&quot;ftypename&quot;) + &quot;下的所有批次!&quot;);&#xD;
+		dorado.MessageBox.alert(&quot;请先删除机型&quot; + cur.get(&quot;ftypename&quot;) + &quot;下的所有批次!&quot;);&#xD;
 	else{&#xD;
 		dorado.MessageBox.confirm('您是否确认删除此机型?', function(){	&#xD;
 		cur.remove();&#xD;
@@ -92,7 +266,6 @@ if(cur){&#xD;
               <DataGrid id="dgFtype">
                 <Property name="readOnly">true</Property>
                 <Property name="dataSet">dsExamples</Property>
-                <Property name="height">40%</Property>
                 <Property name="filterMode">serverSide</Property>
                 <Property name="rowHeight">22</Property>
                 <Property name="dataPath">!CURRENT_ROOT.categories</Property>
@@ -168,7 +341,7 @@ var uaFtypes = view.id('uaFtypes');&#xD;
 if(cur){&#xD;
 	var fighterinfo = cur.get(&quot;fighterinfo&quot;);&#xD;
 	if(fighterinfo.toJSON().length)&#xD;
-		dorado.MessageBox.confirm(&quot;请先删除批次&quot; + cur.get(&quot;piciName&quot;) + &quot;下的所有飞机信息!&quot;);&#xD;
+		dorado.MessageBox.alert(&quot;请先删除批次&quot; + cur.get(&quot;piciName&quot;) + &quot;下的所有飞机信息!&quot;);&#xD;
 	else{&#xD;
 		dorado.MessageBox.confirm('您是否确认删除此批次?', function(){	&#xD;
 		cur.remove();&#xD;
@@ -189,7 +362,6 @@ if(cur){&#xD;
               <DataGrid id="dgFpici">
                 <Property name="readOnly">true</Property>
                 <Property name="dataSet">dsExamples</Property>
-                <Property name="height">40%</Property>
                 <Property name="filterMode">serverSide</Property>
                 <Property name="rowHeight">22</Property>
                 <Property name="dataPath">!CURRENT_TYPE.fpici</Property>
@@ -287,7 +459,6 @@ if(cur){&#xD;
                 <Property name="readOnly">true</Property>
                 <Property name="dataSet">dsExamples</Property>
                 <Property name="dataPath">!CURRENT_PICI.fighterinfo</Property>
-                <Property name="height">40%</Property>
                 <Property name="filterMode">serverSide</Property>
                 <Property name="rowHeight">22</Property>
                 <RowNumColumn/>
@@ -484,179 +655,5 @@ dorado.DataPath.registerInterceptor(&quot;CURRENT_FLIGHT&quot;, function(data) {
         </Container>
       </SideControl>
     </SplitPanel>
-    <Dialog id="diaFtypes">
-      <ClientEvent name="onClose">var cur=view.id('dsExamples').getData('!CURRENT_ROOT.#categories');&#xD;
-if(cur){&#xD;
-	cur.cancel();&#xD;
-	view.id(&quot;FtypeForm&quot;).set(&quot;editable&quot;, true);&#xD;
-	view.id('diaFtypes').hide();&#xD;
-}</ClientEvent>
-      <Property name="center">true</Property>
-      <Property name="modal">true</Property>
-      <Property name="width">600</Property>
-      <Buttons>
-        <Button>
-          <ClientEvent name="onClick">view.id('uaFtypes').execute(function(){
-	view.id(&quot;FtypeForm&quot;).set(&quot;editable&quot;, true);
-	view.id('diaFtypes').hide();
-});       </ClientEvent>
-          <Property name="caption">确定</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
-        </Button>
-        <Button>
-          <ClientEvent name="onClick">var cur=view.id('dsExamples').getData('!CURRENT_ROOT.#categories');
-if(cur){
-	cur.cancel();
-	view.id(&quot;FtypeForm&quot;).set(&quot;editable&quot;, true);
-	view.id('diaFtypes').hide();
-}</ClientEvent>
-          <Property name="caption">取消</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
-        </Button>
-      </Buttons>
-      <Children>
-        <AutoForm id="afFtypes">
-          <Property name="cols">*</Property>
-          <Property name="dataSet">dsExamples</Property>
-          <Property name="dataPath">!CURRENT_ROOT.#categories</Property>
-          <Property name="dataType">Ftypes</Property>
-          <AutoFormElement id="FtypeForm">
-            <Property name="name">ftypename</Property>
-            <Property name="property">ftypename</Property>
-            <Property name="readOnly">false</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">alias</Property>
-            <Property name="property">alias</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">moreinfo</Property>
-            <Property name="property">moreinfo</Property>
-            <Editor/>
-          </AutoFormElement>
-        </AutoForm>
-      </Children>
-      <Tools/>
-    </Dialog>
-    <Dialog id="diaFpici">
-      <ClientEvent name="onClose">var cur=view.id('dsExamples').getData('!CURRENT_TYPE.#fpici');&#xD;
-if(cur){&#xD;
-	cur.cancel();&#xD;
-	view.id(&quot;piciForm&quot;).set(&quot;editable&quot;, true);&#xD;
-	view.id('diaFpici').hide();&#xD;
-}   &#xD;
-	         </ClientEvent>
-      <Property name="center">true</Property>
-      <Property name="modal">true</Property>
-      <Property name="width">800</Property>
-      <Buttons>
-        <Button>
-          <ClientEvent name="onClick">view.id('uaFtypes').execute(function(){
-	view.id(&quot;piciForm&quot;).set(&quot;editable&quot;, true);
-	view.id('diaFpici').hide();
-});
-         </ClientEvent>
-          <Property name="caption">确定</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
-        </Button>
-        <Button>
-          <ClientEvent name="onClick">var cur=view.id('dsExamples').getData('!CURRENT_TYPE.#fpici');
-if(cur){
-	cur.cancel();
-	view.id(&quot;piciForm&quot;).set(&quot;editable&quot;, true);
-	view.id('diaFpici').hide();
-}         </ClientEvent>
-          <Property name="caption">取消</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
-        </Button>
-      </Buttons>
-      <Children>
-        <AutoForm>
-          <Property name="cols">*</Property>
-          <Property name="dataPath">!CURRENT_TYPE.#fpici</Property>
-          <Property name="dataSet">dsExamples</Property>
-          <Property name="dataType">Fpici</Property>
-          <AutoFormElement>
-            <Property name="property">fTypeName.ftypename</Property>
-            <Property name="readOnly">true</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement id="piciForm">
-            <Property name="name">piciName</Property>
-            <Property name="property">piciName</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">more</Property>
-            <Property name="property">more</Property>
-            <Editor/>
-          </AutoFormElement>
-        </AutoForm>
-      </Children>
-      <Tools/>
-    </Dialog>
-    <Dialog id="diaFighterinfo">
-      <ClientEvent name="onClose">var cur=view.id('dsExamples').getData('!CURRENT_PICI.#fighterinfo');&#xD;
-if(cur){&#xD;
-	view.id(&quot;fighternoForm&quot;).set(&quot;editable&quot;, true);&#xD;
-	cur.cancel();&#xD;
-	view.id('diaFighterinfo').hide();&#xD;
-}	</ClientEvent>
-      <Property name="center">true</Property>
-      <Property name="modal">true</Property>
-      <Property name="width">800</Property>
-      <Buttons>
-        <Button>
-          <ClientEvent name="onClick">view.id('uaFtypes').execute(function(){
-	view.id(&quot;fighternoForm&quot;).set(&quot;editable&quot;, true);
-	view.id('diaFighterinfo').hide();
-});
-</ClientEvent>
-          <Property name="caption">确定</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
-        </Button>
-        <Button>
-          <ClientEvent name="onClick">var cur=view.id('dsExamples').getData('!CURRENT_PICI.#fighterinfo');
-if(cur){
-	view.id(&quot;fighternoForm&quot;).set(&quot;editable&quot;, true);
-	cur.cancel();
-	view.id('diaFighterinfo').hide();
-}	</ClientEvent>
-          <Property name="caption">取消</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
-        </Button>
-      </Buttons>
-      <Children>
-        <AutoForm id="afFighterinfo">
-          <Property name="cols">*,*</Property>
-          <Property name="dataSet">dsExamples</Property>
-          <Property name="dataPath">!CURRENT_PICI.#fighterinfo</Property>
-          <Property name="dataType">Fighterinfo</Property>
-          <AutoFormElement id="fighternoForm">
-            <Property name="name">outfactoryno</Property>
-            <Property name="property">outfactoryno</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">userno</Property>
-            <Property name="property">userno</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">firstFDate</Property>
-            <Property name="property">firstFDate</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">outdate</Property>
-            <Property name="property">outDate</Property>
-            <Editor/>
-          </AutoFormElement>
-        </AutoForm>
-      </Children>
-      <Tools/>
-    </Dialog>
   </View>
 </ViewConfig>
