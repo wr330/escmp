@@ -74,7 +74,8 @@ public class SupportprogramDao extends HibernateBaseDao {
         
         String countHql = "select count(*) " + coreHql.toString();
         String hql = coreHql.toString();
-        hql=userService.checkUser(hql);
+        hql = userService.checkUser(hql);
+        hql += " order by worktime desc, workaddress asc";
 		this.pagingQuery(page, hql, countHql, args);
 	}
 	
@@ -109,7 +110,7 @@ public class SupportprogramDao extends HibernateBaseDao {
 	}
 
 	/**                  
-	* 根据地点搜索本年度的保障计划
+	* 根据地点搜索本年度的保障计划，并根据保障计划和此时的事件查询保障执行条目表
 	* @param parameter    
 	* @throws Exception
 	*/
