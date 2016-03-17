@@ -93,6 +93,7 @@ link.set(&quot;visible&quot;,false);&#xD;
       <Property name="rowHeight">22</Property>
       <Property name="readOnly">true</Property>
       <Property name="filterMode">serverSide</Property>
+      <RowNumColumn/>
       <DataColumn name="supportAddress">
         <Property name="property">supportAddress</Property>
       </DataColumn>
@@ -125,6 +126,7 @@ jQuery(arg.dom).xCreate({&#xD;
       </DataColumn>
       <DataColumn name="miji">
         <Property name="property">miji</Property>
+        <Property name="align">left</Property>
       </DataColumn>
     </DataGrid>
     <Dialog id="diaSupportevaluation">

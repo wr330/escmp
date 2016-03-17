@@ -129,6 +129,7 @@ view.id(&quot;SupportitemGraph&quot;).show();&#xD;
                 <Property name="readOnly">true</Property>
                 <Property name="filterMode">serverSide</Property>
                 <Property name="rowHeight">22</Property>
+                <RowNumColumn/>
                 <DataColumn name="registrationexecutor">
                   <Property name="property">registrationexecutor</Property>
                   <Property name="width">150</Property>
@@ -218,6 +219,7 @@ if(cur){&#xD;
                 <Property name="readOnly">true</Property>
                 <Property name="filterMode">serverSide</Property>
                 <Property name="rowHeight">22</Property>
+                <RowNumColumn/>
                 <DataColumn name="efile">
                   <ClientEvent name="onRenderCell">jQuery(arg.dom).empty();&#xD;
 var file = arg.data.get(&quot;efile&quot;);&#xD;
@@ -268,11 +270,13 @@ jQuery(arg.dom).xCreate({&#xD;
             <Property name="dataSet">dsSupportprogram</Property>
             <Property name="rowHeight">22</Property>
             <Property name="readOnly">true</Property>
+            <RowNumColumn/>
             <DataColumn name="troop">
               <Property name="property">troop</Property>
             </DataColumn>
             <DataColumn name="staffrequirement">
               <Property name="property">staffrequirement</Property>
+              <Property name="align">left</Property>
             </DataColumn>
             <DataColumn name="workaddress">
               <Property name="property">workaddress</Property>
@@ -368,9 +372,24 @@ view.id('diaSupportitem').hide();</ClientEvent>
       <Property name="width">450</Property>
       <Buttons>
         <Button>
-          <ClientEvent name="onClick">view.id('uaSupportprogram').execute(function(){&#xD;
-               view.id('diaSupportitem').hide();&#xD;
-           });&#xD;
+          <ClientEvent name="onClick">var afSupportitem = view.id('afSupportitem');&#xD;
+var startexecutiontime = afSupportitem.getElement('startexecutiontime').get('value');&#xD;
+var endexecutiontime = afSupportitem.getElement('endexecutiontime').get('value');&#xD;
+if(endexecutiontime != null){&#xD;
+	if(startexecutiontime > endexecutiontime){&#xD;
+	dorado.MessageBox.alert('开始时间大于等于结束时间');&#xD;
+	}&#xD;
+	else{&#xD;
+		view.id('uaSupportprogram').execute(function(){&#xD;
+    	view.id('diaSupportitem').hide();&#xD;
+    	});&#xD;
+	}&#xD;
+}&#xD;
+else{&#xD;
+	view.id('uaSupportprogram').execute(function(){&#xD;
+    view.id('diaSupportitem').hide();&#xD;
+    });&#xD;
+}&#xD;
 </ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
@@ -640,6 +659,7 @@ dsStatisticSupportitem.flushAsync();&#xD;
                 <Property name="bindingConfig">
                   <Property name="yProperty">num</Property>
                 </Property>
+                <Property name="title">此计划执行人天数</Property>
               </Column>
             </Series>
           </Chart>

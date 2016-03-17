@@ -34,24 +34,11 @@ public class SupportitemManager {
 	* 分页查询信息，带有criteria
 	* 将criteria转换为一个Map
 	* @param page    
-	* @param map
+	* @param parameter
 	* @throws Exception
 	*/
 	public void querySupportitem(Page<Supportitem> page,Map<String, Object> parameter,Criteria criteria) throws Exception {
 	    supportitemDao.querySupportitem(page,parameter,criteria);
-	}
-	
-	public Collection<Supportitem> queryRenyuan(Map<String, Object> parameter) throws Exception {
-	    return supportitemDao.queryRenyuan(parameter);
-	}
-	
-	/**                  
-	* 根据参数查询保障计划信息    
-	* @param map
-	* @throws Exception
-	*/
-	public Collection<Supportprogram> queryProgram(Map<String, Object> parameter) throws Exception {
-		return supportitemDao.queryProgram(parameter);
 	}
 	
 	/**                  

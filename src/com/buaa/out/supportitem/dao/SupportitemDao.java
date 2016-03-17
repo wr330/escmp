@@ -61,41 +61,30 @@ public class SupportitemDao extends HibernateBaseDao {
 
         String countHql = "select count(*) " + coreHql.toString();
         String hql = coreHql.toString();
-        hql+="order by startexecutiontime asc ";
+        hql+="order by startexecutiontime desc ";
 		this.pagingQuery(page, hql, countHql, args);
 	}
 	
 	/**                  
-	* 搜索从计划开始时间到结束时间涉及本年度的保障计划
-	* @param parameter    
-	* @throws Exception
-	*/
-	public Collection<Supportprogram> queryProgram(Map<String, Object> parameter) throws Exception {
-		Map<String,Object> map=new HashMap<String,Object>();
-		String hql="from " + Supportprogram.class.getName() + " u where 1=1";
-		Integer year = (Integer)parameter.get("year");
-		String time = year + "/01/01";
-		String time1 = year + "/12/31";
-		//hql+=" and ((u.worktime>='" + time + "' and u.endtime<='" + time1 + "') or (u.worktime<'" + time + "' and u.endtime>'" + time + "') or (u.worktime>='" + time + "' and u.worktime<'" + time1 + "'and u.endtime >'" + time1 + "') or (u.worktime >='" + time + "' and u.worktime < '" + time1 +"'))";
-		hql+=" and ((u.worktime<'" + time + "' and u.endtime>'" + time +  "') or (u.worktime >='" + time + "' and u.worktime < '" + time1 +"'))";
-		return this.query(hql,map);						
-	}
-	
-	/**                  
-	* 通过主表保障计划的主键搜索保障条目
+	* 通过传来的参数搜索保障计划执行条目表
 	* @param parameter    
 	* @throws Exception
 	*/
 	public Collection<Supportitem> queryItem(Map<String, Object> parameter) throws Exception {
 		Map<String,Object> map=new HashMap<String,Object>();
 		String hql="from " + Supportitem.class.getName() + " u where 1=1";
-		String oid = (String)parameter.get("oid");
-		Integer year = (Integer)parameter.get("year");
-		String time = year + "/01/01";
-		String time1 = year + "/12/31";
-		//map.put("oid",oid);
-		//hql+=" and u.project.parentnode=:parentnode";
-		hql+=" and (u.supportprogram.oid = '" + oid + "') and ((u.startexecutiontime <'" + time + "' and u.endexecutiontime > '" + time +  "') or (u.startexecutiontime >='" + time + "' and u.startexecutiontime < '" + time1 +"'))";
+		if(null != parameter && !parameter.isEmpty()){
+			String fatherOid = (String)parameter.get("fatherOid");
+			if(StringUtils.isNotEmpty(fatherOid)){
+				hql += " and (u.supportprogram.oid = '" + fatherOid + "')";	
+			}
+			Integer year = (Integer)parameter.get("year");
+			if(year != null){
+				String time = year + "/01/01";
+				String time1 = year + "/12/31";
+				hql += " and ((u.startexecutiontime <'" + time + "' and u.endexecutiontime > '" + time +  "') or (u.startexecutiontime >='" + time + "' and u.startexecutiontime < '" + time1 +"'))";
+			}
+		}
 		return this.query(hql,map);						
 	}
 	
@@ -144,16 +133,4 @@ public class SupportitemDao extends HibernateBaseDao {
 			session.close();
 		}
 	}
-public Collection<Supportitem> queryRenyuan(Map<String, Object> parameter) throws Exception {
-		Map<String,Object> map=new HashMap<String,Object>();
-		String hql="from "+Supportitem.class.getName()+" u where 1=1";
-		Date now = new Date();
-		SimpleDateFormat df = new SimpleDateFormat("yyyy");
-		String time = df.format(now)+"/01/01";
-		String time1 = df.format(now)+"/12/31";
-		hql+=" and u.startexecutiontime <='"+ time1 +"' and u.endexecutiontime >= '"+ time +"'";
-	
-		return this.query(hql,map);				
-	}
-        
 }

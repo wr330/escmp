@@ -170,9 +170,24 @@ view.id('diaSupportprogram').hide();&#xD;
       <Property name="width">450</Property>
       <Buttons>
         <Button>
-          <ClientEvent name="onClick">view.id('uaSupportprogram').execute(function(){
-               view.id('diaSupportprogram').hide();
-           });
+          <ClientEvent name="onClick">var formSupport = view.id('afSupport');
+var worktime = formSupport.getElement('worktime').get('value');
+var endtime = formSupport.getElement('endtime').get('value');
+if(endtime != null){
+	if(worktime >= endtime){
+	dorado.MessageBox.alert('制定日期大于等于终止日期');
+	}
+	else{
+		view.id('uaSupportprogram').execute(function(){
+    	view.id('diaSupportprogram').hide();
+    	});
+	}
+}
+else{
+	view.id('uaSupportprogram').execute(function(){
+    view.id('diaSupportprogram').hide();
+    });
+}
          </ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
@@ -187,7 +202,7 @@ view.id('diaSupportprogram').hide();&#xD;
         </Button>
       </Buttons>
       <Children>
-        <AutoForm>
+        <AutoForm id="afSupport">
           <Property name="cols">*</Property>
           <Property name="dataSet">dsSupportprogram</Property>
           <AutoFormElement>
