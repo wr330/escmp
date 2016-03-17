@@ -58,8 +58,7 @@ public class FighterinfoManager {
 			for (Fighterinfo item : details) {
 				EntityState state = EntityUtils.getState(item);
 				if (state.equals(EntityState.NEW)) {
-					if (fighterinfoIsExists(item.getOutfactoryno())
-							.equals("此飞机已存在！"))
+					if (fighterinfoIsExists(item.getOutfactoryno()) != null)
 						throw new Exception("此飞机已存在！");
 					fighterinfoDao.saveData(item);
 				} else if (state.equals(EntityState.MODIFIED)) {

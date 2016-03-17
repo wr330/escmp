@@ -46,6 +46,7 @@ public class FpiciDao extends HibernateBaseDao {
 				args.put("ftypename", ftypename);
 			}
 		}
+		hql += "order by piciName ";
 		return this.query(hql, args);
 	}
 	
@@ -161,7 +162,7 @@ public class FpiciDao extends HibernateBaseDao {
 		parameterMap.put("ftypename", ftype);
 		parameterMap.put("fpici", fpici);
 		int count = this.queryForInt(hql, parameterMap);
-		String returnStr = "1";
+		String returnStr = null;
 		if (count > 0) {
 			returnStr = "此批次已存在！";
 		}

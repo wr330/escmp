@@ -57,7 +57,8 @@ else&#xD;
       <Property name="displayProperty">ftypename</Property>
       <Property name="editable">false</Property>
       <Property name="property">ftypename</Property>
-      <Property name="useEmptyItem">true</Property>
+      <Property name="useEmptyItem">false</Property>
+      <Property name="reloadDataOnOpen">true</Property>
     </DataSetDropDown>
     <UpdateAction id="updateActionSubject">
       <Property name="dataResolver">subjectPR#saveSubject</Property>
@@ -118,6 +119,7 @@ cur.flushAsync();</ClientEvent>
               <Property name="name">ftype</Property>
               <Property name="property">ftype</Property>
               <Property name="editable">false</Property>
+              <Property name="readOnly">true</Property>
               <Editor/>
             </AutoFormElement>
             <AutoFormElement>
@@ -152,19 +154,6 @@ cur.flushAsync();</ClientEvent>
             <Buttons/>
             <Children>
               <ToolBar>
-                <ToolBarButton>
-                  <ClientEvent name="onClick">var data=view.id(&quot;dataSetSubject&quot;).getData();&#xD;
-var newOrder=view.buildOrder(view.id(&quot;dataTreeSubject&quot;).get(&quot;root&quot;).get(&quot;nodes&quot;));&#xD;
-var newEntity=data.insert({orderno:newOrder});//插入一条新的&#xD;
-view.id(&quot;dataTreeSubject&quot;).set(&quot;currentEntity&quot;,newEntity);&#xD;
-var cur=view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
-var cur1=view.id(&quot;dataSetSubject&quot;).getData(&quot;!currentSubject&quot;);&#xD;
-cur1.set(&quot;ftype&quot;,cur);&#xD;
-</ClientEvent>
-                  <Property name="caption">添加根节点</Property>
-                  <Property name="icon">url(skin>common/icons.gif) -280px -100px</Property>
-                  <Property name="width">95</Property>
-                </ToolBarButton>
                 <ToolBarButton>
                   <ClientEvent name="onClick">var tree=view.id(&quot;dataTreeSubject&quot;);&#xD;
 var currentNode=tree.get(&quot;currentNode&quot;);&#xD;
@@ -217,6 +206,13 @@ if(entity){&#xD;
                   <Property name="icon">url(skin>common/icons.gif) -140px 0px</Property>
                   <Property name="width">57</Property>
                 </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var dataSetSubject = view.id(&quot;dataSetSubject&quot;);&#xD;
+dataSetSubject.flushAsync();</ClientEvent>
+                  <Property name="caption">刷新</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+                  <Property name="width">57</Property>
+                </ToolBarButton>
               </ToolBar>
             </Children>
           </FieldSet>
@@ -233,44 +229,20 @@ if(node){&#xD;
 }&#xD;
 &#xD;
 </ClientEvent>
-            <ClientEvent name="onDraggingSourceDrop">var draggingInfo=arg.draggingInfo;//拖拽信息&#xD;
-if(!draggingInfo){&#xD;
-	return true;&#xD;
-}&#xD;
-var parentNode=draggingInfo.get(&quot;targetObject&quot;);//targetObject，对象被拖拽到哪个对象&#xD;
-if(!parentNode){&#xD;
-	return true;&#xD;
-}&#xD;
-var parentId=parentNode.get(&quot;data.name&quot;);//父节点ID&#xD;
-var order=1;&#xD;
-parentNode.get(&quot;nodes&quot;).each(function(node){//遍历所有子节点&#xD;
-	var data=node.get(&quot;data&quot;);&#xD;
-	data.set(&quot;orderno&quot;,order++);&#xD;
-	data.set(&quot;parentnode&quot;,parentId);&#xD;
-});&#xD;
-view.id(&quot;updateActionSubject&quot;).execute();&#xD;
-</ClientEvent>
             <ClientEvent name="onCurrentChange">var dataTree = this.get(&quot;#dataTreeSubject&quot;);&#xD;
 var node = dataTree.get(&quot;currentNode&quot;);&#xD;
 if(node){&#xD;
 	var name = node.get(&quot;data&quot;).get(&quot;parentnode&quot;);&#xD;
-	if(name != null){&#xD;
-	view.set({&#xD;
-		&quot;^DirtyNode.disabled&quot;: false&#xD;
-	});&#xD;
-}&#xD;
-else&#xD;
-view.set({&#xD;
-		&quot;^DirtyNode.disabled&quot;: true&#xD;
-	});&#xD;
-	&#xD;
+	if(name == null){&#xD;
+		view.set({&#xD;
+		&quot;^DirtyNode.disabled&quot; : true});	&#xD;
+	}else{&#xD;
+		view.set({&#xD;
+		&quot;^DirtyNode.disabled&quot; : false});	&#xD;
+	}&#xD;
 }</ClientEvent>
             <Property name="currentNodeDataPath">currentSubject</Property>
-            <Property name="draggable">true</Property>
-            <Property name="dragTags">Subject</Property>
-            <Property name="droppable">true</Property>
-            <Property name="droppableTags">Subject</Property>
-            <Property name="dropMode">onOrInsertItems</Property>
+            <Property name="draggable">false</Property>
             <Property name="dataSet">dataSetSubject</Property>
             <BindingConfigs>
               <BindingConfig>

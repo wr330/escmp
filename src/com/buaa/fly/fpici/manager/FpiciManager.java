@@ -60,8 +60,7 @@ public class FpiciManager {
 			for (Fpici item : details) {
 				EntityState state = EntityUtils.getState(item);
 				if (state.equals(EntityState.NEW)) {
-					if (fpiciIsExists(item.getfTypeName().getFtypename(), item.getPiciName())
-							.equals("此批次已存在！"))
+					if (fpiciIsExists(item.getfTypeName().getFtypename(), item.getPiciName()) != null)
 						throw new Exception("此批次已存在！");
 					fpiciDao.saveData(item);
 				} else if (state.equals(EntityState.MODIFIED)) {

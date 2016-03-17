@@ -45,6 +45,8 @@ public class ShifeirequestaccDao extends HibernateBaseDao {
 			String ftype = (String) parameter.get("ftype");
 			if (StringUtils.isNotEmpty(ftype)) {
 				coreHql.append(" and a.ftype ='" + ftype + "'");
+			}else{
+				coreHql.append(" and a.ftype = null ");
 			}
 		}
 

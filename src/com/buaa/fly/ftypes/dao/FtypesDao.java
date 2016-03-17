@@ -31,7 +31,7 @@ public class FtypesDao extends HibernateBaseDao {
 	public Collection<Ftypes> queryFtypes(Map<String, Object> parameter) 
 			throws Exception {
 		Map<String, Object> args = new HashMap<String, Object>();
-		String hql = "from " + Ftypes.class.getName() + " a where 1=1 ";
+		String hql = "from " + Ftypes.class.getName() + " a where 1=1 order by ftypename";
 
 		if (null != parameter && !parameter.isEmpty()) {
 		}
@@ -105,7 +105,7 @@ public class FtypesDao extends HibernateBaseDao {
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
 		parameterMap.put("ftypename", ftype);
 		int count = this.queryForInt(hql, parameterMap);
-		String returnStr = "1";
+		String returnStr = null;
 		if (count > 0) {
 			returnStr = "此机型已存在！";
 		}

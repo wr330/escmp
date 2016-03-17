@@ -11,6 +11,11 @@
       <Property name="dataType">[Shifeirequestacc]</Property>
       <Property name="dataProvider">shifeirequestaccPR#queryShifeirequestacc</Property>
       <Property name="pageSize">20</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="ftype"></Property>
+        </Entity>
+      </Property>
     </DataSet>
     <DataSet id="dsFtypes">
       <Property name="dataProvider">ftypesPR#queryFtypes</Property>
@@ -35,6 +40,19 @@ var link = view.id(&quot;lefile&quot;);&#xD;
 link.set(&quot;visible&quot;,false);</ClientEvent>
       <Property name="service">defaultUploadProcessor#deleteFile</Property>
     </AjaxAction>
+    <DataSetDropDown id="chooseAircraftType">
+      <ClientEvent name="onValueSelect">var dsDailyacc = this.get(&quot;#dsShifeirequestacc&quot;);&#xD;
+dsDailyacc.set(&quot;parameter&quot;, {&#xD;
+	ftype: arg.selectedValue&#xD;
+});&#xD;
+dsDailyacc.flushAsync();</ClientEvent>
+      <Property name="autoOpen">true</Property>
+      <Property name="dataSet">dsFtypes</Property>
+      <Property name="displayProperty">ftypename</Property>
+      <Property name="editable">false</Property>
+      <Property name="property">ftypename</Property>
+      <Property name="reloadDataOnOpen">true</Property>
+    </DataSetDropDown>
     <UploadAction id="uaUpload">
       <ClientEvent name="onFilesAdded">var cur=view.id('dsShifeirequestacc').getData('#');&#xD;
 var value = &quot;/Fly_Shifeirequestacc/&quot; + cur.get(&quot;id&quot;) + &quot;/&quot;;&#xD;
@@ -65,19 +83,6 @@ dorado.MessageBox.show({&#xD;
       <Property name="maxFileSize">100MB</Property>
       <Filters/>
     </UploadAction>
-    <DataSetDropDown id="chooseAircraftType">
-      <ClientEvent name="onValueSelect">var dsDailyacc = this.get(&quot;#dsShifeirequestacc&quot;);&#xD;
-dsDailyacc.set(&quot;parameter&quot;, {&#xD;
-	ftype: arg.selectedValue&#xD;
-});&#xD;
-dsDailyacc.flushAsync();</ClientEvent>
-      <Property name="autoOpen">true</Property>
-      <Property name="dataSet">dsFtypes</Property>
-      <Property name="displayProperty">ftypename</Property>
-      <Property name="editable">false</Property>
-      <Property name="property">ftypename</Property>
-      <Property name="reloadDataOnOpen">true</Property>
-    </DataSetDropDown>
     <Dialog id="diaShifeirequestacc">
       <ClientEvent name="onClose">var cur=view.id('dsShifeirequestacc').getData('#');&#xD;
 if(cur){&#xD;
@@ -117,6 +122,7 @@ if(cur){
             <Property name="property">ftype</Property>
             <Property name="trigger">dataSetDropDownAircraftType</Property>
             <Property name="editable">false</Property>
+            <Property name="readOnly">true</Property>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">FileNo</Property>
@@ -195,13 +201,18 @@ for(var i=1;i&lt;=32;i++){
 dialog = view.id('diaShifeirequestacc');
 dialog.set(&quot;caption&quot;,&quot;新增试飞文件&quot;);
 var ftype = view.id(&quot;formElement1&quot;).get(&quot;value&quot;);
-view.id('dsShifeirequestacc').getData().insert({
+if(ftype){
+	view.id('dsShifeirequestacc').getData().insert({
 	ftype: ftype,
 	id: guid
-});
-view.id('diaShifeirequestacc').show();
-var link = view.id(&quot;lefile&quot;);
-link.set(&quot;visible&quot;,false);</ClientEvent>
+	});
+	view.id('diaShifeirequestacc').show();
+	var link = view.id(&quot;lefile&quot;);
+	link.set(&quot;visible&quot;,false);
+}else{
+	dorado.MessageBox.alert(&quot;请先选择机型&quot;);
+}
+</ClientEvent>
         <Property name="caption">新增</Property>
         <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
       </ToolBarButton>
@@ -241,16 +252,18 @@ if(cur){
         <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
       </ToolBarButton>
       <ToolBarButton>
-        <ClientEvent name="onClick"> 	var iframe=view.id(&quot;iframe&quot;);//upload/Fly_Shifeirequestacc/
-	var fileURL=&quot;upload/Fly_Shifeirequestacc/&quot;+view.id('dsShifeirequestacc').getData(&quot;#&quot;).get(&quot;id&quot;)+&quot;/&quot;+view.id('dsShifeirequestacc').getData(&quot;#&quot;).get(&quot;filename&quot;);
-	var url = encodeURI(fileURL);
-	var path=&quot;a.jsp?url='&quot;+ url +&quot;'&quot;;
-	//alert(path);		
-	open(path,&quot;_blank&quot;);
-//	var path=&quot;a.jsp?url='&quot;+fileURL+&quot;'&quot;;
-//		alert(path);
-//	iframe.set(&quot;path&quot;,path);
-//	view.id('diaWord').show();</ClientEvent>
+        <ClientEvent name="onClick">var dsShifeirequestacc = view.id(&quot;dsShifeirequestacc&quot;);&#xD;
+dsShifeirequestacc.flushAsync();</ClientEvent>
+        <Property name="caption">刷新</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+        <Property name="width">57</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var iframe=view.id(&quot;iframe&quot;);
+var fileURL=&quot;upload/Fly_Shifeirequestacc/&quot;+view.id('dsShifeirequestacc').getData(&quot;#&quot;).get(&quot;id&quot;)+&quot;/&quot;+view.id('dsShifeirequestacc').getData(&quot;#&quot;).get(&quot;filename&quot;);
+var url = encodeURI(fileURL);
+var path=&quot;a.jsp?url='&quot;+ url +&quot;'&quot;;	
+open(path,&quot;_blank&quot;);</ClientEvent>
         <Property name="caption">在线查看</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -120px -140px</Property>
       </ToolBarButton>

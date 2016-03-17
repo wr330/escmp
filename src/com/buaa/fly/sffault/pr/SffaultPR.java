@@ -17,33 +17,34 @@ import com.buaa.fly.domain.Sffault;
 import com.buaa.fly.sffault.manager.SffaultManager;
 
 @Component("sffaultPR")
-public class SffaultPR{
+public class SffaultPR {
 
-    @Resource
+	@Resource
 	private SffaultManager sffaultManager;
 
-     
-   /**                  
-	* 分页查询信息，带有criteria
-	* @param page    
-	* @param map
-	* @throws Exception
-	*/
+	/**
+	 * 分页查询信息，带有criteria
+	 * 
+	 * @param page
+	 * @param map
+	 * @throws Exception
+	 */
 	@DataProvider
-	public void querySffault(Page<Sffault> page,Map<String, Object> parameter,Criteria criteria) throws Exception {
-	    sffaultManager.querySffault(page,parameter,criteria);
+	public void querySffault(Page<Sffault> page, Map<String, Object> parameter,
+			Criteria criteria) throws Exception {
+		sffaultManager.querySffault(page, parameter, criteria);
 	}
-	
-	
+
 	/**
 	 * 数据保存，包括增删改
+	 * 
 	 * @param dataItems
 	 * @throws Exception
 	 */
-	 @SuppressWarnings("rawtypes")
-	 @DataResolver
-	 public void saveSffault(Map<String, Collection> dataItems) throws Exception {
-	    sffaultManager.saveSffault(dataItems);
-	 }
-	
+	@SuppressWarnings("rawtypes")
+	@DataResolver
+	public void saveSffault(Map<String, Collection> dataItems) throws Exception {
+		sffaultManager.saveSffault(dataItems);
+	}
+
 }
