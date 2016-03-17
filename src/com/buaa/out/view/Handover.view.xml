@@ -256,6 +256,7 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <Property name="property">name</Property>
           <Property name="displayProperty">name</Property>
           <Property name="editable">false</Property>
+          <Property name="reloadDataOnOpen">true</Property>
         </DataSetDropDown>
         <AutoForm id="afHandover">
           <Property name="cols">*</Property>

@@ -126,6 +126,12 @@ dsRenyuantongji.flushAsync();&#xD;
             <Container>
               <ToolBar>
                 <DataPilot/>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var dsRenyuantongji = view.get(&quot;#dsRenyuantongji&quot;);&#xD;
+dsRenyuantongji.flushAsync();</ClientEvent>
+                  <Property name="caption">刷新</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+                </ToolBarButton>
               </ToolBar>
               <DataGrid id="dgRenyuan">
                 <ClientEvent name="onDataRowClick">var dsRenyuantongji = view.get(&quot;#dsRenyuantongji&quot;);&#xD;
@@ -164,10 +170,12 @@ dsStatisticPerson.flushAsync();</ClientEvent>
                 </DataColumn>
                 <DataColumn>
                   <Property name="property">supportprogram.staffrequirement</Property>
+                  <Property name="align">left</Property>
                   <Editor/>
                 </DataColumn>
                 <DataColumn>
                   <Property name="property">supportprogram.changeperiod</Property>
+                  <Property name="align">left</Property>
                   <Editor/>
                 </DataColumn>
                 <DataColumn>

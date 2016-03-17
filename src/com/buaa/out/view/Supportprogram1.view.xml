@@ -114,6 +114,12 @@ if(cur){&#xD;
                   <Property name="caption">删除</Property>
                 </ToolBarButton>
                 <ToolBarButton>
+                  <ClientEvent name="onClick">var dsSupportprogram = view.get(&quot;#dsSupportprogram&quot;);&#xD;
+dsSupportprogram.getData(&quot;#&quot;).reset(&quot;supportitem&quot;);</ClientEvent>
+                  <Property name="caption">刷新</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
                   <ClientEvent name="onClick">var dsStatisticSupportitem = view.get(&quot;#dsStatisticSupportitem&quot;);&#xD;
 dsStatisticSupportitem.flushAsync();&#xD;
 view.id(&quot;SupportitemGraph&quot;).show();&#xD;
@@ -210,6 +216,12 @@ if(cur){&#xD;
 </ClientEvent>
                   <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
                   <Property name="caption">删除</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var dsSupportprogram = view.get(&quot;#dsSupportprogram&quot;);&#xD;
+dsSupportprogram.getData(&quot;#&quot;).reset(&quot;handover&quot;);</ClientEvent>
+                  <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+                  <Property name="caption">刷新</Property>
                 </ToolBarButton>
               </ToolBar>
               <DataGrid id="GridHandover">
@@ -550,6 +562,7 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
       <Property name="property">name</Property>
       <Property name="displayProperty">name</Property>
       <Property name="editable">false</Property>
+      <Property name="reloadDataOnOpen">true</Property>
     </DataSetDropDown>
     <UploadAction id="uaUpload">
       <ClientEvent name="onFilesAdded">var cur=view.id('dsSupportprogram').getData('#.#handover');&#xD;

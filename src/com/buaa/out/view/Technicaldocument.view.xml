@@ -21,21 +21,10 @@
       <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
       <Property name="loadMode">manual</Property>
     </DataSet>
-    <DataSet id="dsUserOperationLog">
-      <Property name="dataProvider">userOperationLogPR#queryUserOperationLog</Property>
-      <Property name="dataType">[UserOperationLog]</Property>
-      <Property name="pageSize">20</Property>
-    </DataSet>
     <UpdateAction id="uaTechnicaldocument">
       <Property name="dataResolver">technicaldocumentPR#saveTechnicaldocument</Property>
       <UpdateItem>
         <Property name="dataSet">dsTechnicaldocument</Property>
-      </UpdateItem>
-    </UpdateAction>
-    <UpdateAction id="uaUserOperationLog">
-      <Property name="dataResolver">userOperationLogPR#saveUserOperationLog</Property>
-      <UpdateItem>
-        <Property name="dataSet">dsUserOperationLog</Property>
       </UpdateItem>
     </UpdateAction>
     <ToolBar>
@@ -106,6 +95,12 @@ if (cur) {
 	</ClientEvent>
         <Property name="caption">删除</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var dsTechnicaldocument = view.get(&quot;#dsTechnicaldocument&quot;);&#xD;
+dsTechnicaldocument.flushAsync();</ClientEvent>
+        <Property name="caption">刷新</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgTechnicaldocument">
@@ -259,6 +254,7 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <Property name="property">name</Property>
           <Property name="displayProperty">name</Property>
           <Property name="editable">false</Property>
+          <Property name="reloadDataOnOpen">true</Property>
         </DataSetDropDown>
         <DataSetDropDown id="dataSetDropDownM">
           <ClientEvent name="onOpen">view.id(&quot;dsDictionary&quot;).set(&quot;parameter&quot;,{dictype:&quot;Dic_Major&quot;,status:0}).flushAsync();</ClientEvent>
@@ -268,6 +264,7 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <Property name="displayProperty">name</Property>
           <Property name="editable">false</Property>
           <Property name="useEmptyItem">true</Property>
+          <Property name="reloadDataOnOpen">true</Property>
         </DataSetDropDown>
         <DataSetDropDown id="dataSetDropDownE">
           <ClientEvent name="onOpen">view.id(&quot;dsDictionary&quot;).set(&quot;parameter&quot;,{dictype:&quot;Dic_OutExecution&quot;,status:0}).flushAsync();</ClientEvent>
@@ -277,6 +274,7 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <Property name="displayProperty">name</Property>
           <Property name="editable">false</Property>
           <Property name="useEmptyItem">true</Property>
+          <Property name="reloadDataOnOpen">true</Property>
         </DataSetDropDown>
         <DataSetDropDown id="dataSetDropDownR">
           <ClientEvent name="onOpen">view.id(&quot;dsDictionary&quot;).set(&quot;parameter&quot;,{dictype:&quot;Dic_SendReceiveType&quot;,status:0}).flushAsync();</ClientEvent>
@@ -286,6 +284,7 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <Property name="displayProperty">name</Property>
           <Property name="editable">false</Property>
           <Property name="useEmptyItem">true</Property>
+          <Property name="reloadDataOnOpen">true</Property>
         </DataSetDropDown>
         <AutoForm id="afTechnicaldocument">
           <Property name="cols">*</Property>
