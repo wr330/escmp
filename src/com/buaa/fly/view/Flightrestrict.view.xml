@@ -34,19 +34,6 @@
 });</ClientEvent>
       <Property name="dataType">[Root]</Property>
     </DataSet>
-    <DataSetDropDown id="chooseAircraft">
-      <ClientEvent name="onValueSelect">var dsTasklist = this.get(&quot;#dsFlightrestrict&quot;);&#xD;
-dsTasklist.set(&quot;parameter&quot;, {&#xD;
-	aircrafttype: arg.selectedValue&#xD;
-});&#xD;
-dsTasklist.flushAsync();&#xD;
-</ClientEvent>
-      <Property name="dataSet">dsFtypes</Property>
-      <Property name="property">ftypename</Property>
-      <Property name="editable">false</Property>
-      <Property name="autoOpen">true</Property>
-      <Property name="reloadDataOnOpen">true</Property>
-    </DataSetDropDown>
     <ListDropDown id="ddTrueorFalse">
       <Property name="autoOpen">true</Property>
       <Property name="editable">false</Property>
