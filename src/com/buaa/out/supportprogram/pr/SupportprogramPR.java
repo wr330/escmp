@@ -59,10 +59,10 @@ public class SupportprogramPR{
 	return supportprogramDao.query("from " + Supportprogram.class.getName()+" where parentnode = 0"
 		);
 	}
+	
 	 /**                  
-	   * 分页查询信息，带有criteria
-	   * @param page    
-	   * @param map
+	   * 根据地点和时间查询保障计划执行情况表
+	   * @param parameter   
 	   * @throws Exception
 	   */
 	@DataProvider

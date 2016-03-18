@@ -11,14 +11,26 @@
       <Property name="dataType">Integer</Property>
       <Property name="label">人员需求</Property>
       <Property name="required">true</Property>
+      <Property name="defaultValue">1</Property>
+      <Validator type="range">
+        <Property name="minValue">1</Property>
+        <Property name="minValueValidateMode">allowEquals</Property>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="supporttype">
       <Property name="dataType">String</Property>
       <Property name="label">保障类型</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="changeperiod">
       <Property name="dataType">Integer</Property>
-      <Property name="label">更换周期</Property>
+      <Property name="label">更换周期(月)</Property>
+      <Property name="defaultValue">1</Property>
+      <Property name="required">true</Property>
+      <Validator type="range">
+        <Property name="minValue">1</Property>
+        <Property name="minValueValidateMode">allowEquals</Property>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="workaddress">
       <Property name="dataType">String</Property>
@@ -26,23 +38,12 @@
       <Property name="mapping">
         <Property name="mapValues"></Property>
       </Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="worktime">
       <Property name="dataType">Date</Property>
       <Property name="label">制定日期</Property>
       <Property name="required">true</Property>
-      <Validator type="custom">
-        <ClientEvent name="onValidate">var endtime = arg.entity.get(&quot;endtime&quot;);&#xD;
-var worktime = arg.data;&#xD;
-if(endtime){&#xD;
-	if ((endtime > worktime)) {&#xD;
-	arg.result = { state:&quot;ok&quot;}&#xD;
-	} &#xD;
-	else{&#xD;
-		arg.result = { state:&quot;error&quot;, text: &quot;终止日期小于等于制定时间&quot;};	&#xD;
-	}&#xD;
-}</ClientEvent>
-      </Validator>
     </PropertyDef>
     <PropertyDef name="oid">
       <Property name="dataType">String</Property>
@@ -75,22 +76,11 @@ if(endtime){&#xD;
     <PropertyDef name="maker">
       <Property name="dataType">String</Property>
       <Property name="label">制定人</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="endtime">
       <Property name="dataType">Date</Property>
       <Property name="label">终止日期</Property>
-      <Validator type="custom">
-        <ClientEvent name="onValidate">var worktime = arg.entity.get(&quot;worktime&quot;);&#xD;
-var endtime = arg.data;&#xD;
-if(worktime){&#xD;
-	if ((endtime > worktime) || (endtime == null)) {&#xD;
-	arg.result = { state:&quot;ok&quot;}&#xD;
-	} &#xD;
-	else{&#xD;
-		arg.result = { state:&quot;error&quot;, text: &quot;终止日期小于等于制定时间&quot;};	&#xD;
-	}&#xD;
-}</ClientEvent>
-      </Validator>
     </PropertyDef>
     <Reference name="supportitem">
       <Property name="dataProvider">supportitemPR#querySupportitem</Property>
@@ -119,41 +109,15 @@ if(worktime){&#xD;
       <Property name="dataType">Date</Property>
       <Property name="label">开始时间</Property>
       <Property name="required">true</Property>
-      <Validator type="custom">
-        <ClientEvent name="onValidate">var endexecutiontime = arg.entity.get(&quot;endexecutiontime&quot;);&#xD;
-var startexecutiontime = arg.data;&#xD;
-if(endexecutiontime){&#xD;
-	if ((endexecutiontime > startexecutiontime)) {&#xD;
-	arg.result = { state:&quot;ok&quot;}&#xD;
-	} &#xD;
-	else{&#xD;
-		arg.result = { state:&quot;error&quot;, text: &quot;结束时间小于等于开始时间&quot;};	&#xD;
-	}&#xD;
-}&#xD;
-</ClientEvent>
-      </Validator>
     </PropertyDef>
     <PropertyDef name="endexecutiontime">
       <Property name="dataType">Date</Property>
       <Property name="label">结束时间</Property>
-      <Validator type="custom">
-        <ClientEvent name="onValidate">var startexecutiontime = arg.entity.get(&quot;startexecutiontime&quot;);&#xD;
-var endexecutiontime = arg.data;&#xD;
-if(startexecutiontime){&#xD;
-	if ((endexecutiontime > startexecutiontime) || (endexecutiontime == null)) {&#xD;
-	arg.result = { state:&quot;ok&quot;}&#xD;
-	} &#xD;
-	else{&#xD;
-		arg.result = { state:&quot;error&quot;, text: &quot;结束时间小于等于开始时间&quot;};	&#xD;
-	}&#xD;
-}&#xD;
-&#xD;
-</ClientEvent>
-      </Validator>
     </PropertyDef>
     <PropertyDef name="registrationexecutor">
       <Property name="dataType">String</Property>
       <Property name="label">登记执行人</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="oid">
       <Property name="dataType">String</Property>
@@ -229,15 +193,18 @@ arg.parameter = parameter;</ClientEvent>
       <Property></Property>
       <Property name="dataType">String</Property>
       <Property name="label">保障地点</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="supportGrade">
       <Property></Property>
       <Property name="dataType">String</Property>
       <Property name="label">保障分数</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="supportStartTime">
       <Property name="dataType">Date</Property>
       <Property name="label">保障开始时间</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="supportEndTime">
       <Property name="dataType">Date</Property>

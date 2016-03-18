@@ -48,6 +48,7 @@ dsStatisticSupport.set(&quot;parameter&quot;, {&#xD;
       <Property name="property">name</Property>
       <Property name="displayProperty">name</Property>
       <Property name="editable">false</Property>
+      <Property name="reloadDataOnOpen">true</Property>
     </DataSetDropDown>
     <DataSetDropDown id="dataSetDropDownS">
       <ClientEvent name="onOpen">view.id(&quot;dsDictionary&quot;).set(&quot;parameter&quot;,{dictype:&quot;Dic_Plantype&quot;,status:0}).flushAsync();</ClientEvent>
@@ -56,6 +57,7 @@ dsStatisticSupport.set(&quot;parameter&quot;, {&#xD;
       <Property name="property">name</Property>
       <Property name="displayProperty">name</Property>
       <Property name="editable">false</Property>
+      <Property name="reloadDataOnOpen">true</Property>
     </DataSetDropDown>
     <DataSetDropDown id="dataSetDropDownT">
       <ClientEvent name="onOpen">view.id(&quot;dsDictionary&quot;).set(&quot;parameter&quot;,{dictype:&quot;Dic_Troop&quot;,status:0}).flushAsync();</ClientEvent>
@@ -64,6 +66,7 @@ dsStatisticSupport.set(&quot;parameter&quot;, {&#xD;
       <Property name="displayProperty">name</Property>
       <Property name="dataSet">dsDictionary</Property>
       <Property name="autoOpen">true</Property>
+      <Property name="reloadDataOnOpen">true</Property>
     </DataSetDropDown>
     <UpdateAction id="uaSupportprogram">
       <Property name="dataResolver">supportprogramPR#saveSupportprogram</Property>
@@ -111,9 +114,10 @@ dialog.show();&#xD;
         <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
       </ToolBarButton>
       <ToolBarButton>
-        <ClientEvent name="onClick">view.id('dgSupportprogram').set(&quot;showFilterBar&quot;,!view.id('dgSupportprogram').get(&quot;showFilterBar&quot;));</ClientEvent>
-        <Property name="caption">自定义查询</Property>
-        <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
+        <ClientEvent name="onClick">var dsSupportprogram = view.get(&quot;#dsSupportprogram&quot;);&#xD;
+dsSupportprogram.flushAsync();</ClientEvent>
+        <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+        <Property name="caption">刷新</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var dsStatisticSupport = view.get(&quot;#dsStatisticSupport&quot;);&#xD;
@@ -122,6 +126,11 @@ view.id(&quot;SupportGraph&quot;).show();&#xD;
 </ClientEvent>
         <Property name="icon">url(>skin>common/icons.gif) -280px -40px</Property>
         <Property name="caption">统计查看</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">view.id('dgSupportprogram').set(&quot;showFilterBar&quot;,!view.id('dgSupportprogram').get(&quot;showFilterBar&quot;));</ClientEvent>
+        <Property name="caption">自定义查询</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgSupportprogram">
@@ -142,6 +151,7 @@ view.id(&quot;SupportGraph&quot;).show();&#xD;
       </DataColumn>
       <DataColumn name="staffrequirement">
         <Property name="property">staffrequirement</Property>
+        <Property name="align">left</Property>
       </DataColumn>
       <DataColumn name="worktime">
         <Property name="property">worktime</Property>
@@ -151,12 +161,14 @@ view.id(&quot;SupportGraph&quot;).show();&#xD;
       </DataColumn>
       <DataColumn name="changeperiod">
         <Property name="property">changeperiod</Property>
+        <Property name="align">left</Property>
       </DataColumn>
       <DataColumn name="maker">
         <Property name="property">maker</Property>
       </DataColumn>
       <DataColumn name="miji">
         <Property name="property">miji</Property>
+        <Property name="align">left</Property>
       </DataColumn>
     </DataGrid>
     <Dialog id="diaSupportprogram">
@@ -167,9 +179,24 @@ view.id('diaSupportprogram').hide();&#xD;
       <Property name="width">450</Property>
       <Buttons>
         <Button>
-          <ClientEvent name="onClick">view.id('uaSupportprogram').execute(function(){
-               view.id('diaSupportprogram').hide();
-           });
+          <ClientEvent name="onClick">var formSupport = view.id('afSupport');
+var worktime = formSupport.getElement('worktime').get('value');
+var endtime = formSupport.getElement('endtime').get('value');
+if(endtime != null){
+	if(worktime >= endtime){
+	dorado.MessageBox.alert('制定日期大于等于终止日期');
+	}
+	else{
+		view.id('uaSupportprogram').execute(function(){
+    	view.id('diaSupportprogram').hide();
+    	});
+	}
+}
+else{
+	view.id('uaSupportprogram').execute(function(){
+    view.id('diaSupportprogram').hide();
+    });
+}
          </ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
@@ -184,7 +211,7 @@ view.id('diaSupportprogram').hide();&#xD;
         </Button>
       </Buttons>
       <Children>
-        <AutoForm>
+        <AutoForm id="afSupport">
           <Property name="cols">*</Property>
           <Property name="dataSet">dsSupportprogram</Property>
           <AutoFormElement>
@@ -196,6 +223,7 @@ view.id('diaSupportprogram').hide();&#xD;
           <AutoFormElement>
             <Property name="name">staffrequirement</Property>
             <Property name="property">staffrequirement</Property>
+            <Property name="editorType">NumberSpinner</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
@@ -207,6 +235,7 @@ view.id('diaSupportprogram').hide();&#xD;
           <AutoFormElement>
             <Property name="name">changeperiod</Property>
             <Property name="property">changeperiod</Property>
+            <Property name="editorType">NumberSpinner</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>

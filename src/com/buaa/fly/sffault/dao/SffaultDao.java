@@ -24,6 +24,7 @@ import com.buaa.fly.domain.Sffault;
 public class SffaultDao extends HibernateBaseDao {
 	@Resource
 	private QueryUserData userService;
+
 	/**
 	 * 同时也支持普通类型查询，在数据类型和日期类型支持区间查询
 	 * 
@@ -32,54 +33,60 @@ public class SffaultDao extends HibernateBaseDao {
 	 * @param criteria
 	 * @throws Exception
 	 */
-	public void querySffault(Page<Sffault> page, Map<String, Object> parameter,Criteria criteria) throws Exception {
-        Map<String, Object> args = new HashMap<String,Object>();
-        StringBuffer coreHql = new StringBuffer("from " + Sffault.class.getName()+" a where 1=1 ");
-        
-        if(null != parameter && !parameter.isEmpty()){
-        	String ftype = (String)parameter.get("ftype");
-        	if(StringUtils.isNotEmpty( ftype )){
-        		coreHql.append(" and a.ftype ='" + ftype + "'");
-        	}
-        	String gzfs = (String)parameter.get("gzfs");
-        	if(StringUtils.isNotEmpty( gzfs )){
-        		coreHql.append(" and a.gzfs like '%" + gzfs + "%'");
-        	}
-        	String type = (String)parameter.get("type");
-        	if(StringUtils.isNotEmpty( type )){
-        		coreHql.append(" and a.type like '%" + type + "%'");
-        	}
-        	String status = (String)parameter.get("status");
-        	if(StringUtils.isNotEmpty( status )){
-        		coreHql.append(" and a.status ='" + status + "'");
-        	}
-        	String bumen = (String)parameter.get("bumen");
-        	if(StringUtils.isNotEmpty( bumen )){
-        		coreHql.append(" and ( a.bumen ='" + bumen + "' or a.relatebumen ='" + bumen + "')");
-        	}
-        	String majorsystem = (String)parameter.get("majorsystem");
-        	if(StringUtils.isNotEmpty( majorsystem )){
-        		coreHql.append(" and ( a.majorsystem ='" + majorsystem + "' or a.relatemajor ='" + majorsystem + "')");
-        	}
-        }
-		
+	public void querySffault(Page<Sffault> page, Map<String, Object> parameter,
+			Criteria criteria) throws Exception {
+		Map<String, Object> args = new HashMap<String, Object>();
+		StringBuffer coreHql = new StringBuffer("from "
+				+ Sffault.class.getName() + " a where 1=1 ");
+
+		if (null != parameter && !parameter.isEmpty()) {
+			String ftype = (String) parameter.get("ftype");
+			if (StringUtils.isNotEmpty(ftype)) {
+				coreHql.append(" and a.ftype ='" + ftype + "'");
+			}else{
+				coreHql.append(" and a.ftype = null ");
+			}
+			String gzfs = (String) parameter.get("gzfs");
+			if (StringUtils.isNotEmpty(gzfs)) {
+				coreHql.append(" and a.gzfs like '%" + gzfs + "%'");
+			}
+			String type = (String) parameter.get("type");
+			if (StringUtils.isNotEmpty(type)) {
+				coreHql.append(" and a.type like '%" + type + "%'");
+			}
+			String status = (String) parameter.get("status");
+			if (StringUtils.isNotEmpty(status)) {
+				coreHql.append(" and a.status ='" + status + "'");
+			}
+			String bumen = (String) parameter.get("bumen");
+			if (StringUtils.isNotEmpty(bumen)) {
+				coreHql.append(" and ( a.bumen ='" + bumen
+						+ "' or a.relatebumen ='" + bumen + "')");
+			}
+			String majorsystem = (String) parameter.get("majorsystem");
+			if (StringUtils.isNotEmpty(majorsystem)) {
+				coreHql.append(" and ( a.majorsystem ='" + majorsystem
+						+ "' or a.relatemajor ='" + majorsystem + "')");
+			}
+		}
+
 		if (null != criteria) {
 			ParseResult result = this.parseCriteria(criteria, true, "a");
 			if (null != result) {
-				coreHql.append(" and "+ result.getAssemblySql());
+				coreHql.append(" and " + result.getAssemblySql());
 				args.putAll(result.getValueMap());
 			}
 		}
 
-        
-        String countHql = "select count(*) " + coreHql.toString();
-        String hql = coreHql.toString();
-        hql=userService.checkUser(hql);
+		String countHql = "select count(*) " + coreHql.toString();
+		String hql = coreHql.toString();
+		hql = userService.checkUser(hql);
 		this.pagingQuery(page, hql, countHql, args);
 	}
-	
+
 	/**
 	 * 数据添加
+	 * 
 	 * @param detail
 	 * @throws Exception
 	 */
@@ -96,6 +103,7 @@ public class SffaultDao extends HibernateBaseDao {
 
 	/**
 	 * 数据修改
+	 * 
 	 * @param detail
 	 * @throws Exception
 	 */
@@ -111,6 +119,7 @@ public class SffaultDao extends HibernateBaseDao {
 
 	/**
 	 * 数据删除
+	 * 
 	 * @param detail
 	 * @throws Exception
 	 */
@@ -123,5 +132,5 @@ public class SffaultDao extends HibernateBaseDao {
 			session.close();
 		}
 	}
-        
+
 }

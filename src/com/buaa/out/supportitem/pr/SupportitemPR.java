@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.annotation.Resource;
 
@@ -21,6 +23,7 @@ import com.buaa.fly.domain.Outlineexecution;
 import com.buaa.out.domain.Supportitem;
 import com.buaa.out.domain.Supportprogram;
 import com.buaa.out.supportitem.manager.SupportitemManager;
+import com.buaa.out.supportprogram.manager.SupportprogramManager;
 
 
 
@@ -29,6 +32,8 @@ public class SupportitemPR{
 
     @Resource
 	private SupportitemManager supportitemManager;
+    @Resource
+   	private SupportprogramManager supportprogramManager;
 
      
    /**                  
@@ -53,51 +58,16 @@ public class SupportitemPR{
 	 public void saveSupportitem(Map<String, Collection> dataItems) throws Exception {
 	    supportitemManager.saveSupportitem(dataItems);
 	 }
-	 @DataProvider
-		public Collection<Map<String, Object>> statisticRenyuan(Map<String, Object> parameter) throws Exception {
-			List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-			Collection<Supportitem> dataItems = supportitemManager.queryRenyuan(parameter);
-			Integer num[] = new Integer[12];
-			for(int i = 0; i < 12; i++){
-				num[i] = 0;
-			}
-			for (Supportitem item : dataItems) {
-				Calendar start = Calendar.getInstance();
-				Calendar end = Calendar.getInstance();
-				start.setTime(item.getStartexecutiontime());
-				end.setTime(item.getEndexecutiontime());
-				int mouthst = start.get(Calendar.MONTH);
-				int mouthen = end.get(Calendar.MONTH);
-				if(mouthen==mouthst)
-					num[mouthen]++;
-				else{
-					for(int i = 0; i < 12; i++){
-					if(mouthst<=i&&i<=mouthen){
-						num[i]++;
-					}
-					}
-				}	
-			}	
-			for(int i = 0; i < 12; i++){
-				HashMap<String, Object> map = new HashMap<String, Object>();
-				Integer yue = i + 1;
-				String mouth = yue.toString() +"月";
-				map.put("mouth", mouth);
-				map.put("num", num[i]);
-				list.add(map);
-			}
-			return list;
-		}
-	
+	 
 	 /**                  
 	  * 保障计划执行的总人天统计    
-	  * @param map
+	  * @param parameter
 	  * @throws Exception
 	  */
 	@DataProvider
 	public Map<String, Object> statisticSupportitem(Map<String, Object> parameter) throws Exception {
 		List<Map<String, Object>> listSupport = new ArrayList<Map<String, Object>>();
-		Collection<Supportprogram> dataItems = supportitemManager.queryProgram(parameter);
+		Collection<Supportprogram> dataItems = supportprogramManager.queryProgram(parameter);
 		if(dataItems.isEmpty()){
 			HashMap<String, Object> map1 = new HashMap<String, Object>();
 			map1.put("data", null);
@@ -113,9 +83,9 @@ public class SupportitemPR{
 		String troop[] = new String[amountSP];
 		int countSP = 0;
 		for (Supportprogram item : dataItems) {
-			String oid = item.getOid();
+			String fatherOid = item.getOid();
 			HashMap<String, Object> parameter1 = new HashMap<String, Object>();
-			parameter1.put("oid", oid);
+			parameter1.put("fatherOid", fatherOid);
 			parameter1.put("year", yearInt);
 			Collection<Supportitem> dataSupportitem = supportitemManager.queryItem(parameter1);
 			for(Supportitem itemSup : dataSupportitem){
@@ -180,4 +150,87 @@ public class SupportitemPR{
 		return map1;
 	}
 	
+	/**                  
+	  * 保障计划执行人对本保障计划执行情况的统计    
+	  * @param parameter
+	  * @throws Exception
+	  */
+	@DataProvider
+	public Map<String, Object> statisticPerson(Map<String, Object> parameter) throws Exception {
+		Collection<Map<String, Object>> listSupportitem = new ArrayList<Map<String, Object>>();
+		Collection<Map<String, Object>> listSupportPercent = new ArrayList<Map<String, Object>>();
+		Collection<Supportitem> dataItems = supportitemManager.queryItem(parameter);
+		Integer amountSP = dataItems.size();
+		Long num[] = new Long[amountSP];
+		for(int i = 0; i < amountSP; i++){
+				num[i] =  (long) 0;
+		}
+		String person[] = new String[amountSP];
+		int countSP = 0;
+		for (Supportitem item : dataItems) {
+			//考虑结束时间没有填写，默认在当年结束
+			if(item.getEndexecutiontime() == null){
+				Calendar start = Calendar.getInstance();
+				Calendar end = Calendar.getInstance();
+				start.setTime(item.getStartexecutiontime());
+				int year = start.get(Calendar.YEAR);
+				end.set(year, 12, 31);
+				//通过开始时间和结束时间计算相隔天数
+				num[countSP] = (end.getTimeInMillis() - start.getTimeInMillis()) / (24 * 60 * 60 * 1000); 
+			}
+			else{
+				Calendar start = Calendar.getInstance();
+				Calendar end = Calendar.getInstance();
+				start.setTime(item.getStartexecutiontime());
+				end.setTime(item.getEndexecutiontime());
+				//通过开始时间和结束时间计算相隔天数
+				num[countSP] = (end.getTimeInMillis() - start.getTimeInMillis()) / (24 * 60 * 60 * 1000);
+				}
+			person[countSP] = item.getRegistrationexecutor();
+			countSP ++;
+		}
+		//利用Set类型来对字符数组去除重复元素
+		Set<String> set = new TreeSet<String>();   
+		int len = person.length;   
+		for(int i=0;i<len;i++){     
+			set.add(person[i]);//将所有字符串添加到Set   
+		}
+		int amountSP1 = set.size();
+		String person1[] = new String[amountSP1];
+		person1 = (String[]) set.toArray(new String[0]);
+		Long num1[] = new Long[amountSP1];
+		for(int i = 0; i < amountSP1; i++){
+			num1[i] =  (long) 0;
+		}
+		//对相同的执行人的工作天数相加
+		for(int i = 0;i < amountSP1;i ++ ){
+			for(int j = 0;j < amountSP;j ++){
+				if(person1[i] == person[j]){
+					num1[i] = num1[i] + num[j];
+				}
+			}
+		}
+		Long amountNum = (long) 0;
+		//把计划执行人和此人在此计划中执行的天数用Map封装
+		for(int i = 0; i < amountSP1; i++){
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("person", person1[i]);
+			map.put("num", num1[i]);
+			listSupportitem.add(map);
+			amountNum += num1[i];
+		}
+		//计算每个人工作量占总工作天数的百分比
+		float percent = 1.00f;
+		for(int i = 0; i < amountSP1; i++){
+			HashMap<String, Object> mapPer = new HashMap<String, Object>();
+			percent = (float)num1[i] / amountNum;
+			mapPer.put("person", person1[i]);
+			mapPer.put("percent", percent);
+			listSupportPercent.add(mapPer);
+		}
+		HashMap<String, Object> map1 = new HashMap<String, Object>();
+		map1.put("data", listSupportitem);
+		map1.put("per", listSupportPercent);
+		return map1;
+	}
 }

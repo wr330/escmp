@@ -5,7 +5,16 @@
   </Property>
   <Arguments/>
   <Context/>
-  <Model/>
+  <Model>
+    <DataType name="dtPerson">
+      <PropertyDef name="data">
+        <Property name="dataType">[Map]</Property>
+      </PropertyDef>
+      <PropertyDef name="per">
+        <Property name="dataType">[Map]</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
   <View>
     <DataSet id="dsDictionaryAdrs">
       <Property name="parameter">
@@ -18,6 +27,13 @@
       <Property name="dataType">[Dictionary]</Property>
     </DataSet>
     <DataSet id="dsRenyuantongji">
+      <ClientEvent name="onReady">var dsRenyuantongji=view.id('dsRenyuantongji');&#xD;
+var cur = view.id('dsDictionaryAdrs').getData(&quot;#&quot;).get(&quot;name&quot;);&#xD;
+dsRenyuantongji.set(&quot;parameter&quot;,{&#xD;
+	address:cur&#xD;
+});&#xD;
+dsRenyuantongji.flushAsync();&#xD;
+</ClientEvent>
       <Property name="dataProvider">supportprogramPR#queryRenyuan</Property>
       <Property name="parameter">
         <Entity>
@@ -26,51 +42,154 @@
       </Property>
       <Property name="dataType">[Supportitem]</Property>
     </DataSet>
+    <DataSet id="dsStatisticPerson">
+      <Property name="dataProvider">supportitemPR#statisticPerson</Property>
+      <Property name="dataType">dtPerson</Property>
+    </DataSet>
     <SplitPanel>
       <Property name="position">208</Property>
-      <Property name="height">50%</Property>
       <MainControl>
-        <DataGrid id="dgRenyuan">
-          <Property name="dataSet">dsRenyuantongji</Property>
-          <Property name="filterMode">serverSide</Property>
-          <Property name="readOnly">true</Property>
-          <RowNumColumn/>
-          <DataColumn>
-            <Property name="property">registrationexecutor</Property>
-            <Property name="width">160</Property>
-            <Property name="name">registrationexecutor</Property>
-          </DataColumn>
-          <DataColumn>
-            <Property name="property">startexecutiontime</Property>
-            <Property name="width">300</Property>
-            <Property name="name">startexecutiontime</Property>
-          </DataColumn>
-          <DataColumn>
-            <Property name="property">endexecutiontime</Property>
-            <Property name="width">160</Property>
-            <Property name="name">endexecutiontime</Property>
-          </DataColumn>
-          <DataColumn>
-            <Property name="property">supportprogram.supporttype</Property>
-            <Editor/>
-          </DataColumn>
-          <DataColumn>
-            <Property name="property">supportprogram.troop</Property>
-            <Editor/>
-          </DataColumn>
-          <DataColumn>
-            <Property name="property">supportprogram.staffrequirement</Property>
-            <Editor/>
-          </DataColumn>
-          <DataColumn>
-            <Property name="property">supportprogram.changeperiod</Property>
-            <Editor/>
-          </DataColumn>
-          <DataColumn>
-            <Property name="property">supportprogram.worktime</Property>
-            <Editor/>
-          </DataColumn>
-        </DataGrid>
+        <SplitPanel>
+          <Property name="direction">top</Property>
+          <Property name="position">38.2%</Property>
+          <MainControl>
+            <TabControl>
+              <ControlTab>
+                <Property name="caption">该保障计划个人执行情况统计-柱状图</Property>
+                <Chart>
+                  <Axes>
+                    <CategoryAxis>
+                      <Property name="dataSet">dsStatisticPerson</Property>
+                      <Property name="properties">person</Property>
+                      <Property name="dataPath">#.data</Property>
+                    </CategoryAxis>
+                    <NumbericAxis>
+                      <Property name="min">0</Property>
+                    </NumbericAxis>
+                  </Axes>
+                  <Series>
+                    <Column>
+                      <Property name="dataSet">dsStatisticPerson</Property>
+                      <Property name="bindingConfig">
+                        <Property name="yProperty">num</Property>
+                      </Property>
+                      <Property name="title">执行保障计划的天数</Property>
+                      <Property name="dataPath">#.data</Property>
+                    </Column>
+                  </Series>
+                </Chart>
+              </ControlTab>
+              <ControlTab>
+                <Property name="caption">该保障计划个人执行情况统计-折线图</Property>
+                <Chart>
+                  <Axes>
+                    <CategoryAxis>
+                      <Property name="dataSet">dsStatisticPerson</Property>
+                      <Property name="properties">person</Property>
+                      <Property name="dataPath">#.data</Property>
+                    </CategoryAxis>
+                    <NumbericAxis>
+                      <Property name="min">0</Property>
+                    </NumbericAxis>
+                  </Axes>
+                  <Series>
+                    <Line>
+                      <Property name="dataSet">dsStatisticPerson</Property>
+                      <Property name="bindingConfig">
+                        <Property name="yProperty">num</Property>
+                      </Property>
+                      <Property name="title">执行保障计划的天数</Property>
+                      <Property name="dataPath">#.data</Property>
+                    </Line>
+                  </Series>
+                </Chart>
+              </ControlTab>
+              <ControlTab>
+                <Property name="caption">该保障计划个人执行情况统计-饼图</Property>
+                <Chart>
+                  <Axes/>
+                  <Series>
+                    <Pie>
+                      <Property name="dataSet">dsStatisticPerson</Property>
+                      <Property name="bindingConfig">
+                        <Property name="labelProperty">person</Property>
+                        <Property name="valueProperty">num</Property>
+                      </Property>
+                      <Property name="dataPath">#.data</Property>
+                    </Pie>
+                  </Series>
+                </Chart>
+              </ControlTab>
+            </TabControl>
+          </MainControl>
+          <SideControl>
+            <Container>
+              <ToolBar>
+                <DataPilot/>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var dsRenyuantongji = view.get(&quot;#dsRenyuantongji&quot;);&#xD;
+dsRenyuantongji.flushAsync();</ClientEvent>
+                  <Property name="caption">刷新</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid id="dgRenyuan">
+                <ClientEvent name="onDataRowClick">var dsRenyuantongji = view.get(&quot;#dsRenyuantongji&quot;);&#xD;
+var dsStatisticPerson = view.get(&quot;#dsStatisticPerson&quot;);&#xD;
+//var fatherOid = dsRenyuantongji.get(&quot;data:#.supportprogram.oid&quot;);&#xD;
+var fatherOid = dsRenyuantongji.getData(&quot;#&quot;).get(&quot;supportprogram.oid&quot;);&#xD;
+dsStatisticPerson.set(&quot;parameter&quot;, {&#xD;
+	fatherOid: fatherOid&#xD;
+});&#xD;
+dsStatisticPerson.flushAsync();</ClientEvent>
+                <Property name="dataSet">dsRenyuantongji</Property>
+                <Property name="filterMode">serverSide</Property>
+                <Property name="readOnly">true</Property>
+                <Property name="rowHeight">22</Property>
+                <RowNumColumn/>
+                <DataColumn>
+                  <Property name="property">registrationexecutor</Property>
+                  <Property name="width">160</Property>
+                  <Property name="name">registrationexecutor</Property>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">startexecutiontime</Property>
+                  <Property name="name">startexecutiontime</Property>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">endexecutiontime</Property>
+                  <Property name="name">endexecutiontime</Property>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">supportprogram.supporttype</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">supportprogram.troop</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">supportprogram.staffrequirement</Property>
+                  <Property name="align">left</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">supportprogram.changeperiod</Property>
+                  <Property name="align">left</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">supportprogram.worktime</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">supportprogram.endtime</Property>
+                  <Editor/>
+                </DataColumn>
+              </DataGrid>
+            </Container>
+          </SideControl>
+        </SplitPanel>
       </MainControl>
       <SideControl>
         <DataGrid id="dgOutfield">
@@ -86,6 +205,7 @@ dsRenyuantongji.flushAsync();&#xD;
           <Property name="readOnly">true</Property>
           <Property name="height">300</Property>
           <Property name="width">200</Property>
+          <Property name="rowHeight">22</Property>
           <DataColumn name="name">
             <Property name="property">name</Property>
             <Property name="width">200</Property>
@@ -94,30 +214,5 @@ dsRenyuantongji.flushAsync();&#xD;
         </DataGrid>
       </SideControl>
     </SplitPanel>
-    <Chart id="chartA">
-      <Axes>
-        <CategoryAxis>
-          <Property name="dataSet">statisticRenyuan</Property>
-          <Property name="properties">mouth</Property>
-        </CategoryAxis>
-        <NumbericAxis>
-          <Property name="min">0</Property>
-          <Property name="title">人数</Property>
-        </NumbericAxis>
-      </Axes>
-      <Series>
-        <Line>
-          <Property name="dataSet">statisticRenyuan</Property>
-          <Property name="title">人员需求</Property>
-          <Property name="bindingConfig">
-            <Property name="yProperty">num</Property>
-          </Property>
-        </Line>
-      </Series>
-    </Chart>
-    <DataSet id="statisticRenyuan">
-      <Property name="dataProvider">supportitemPR#statisticRenyuan</Property>
-      <Property name="parameter"></Property>
-    </DataSet>
   </View>
 </ViewConfig>
