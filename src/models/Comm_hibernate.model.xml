@@ -145,6 +145,12 @@
         </Property>
       </Property>
     </PropertyDef>
+    <PropertyDef name="downloadAmount">
+      <Property name="dataType">int</Property>
+      <Property name="required">true</Property>
+      <Property name="defaultValue">0</Property>
+      <Property name="label">下载数量</Property>
+    </PropertyDef>
   </DataType>
   <DataType name="Technicandcontract">
     <Property name="matchType">com.buaa.comm.domain.Technicandcontract</Property>

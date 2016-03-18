@@ -12,21 +12,22 @@
       <Property name="dataProvider">resourcedownloadPR#queryResourcedownload</Property>
       <Property name="pageSize">20</Property>
     </DataSet>
-    <DataSet id="dsUserOperationLog">
-      <Property name="dataProvider">userOperationLogPR#queryUserOperationLog</Property>
-      <Property name="dataType">[UserOperationLog]</Property>
-      <Property name="pageSize">20</Property>
+    <DataSet id="dsDictionary">
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
     </DataSet>
+    <DataSetDropDown id="dataSetDropDownR">
+      <ClientEvent name="onOpen">view.id(&quot;dsDictionary&quot;).set(&quot;parameter&quot;,{dictype:&quot;Dic_ResourceType&quot;,status:0}).flushAsync();</ClientEvent>
+      <Property name="autoOpen">true</Property>
+      <Property name="dataSet">dsDictionary</Property>
+      <Property name="property">name</Property>
+      <Property name="displayProperty">name</Property>
+      <Property name="editable">false</Property>
+      <Property name="reloadDataOnOpen">true</Property>
+    </DataSetDropDown>
     <UpdateAction id="uaResourcedownload">
       <Property name="dataResolver">resourcedownloadPR#saveResourcedownload</Property>
       <UpdateItem>
         <Property name="dataSet">dsResourcedownload</Property>
-      </UpdateItem>
-    </UpdateAction>
-    <UpdateAction id="uaUserOperationLog">
-      <Property name="dataResolver">userOperationLogPR#saveUserOperationLog</Property>
-      <UpdateItem>
-        <Property name="dataSet">dsUserOperationLog</Property>
       </UpdateItem>
     </UpdateAction>
     <ToolBar>
@@ -118,13 +119,32 @@ var cur=view.id('dsResourcedownload').getData('#');
 var file = arg.data.get(&quot;efile&quot;);&#xD;
 var oid = arg.data.get(&quot;oid&quot;);&#xD;
 var href = &quot;/escmp/upload/Comm_Resourcedownload/&quot; + oid + &quot;/&quot; + file;&#xD;
+&#xD;
 jQuery(arg.dom).xCreate({&#xD;
 	tagName:&quot;A&quot;,&#xD;
 	href:href,&#xD;
-	content:arg.data.get(&quot;efile&quot;)&#xD;
-});</ClientEvent>
+	content:arg.data.get(&quot;efile&quot;),&#xD;
+ 	onclick: function(){ &#xD;
+	var dsResourcedownload = view.id('dsResourcedownload').getData(&quot;#&quot;);&#xD;
+ 	var cur = dsResourcedownload.get(&quot;downloadAmount&quot;);&#xD;
+	cur++;	&#xD;
+	dsResourcedownload.set(&quot;downloadAmount&quot;,cur);&#xD;
+    view.id('uaResourcedownload').execute();&#xD;
+	&#xD;
+	}&#xD;
+});&#xD;
+&#xD;
+</ClientEvent>
         <Property name="property">efile</Property>
         <Property name="width">120</Property>
+        <Property name="userData"/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="width">120</Property>
+        <Property name="property">downloadAmount</Property>
+        <Property name="name">downloadAmount</Property>
+        <Property name="align">left</Property>
+        <Editor/>
       </DataColumn>
       <DataColumn>
         <Property name="property">miji</Property>
@@ -139,7 +159,7 @@ jQuery(arg.dom).xCreate({&#xD;
 	view.id('diaResourcedownload').hide();</ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
-      <Property name="width">800</Property>
+      <Property name="width">450</Property>
       <Buttons>
         <Button>
           <ClientEvent name="onClick">view.id('uaResourcedownload').execute(function(){
@@ -159,7 +179,7 @@ jQuery(arg.dom).xCreate({&#xD;
       </Buttons>
       <Children>
         <AutoForm id="afResourcedownload">
-          <Property name="cols">*,*</Property>
+          <Property name="cols">*</Property>
           <Property name="dataSet">dsResourcedownload</Property>
           <Property name="dataPath">#</Property>
           <AutoFormElement>
@@ -169,6 +189,7 @@ jQuery(arg.dom).xCreate({&#xD;
           <AutoFormElement>
             <Property name="name">ResourceType</Property>
             <Property name="property">resourcetype</Property>
+            <Property name="trigger">dataSetDropDownR</Property>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">Description</Property>
@@ -193,6 +214,12 @@ jQuery(arg.dom).xCreate({&#xD;
                 </Button>
               </Container>
             </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">downloadAmount</Property>
+            <Property name="name">DownloadAmount</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">miji</Property>
