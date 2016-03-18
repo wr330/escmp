@@ -47,71 +47,33 @@
           <Children>
             <ToolBar>
               <DataPilot>
-                <ClientEvent name="onSubControlAction">switch (arg.code) {&#xD;
-	case &quot;+&quot;:&#xD;
-		view.id(&quot;dsAddressbook&quot;).getData().insert();&#xD;
-		view.id(&quot;dialogPhone&quot;).show();&#xD;
-		arg.processDefault = false;&#xD;
-		&#xD;
-		/*&#xD;
- 	 	 * 对用户新增操作进行记录，在用户操作日志表中新增一条记录。&#xD;
-     	 */&#xD;
-		var myDate = new Date();&#xD;
-		view.id('dsUserOperationLog').getData().insert({&#xD;
-			logOperationType:&quot;0&quot;,&#xD;
-			operationPerson: &quot;${loginUsername}&quot;,&#xD;
-			operationContent:&quot;对部门通讯录联系方式表新增一条记录&quot;,&#xD;
-			operationTime:myDate&#xD;
-		});&#xD;
-		view.id('uaUserOperationLog').execute();&#xD;
-		&#xD;
-		break;&#xD;
-	case &quot;-&quot;:&#xD;
-		dorado.MessageBox.confirm(&quot;你确定要删除这条记录？&quot;,function(){&#xD;
+                <Property name="dataSet">dsAddressbook</Property>
+                <Property name="itemCodes">pages</Property>
+              </DataPilot>
+              <ToolBarButton>
+                <ClientEvent name="onClick">view.id(&quot;dsAddressbook&quot;).getData().insert();&#xD;
+		var dialog=view.id(&quot;dialogPhone&quot;);&#xD;
+        dialog.show();</ClientEvent>
+                <Property name="caption">新增</Property>
+                <Property name="icon">url(skin>common/icons.gif) -280px -100px</Property>
+              </ToolBarButton>
+              <ToolBarButton>
+                <ClientEvent name="onClick">dorado.MessageBox.confirm(&quot;你确定要删除这条记录？&quot;,function(){&#xD;
 	    var entity = view.id(&quot;dsAddressbook&quot;).getData(&quot;#&quot;);&#xD;
-		&#xD;
-		/*&#xD;
- 		 * 对用户删除操作进行记录，在用户操作日志表中新增一条记录。&#xD;
- 		 */&#xD;
-		var myDate = new Date();&#xD;
-		view.id('dsUserOperationLog').getData().insert({&#xD;
-			logOperationType:&quot;2&quot;,&#xD;
-			operationPerson: &quot;${loginUsername}&quot;,&#xD;
-			operationContent:&quot;对部门通讯录联系方式表删除所选记录&quot;,&#xD;
-			operationTime:myDate&#xD;
-		});&#xD;
-		view.id('uaUserOperationLog').execute();&#xD;
-		&#xD;
 		entity.remove();&#xD;
 		view.id('uaAddressbook').execute();&#xD;
-	});	&#xD;
-	    &#xD;
-	   arg.processDefault = false;&#xD;
-		break;&#xD;
-	default:&#xD;
-		arg.processDefault = true;&#xD;
-}</ClientEvent>
-                <Property name="dataSet">dsAddressbook</Property>
-                <Property name="itemCodes">+,-,pages</Property>
-              </DataPilot>
+	});</ClientEvent>
+                <Property name="caption">删除</Property>
+                <Property name="icon">url(skin>common/icons.gif) -140px 0px</Property>
+              </ToolBarButton>
               <ToolBarButton>
                 <ClientEvent name="onClick">
 	var cur=view.id('dsAddressbook').getData('#');
-	if (cur) {
-		view.id('dialogPhone').show();
+	if(cur){
+		var dialog=view.id('dialogPhone');
+		dialog.show();
 	}
-	
-	/*
- 	 * 对用户修改操作进行记录，在用户操作日志表中新增一条记录。
- 	 */
-	var myDate = new Date();
-	view.id('dsUserOperationLog').getData().insert({
-		logOperationType:&quot;1&quot;,
-		operationPerson: &quot;${loginUsername}&quot;,
-		operationContent:&quot;对部门通讯录联系方式表修改选定记录&quot;,
-		operationTime:myDate
-	});
-	view.id('uaUserOperationLog').execute();
+
 	</ClientEvent>
                 <Property name="caption">修改</Property>
                 <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
@@ -124,17 +86,6 @@ importExcelAction.execute(function(arg){&#xD;
 	view.get(&quot;#dsAddressbookdepart&quot;).flushAsync();&#xD;
 });&#xD;
 &#xD;
-	/*&#xD;
- 	 * 对用户导入操作进行记录，在用户操作日志表中新增一条记录。&#xD;
- 	 */&#xD;
-	var myDate = new Date();&#xD;
-	view.id('dsUserOperationLog').getData().insert({&#xD;
-		logOperationType:&quot;4&quot;,&#xD;
-		operationPerson: &quot;${loginUsername}&quot;,&#xD;
-		operationContent:&quot;对部门通讯录联系方式表批量导入Excel&quot;,&#xD;
-		operationTime:myDate&#xD;
-	});&#xD;
-	view.id('uaUserOperationLog').execute();&#xD;
 </ClientEvent>
                 <Property name="caption">批量导入</Property>
                 <Property name="icon">dorado/res/com/bstek/bdf2/importexcel/view/icons/page_excel.png</Property>
@@ -143,6 +94,7 @@ importExcelAction.execute(function(arg){&#xD;
             <DataGrid id="dgAddressBook">
               <Property name="dataSet">dsAddressbook</Property>
               <Property name="readOnly">true</Property>
+              <RowNumColumn/>
               <DataColumn name="name">
                 <Property name="property">name</Property>
                 <Property name="editable">false</Property>
@@ -175,6 +127,7 @@ importExcelAction.execute(function(arg){&#xD;
                 <Property name="property">miji</Property>
                 <Property name="editable">false</Property>
                 <Property name="name">miji</Property>
+                <Property name="align">left</Property>
               </DataColumn>
             </DataGrid>
           </Children>
@@ -193,18 +146,10 @@ importExcelAction.execute(function(arg){&#xD;
 &#xD;
 var newEntity=data.insert();&#xD;
 view.id(&quot;dataTree&quot;).set(&quot;currentEntity&quot;,newEntity);&#xD;
-&#xD;
 var dialog=view.id(&quot;dialogDepart&quot;);&#xD;
+dialog.set(&quot;caption&quot;,&quot;添加根节点&quot;);&#xD;
 dialog.show();&#xD;
-&#xD;
-	var myDate = new Date();&#xD;
-	view.id('dsUserOperationLog').getData().insert({&#xD;
-		logOperationType:&quot;0&quot;,&#xD;
-		operationPerson: &quot;${loginUsername}&quot;,&#xD;
-		operationContent:&quot;对部门通讯录部门表新增一个根节点记录&quot;,&#xD;
-		operationTime:myDate&#xD;
-	});&#xD;
-	view.id('uaUserOperationLog').execute();</ClientEvent>
+</ClientEvent>
                   <Property name="caption">添加根节点</Property>
                   <Property name="icon">url(skin>common/icons.gif) -280px -100px</Property>
                   <Property name="width">95</Property>
@@ -225,16 +170,9 @@ var newEntity=currentEntity.createChild(&quot;children&quot;,{&#xD;
 currentNode.expand();&#xD;
 tree.set(&quot;currentEntity&quot;,newEntity);&#xD;
 var dialog=view.id(&quot;dialogDepart&quot;);&#xD;
+dialog.set(&quot;caption&quot;,&quot;添加子节点&quot;);&#xD;
 dialog.show();&#xD;
-&#xD;
-	var myDate = new Date();&#xD;
-	view.id('dsUserOperationLog').getData().insert({&#xD;
-		logOperationType:&quot;0&quot;,&#xD;
-		operationPerson: &quot;${loginUsername}&quot;,&#xD;
-		operationContent:&quot;对部门通讯录部门表新增一个子节点记录&quot;,&#xD;
-		operationTime:myDate&#xD;
-	});&#xD;
-	view.id('uaUserOperationLog').execute();</ClientEvent>
+</ClientEvent>
                   <Property name="icon">url(skin>common/icons.gif) -120px 0px</Property>
                   <Property name="caption">添加子节点</Property>
                   <Property name="width">95</Property>
@@ -242,6 +180,7 @@ dialog.show();&#xD;
                 <ToolBarButton>
                   <ClientEvent name="onClick">var tree=view.id(&quot;dataTree&quot;);&#xD;
 var entity=tree.get(&quot;currentEntity&quot;);&#xD;
+var uaAddressbookdepart = view.id(&quot;uaAddressbookdepart&quot;);&#xD;
 if(entity){&#xD;
 	view.id(&quot;ajaxActionCheckChildren&quot;).set(&quot;parameter&quot;, entity.get(&quot;oid&quot;)).execute(function(count){&#xD;
 		if (count>0){&#xD;
@@ -252,17 +191,8 @@ if(entity){&#xD;
 				}&#xD;
 				else{&#xD;
 			    dorado.MessageBox.confirm(&quot;真的要删除当前节点？&quot;,function(){&#xD;
-				 &#xD;
-				 var myDate = new Date();&#xD;
-				 view.id('dsUserOperationLog').getData().insert({&#xD;
-					 logOperationType:&quot;2&quot;,&#xD;
-					 operationPerson: &quot;${loginUsername}&quot;,&#xD;
-					 operationContent:&quot;对部门通讯录部门表删除所选节点记录&quot;,&#xD;
-					 operationTime:myDate&#xD;
-				 });&#xD;
-				 view.id('uaUserOperationLog').execute();&#xD;
-				 &#xD;
 				 entity.remove();&#xD;
+				 uaAddressbookdepart.execute();&#xD;
 				 var firstNode=tree.get(&quot;firstNode&quot;);&#xD;
 				 if(firstNode){&#xD;
 					tree.set(&quot;currentNode&quot;,firstNode);&#xD;
@@ -280,16 +210,9 @@ if(entity){&#xD;
                 </ToolBarButton>
                 <ToolBarButton>
                   <ClientEvent name="onClick">var dialog=view.id(&quot;dialogDepart&quot;);&#xD;
+dialog.set(&quot;caption&quot;,&quot;修改部门节点&quot;);&#xD;
 dialog.show();&#xD;
 &#xD;
-	var myDate = new Date();&#xD;
-	view.id('dsUserOperationLog').getData().insert({&#xD;
-		logOperationType:&quot;1&quot;,&#xD;
-		operationPerson: &quot;${loginUsername}&quot;,&#xD;
-		operationContent:&quot;对部门通讯录部门表修改选定节点记录&quot;,&#xD;
-		operationTime:myDate&#xD;
-	});&#xD;
-	view.id('uaUserOperationLog').execute();&#xD;
 </ClientEvent>
                   <Property name="icon">url(skin>common/icons.gif) -280px -100px</Property>
                   <Property name="caption">修改</Property>
@@ -299,17 +222,6 @@ dialog.show();&#xD;
             </Children>
           </FieldSet>
           <DataTree id="dataTree">
-            <ClientEvent name="beforeCurrentChange">var node=arg.oldCurrent;&#xD;
-if(node){&#xD;
-	var data=node.get(&quot;data&quot;);&#xD;
-	if(data &amp;&amp; data.state!=dorado.Entity.STATE_NONE){&#xD;
-		view.id(&quot;uaAddressbookdepart&quot;).execute();&#xD;
-		if(data.validate()!=&quot;ok&quot;){&#xD;
-			arg.processDefault=false;&#xD;
-		}&#xD;
-	}&#xD;
-}&#xD;
-</ClientEvent>
             <ClientEvent name="onDraggingSourceDrop">var draggingInfo=arg.draggingInfo;&#xD;
 if(!draggingInfo){&#xD;
 	return true;&#xD;
@@ -377,16 +289,8 @@ var newEntity=data.insert();&#xD;
 view.id(&quot;dataTree&quot;).set(&quot;currentEntity&quot;,newEntity);&#xD;
 &#xD;
 var dialog=view.id(&quot;dialogDepart&quot;);&#xD;
+dialog.set(&quot;caption&quot;,&quot;添加根节点&quot;);&#xD;
 dialog.show();&#xD;
-&#xD;
-	var myDate = new Date();&#xD;
-	view.id('dsUserOperationLog').getData().insert({&#xD;
-		logOperationType:&quot;0&quot;,&#xD;
-		operationPerson: &quot;${loginUsername}&quot;,&#xD;
-		operationContent:&quot;对部门通讯录部门表新增一个根节点记录&quot;,&#xD;
-		operationTime:myDate&#xD;
-	});&#xD;
-	view.id('uaUserOperationLog').execute();&#xD;
 &#xD;
 </ClientEvent>
         <Property name="name">addRoot</Property>
@@ -410,16 +314,10 @@ var newEntity=currentEntity.createChild(&quot;children&quot;,{&#xD;
 currentNode.expand();&#xD;
 tree.set(&quot;currentEntity&quot;,newEntity);&#xD;
 var dialog=view.id(&quot;dialogDepart&quot;);&#xD;
+dialog.set(&quot;caption&quot;,&quot;添加子节点&quot;);&#xD;
 dialog.show();&#xD;
 &#xD;
-	var myDate = new Date();&#xD;
-	view.id('dsUserOperationLog').getData().insert({&#xD;
-		logOperationType:&quot;0&quot;,&#xD;
-		operationPerson: &quot;${loginUsername}&quot;,&#xD;
-		operationContent:&quot;对部门通讯录部门表新增一个子节点记录&quot;,&#xD;
-		operationTime:myDate&#xD;
-	});&#xD;
-	view.id('uaUserOperationLog').execute();</ClientEvent>
+</ClientEvent>
         <Property name="caption">添加子节点</Property>
         <Property name="name">addSub</Property>
         <Property name="icon">url(skin>common/icons.gif) -120px 0px</Property>
@@ -428,6 +326,7 @@ dialog.show();&#xD;
       <MenuItem>
         <ClientEvent name="onClick">var tree=view.id(&quot;dataTree&quot;);&#xD;
 var entity=tree.get(&quot;currentEntity&quot;);&#xD;
+var uaAddressbookdepart = view.id(&quot;uaAddressbookdepart&quot;);&#xD;
 if(entity){&#xD;
 	view.id(&quot;ajaxActionCheckChildren&quot;).set(&quot;parameter&quot;, entity.get(&quot;oid&quot;)).execute(function(count){&#xD;
 		if (count>0){&#xD;
@@ -438,17 +337,8 @@ if(entity){&#xD;
 				}&#xD;
 				else{&#xD;
 			    dorado.MessageBox.confirm(&quot;真的要删除当前节点？&quot;,function(){&#xD;
-				 &#xD;
-				 var myDate = new Date();&#xD;
-				 view.id('dsUserOperationLog').getData().insert({&#xD;
-					 logOperationType:&quot;2&quot;,&#xD;
-					 operationPerson: &quot;${loginUsername}&quot;,&#xD;
-					 operationContent:&quot;对部门通讯录部门表删除所选节点记录&quot;,&#xD;
-					 operationTime:myDate&#xD;
-				 });&#xD;
-				 view.id('uaUserOperationLog').execute();&#xD;
-				 &#xD;
 				 entity.remove();&#xD;
+				 uaAddressbookdepart.execute();&#xD;
 				 var firstNode=tree.get(&quot;firstNode&quot;);&#xD;
 				 if(firstNode){&#xD;
 					tree.set(&quot;currentNode&quot;,firstNode);&#xD;
@@ -458,8 +348,7 @@ if(entity){&#xD;
 	});&#xD;
 }else{&#xD;
 	dorado.MessageBox.alert(&quot;当前没有节点可供删除！&quot;);&#xD;
-}&#xD;
-</ClientEvent>
+}</ClientEvent>
         <Property name="name">del</Property>
         <Property name="caption">删除</Property>
         <Property name="icon">url(skin>common/icons.gif) -140px 0px</Property>
@@ -467,17 +356,8 @@ if(entity){&#xD;
       </MenuItem>
       <MenuItem>
         <ClientEvent name="onClick">var dialog=view.id(&quot;dialogDepart&quot;);&#xD;
-dialog.show();&#xD;
-&#xD;
-	var myDate = new Date();&#xD;
-	view.id('dsUserOperationLog').getData().insert({&#xD;
-		logOperationType:&quot;1&quot;,&#xD;
-		operationPerson: &quot;${loginUsername}&quot;,&#xD;
-		operationContent:&quot;对部门通讯录部门表修改选定节点记录&quot;,&#xD;
-		operationTime:myDate&#xD;
-	});&#xD;
-	view.id('uaUserOperationLog').execute();&#xD;
-</ClientEvent>
+dialog.set(&quot;caption&quot;,&quot;修改&quot;);&#xD;
+dialog.show();</ClientEvent>
         <Property name="name">modify</Property>
         <Property name="caption">修改</Property>
         <Property name="icon">url(skin>common/icons.gif) -280px -100px</Property>
@@ -485,6 +365,10 @@ dialog.show();&#xD;
       </MenuItem>
     </Menu>
     <Dialog id="dialogDepart">
+      <ClientEvent name="onClose">var cur=view.id('dsAddressbookdepart').getData('#');&#xD;
+cur.cancel();&#xD;
+view.id('dialogDepart').hide();&#xD;
+</ClientEvent>
       <Property name="caption">联系人单位</Property>
       <Buttons>
         <Button layoutConstraint="right:30">
@@ -500,15 +384,9 @@ view.id('uaAddressbookdepart').execute(function(){&#xD;
           <Property name="caption">确定</Property>
         </Button>
         <Button>
-          <ClientEvent name="onClick">var cur=view.id('dsAddressbookdepart').getData('#');&#xD;
+          <ClientEvent name="onClick">var cur=view.id('dsAddressbookdepart').getData('!currentSubject');&#xD;
 cur.cancel();&#xD;
 view.id('dialogDepart').hide();&#xD;
-&#xD;
-	/*&#xD;
-	 * 删除当前用户操作日志记录并保存&#xD;
-	 */&#xD;
-	view.id('dsUserOperationLog').getData().remove()&#xD;
-	view.id('uaUserOperationLog').execute();&#xD;
 	         &#xD;
 	         </ClientEvent>
           <Property name="caption">取消</Property>
@@ -544,6 +422,9 @@ view.id('dialogDepart').hide();&#xD;
       <Tools/>
     </Dialog>
     <Dialog id="dialogPhone">
+      <ClientEvent name="onClose">var cur=view.id('dsAddressbook').getData('#');&#xD;
+				cur.cancel();&#xD;
+				view.id('dialogPhone').hide();</ClientEvent>
       <Property name="width">800</Property>
       <Property name="caption">联系人信息</Property>
       <Buttons>
@@ -559,13 +440,7 @@ view.id('uaAddressbook').execute(function(){&#xD;
         <Button>
           <ClientEvent name="onClick">var cur=view.id('dsAddressbook').getData('#');&#xD;
 				cur.cancel();&#xD;
-				view.id('dialogPhone').hide();&#xD;
-	/*&#xD;
-	 * 删除当前用户操作日志记录并保存&#xD;
-	 */&#xD;
-	view.id('dsUserOperationLog').getData().remove()&#xD;
-	view.id('uaUserOperationLog').execute();&#xD;
-	         </ClientEvent>
+				view.id('dialogPhone').hide();</ClientEvent>
           <Property name="caption">取消</Property>
         </Button>
       </Buttons>
@@ -625,16 +500,5 @@ view.id('uaAddressbook').execute(function(){&#xD;
     <AjaxAction id="ajaxActionCheckChildren">
       <Property name="service">addressbookdepartPR#countChildren</Property>
     </AjaxAction>
-    <DataSet id="dsUserOperationLog">
-      <Property name="dataProvider">userOperationLogPR#queryUserOperationLog</Property>
-      <Property name="dataType">[UserOperationLog]</Property>
-      <Property name="pageSize">20</Property>
-    </DataSet>
-    <UpdateAction id="uaUserOperationLog">
-      <Property name="dataResolver">userOperationLogPR#saveUserOperationLog</Property>
-      <UpdateItem>
-        <Property name="dataSet">dsUserOperationLog</Property>
-      </UpdateItem>
-    </UpdateAction>
   </View>
 </ViewConfig>

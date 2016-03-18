@@ -57,39 +57,16 @@ cur.set(&quot;writingperson&quot;,&quot;${loginUser.getCname()}&quot;);
 cur.set(&quot;status&quot;,&quot;0/0&quot;);
 view.id('diaJobstatistics').show();
 
-	/*
- 	 * 对用户新增操作进行记录，在用户操作日志表中新增一条记录。
-     */
-	var myDate = new Date();
-	view.id('dsUserOperationLog').getData().insert({
-		logOperationType:&quot;0&quot;,
-		operationPerson: &quot;${loginUsername}&quot;,
-		operationContent:&quot;对工作项目管理表新增一条记录&quot;,
-		operationTime:myDate
-	});
-	view.id('uaUserOperationLog').execute();
-	</ClientEvent>
+</ClientEvent>
         <Property name="caption">新增</Property>
         <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
       </ToolBarButton>
       <ToolBarButton>
-        <ClientEvent name="onClick">
-	var cur=view.id('dsJobstatistics').getData('#');
-	if (cur) {
-		view.id('diaJobstatistics').show();
-	}
-	
-	/*
- 	 * 对用户修改操作进行记录，在用户操作日志表中新增一条记录。
- 	 */
-	var myDate = new Date();
-	view.id('dsUserOperationLog').getData().insert({
-		logOperationType:&quot;1&quot;,
-		operationPerson: &quot;${loginUsername}&quot;,
-		operationContent:&quot;对工作项目管理表修改选定记录&quot;,
-		operationTime:myDate
-	});
-	view.id('uaUserOperationLog').execute();
+        <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#');
+if (cur) {
+	view.id('diaJobstatistics').show();
+}
+
 	</ClientEvent>
         <Property name="caption">修改</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
@@ -103,19 +80,6 @@ if(cur){
 		entitylist.each(function(entity){
 			entity.remove();
 		})
-		
-		/*
- 		 * 对用户删除操作进行记录，在用户操作日志表中新增一条记录。
- 		 */
-		var myDate = new Date();
-		view.id('dsUserOperationLog').getData().insert({
-			logOperationType:&quot;2&quot;,
-			operationPerson: &quot;${loginUsername}&quot;,
-			operationContent:&quot;对工作项目管理表删除所选记录&quot;,
-			operationTime:myDate
-		});
-		view.id('uaUserOperationLog').execute();
-		
 	    cur.remove();
 	    ua.execute();
     }); 
@@ -186,6 +150,7 @@ if(cur){
         <Property name="property">miji</Property>
         <Property name="width">120</Property>
         <Property name="name">miji</Property>
+        <Property name="align">left</Property>
       </DataColumn>
     </DataGrid>
     <GroupBox>
@@ -207,17 +172,7 @@ if(cur){
 	view.id('diaJoballot').show();
     }
 	
-	/*
- 	 * 对用户新增操作进行记录，在用户操作日志表中新增一条记录。
-     */
-	var myDate = new Date();
-	view.id('dsUserOperationLog').getData().insert({
-		logOperationType:&quot;0&quot;,
-		operationPerson: &quot;${loginUsername}&quot;,
-		operationContent:&quot;对工作项目管理表的子表具体作业分配表新增一条记录&quot;,
-		operationTime:myDate
-	});
-	view.id('uaUserOperationLog').execute();
+
 	</ClientEvent>
             <Property name="caption">新增</Property>
             <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
@@ -227,20 +182,7 @@ if(cur){
 	var cur=view.id('dsJobstatistics').getData('#.#joballot');
 	if (cur) {
 		view.id('diaJoballot').show();
-	}
-	
-	/*
- 	 * 对用户修改操作进行记录，在用户操作日志表中新增一条记录。
- 	 */
-	var myDate = new Date();
-	view.id('dsUserOperationLog').getData().insert({
-		logOperationType:&quot;1&quot;,
-		operationPerson: &quot;${loginUsername}&quot;,
-		operationContent:&quot;对工作项目管理表的子表具体作业分配表修改选定记录&quot;,
-		operationTime:myDate
-	});
-	view.id('uaUserOperationLog').execute();
-	</ClientEvent>
+	}</ClientEvent>
             <Property name="caption">修改</Property>
             <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
           </ToolBarButton>
@@ -250,19 +192,6 @@ var ua=view.id('uaJobstatistics');
 if(cur){
 	dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
 		view.refreshStatus();
-		
-		/*
- 		 * 对用户删除操作进行记录，在用户操作日志表中新增一条记录。
- 		 */
-		var myDate = new Date();
-		view.id('dsUserOperationLog').getData().insert({
-			logOperationType:&quot;2&quot;,
-			operationPerson: &quot;${loginUsername}&quot;,
-			operationContent:&quot;对工作项目管理表的子表具体作业分配表删除所选记录&quot;,
-			operationTime:myDate
-		});
-		view.id('uaUserOperationLog').execute();
-		
 		cur.remove();
 		ua.execute();
 	}); 
@@ -327,13 +256,6 @@ if(cur){
           <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#');
 				cur.cancel();
 				view.id('diaJobstatistics').hide();
-				
-	/*
-	 * 删除当前用户操作日志记录并保存
-	 */
-	view.id('dsUserOperationLog').getData().remove()
-	view.id('uaUserOperationLog').execute();
-	         
 	         </ClientEvent>
           <Property name="caption">取消</Property>
           <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
@@ -492,12 +414,7 @@ view.id('uaJobstatistics').execute(function(){
           <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#.#joballot');
 				cur.cancel();
 				view.id('diaJoballot').hide();
-	         
-	/*
-	 * 删除当前用户操作日志记录并保存
-	 */
-	view.id('dsUserOperationLog').getData().remove()
-	view.id('uaUserOperationLog').execute();
+	     
 	         </ClientEvent>
           <Property name="caption">取消</Property>
           <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
@@ -586,16 +503,5 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
       </Children>
       <Tools/>
     </Dialog>
-    <DataSet id="dsUserOperationLog">
-      <Property name="dataProvider">userOperationLogPR#queryUserOperationLog</Property>
-      <Property name="dataType">[UserOperationLog]</Property>
-      <Property name="pageSize">20</Property>
-    </DataSet>
-    <UpdateAction id="uaUserOperationLog">
-      <Property name="dataResolver">userOperationLogPR#saveUserOperationLog</Property>
-      <UpdateItem>
-        <Property name="dataSet">dsUserOperationLog</Property>
-      </UpdateItem>
-    </UpdateAction>
   </View>
 </ViewConfig>

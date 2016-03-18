@@ -123,22 +123,11 @@
 		   guid += &quot;-&quot;;
 	}
 	cur.set(&quot;oid&quot;,guid);
-	view.id('diaBtreport').show();
+	var dialog=view.id('diaBtreport');
+	dialog.set(&quot;caption&quot;,&quot;新增出差报告&quot;);
+	dialog.show();
 	//var link = view.id(&quot;lefile&quot;);
     //link.set(&quot;visible&quot;,false);
-	
-	/*
- 	 * 对用户新增操作进行记录，在用户操作日志表中新增一条记录。
-     */
-	var myDate = new Date();
-	view.id('dsUserOperationLog').getData().insert({
-		logOperationType:&quot;0&quot;,
-		operationPerson: &quot;${loginUsername}&quot;,
-		operationContent:&quot;对出差报告管理表新增一条记录&quot;,
-		operationTime:myDate
-	});
-	view.id('uaUserOperationLog').execute();
-	
 	
 	</ClientEvent>
         <Property name="caption">新增</Property>
@@ -148,21 +137,10 @@
         <ClientEvent name="onClick">
 	var cur=view.id('dsBtreport').getData('#');
 	if (cur) {
-		view.id('diaBtreport').show();
-	}
-	
-	/*
- 	 * 对用户修改操作进行记录，在用户操作日志表中新增一条记录。
- 	 */
-	var myDate = new Date();
-	view.id('dsUserOperationLog').getData().insert({
-		logOperationType:&quot;1&quot;,
-		operationPerson: &quot;${loginUsername}&quot;,
-		operationContent:&quot;对出差报告管理表修改选定记录&quot;,
-		operationTime:myDate
-	});
-	view.id('uaUserOperationLog').execute();
-	</ClientEvent>
+		var dialog=view.id('diaBtreport');
+		dialog.set(&quot;caption&quot;,&quot;修改出差报告&quot;);
+		dialog.show();
+	}</ClientEvent>
         <Property name="caption">修改</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
       </ToolBarButton>
@@ -185,19 +163,6 @@
             });
 			view.id(&quot;deleteFileAction&quot;).execute();
           });
-
-          	/*
- 			 * 对用户删除操作进行记录，在用户操作日志表中新增一条记录。
- 			 */
-			var myDate = new Date();
-			view.id('dsUserOperationLog').getData().insert({
-				logOperationType:&quot;2&quot;,
-				operationPerson: &quot;${loginUsername}&quot;,
-				operationContent:&quot;对出差报告管理表删除所选记录&quot;,
-				operationTime:myDate
-			});
-			view.id('uaUserOperationLog').execute();
-			
 			cur.remove();
 			ua.execute();
 				
@@ -290,6 +255,7 @@
         <Property name="property">miji</Property>
         <Property name="width">120</Property>
         <Property name="name">miji</Property>
+        <Property name="align">left</Property>
       </DataColumn>
     </DataGrid>
     <GroupBox>
@@ -324,6 +290,12 @@ jQuery(arg.dom).xCreate({&#xD;
       </Children>
     </GroupBox>
     <Dialog id="diaBtreport">
+      <ClientEvent name="onClose">var cur=view.id('dsBtreport').getData('#');&#xD;
+				cur.cancel();&#xD;
+				view.id('diaBtreport').hide();&#xD;
+				&#xD;
+	&#xD;
+	         </ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
       <Property name="width">800</Property>
@@ -342,12 +314,7 @@ jQuery(arg.dom).xCreate({&#xD;
 				cur.cancel();
 				view.id('diaBtreport').hide();
 				
-	/*
-	 * 删除当前用户操作日志记录并保存
-	 */
-	view.id('dsUserOperationLog').getData().remove()
-	view.id('uaUserOperationLog').execute();
-	         
+	
 	         </ClientEvent>
           <Property name="caption">取消</Property>
           <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
@@ -396,6 +363,7 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <Property name="property">name</Property>
           <Property name="displayProperty">name</Property>
           <Property name="editable">false</Property>
+          <Property name="reloadDataOnOpen">true</Property>
         </DataSetDropDown>
         <AutoForm id="afBtreport">
           <Property name="cols">*,*</Property>
@@ -825,16 +793,5 @@ link.set(&quot;visible&quot;,false);*/&#xD;
       <Property name="service">defaultUploadProcessor#deleteFile</Property>
       <Property name="modal">false</Property>
     </AjaxAction>
-    <DataSet id="dsUserOperationLog">
-      <Property name="dataProvider">userOperationLogPR#queryUserOperationLog</Property>
-      <Property name="dataType">[UserOperationLog]</Property>
-      <Property name="pageSize">20</Property>
-    </DataSet>
-    <UpdateAction id="uaUserOperationLog">
-      <Property name="dataResolver">userOperationLogPR#saveUserOperationLog</Property>
-      <UpdateItem>
-        <Property name="dataSet">dsUserOperationLog</Property>
-      </UpdateItem>
-    </UpdateAction>
   </View>
 </ViewConfig>

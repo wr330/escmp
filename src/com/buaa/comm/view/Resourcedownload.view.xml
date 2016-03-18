@@ -46,19 +46,11 @@
 		   guid += &quot;-&quot;;
 	}
 	cur.set(&quot;oid&quot;,guid);
-	view.id('diaResourcedownload').show();
-	
-/*
- * 对用户新增操作进行记录，在用户操作日志表中新增一条记录。
- */
-	var myDate = new Date();
-	view.id('dsUserOperationLog').getData().insert({
-		logOperationType:&quot;0&quot;,
-		operationPerson: &quot;${loginUsername}&quot;,
-		operationContent:&quot;对常用资源下载表新增一条记录&quot;,
-		operationTime:myDate
-	});
-	view.id('uaUserOperationLog').execute();</ClientEvent>
+	var dialog=view.id('diaResourcedownload');
+	dialog.set(&quot;caption&quot;,&quot;新增常用资源&quot;);
+	dialog.show();
+
+	</ClientEvent>
         <Property name="caption">新增</Property>
         <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
       </ToolBarButton>
@@ -67,7 +59,9 @@
 	//修改设置链接
 var cur=view.id('dsResourcedownload').getData('#');
 	if (cur) {
-		view.id('diaResourcedownload').show();
+		var dialog=view.id('diaResourcedownload');
+		dialog.set(&quot;caption&quot;,&quot;修改常用资源&quot;);
+		dialog.show()
 	}
    var file = cur.get(&quot;efile&quot;);
    var link = view.id(&quot;lefile&quot;);
@@ -81,19 +75,7 @@ var cur=view.id('dsResourcedownload').getData('#');
  }
    else{
    link.set(&quot;visible&quot;,false);
- }
- 
-/*
- * 对用户修改操作进行记录，在用户操作日志表中新增一条记录。
- */
-var myDate = new Date();
-view.id('dsUserOperationLog').getData().insert({
-	logOperationType:&quot;1&quot;,
-	operationPerson: &quot;${loginUsername}&quot;,
-	operationContent:&quot;对常用资源下载表修改选定记录&quot;,
-	operationTime:myDate
-});
-view.id('uaUserOperationLog').execute();</ClientEvent>
+ }</ClientEvent>
         <Property name="caption">修改</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
       </ToolBarButton>
@@ -102,19 +84,6 @@ view.id('uaUserOperationLog').execute();</ClientEvent>
 	var ua=view.id('uaResourcedownload')
 	if(cur){
 		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
-			
-			/*
- 			 * 对用户删除操作进行记录，在用户操作日志表中新增一条记录。
- 			 */
-			var myDate = new Date();
-			view.id('dsUserOperationLog').getData().insert({
-				logOperationType:&quot;2&quot;,
-				operationPerson: &quot;${loginUsername}&quot;,
-				operationContent:&quot;对常用资源下载表删除所选记录&quot;,
-				operationTime:myDate
-			});
-			view.id('uaUserOperationLog').execute();
-			
 			cur.remove();
 			ua.execute();
 				}); 
@@ -161,9 +130,13 @@ jQuery(arg.dom).xCreate({&#xD;
         <Property name="property">miji</Property>
         <Property name="width">120</Property>
         <Property name="name">miji</Property>
+        <Property name="align">left</Property>
       </DataColumn>
     </DataGrid>
     <Dialog id="diaResourcedownload">
+      <ClientEvent name="onClose">	var cur=view.id('dsResourcedownload').getData('#');&#xD;
+	cur.cancel();&#xD;
+	view.id('diaResourcedownload').hide();</ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
       <Property name="width">800</Property>
@@ -179,12 +152,7 @@ jQuery(arg.dom).xCreate({&#xD;
         <Button>
           <ClientEvent name="onClick">	var cur=view.id('dsResourcedownload').getData('#');
 	cur.cancel();
-	view.id('diaResourcedownload').hide();
-	/*
-	 * 删除当前用户操作日志记录并保存
-	 */
-	view.id('dsUserOperationLog').getData().remove()
-	view.id('uaUserOperationLog').execute();</ClientEvent>
+	view.id('diaResourcedownload').hide();</ClientEvent>
           <Property name="caption">取消</Property>
           <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
         </Button>

@@ -116,9 +116,13 @@
         <Property name="property">miji</Property>
         <Property name="width">120</Property>
         <Property name="name">miji</Property>
+        <Property name="align">left</Property>
       </DataColumn>
     </DataGrid>
     <Dialog id="diaTechnicandcontract">
+      <ClientEvent name="onClose">var cur=view.id('dsTechnicandcontract').getData('#');&#xD;
+				cur.cancel();&#xD;
+				view.id('diaTechnicandcontract').hide();</ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
       <Property name="width">800</Property>
