@@ -1,11 +1,6 @@
 package com.buaa.fly.outlineexecution.manager;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,17 +16,10 @@ import com.bstek.dorado.data.provider.Page;
 import com.buaa.fly.combineVehicle.dao.CombineVehicleDao;
 import com.buaa.fly.combineVehicle.manager.CombineVehicleManager;
 import com.buaa.fly.domain.CombineVehicle;
-import com.buaa.fly.domain.Dailyacc;
 import com.buaa.fly.domain.Outlineexecution;
-import com.buaa.fly.domain.Sfstatistic;
-import com.buaa.fly.domain.Subject;
-import com.buaa.fly.domain.Tasklist;
 
 import com.buaa.fly.outlineexecution.dao.OutlineexecutionDao;
 import com.buaa.fly.outlineexecution.dao.OutlineexecutionDaoforJDBC;
-
-import com.buaa.fly.tasklist.dao.TasklistDao;
-import com.common.FileHelper;
 
 @Component("outlineexecutionManager")
 public class OutlineexecutionManager {
@@ -41,14 +29,12 @@ public class OutlineexecutionManager {
 	@Resource
 	private OutlineexecutionDaoforJDBC outlineexecutionDaoforJDBC;
 	@Resource
-	private TasklistDao tasklistDao;
-	@Resource
 	private CombineVehicleManager combineVehicleManager;
 	@Resource
 	private CombineVehicleDao combineVehicleDao;
 
 	/**
-	 * 大纲查询方法，该方法没有应用
+	 * 大纲查询方法
 	 * 
 	 * @param parameter
 	 * @throws Exception
@@ -140,10 +126,12 @@ public class OutlineexecutionManager {
 	public String downloadFile(String id, String fname) throws Exception {
 
 		List<Outlineexecution> outlineexecution = outlineexecutionDao
-				.queryOutlineforText(id);
+				.queryOutlineforText(id,fname);
 		if (null != outlineexecution && outlineexecution.size() > 0) {
 			ExportOutline.generateOutlineexecution(outlineexecution);
 		}
+		else
+			throw new Exception("当前节点下没有试飞大纲！");
 		return fname + "试飞大纲.doc";
 	}
 
@@ -183,7 +171,7 @@ public class OutlineexecutionManager {
 	}
 
 	/**
-	 * 架次完成图方法，该方法没有应用
+	 * 导出试飞大纲
 	 * 
 	 * @param parameter
 	 * @throws Exception

@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.bstek.dorado.annotation.DataProvider;
 import com.bstek.dorado.annotation.DataResolver;
@@ -18,9 +17,7 @@ import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 
 import com.buaa.fly.domain.Outlineexecution;
-import com.buaa.fly.domain.Sfstatistic;
 import com.buaa.fly.domain.Subject;
-//import com.buaa.fly.domain.vo.OutlineStatistic;
 import com.buaa.fly.outlineexecution.manager.OutlineexecutionManager;
 import com.buaa.fly.sfstatistic.dao.SfstatisticDao;
 import com.buaa.fly.subject.manager.SubjectManager;
@@ -163,7 +160,7 @@ public class OutlineexecutionPR {
 		return list;
 	}
 	/**
-	 * 完成架次统计图方法，该方法没有应用
+	 * 完成架次统计图方法
 	 * 
 	 * @param parameter
 	 * @throws Exception
@@ -172,23 +169,23 @@ public class OutlineexecutionPR {
 	public Collection<Map<String, Object>> statisticOutline(
 			Map<String, Object> parameter) throws Exception {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-		String parentnode = (String) parameter.get("parentnode");
+		//String parentnode = (String) parameter.get("parentnode");
 		Collection<Subject> dataItems;
 		List<Integer> num = new ArrayList<Integer>();
-		if (parentnode != null) {
+//		if (parentnode != null) {
 			dataItems = subjectManager.querySubject(parameter);
 			num = sfstatisticDao.querySubjectJiaci(parameter);
-		} else {
-			Collection<Subject> dataItems0 = subjectManager
-					.querySubject(parameter);
-			List<Subject> items = (ArrayList<Subject>) dataItems0;
-			Subject item0 = items.get(0);
-			HashMap<String, Object> map0 = new HashMap<String, Object>();
-			map0.put("parentnode", item0.getOid());
-			map0.put("ftype", item0.getFtype());
-			dataItems = subjectManager.querySubject(map0);
-			num = sfstatisticDao.querySubjectJiaci(map0);
-		}
+//		} else {
+//			Collection<Subject> dataItems0 = subjectManager
+//					.querySubject(parameter);
+//			List<Subject> items = (ArrayList<Subject>) dataItems0;
+//			Subject item0 = items.get(0);
+//			HashMap<String, Object> map0 = new HashMap<String, Object>();
+//			map0.put("parentnode", item0.getOid());
+//			map0.put("ftype", item0.getFtype());
+//			dataItems = subjectManager.querySubject(map0);
+//			num = sfstatisticDao.querySubjectJiaci(map0);
+//		}
 		int i = 0;
 		for (Subject item : dataItems) {
 			HashMap<String, Object> map = new HashMap<String, Object>();

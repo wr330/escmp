@@ -1,5 +1,6 @@
 package com.buaa.fly.ftypes.dao;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Date;
@@ -31,11 +32,22 @@ public class FtypesDao extends HibernateBaseDao {
 	public Collection<Ftypes> queryFtypes(Map<String, Object> parameter) 
 			throws Exception {
 		Map<String, Object> args = new HashMap<String, Object>();
-		String hql = "from " + Ftypes.class.getName() + " a where 1=1 order by ftypename";
+		String hql = "from " + Ftypes.class.getName() + " a where 1=1 ";
 
 		if (null != parameter && !parameter.isEmpty()) {
+			String ftypename = (String) parameter.get("ftypename");
+			if (StringUtils.isNotEmpty(ftypename)) {
+				if("通用试飞科目".equals(ftypename)){
+					Collection<Ftypes> ftypes = new ArrayList<Ftypes>();
+					Ftypes ftype = new Ftypes("通用试飞科目");
+					ftypes.add(ftype);
+					return ftypes;
+				}
+				hql += " and a.ftypename = :ftypename ";
+				args.put("ftypename", ftypename);
+			}
 		}
-		
+		hql += " order by a.ftypename";
 		return this.query(hql, args);
 	}
 

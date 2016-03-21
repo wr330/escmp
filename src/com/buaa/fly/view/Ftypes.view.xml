@@ -35,7 +35,6 @@
       <ClientEvent name="onClose">var cur=view.id('dsExamples').getData('!CURRENT_ROOT.#categories');&#xD;
 if(cur){&#xD;
 	cur.cancel();&#xD;
-	view.id(&quot;FtypeForm&quot;).set(&quot;editable&quot;, true);&#xD;
 	view.id('diaFtypes').hide();&#xD;
 }</ClientEvent>
       <Property name="center">true</Property>
@@ -44,7 +43,6 @@ if(cur){&#xD;
       <Buttons>
         <Button>
           <ClientEvent name="onClick">view.id('uaFtypes').execute(function(){
-	view.id(&quot;FtypeForm&quot;).set(&quot;editable&quot;, true);
 	view.id('diaFtypes').hide();
 });       </ClientEvent>
           <Property name="caption">确定</Property>
@@ -54,7 +52,6 @@ if(cur){&#xD;
           <ClientEvent name="onClick">var cur=view.id('dsExamples').getData('!CURRENT_ROOT.#categories');
 if(cur){
 	cur.cancel();
-	view.id(&quot;FtypeForm&quot;).set(&quot;editable&quot;, true);
 	view.id('diaFtypes').hide();
 }</ClientEvent>
           <Property name="caption">取消</Property>
@@ -81,6 +78,7 @@ if(cur){
           <AutoFormElement>
             <Property name="name">moreinfo</Property>
             <Property name="property">moreinfo</Property>
+            <Property name="editorType">TextArea</Property>
             <Editor/>
           </AutoFormElement>
         </AutoForm>
@@ -91,7 +89,6 @@ if(cur){
       <ClientEvent name="onClose">var cur=view.id('dsExamples').getData('!CURRENT_TYPE.#fpici');&#xD;
 if(cur){&#xD;
 	cur.cancel();&#xD;
-	view.id(&quot;piciForm&quot;).set(&quot;editable&quot;, true);&#xD;
 	view.id('diaFpici').hide();&#xD;
 }   &#xD;
 	         </ClientEvent>
@@ -101,7 +98,6 @@ if(cur){&#xD;
       <Buttons>
         <Button>
           <ClientEvent name="onClick">view.id('uaFtypes').execute(function(){
-	view.id(&quot;piciForm&quot;).set(&quot;editable&quot;, true);
 	view.id('diaFpici').hide();
 });
          </ClientEvent>
@@ -112,7 +108,6 @@ if(cur){&#xD;
           <ClientEvent name="onClick">var cur=view.id('dsExamples').getData('!CURRENT_TYPE.#fpici');
 if(cur){
 	cur.cancel();
-	view.id(&quot;piciForm&quot;).set(&quot;editable&quot;, true);
 	view.id('diaFpici').hide();
 }         </ClientEvent>
           <Property name="caption">取消</Property>
@@ -138,6 +133,7 @@ if(cur){
           <AutoFormElement>
             <Property name="name">more</Property>
             <Property name="property">more</Property>
+            <Property name="editorType">TextArea</Property>
             <Editor/>
           </AutoFormElement>
         </AutoForm>
@@ -147,17 +143,15 @@ if(cur){
     <Dialog id="diaFighterinfo">
       <ClientEvent name="onClose">var cur=view.id('dsExamples').getData('!CURRENT_PICI.#fighterinfo');&#xD;
 if(cur){&#xD;
-	view.id(&quot;fighternoForm&quot;).set(&quot;editable&quot;, true);&#xD;
 	cur.cancel();&#xD;
 	view.id('diaFighterinfo').hide();&#xD;
 }	</ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
-      <Property name="width">600</Property>
+      <Property name="width">400</Property>
       <Buttons>
         <Button>
           <ClientEvent name="onClick">view.id('uaFtypes').execute(function(){
-	view.id(&quot;fighternoForm&quot;).set(&quot;editable&quot;, true);
 	view.id('diaFighterinfo').hide();
 });
 </ClientEvent>
@@ -167,7 +161,6 @@ if(cur){&#xD;
         <Button>
           <ClientEvent name="onClick">var cur=view.id('dsExamples').getData('!CURRENT_PICI.#fighterinfo');
 if(cur){
-	view.id(&quot;fighternoForm&quot;).set(&quot;editable&quot;, true);
 	cur.cancel();
 	view.id('diaFighterinfo').hide();
 }	</ClientEvent>
@@ -177,10 +170,10 @@ if(cur){
       </Buttons>
       <Children>
         <AutoForm id="afFighterinfo">
-          <Property name="cols">*,*</Property>
           <Property name="dataSet">dsExamples</Property>
           <Property name="dataPath">!CURRENT_PICI.#fighterinfo</Property>
           <Property name="dataType">Fighterinfo</Property>
+          <Property name="cols">*</Property>
           <AutoFormElement id="fighternoForm">
             <Property name="name">outfactoryno</Property>
             <Property name="property">outfactoryno</Property>
@@ -206,7 +199,7 @@ if(cur){
       <Tools/>
     </Dialog>
     <SplitPanel>
-      <Property name="position">200</Property>
+      <Property name="position">270</Property>
       <MainControl>
         <CardBook id="cardbook">
           <Panel>
@@ -222,21 +215,20 @@ if(cur){
                 <ToolBarButton>
                   <ClientEvent name="onClick">view.id('dsExamples').getData(&quot;!CURRENT_ROOT.categories&quot;).insert({});&#xD;
 view.id(&quot;diaFtypes&quot;).set(&quot;caption&quot;,&quot;新增机型信息&quot;);&#xD;
+view.id(&quot;FtypeForm&quot;).set(&quot;readOnly&quot;, false);&#xD;
 view.id('diaFtypes').show();</ClientEvent>
                   <Property name="caption">新增</Property>
                   <Property name="icon"> url(>skin>common/icons.gif) -120px -0px</Property>
-                  <Property name="width">57</Property>
                 </ToolBarButton>
                 <ToolBarButton>
                   <ClientEvent name="onClick">var cur=view.id('dsExamples').getData(&quot;!CURRENT_ROOT.#categories&quot;);&#xD;
 if (cur) {&#xD;
 	view.id(&quot;diaFtypes&quot;).set(&quot;caption&quot;,&quot;修改机型信息&quot;);&#xD;
-	view.id(&quot;FtypeForm&quot;).set(&quot;editable&quot;, false);&#xD;
+	view.id(&quot;FtypeForm&quot;).set(&quot;readOnly&quot;, true);&#xD;
 	view.id('diaFtypes').show();	&#xD;
 }</ClientEvent>
                   <Property name="caption">修改</Property>
                   <Property name="icon"> url(>skin>common/icons.gif) -100px -0px</Property>
-                  <Property name="width">57</Property>
                 </ToolBarButton>
                 <ToolBarButton>
                   <ClientEvent name="onClick">var cur = view.id('dsExamples').getData('!CURRENT_ROOT.#categories');&#xD;
@@ -254,13 +246,11 @@ if(cur){&#xD;
 }</ClientEvent>
                   <Property name="caption">删除</Property>
                   <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
-                  <Property name="width">57</Property>
                 </ToolBarButton>
                 <ToolBarButton>
                   <ClientEvent name="onClick">view.id(&quot;dsExamples&quot;).getData(&quot;!CURRENT_ROOT&quot;).reset(&quot;categories&quot;);</ClientEvent>
                   <Property name="caption">刷新</Property>
                   <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
-                  <Property name="width">57</Property>
                 </ToolBarButton>
               </ToolBar>
               <DataGrid id="dgFtype">
@@ -319,16 +309,15 @@ if(cur){&#xD;
                   <ClientEvent name="onClick">var cur=view.id('dsExamples').getData(&quot;!CURRENT_TYPE&quot;);&#xD;
 view.id('dsExamples').getData(&quot;!CURRENT_TYPE.fpici&quot;).insert({fTypeName:{ftypename:cur.get(&quot;ftypename&quot;)}});&#xD;
 view.id(&quot;diaFpici&quot;).set(&quot;caption&quot;,&quot;新增批次信息&quot;);&#xD;
-view.id('diaFpici').show();&#xD;
-&#xD;
-</ClientEvent>
+view.id(&quot;piciForm&quot;).set(&quot;readOnly&quot;, false);&#xD;
+view.id('diaFpici').show();</ClientEvent>
                   <Property name="caption">新增</Property>
                   <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
                 </ToolBarButton>
                 <ToolBarButton>
                   <ClientEvent name="onClick">var cur=view.id('dsExamples').getData(&quot;!CURRENT_TYPE.#fpici&quot;);&#xD;
 if (cur) {&#xD;
-	view.id(&quot;piciForm&quot;).set(&quot;editable&quot;, false);&#xD;
+	view.id(&quot;piciForm&quot;).set(&quot;readOnly&quot;, true);&#xD;
 	view.id(&quot;diaFpici&quot;).set(&quot;caption&quot;,&quot;修改批次信息&quot;);&#xD;
 	view.id('diaFpici').show();&#xD;
 }</ClientEvent>
@@ -419,6 +408,7 @@ view.id('dsExamples').getData(&quot;!CURRENT_PICI.fighterinfo&quot;).insert({&#x
 		piciName:cur.get(&quot;piciName&quot;),&#xD;
 		fTypeName:{ftypename:cur.get(&quot;fTypeName.ftypename&quot;)}&#xD;
 	}});&#xD;
+view.id(&quot;fighternoForm&quot;).set(&quot;readOnly&quot;, false);&#xD;
 view.id(&quot;diaFighterinfo&quot;).set(&quot;caption&quot;,&quot;新增飞机信息&quot;);&#xD;
 view.id('diaFighterinfo').show();&#xD;
 </ClientEvent>
@@ -428,7 +418,7 @@ view.id('diaFighterinfo').show();&#xD;
                 <ToolBarButton>
                   <ClientEvent name="onClick">var cur=view.id('dsExamples').getData(&quot;!CURRENT_PICI.#fighterinfo&quot;);&#xD;
 if (cur) {&#xD;
-	view.id(&quot;fighternoForm&quot;).set(&quot;editable&quot;, false);&#xD;
+	view.id(&quot;fighternoForm&quot;).set(&quot;readOnly&quot;, true);&#xD;
 	view.id(&quot;diaFighterinfo&quot;).set(&quot;caption&quot;,&quot;修改飞机信息&quot;);&#xD;
 	view.id('diaFighterinfo').show();&#xD;
 }</ClientEvent>
@@ -472,11 +462,11 @@ if(cur){&#xD;
                 <DataColumn name="outfactoryno">
                   <Property name="property">outfactoryno</Property>
                 </DataColumn>
-                <DataColumn name="firstfdate">
-                  <Property name="property">firstFDate</Property>
-                </DataColumn>
                 <DataColumn name="userno">
                   <Property name="property">userno</Property>
+                </DataColumn>
+                <DataColumn name="firstfdate">
+                  <Property name="property">firstFDate</Property>
                 </DataColumn>
                 <DataColumn name="outdate">
                   <Property name="property">outDate</Property>
@@ -534,7 +524,7 @@ if(cur){&#xD;
       <SideControl>
         <Container>
           <FieldSet id="fsFtype" layoutConstraint="top">
-            <Property name="caption">机型管理</Property>
+            <Property name="caption">飞机导航树</Property>
             <Property name="collapsed">false</Property>
             <Buttons/>
             <Children>
@@ -542,12 +532,16 @@ if(cur){&#xD;
                 <ToolBarButton>
                   <ClientEvent name="onClick">var productTree = this.get(&quot;#dTFtypes&quot;);&#xD;
 var Nodes = productTree.get(&quot;nodes&quot;);&#xD;
-Nodes.each(function(Node){&#xD;
-	Node.expandAsync();&#xD;
-});</ClientEvent>
-                  <Property name="caption">展开</Property>
+expand(Nodes);&#xD;
+&#xD;
+function expand(nodes){&#xD;
+  nodes.each(function(node){&#xD;
+	node.expand();&#xD;
+    expand(node.get(&quot;nodes&quot;));&#xD;
+  });&#xD;
+}</ClientEvent>
+                  <Property name="caption">全部展开</Property>
                   <Property name="icon">url(>skin>common/icons.gif) -60px -0px</Property>
-                  <Property name="width">57</Property>
                 </ToolBarButton>
                 <ToolBarButton>
                   <ClientEvent name="onClick">var nodes = this.get(&quot;#dTFtypes.nodes&quot;);&#xD;
@@ -556,9 +550,8 @@ nodes.each(function(node) {&#xD;
 	 node.collapse();&#xD;
    }&#xD;
 });</ClientEvent>
-                  <Property name="caption">收起</Property>
+                  <Property name="caption">全部收起</Property>
                   <Property name="icon">url(>skin>common/icons.gif) -80px -0px</Property>
-                  <Property name="width">57</Property>
                 </ToolBarButton>
                 <ToolBarButton>
                   <ClientEvent name="onClick">var dsExamples = view.id(&quot;dsExamples&quot;);&#xD;
@@ -568,7 +561,6 @@ dsExamples.insert({&#xD;
 });</ClientEvent>
                   <Property name="caption">刷新</Property>
                   <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
-                  <Property name="width">57</Property>
                 </ToolBarButton>
               </ToolBar>
             </Children>
@@ -627,17 +619,17 @@ dorado.DataPath.registerInterceptor(&quot;CURRENT_FLIGHT&quot;, function(data) {
               <BindingConfig>
                 <Property name="labelProperty">label</Property>
                 <Property name="expandLevel">1</Property>
-                <Property name="icon"> url(>skin>common/icons.gif) -220px -80px</Property>
+                <Property name="icon">url(>skin>common/icons.gif) -260px -40px</Property>
                 <Property name="name">label</Property>
                 <BindingConfig>
                   <Property name="labelProperty">ftypename</Property>
                   <Property name="name">name</Property>
                   <Property name="childrenProperty">categories</Property>
                   <Property name="expandLevel">1</Property>
-                  <Property name="icon"> url(>skin>common/icons.gif) -220px -80px</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
                   <BindingConfig>
                     <Property name="childrenProperty">fpici</Property>
-                    <Property name="icon"> url(>skin>common/icons.gif) -240px -160px</Property>
+                    <Property name="icon">url(>skin>common/icons.gif) -200px -80px</Property>
                     <Property name="labelProperty">piciName</Property>
                     <Property name="name">pname</Property>
                     <Property name="expandLevel">1</Property>
@@ -645,7 +637,7 @@ dorado.DataPath.registerInterceptor(&quot;CURRENT_FLIGHT&quot;, function(data) {
                       <Property name="childrenProperty">fighterinfo</Property>
                       <Property name="labelProperty">outfactoryno</Property>
                       <Property name="name">flight</Property>
-                      <Property name="icon"> url(>skin>common/icons.gif) -20px -100px</Property>
+                      <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
                     </BindingConfig>
                   </BindingConfig>
                 </BindingConfig>

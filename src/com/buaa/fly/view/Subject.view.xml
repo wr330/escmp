@@ -2,20 +2,7 @@
 <ViewConfig>
   <Arguments/>
   <Context/>
-  <Model>
-    <DataType name="dataTypeSubject" parent="Subject">
-      <Reference name="children">
-        <Property name="dataType">[SELF]</Property>
-        <Property name="dataProvider">subjectPR#querySubject</Property>
-        <Property name="parameter">
-          <Entity>
-            <Property name="parentnode">$${this.oid}</Property>
-            <Property name="ftype">$${this.ftype}</Property>
-          </Entity>
-        </Property>
-      </Reference>
-    </DataType>
-  </Model>
+  <Model/>
   <View>
     <ClientEvent name="onReady">self.buildOrder=function(nodes){&#xD;
 	var order=1;&#xD;
@@ -26,13 +13,12 @@
 	return order;&#xD;
 }&#xD;
 //orderno是给同一层级节点进行编号</ClientEvent>
-    <DataSet id="dataSetSubject">
-      <Property name="dataProvider">subjectPR#querySubject</Property>
-      <Property name="dataType">[dataTypeSubject]</Property>
+    <DataSet id="dsSubject">
+      <Property name="dataType">[Ftypes]</Property>
+      <Property name="dataProvider">ftypesPR#queryFtypes</Property>
       <Property name="parameter">
         <Entity>
-          <Property name="parentnode"></Property>
-          <Property name="ftype"></Property>
+          <Property name="ftypename">通用试飞科目</Property>
         </Entity>
       </Property>
     </DataSet>
@@ -41,11 +27,14 @@
       <Property name="dataProvider">ftypesPR#queryFtypes</Property>
     </DataSet>
     <DataSetDropDown id="dataSetDropDownAircraftType">
-      <ClientEvent name="onValueSelect">var dataSetSubject = this.get(&quot;#dataSetSubject&quot;);&#xD;
-dataSetSubject.set(&quot;parameter&quot;, {&#xD;
-	ftype: arg.selectedValue&#xD;
+      <ClientEvent name="onValueSelect">var dsSubject = this.get(&quot;#dsSubject&quot;);&#xD;
+var ftypename = arg.selectedValue;&#xD;
+if(null == ftypename)&#xD;
+    ftypename = &quot;通用试飞科目&quot;;&#xD;
+dsSubject.set(&quot;parameter&quot;, {&#xD;
+	ftypename: ftypename&#xD;
 });&#xD;
-dataSetSubject.flushAsync();&#xD;
+dsSubject.flushAsync();&#xD;
 if(arg.selectedValue)&#xD;
 	view.set({&#xD;
 		&quot;^Dirty.disabled&quot; : false});&#xD;
@@ -57,14 +46,13 @@ else&#xD;
       <Property name="displayProperty">ftypename</Property>
       <Property name="editable">false</Property>
       <Property name="property">ftypename</Property>
-      <Property name="useEmptyItem">false</Property>
+      <Property name="useEmptyItem">true</Property>
       <Property name="reloadDataOnOpen">true</Property>
     </DataSetDropDown>
     <UpdateAction id="updateActionSubject">
       <Property name="dataResolver">subjectPR#saveSubject</Property>
-      <Property name="successMessage">数据已保存</Property>
       <UpdateItem>
-        <Property name="dataSet">dataSetSubject</Property>
+        <Property name="dataSet">dsSubject</Property>
       </UpdateItem>
     </UpdateAction>
     <AjaxAction id="ajaxGetsubject">
@@ -73,53 +61,281 @@ var ftype=view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
 cur.set(&quot;parameter&quot;,{&#xD;
 	ftype:ftype&#xD;
 	});</ClientEvent>
-      <ClientEvent name="onExecute">var cur=view.id('dataSetSubject');&#xD;
+      <ClientEvent name="onExecute">var cur=view.id('dsSubject');&#xD;
 var ftype=view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
 cur.set(&quot;parameter&quot;,{&#xD;
-	ftype:ftype&#xD;
+	ftypename:ftype&#xD;
 	});&#xD;
 cur.flushAsync();</ClientEvent>
       <Property name="service">subjectPR#copyAll</Property>
     </AjaxAction>
-    <AjaxAction id="ajaxActionCheckChildren">
-      <Property name="service">subjectPR#countChildren</Property>
-      <Property name="parameter">
-        <Entity>
-          <Property name="ftype"></Property>
-          <Property name="parentnode"></Property>
-        </Entity>
-      </Property>
-    </AjaxAction>
+    <ToolBar>
+      <FormElement id="formelement">
+        <Property name="label">选择机型：</Property>
+        <Property name="droppable">false</Property>
+        <Property name="trigger">dataSetDropDownAircraftType</Property>
+        <Property name="width">190</Property>
+        <Property name="labelWidth">72</Property>
+        <Editor/>
+      </FormElement>
+      <Button>
+        <ClientEvent name="onClick">dorado.MessageBox.confirm(&quot;关联试飞通用科目，将会覆盖原有科目，确认关联？&quot;,function(){&#xD;
+	view.id(&quot;ajaxGetsubject&quot;).execute();&#xD;
+});</ClientEvent>
+        <Property name="caption">关联通用试飞科目</Property>
+        <Property name="disabled">true</Property>
+        <Property name="tags">Dirty</Property>
+      </Button>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var productTree = this.get(&quot;#dataTreeSubject&quot;);&#xD;
+var Nodes = productTree.get(&quot;nodes&quot;);&#xD;
+expand(Nodes);&#xD;
+&#xD;
+function expand(nodes){&#xD;
+  nodes.each(function(node){&#xD;
+	node.expand();&#xD;
+    expand(node.get(&quot;nodes&quot;));&#xD;
+  });&#xD;
+}</ClientEvent>
+        <Property name="caption">全部展开</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -60px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var nodes = this.get(&quot;#dataTreeSubject.nodes&quot;);&#xD;
+nodes.each(function(node) {&#xD;
+	 node.collapse();&#xD;
+});</ClientEvent>
+        <Property name="caption">全部收起</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -80px -0px</Property>
+      </ToolBarButton>
+    </ToolBar>
     <SplitPanel>
-      <Property name="position">270</Property>
+      <Property name="position">300</Property>
       <MainControl>
         <Container>
           <ToolBar>
-            <FormElement id="formelement">
-              <Property name="label">选择机型：</Property>
-              <Property name="droppable">false</Property>
-              <Property name="trigger">dataSetDropDownAircraftType</Property>
-              <Editor/>
-            </FormElement>
-            <Button>
-              <ClientEvent name="onClick">dorado.MessageBox.confirm(&quot;关联试飞通用科目，将会覆盖原有科目，确认关联？&quot;,function(){&#xD;
-	view.id(&quot;ajaxGetsubject&quot;).execute();&#xD;
-});</ClientEvent>
-              <Property name="caption">关联通用试飞科目</Property>
-              <Property name="disabled">true</Property>
-              <Property name="tags">Dirty</Property>
-            </Button>
+            <Separator/>
+            <ToolBarLabel>
+              <Property name="text">子科目管理</Property>
+            </ToolBarLabel>
+            <Separator/>
+            <ToolBarButton>
+              <ClientEvent name="onClick">var tree=view.id(&quot;dataTreeSubject&quot;);&#xD;
+var currentNode=tree.get(&quot;currentNode&quot;);&#xD;
+if(!currentNode){&#xD;
+	dorado.MessageBox.alert(&quot;请先选中一个父节点!&quot;);&#xD;
+}&#xD;
+var newOrder=view.buildOrder(currentNode.get(&quot;nodes&quot;));&#xD;
+var currentEntity=currentNode.get(&quot;data&quot;);&#xD;
+var NodeType = currentNode.get(&quot;bindingConfig.name&quot;);&#xD;
+var ftype = view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
+if(NodeType==&quot;FType&quot;){&#xD;
+  currentEntity.createChild(&quot;subject&quot;,{&#xD;
+  	ftype:ftype,&#xD;
+	orderno:newOrder&#xD;
+  });&#xD;
+}&#xD;
+else{&#xD;
+  currentEntity.createChild(&quot;children&quot;,{&#xD;
+  	ftype:ftype,&#xD;
+	parentnode:currentEntity.get(&quot;oid&quot;),&#xD;
+	orderno:newOrder&#xD;
+  });&#xD;
+}&#xD;
+currentNode.expand();&#xD;
+view.id(&quot;diaSubject&quot;).set(&quot;caption&quot;,&quot;新增子科目信息&quot;);&#xD;
+view.id(&quot;diaSubject&quot;).show();&#xD;
+</ClientEvent>
+              <Property name="caption">新增</Property>
+              <Property name="icon">url(skin>common/icons.gif) -120px 0px</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">var cur=view.id('dgSubject').getCurrentItem();&#xD;
+if (cur) {&#xD;
+    view.id(&quot;diaSubject&quot;).set(&quot;caption&quot;,&quot;修改子科目信息&quot;);&#xD;
+	view.id('diaSubject').show();	&#xD;
+}&#xD;
+else&#xD;
+    dorado.MessageBox.alert(&quot;请在当前列表中选中一个子科目！&quot;);</ClientEvent>
+              <Property name="caption">修改</Property>
+              <Property name="icon"> url(>skin>common/icons.gif) -100px -0px</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">var entity=view.id('dgSubject').getCurrentItem();&#xD;
+if(entity){&#xD;
+  if (entity.get(&quot;children&quot;).entityCount>0)&#xD;
+	dorado.MessageBox.alert(&quot;请先删除子节点&quot;);&#xD;
+  else&#xD;
+	dorado.MessageBox.confirm(&quot;真的要删除当前节点？&quot;,function(){			&#xD;
+			entity.remove();&#xD;
+			view.id(&quot;updateActionSubject&quot;).execute();&#xD;
+	});&#xD;
+}&#xD;
+else&#xD;
+    dorado.MessageBox.alert(&quot;请在当前列表中选中一个子科目！&quot;);</ClientEvent>
+              <Property name="caption">删除</Property>
+              <Property name="tags">DirtyNode</Property>
+              <Property name="icon">url(skin>common/icons.gif) -140px 0px</Property>
+              <Property name="width">57</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">var dataTree = this.get(&quot;#dataTreeSubject&quot;);&#xD;
+var NodeType = dataTree.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+if(NodeType==&quot;FType&quot;)&#xD;
+  view.id(&quot;dsSubject&quot;).getData(&quot;!CURRENT_FTYPES&quot;).reset(&quot;subject&quot;);&#xD;
+else&#xD;
+  view.id(&quot;dsSubject&quot;).getData(&quot;!CURRENT_SUBJECT&quot;).reset(&quot;children&quot;);</ClientEvent>
+              <Property name="caption">刷新</Property>
+              <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+              <Property name="width">57</Property>
+            </ToolBarButton>
           </ToolBar>
-          <AutoForm layoutConstraint="center">
-            <Property name="dataSet">dataSetSubject</Property>
-            <Property name="dataPath">!currentSubject</Property>
+          <DataGrid id="dgSubject">
+            <Property name="dataSet">dsSubject</Property>
+            <Property name="dataType">Subject</Property>
+            <Property name="dataPath">!CURRENT_FTYPES.subject</Property>
+            <Property name="readOnly">true</Property>
+            <RowNumColumn/>
+            <DataColumn name="ftype">
+              <Property name="property">ftype</Property>
+              <Property name="caption">机型</Property>
+              <Property name="width">100</Property>
+            </DataColumn>
+            <DataColumn name="orderno">
+              <Property name="property">orderno</Property>
+              <Property name="caption">显示序号</Property>
+              <Property name="align">left</Property>
+              <Property name="width">100</Property>
+            </DataColumn>
+            <DataColumn name="name">
+              <Property name="property">name</Property>
+              <Property name="caption">科目名称</Property>
+              <Property name="width">300</Property>
+            </DataColumn>
+            <DataColumn name="description">
+              <Property name="property">description</Property>
+              <Property name="caption">描述</Property>
+            </DataColumn>
+          </DataGrid>
+        </Container>
+      </MainControl>
+      <SideControl>
+        <Panel>
+          <Property name="caption">试飞科目导航树</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -260px -40px</Property>
+          <Buttons/>
+          <Children>
+            <DataTree id="dataTreeSubject">
+              <ClientEvent name="onReady">var Ftypes = view.get(&quot;@Ftypes&quot;);&#xD;
+var Subject = view.get(&quot;@Subject&quot;);&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_FTYPES&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == Ftypes) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return Ftypes;&#xD;
+	});&#xD;
+dorado.DataPath.registerInterceptor(&quot;CURRENT_SUBJECT&quot;, function(data) {&#xD;
+		var entity = self.get(&quot;currentNode.data&quot;);&#xD;
+		return (entity &amp;&amp; entity.dataType == Subject) ? entity : null;&#xD;
+	}, function(dataType) {&#xD;
+		return Subject;&#xD;
+	});</ClientEvent>
+              <ClientEvent name="onCurrentChange">var dataTree = this.get(&quot;#dataTreeSubject&quot;);&#xD;
+var NodeType = dataTree.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+var dataPath = &quot;!CURRENT_FTYPES.subject&quot;;&#xD;
+var index = 0;&#xD;
+if(NodeType!=&quot;FType&quot;){&#xD;
+  var dataPath = &quot;!CURRENT_SUBJECT.children&quot;;&#xD;
+  index = 1;&#xD;
+}&#xD;
+view.id(&quot;dgSubject&quot;).set(&quot;dataPath&quot;,dataPath);&#xD;
+  view.id(&quot;cardbook&quot;).set(&quot;currentIndex&quot;,index);</ClientEvent>
+              <Property name="currentNodeDataPath">currentNode</Property>
+              <Property name="draggable">false</Property>
+              <Property name="dataSet">dsSubject</Property>
+              <BindingConfigs>
+                <BindingConfig>
+                  <Property name="labelProperty">ftypename</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
+                  <Property name="expandLevel">1</Property>
+                  <Property name="name">FType</Property>
+                  <BindingConfig>
+                    <Property name="childrenProperty">subject</Property>
+                    <Property name="labelProperty">name</Property>
+                    <Property name="expandLevel">1</Property>
+                    <Property name="name">RootSubject</Property>
+                    <Property name="tipProperty">description</Property>
+                    <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                    <BindingConfig>
+                      <Property name="tipProperty">description</Property>
+                      <Property name="labelProperty">name</Property>
+                      <Property name="recursive">true</Property>
+                      <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                      <Property name="expandLevel">3</Property>
+                      <Property name="childrenProperty">children</Property>
+                      <Property name="name">Subject</Property>
+                    </BindingConfig>
+                  </BindingConfig>
+                </BindingConfig>
+              </BindingConfigs>
+            </DataTree>
+          </Children>
+          <Tools/>
+        </Panel>
+      </SideControl>
+    </SplitPanel>
+    <Dialog id="diaSubject">
+      <ClientEvent name="onClose">var cur;&#xD;
+if(view.id(&quot;cardbook&quot;).get(&quot;currentIndex&quot;)==0)&#xD;
+    cur=view.id('afSubject1').get(&quot;entity&quot;);&#xD;
+else&#xD;
+    cur=view.id('afSubject2').get(&quot;entity&quot;); &#xD;
+if(cur){&#xD;
+	cur.cancel();&#xD;
+	view.id('diaSubject').hide();&#xD;
+}</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">400</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('updateActionSubject').execute(function(){
+	view.id('diaSubject').hide();
+});       </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur;
+if(view.id(&quot;cardbook&quot;).get(&quot;currentIndex&quot;)==0)
+    cur=view.id('afSubject1').get(&quot;entity&quot;);
+else
+    cur=view.id('afSubject2').get(&quot;entity&quot;); 
+if(cur){
+	cur.cancel();
+	view.id('diaSubject').hide();
+}</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <CardBook id="cardbook">
+          <AutoForm id="afSubject1">
             <Property name="cols">*</Property>
-            <Property name="readOnly">false</Property>
+            <Property name="dataType">Subject</Property>
+            <Property name="dataSet">dsSubject</Property>
+            <Property name="dataPath">!CURRENT_FTYPES.#subject</Property>
             <AutoFormElement>
               <Property name="name">ftype</Property>
               <Property name="property">ftype</Property>
-              <Property name="editable">false</Property>
               <Property name="readOnly">true</Property>
+              <Editor/>
+            </AutoFormElement>
+            <AutoFormElement>
+              <Property name="name">orderno</Property>
+              <Property name="property">orderno</Property>
+              <Property name="editorType">NumberSpinner</Property>
               <Editor/>
             </AutoFormElement>
             <AutoFormElement>
@@ -134,129 +350,38 @@ cur.flushAsync();</ClientEvent>
               <Editor/>
             </AutoFormElement>
           </AutoForm>
-          <Container layout="anchor" layoutConstraint="center">
-            <Property name="height">30</Property>
-            <Button layoutConstraint="right:30">
-              <Property name="icon">url(skin>common/icons.gif) -140px -20px</Property>
-              <Property name="caption">保存</Property>
-              <Property name="style">
-                <Property name="margin-right">30</Property>
-              </Property>
-              <Property name="action">updateActionSubject</Property>
-            </Button>
-          </Container>
-        </Container>
-      </MainControl>
-      <SideControl>
-        <Container>
-          <FieldSet layoutConstraint="top">
-            <Property name="caption">试飞科目</Property>
-            <Buttons/>
-            <Children>
-              <ToolBar>
-                <ToolBarButton>
-                  <ClientEvent name="onClick">var tree=view.id(&quot;dataTreeSubject&quot;);&#xD;
-var currentNode=tree.get(&quot;currentNode&quot;);&#xD;
-if(!currentNode){&#xD;
-	dorado.MessageBox.alert(&quot;请先选中一个父节点!&quot;);&#xD;
-}&#xD;
-var newOrder=view.buildOrder(currentNode.get(&quot;nodes&quot;));&#xD;
-var currentEntity=currentNode.get(&quot;data&quot;);&#xD;
-var newEntity=currentEntity.createChild(&quot;children&quot;,{&#xD;
-	parentnode:currentEntity.get(&quot;oid&quot;),&#xD;
-	orderno:newOrder&#xD;
-});&#xD;
-currentNode.expand();&#xD;
-tree.set(&quot;currentEntity&quot;,newEntity);&#xD;
-var cur=view.id(&quot;formelement&quot;).get(&quot;value&quot;);&#xD;
-var cur1=view.id(&quot;dataSetSubject&quot;).getData(&quot;!currentSubject&quot;);&#xD;
-cur1.set(&quot;ftype&quot;,cur);&#xD;
-&#xD;
-</ClientEvent>
-                  <Property name="caption">添加子节点</Property>
-                  <Property name="icon">url(skin>common/icons.gif) -120px 0px</Property>
-                  <Property name="width">95</Property>
-                </ToolBarButton>
-                <ToolBarButton>
-                  <ClientEvent name="onClick">var tree=view.id(&quot;dataTreeSubject&quot;);&#xD;
-var entity=tree.get(&quot;currentEntity&quot;);&#xD;
-if(entity){&#xD;
-	view.id(&quot;ajaxActionCheckChildren&quot;).set(&quot;parameter&quot;, {&#xD;
-		parentnode:entity.get(&quot;oid&quot;),&#xD;
-		ftype:entity.get(&quot;ftype&quot;)&#xD;
-		}).execute(function(count){&#xD;
-		if (count>0){&#xD;
-			dorado.MessageBox.alert(&quot;请先删除子节点&quot;);&#xD;
-		} else {&#xD;
-			dorado.MessageBox.confirm(&quot;真的要删除当前节点？&quot;,function(){			&#xD;
-				entity.remove();&#xD;
-				var firstNode=tree.get(&quot;firstNode&quot;);&#xD;
-				if(firstNode){&#xD;
-					tree.set(&quot;currentNode&quot;,firstNode);&#xD;
-				}&#xD;
-			});&#xD;
-		}&#xD;
-	});&#xD;
-}else{&#xD;
-	dorado.MessageBox.alert(&quot;当前没有节点可供删除！&quot;);&#xD;
-}&#xD;
-</ClientEvent>
-                  <Property name="caption">删除</Property>
-                  <Property name="tags">DirtyNode</Property>
-                  <Property name="icon">url(skin>common/icons.gif) -140px 0px</Property>
-                  <Property name="width">57</Property>
-                </ToolBarButton>
-                <ToolBarButton>
-                  <ClientEvent name="onClick">var dataSetSubject = view.id(&quot;dataSetSubject&quot;);&#xD;
-dataSetSubject.flushAsync();</ClientEvent>
-                  <Property name="caption">刷新</Property>
-                  <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
-                  <Property name="width">57</Property>
-                </ToolBarButton>
-              </ToolBar>
-            </Children>
-          </FieldSet>
-          <DataTree id="dataTreeSubject">
-            <ClientEvent name="beforeCurrentChange">var node=arg.oldCurrent;//当前节点&#xD;
-if(node){&#xD;
-	var data = node.get(&quot;data&quot;);&#xD;
-	if(data &amp;&amp; data.state!=dorado.Entity.STATE_NONE){&#xD;
-		view.id(&quot;updateActionSubject&quot;).execute();&#xD;
-		if(data.validate()!=&quot;ok&quot;){&#xD;
-			arg.processDefault=false;&#xD;
-		}&#xD;
-	}	&#xD;
-}&#xD;
-&#xD;
-</ClientEvent>
-            <ClientEvent name="onCurrentChange">var dataTree = this.get(&quot;#dataTreeSubject&quot;);&#xD;
-var node = dataTree.get(&quot;currentNode&quot;);&#xD;
-if(node){&#xD;
-	var name = node.get(&quot;data&quot;).get(&quot;parentnode&quot;);&#xD;
-	if(name == null){&#xD;
-		view.set({&#xD;
-		&quot;^DirtyNode.disabled&quot; : true});	&#xD;
-	}else{&#xD;
-		view.set({&#xD;
-		&quot;^DirtyNode.disabled&quot; : false});	&#xD;
-	}&#xD;
-}</ClientEvent>
-            <Property name="currentNodeDataPath">currentSubject</Property>
-            <Property name="draggable">false</Property>
-            <Property name="dataSet">dataSetSubject</Property>
-            <BindingConfigs>
-              <BindingConfig>
-                <Property name="tipProperty">description</Property>
-                <Property name="labelProperty">name</Property>
-                <Property name="recursive">true</Property>
-                <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
-                <Property name="expandLevel">3</Property>
-                <Property name="childrenProperty">children</Property>
-              </BindingConfig>
-            </BindingConfigs>
-          </DataTree>
-        </Container>
-      </SideControl>
-    </SplitPanel>
+          <AutoForm id="afSubject2">
+            <Property name="cols">*</Property>
+            <Property name="dataType">Subject</Property>
+            <Property name="dataSet">dsSubject</Property>
+            <Property name="dataPath">!CURRENT_SUBJECT.#children</Property>
+            <AutoFormElement>
+              <Property name="name">ftype</Property>
+              <Property name="property">ftype</Property>
+              <Property name="readOnly">true</Property>
+              <Editor/>
+            </AutoFormElement>
+            <AutoFormElement>
+              <Property name="name">orderno</Property>
+              <Property name="property">orderno</Property>
+              <Property name="editorType">NumberSpinner</Property>
+              <Editor/>
+            </AutoFormElement>
+            <AutoFormElement>
+              <Property name="name">name</Property>
+              <Property name="property">name</Property>
+              <Editor/>
+            </AutoFormElement>
+            <AutoFormElement>
+              <Property name="name">description</Property>
+              <Property name="property">description</Property>
+              <Property name="editorType">TextArea</Property>
+              <Editor/>
+            </AutoFormElement>
+          </AutoForm>
+        </CardBook>
+      </Children>
+      <Tools/>
+    </Dialog>
   </View>
 </ViewConfig>

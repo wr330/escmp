@@ -37,7 +37,7 @@ public class SubjectDao extends HibernateBaseDao {
 		String parentnode=(String) parameter.get("parentnode");
 		String hql="from "+Subject.class.getName()+" u where 1=1";
 		String ftype =(String) parameter.get("ftype");
-		if(StringUtils.isEmpty(ftype)){
+		if(StringUtils.isEmpty(ftype) || "通用试飞科目".equals(ftype)){
 			hql+=" and u.ftype is null";
 		}else
 			hql+=" and u.ftype ='" + ftype + "'";

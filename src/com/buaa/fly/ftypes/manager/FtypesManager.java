@@ -20,6 +20,7 @@ import com.buaa.fly.ftypes.dao.FtypesDao;
 import com.buaa.fly.fpici.dao.FpiciDao;
 import com.buaa.fly.fpici.manager.FpiciManager;
 import com.buaa.fly.subject.dao.SubjectDao;
+import com.buaa.fly.subject.manager.SubjectManager;
 
 @Component("ftypesManager")
 public class FtypesManager {
@@ -30,8 +31,6 @@ public class FtypesManager {
 	private FpiciManager fpiciManager;
 	@Resource
 	private FpiciDao fpiciDao;
-	@Resource
-	private SubjectDao subjectDao;
 
 	/**
 	 * 查询信息
@@ -74,10 +73,6 @@ public class FtypesManager {
 					if (ftypeIsExists(item.getFtypename()) != null)
 						throw new Exception("此机型已存在！");
 					ftypesDao.saveData(item);
-					Subject sub = new Subject();
-					sub.setFtype(item.getFtypename());
-					sub.setName(item.getFtypename());
-					subjectDao.saveData(sub);
 				} else if (state.equals(EntityState.MODIFIED)) {
 					ftypesDao.updateData(item);
 				} else if (state.equals(EntityState.DELETED)) {
