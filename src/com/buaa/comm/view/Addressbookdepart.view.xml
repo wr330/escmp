@@ -90,6 +90,12 @@ importExcelAction.execute(function(arg){&#xD;
                 <Property name="caption">批量导入</Property>
                 <Property name="icon">dorado/res/com/bstek/bdf2/importexcel/view/icons/page_excel.png</Property>
               </ToolBarButton>
+              <ToolBarButton>
+                <ClientEvent name="onClick">var dsAddressbook = view.get(&quot;#dsAddressbook&quot;);&#xD;
+dsAddressbook.flushAsync();</ClientEvent>
+                <Property name="caption">刷新</Property>
+                <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+              </ToolBarButton>
             </ToolBar>
             <DataGrid id="dgAddressBook">
               <Property name="dataSet">dsAddressbook</Property>

@@ -26,6 +26,7 @@
     </DataSetDropDown>
     <UpdateAction id="uaResourcedownload">
       <Property name="dataResolver">resourcedownloadPR#saveResourcedownload</Property>
+      <Property name="async">false</Property>
       <UpdateItem>
         <Property name="dataSet">dsResourcedownload</Property>
       </UpdateItem>
@@ -93,6 +94,12 @@ var cur=view.id('dsResourcedownload').getData('#');
         <Property name="caption">删除</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
       </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var dsResourcedownload = view.get(&quot;#dsResourcedownload&quot;);&#xD;
+dsResourcedownload.flushAsync();</ClientEvent>
+        <Property name="caption">刷新</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+      </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgResourcedownload">
       <Property name="readOnly">true</Property>
@@ -137,7 +144,7 @@ jQuery(arg.dom).xCreate({&#xD;
 </ClientEvent>
         <Property name="property">efile</Property>
         <Property name="width">120</Property>
-        <Property name="userData"/>
+        <Property name="userData"></Property>
       </DataColumn>
       <DataColumn>
         <Property name="width">120</Property>

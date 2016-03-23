@@ -546,6 +546,16 @@
         </Property>
       </Property>
     </PropertyDef>
+    <PropertyDef name="workStatus">
+      <Property name="dataType">int</Property>
+      <Property name="defaultValue">0</Property>
+      <Property name="label">工作状态</Property>
+    </PropertyDef>
+    <PropertyDef name="sectionChief">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">分配到室主任</Property>
+    </PropertyDef>
   </DataType>
   <DataType name="Jobconcern">
     <Property name="creationType">com.buaa.comm.domain.Jobconcern</Property>
@@ -649,6 +659,12 @@ arg.parameter = parameter;</ClientEvent>
           </Collection>
         </Property>
       </Property>
+    </PropertyDef>
+    <PropertyDef name="workStatus">
+      <Property/>
+      <Property name="dataType">int</Property>
+      <Property name="defaultValue">0</Property>
+      <Property name="label">工作状态</Property>
     </PropertyDef>
   </DataType>
 </Model>
