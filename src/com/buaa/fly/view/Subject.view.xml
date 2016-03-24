@@ -74,7 +74,7 @@ cur.flushAsync();</ClientEvent>
         <Property name="label">选择机型：</Property>
         <Property name="droppable">false</Property>
         <Property name="trigger">dataSetDropDownAircraftType</Property>
-        <Property name="width">190</Property>
+        <Property name="width">180</Property>
         <Property name="labelWidth">72</Property>
         <Editor/>
       </FormElement>
@@ -85,6 +85,7 @@ cur.flushAsync();</ClientEvent>
         <Property name="caption">关联通用试飞科目</Property>
         <Property name="disabled">true</Property>
         <Property name="tags">Dirty</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -240px -160px</Property>
       </Button>
       <ToolBarButton>
         <ClientEvent name="onClick">var productTree = this.get(&quot;#dataTreeSubject&quot;);&#xD;
@@ -98,7 +99,7 @@ function expand(nodes){&#xD;
   });&#xD;
 }</ClientEvent>
         <Property name="caption">全部展开</Property>
-        <Property name="icon">url(>skin>common/icons.gif) -60px -0px</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -60px -240px</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var nodes = this.get(&quot;#dataTreeSubject.nodes&quot;);&#xD;
@@ -106,7 +107,7 @@ nodes.each(function(node) {&#xD;
 	 node.collapse();&#xD;
 });</ClientEvent>
         <Property name="caption">全部收起</Property>
-        <Property name="icon">url(>skin>common/icons.gif) -80px -0px</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -80px -240px</Property>
       </ToolBarButton>
     </ToolBar>
     <SplitPanel>
@@ -201,11 +202,11 @@ else&#xD;
               <Property name="caption">机型</Property>
               <Property name="width">100</Property>
             </DataColumn>
-            <DataColumn name="orderno">
+            <DataColumn>
               <Property name="property">orderno</Property>
-              <Property name="caption">显示序号</Property>
               <Property name="align">left</Property>
               <Property name="width">100</Property>
+              <Property name="name">orderno</Property>
             </DataColumn>
             <DataColumn name="name">
               <Property name="property">name</Property>

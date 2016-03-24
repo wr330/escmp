@@ -529,6 +529,10 @@ open(path,&quot;_blank&quot;);
         <Property name="property">fname</Property>
         <Property name="width">120</Property>
       </DataColumn>
+      <DataColumn name="fno">
+        <Property name="property">fno</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
       <DataColumn name="begindate">
         <Property name="property">begindate</Property>
         <Property name="width">120</Property>
@@ -566,10 +570,6 @@ jQuery(arg.dom).xCreate({&#xD;
         <Property name="property">filename</Property>
         <Property name="width">120</Property>
       </DataColumn>
-      <DataColumn name="fno">
-        <Property name="property">fno</Property>
-        <Property name="width">120</Property>
-      </DataColumn>
       <DataColumn name="maincontent">
         <Property name="property">maincontent</Property>
         <Property name="width">120</Property>
@@ -577,6 +577,7 @@ jQuery(arg.dom).xCreate({&#xD;
       <DataColumn>
         <Property name="property">miji</Property>
         <Property name="width">120</Property>
+        <Property name="align">left</Property>
         <Editor/>
       </DataColumn>
     </DataGrid>

@@ -2,6 +2,7 @@ package com.buaa.fly.domain;
 
 import java.io.Serializable;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,6 +32,7 @@ public class Subject implements Serializable {
 	private String ftype;
 	private List<Subject> children;
 	private List<Outlineexecution> outlineexecution;
+	private String subjectno;
 
 	@Id
 	@Column(name = "Oid", unique = true, nullable = false)
@@ -105,4 +107,12 @@ public class Subject implements Serializable {
 		this.children = children;
 	}
 
+	@Transient
+	public String getSubjectno() {
+		return subjectno;
+	}
+
+	public void setSubjectno(String subjectno) {
+		this.subjectno = subjectno;
+	}
 }

@@ -65,6 +65,10 @@ arg.parameter = parameter;</ClientEvent>
         </Entity>
       </Property>
     </Reference>
+    <PropertyDef name="subjectno">
+      <Property name="dataType">String</Property>
+      <Property name="label">科目序号</Property>
+    </PropertyDef>
   </DataType>
   <DataType name="Tasklist" meta="x:287;y:10">
     <Property name="matchType">com.buaa.fly.domain.Tasklist</Property>
@@ -240,7 +244,11 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
       <Property name="dataType">Integer</Property>
       <Property name="label">当日架次</Property>
       <Property name="required">true</Property>
-      <Property name="defaultValue">0</Property>
+      <Property name="defaultValue">1</Property>
+      <Validator type="range">
+        <Property name="minValue">1</Property>
+        <Property name="minValueValidateMode">allowEquals</Property>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="config">
       <Property name="dataType">String</Property>
@@ -452,7 +460,7 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
     <PropertyDef name="fname">
       <Property name="dataType">String</Property>
       <Property name="label">名称</Property>
-      <Property name="required">false</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="isaffect">
       <Property name="dataType">boolean</Property>
@@ -826,6 +834,11 @@ arg.parameter = parameter;</ClientEvent>
       <Property name="dataType">int</Property>
       <Property name="label">大纲架次</Property>
       <Property name="defaultValue">1</Property>
+      <Property name="required">true</Property>
+      <Validator type="range">
+        <Property name="minValue">1</Property>
+        <Property name="minValueValidateMode">allowEquals</Property>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="combineFlights">
       <Property name="dataType">int</Property>
@@ -838,6 +851,7 @@ arg.parameter = parameter;</ClientEvent>
     <PropertyDef name="aircraftStruct">
       <Property></Property>
       <Property name="label">飞机构形</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="testStatus">
       <Property></Property>
@@ -865,6 +879,10 @@ arg.parameter = parameter;</ClientEvent>
     <PropertyDef name="shijijiaci">
       <Property name="dataType">Integer</Property>
       <Property name="label">实际架次</Property>
+      <Validator type="range">
+        <Property name="minValue">1</Property>
+        <Property name="minValueValidateMode">allowEquals</Property>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="miji">
       <Property name="dataType">String</Property>

@@ -116,10 +116,15 @@ public class OutlineexecutionDao extends HibernateBaseDao {
 		    String sql = "with cte as(select a.oid from Fly_Subject a where Oid='" + oid 
 		    		+ "' union all select k.oid from Fly_Subject k inner join cte c on c.oid=k.ParentNode) select oid from cte";
 		    Session session = this.getSessionFactory().openSession();
-		    Query query = session.createSQLQuery(sql).addScalar("oid",Hibernate.STRING);// 设置返回值类型，不然会报错
-		    List<String> aa = query.list();
-		    coreHql.append(" and a.project.oid in(:aa)");
-		    args.put("aa", aa);
+			try {
+			    Query query = session.createSQLQuery(sql).addScalar("oid",Hibernate.STRING);// 设置返回值类型，不然会报错
+			    List<String> aa = query.list();
+			    coreHql.append(" and a.project.oid in(:aa)");
+			    args.put("aa", aa);
+			} finally {
+				session.flush();
+				session.close();
+			}
 		}
 		if (null != criteria) {
 			ParseResult result = this.parseCriteria(criteria, true, "a");
@@ -129,8 +134,23 @@ public class OutlineexecutionDao extends HibernateBaseDao {
 			}
 		}
 		String countHql = "select count(*) " + coreHql.toString();
-		String hql = coreHql.toString();
+		String hql = coreHql.toString() + " order by dbo.F_getSubjectNo(a.project.oid)";//按科目序号排序
 		this.pagingQuery(page, hql, countHql, args);
+		Session session = this.getSessionFactory().openSession();
+		try {
+			for (Outlineexecution out : page.getEntities()) {// 增加科目序号的显示
+				String sql = "select dbo.F_getSubjectNo('" + out.getProject().getOid() + "') as result";
+				Query query = session.createSQLQuery(sql).addScalar("result",Hibernate.STRING);// 设置返回值类型，不然会报错
+				List<String> result = query.list();
+				String subjectNo = result.get(0);
+				if (subjectNo.startsWith("0"))//去除最前面的0
+					subjectNo = subjectNo.substring(1, subjectNo.length());
+				out.getProject().setSubjectno(subjectNo.replaceAll(".0", "."));//去除"."后的0
+			}
+		} finally {
+			session.flush();
+			session.close();
+		}
 	}
 
 	/**
@@ -152,10 +172,15 @@ public class OutlineexecutionDao extends HibernateBaseDao {
 		    String sql = "with cte as(select a.oid from Fly_Subject a where Oid='" + subjectOid 
 		    		+ "' union all select k.oid from Fly_Subject k inner join cte c on c.oid=k.ParentNode) select oid from cte";
 		    Session session = this.getSessionFactory().openSession();
-		    Query query = session.createSQLQuery(sql).addScalar("oid",Hibernate.STRING);// 设置返回值类型，不然会报错
-		    List<String> aa = query.list();
-		    coreHql.append(" and a.project.oid in(:aa)");
-		    args.put("aa", aa);
+		    try {
+		        Query query = session.createSQLQuery(sql).addScalar("oid",Hibernate.STRING);// 设置返回值类型，不然会报错
+		        List<String> aa = query.list();
+		        coreHql.append(" and a.project.oid in(:aa)");
+		        args.put("aa", aa);
+			} finally {
+				session.flush();
+				session.close();
+			}
 		}
 		String hql = coreHql.toString();
 		return this.query(hql, args);

@@ -127,7 +127,8 @@ dsTasklist.set(&quot;parameter&quot;, {&#xD;
 dsTasklist.flushAsync();</ClientEvent>
       <Property name="autoOpen">true</Property>
       <Property name="editable">false</Property>
-      <Property name="height">200</Property>
+      <Property name="height">400</Property>
+      <Property name="width">250</Property>
       <Container>
         <Property name="height">200</Property>
         <ToolBar>
@@ -536,23 +537,17 @@ if(cur){
       <Tools/>
     </Dialog>
     <ToolBar>
-      <DataPilot>
-        <Property name="itemCodes">pages</Property>
-        <Property name="dataSet">dsTasklist</Property>
-        <Property name="dataPath"></Property>
-      </DataPilot>
       <FormElement id="formElement1">
         <Property name="editorWidth">150</Property>
         <Property name="label">选择机型：</Property>
         <Property name="trigger">chooseAircraft</Property>
         <Editor/>
       </FormElement>
-      <FormElement id="formElement3">
-        <Property name="editorWidth">150</Property>
-        <Property name="label">选择科目：</Property>
-        <Property name="trigger">chooseSubject</Property>
-        <Editor/>
-      </FormElement>
+      <DataPilot>
+        <Property name="itemCodes">pages</Property>
+        <Property name="dataSet">dsTasklist</Property>
+        <Property name="dataPath"></Property>
+      </DataPilot>
       <ToolBarButton>
         <ClientEvent name="onClick">var guid = &quot;&quot;;
 for(var i=1;i&lt;=32;i++){
@@ -623,6 +618,14 @@ dsTasklist.flushAsync();</ClientEvent>
         <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
         <Property name="width">57</Property>
       </ToolBarButton>
+      <Fill/>
+      <FormElement id="formElement3" layoutConstraint="right">
+        <Property name="editorWidth">150</Property>
+        <Property name="label">按科目查询：</Property>
+        <Property name="trigger">chooseSubject</Property>
+        <Property name="labelWidth">90</Property>
+        <Editor/>
+      </FormElement>
     </ToolBar>
     <DataGrid id="dgTasklist">
       <Property name="readOnly">true</Property>
