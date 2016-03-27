@@ -40,6 +40,14 @@ public class  Btreport implements Serializable {
 	private Date bttime ;
 	private String bttask ;
 	private String miji ;
+	private int status ;
+	private String sectionChief ;
+	private Date sectionChiefDate ;
+	private String departmentHead ;
+	private Date departmentHeadDate ;
+	private String writingPerson ;
+	private String sharePerson ;
+	
 
 
 	private Collection<Appendixdocument> appendixdocument;
@@ -129,6 +137,61 @@ public class  Btreport implements Serializable {
 	}
 	public void setMiji(String miji) {
 		this.miji = miji;
+	}
+	
+	@Column(name="Status")
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	
+	@Column(name="SectionChief")
+	public String getSectionChief() {
+		return sectionChief;
+	}
+	public void setSectionChief(String sectionChief) {
+		this.sectionChief = sectionChief;
+	}
+	
+	@Column(name="SectionChiefDate")
+	public Date getSectionChiefDate() {
+		return sectionChiefDate;
+	}
+	public void setSectionChiefDate(Date sectionChiefDate) {
+		this.sectionChiefDate = sectionChiefDate;
+	}
+	
+	@Column(name="DepartmentHead")
+	public String getDepartmentHead() {
+		return departmentHead;
+	}
+	public void setDepartmentHead(String departmentHead) {
+		this.departmentHead = departmentHead;
+	}
+	
+	@Column(name="DepartmentHeadDate")
+	public Date getDepartmentHeadDate() {
+		return departmentHeadDate;
+	}
+	public void setDepartmentHeadDate(Date departmentHeadDate) {
+		this.departmentHeadDate = departmentHeadDate;
+	}
+	
+	@Column(name="WritingPerson")
+	public String getWritingPerson() {
+		return writingPerson;
+	}
+	public void setWritingPerson(String writingPerson) {
+		this.writingPerson = writingPerson;
+	}
+	@Column(name="SharePerson")
+	public String getSharePerson() {
+		return sharePerson;
+	}
+	public void setSharePerson(String sharePerson) {
+		this.sharePerson = sharePerson;
 	}
 	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY,mappedBy = "btreport")
     public Collection<Appendixdocument> getAppendixdocument() {

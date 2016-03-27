@@ -1,0 +1,897 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="dataTypeFiles">
+      <PropertyDef name="id"/>
+      <PropertyDef name="name">
+        <Property name="label">文件名</Property>
+      </PropertyDef>
+      <PropertyDef name="size">
+        <Property name="label">大小</Property>
+      </PropertyDef>
+      <PropertyDef name="percent">
+        <Property name="label">进度</Property>
+      </PropertyDef>
+      <PropertyDef name="status">
+        <Property name="dataType">int</Property>
+        <Property name="label">状态</Property>
+        <Property name="mapping">
+          <Property name="mapValues">
+            <Collection>
+              <Entity>
+                <Property name="value">队列中</Property>
+                <Property name="key">0</Property>
+              </Entity>
+              <Entity>
+                <Property name="value">正在上传</Property>
+                <Property name="key">2</Property>
+              </Entity>
+              <Entity>
+                <Property name="value">失败</Property>
+                <Property name="key">4</Property>
+              </Entity>
+              <Entity>
+                <Property name="value">完成</Property>
+                <Property name="key">5</Property>
+              </Entity>
+            </Collection>
+          </Property>
+        </Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <DataSet id="dsBtreport">
+      <Property name="dataType">[Btreport]</Property>
+      <Property name="dataProvider">btreportPR#queryBtreport</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="sectionChief">${loginUser.getUsername()}</Property>
+          <Property name="status">1</Property>
+        </Entity>
+      </Property>
+    </DataSet>
+    <DataSet id="dsUsers">
+      <Property name="dataProvider">bdf2.userMaintain#loadUsers</Property>
+      <Property name="dataType">[User]</Property>
+      <Property name="pageSize">200</Property>
+    </DataSet>
+    <UpdateAction id="uaBtreport">
+      <Property name="dataResolver">btreportPR#saveBtreport</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsBtreport</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <ToolBar>
+      <DataPilot>
+        <Property name="itemCodes">pages</Property>
+        <Property name="dataSet">dsBtreport</Property>
+        <Property name="dataPath"></Property>
+      </DataPilot>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsBtreport').getData('#');
+if (cur) {
+	var dialog=view.id('diaBtreport');
+	dialog.set(&quot;caption&quot;,&quot;修改出差报告&quot;);
+	dialog.show();
+}</ClientEvent>
+        <Property name="caption">修改</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var dsBtreport = view.get(&quot;#dsBtreport&quot;);&#xD;
+var cur=view.id('dsBtreport').getData('#');&#xD;
+if(cur.get(&quot;status&quot;) == 1){&#xD;
+	dorado.MessageBox.confirm('您是否确认驳回此出差报告?', function(){&#xD;
+		cur.set(&quot;status&quot;,0);&#xD;
+		view.id('uaBtreport').execute();&#xD;
+		dsBtreport.flushAsync();    &#xD;
+	});&#xD;
+}&#xD;
+else{&#xD;
+	dorado.MessageBox.alert(&quot;此出差报告已交领导审阅不能驳回&quot;);&#xD;
+}       </ClientEvent>
+        <Property name="caption">驳回到编写人</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -100px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsBtreport').getData('#');&#xD;
+var dateNow = new Date();&#xD;
+if (cur) {&#xD;
+	cur.set(&quot;sectionChiefDate&quot;,dateNow)&#xD;
+	var dialog=view.id('diaSubmitBtreport');&#xD;
+	dialog.set(&quot;caption&quot;,&quot;提交出差报告&quot;);&#xD;
+	dialog.show();&#xD;
+}&#xD;
+</ClientEvent>
+        <Property name="caption">提交到部领导</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -140px -180px</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid id="dgBtreport">
+      <Property name="readOnly">true</Property>
+      <Property name="dataSet">dsBtreport</Property>
+      <Property name="dataPath"></Property>
+      <Property name="height">300</Property>
+      <Property name="filterMode">clientSide</Property>
+      <Property name="showFilterBar">false</Property>
+      <Property name="rowHeight">22</Property>
+      <Property name="fixedColumnCount">8</Property>
+      <RowNumColumn/>
+      <DataColumn>
+        <Property name="property">writingPerson</Property>
+        <Property name="name">WritingPerson</Property>
+        <Property name="width">120</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn name="btperson">
+        <Property name="property">btperson</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="bttime">
+        <Property name="property">bttime</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="bttask">
+        <Property name="property">bttask</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="btplace">
+        <Property name="property">btplace</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="keyword">
+        <Property name="property">keyword</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="jobcontent">
+        <Property name="property">jobcontent</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="technicalquestion">
+        <Property name="property">technicalquestion</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="remainedproblem">
+        <Property name="property">remainedproblem</Property>
+        <Property name="width">150</Property>
+      </DataColumn>
+      <DataColumn name="conclusion">
+        <Property name="property">conclusion</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="gainandadvice">
+        <Property name="property">gainandadvice</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">sectionChief</Property>
+        <Property name="name">SectionChief</Property>
+        <Property name="width">120</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">sectionChiefDate</Property>
+        <Property name="name">SectionChiefDate</Property>
+        <Property name="width">120</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">departmentHead</Property>
+        <Property name="name">DepartmentHead</Property>
+        <Property name="width">120</Property>
+        <Property name="resizeable">true</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="name">DepartmentHeadDate</Property>
+        <Property name="property">departmentHeadDate</Property>
+        <Property name="width">120</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">miji</Property>
+        <Property name="name">miji</Property>
+        <Property name="align">left</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+    </DataGrid>
+    <GroupBox>
+      <Property name="caption">附件文档</Property>
+      <Property name="collapseable">false</Property>
+      <Buttons/>
+      <Children>
+        <DataGrid id="dgAppendixdocument">
+          <Property name="readOnly">true</Property>
+          <Property name="dataSet">dsBtreport</Property>
+          <Property name="dataPath">#.appendixdocument</Property>
+          <Property name="height">300</Property>
+          <Property name="filterMode">clientSide</Property>
+          <Property name="showFilterBar">false</Property>
+          <Property name="rowHeight">22</Property>
+          <RowNumColumn/>
+          <DataColumn name="efile">
+            <ClientEvent name="onRenderCell">//显示link&#xD;
+jQuery(arg.dom).empty();&#xD;
+var file = arg.data.get(&quot;efile&quot;); &#xD;
+var oid = view.id('dsBtreport').getData('#').get(&quot;oid&quot;);&#xD;
+var href = &quot;/escmp/upload/Comm_Btreport/&quot; + oid + &quot;/&quot; + file;&#xD;
+jQuery(arg.dom).xCreate({&#xD;
+	tagName:&quot;A&quot;,&#xD;
+	href:href,&#xD;
+	content:arg.data.get(&quot;efile&quot;)&#xD;
+});</ClientEvent>
+            <Property name="property">efile</Property>
+            <Property name="width">300</Property>
+          </DataColumn>
+        </DataGrid>
+      </Children>
+    </GroupBox>
+    <Dialog id="diaBtreport">
+      <ClientEvent name="onClose">var cur=view.id('dsBtreport').getData('#');&#xD;
+				cur.cancel();&#xD;
+				view.id('diaBtreport').hide();&#xD;
+				&#xD;
+	&#xD;
+	         </ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">800</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaBtreport').execute(function(){
+               view.id('diaBtreport').hide();
+           });
+         </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsBtreport').getData('#');
+				cur.cancel();
+				view.id('diaBtreport').hide();
+				
+	
+	         </ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <CustomDropDown id="customDropDown1">
+          <Property name="editable">false</Property>
+          <Property name="autoOpen">true</Property>
+          <DataGrid>
+            <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
+var user=view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;);&#xD;
+if (user) {&#xD;
+	dropDown.close(user.get(&quot;cname&quot;));&#xD;
+}</ClientEvent>
+            <Property name="showFilterBar">true</Property>
+            <Property name="rowHeight">22</Property>
+            <Property name="dataSet">dsUsers</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="height">300</Property>
+            <RowNumColumn/>
+            <DataColumn>
+              <Property name="name">username</Property>
+              <Property name="property">username</Property>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">cname</Property>
+              <Property name="property">cname</Property>
+            </DataColumn>
+            <DataColumn name="depts">
+              <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;depts&quot;);&#xD;
+var name = [];&#xD;
+if (entitylist) {&#xD;
+	entitylist.each(function(item){&#xD;
+		name.push(item.get(&quot;name&quot;));&#xD;
+	});&#xD;
+}&#xD;
+arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
+              <Property name="property">depts</Property>
+            </DataColumn>
+          </DataGrid>
+        </CustomDropDown>
+        <AutoForm id="afBtreport">
+          <Property name="cols">*,*</Property>
+          <Property name="dataSet">dsBtreport</Property>
+          <Property name="dataPath">#</Property>
+          <Property name="labelWidth">100</Property>
+          <AutoFormElement>
+            <Property name="name">BtPerson</Property>
+            <Property name="property">btperson</Property>
+            <Property name="trigger">customDropDown1,triggerClear</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">BtPlace</Property>
+            <Property name="property">btplace</Property>
+            <Property name="trigger">dataSetDropDown1</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">BtTime</Property>
+            <Property name="property">bttime</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">KeyWord</Property>
+            <Property name="property">keyword</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">BtTask</Property>
+            <Property name="property">bttask</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">80</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">JobContent</Property>
+            <Property name="property">jobcontent</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">80</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">RemainedProblem</Property>
+            <Property name="property">remainedproblem</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">80</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">TechnicalQuestion</Property>
+            <Property name="property">technicalquestion</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">80</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">GainAndAdvice</Property>
+            <Property name="property">gainandadvice</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">80</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">Conclusion</Property>
+            <Property name="property">conclusion</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">80</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">writingPerson</Property>
+            <Property name="name">WritingPerson</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">sectionChief</Property>
+            <Property name="name">SectionChief</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">sectionChiefDate</Property>
+            <Property name="name">SectionChiefDate</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">departmentHead</Property>
+            <Property name="name">DepartmentHead</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">departmentHeadDate</Property>
+            <Property name="name">DepartmentHeadDate</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+        <GroupBox>
+          <Property name="caption">附件文档</Property>
+          <Property name="collapseable">false</Property>
+          <Property name="height">250</Property>
+          <Buttons/>
+          <Children>
+            <ToolBar>
+              <DataPilot>
+                <ClientEvent name="onSubControlAction">switch(arg.code)&#xD;
+{&#xD;
+	case &quot;+&quot;:&#xD;
+	&#xD;
+	&#xD;
+		var dialog = this.id(&quot;dialogLoad&quot;);&#xD;
+		dialog.show();&#xD;
+		&#xD;
+        &#xD;
+	&#xD;
+		arg.processDefault = false;&#xD;
+	break;&#xD;
+	case &quot;-&quot;:&#xD;
+	&#xD;
+		 var selections = view.get(&quot;#dgAppendixdocument2.selection&quot;);&#xD;
+	     var tmpList=selections.slice(0);&#xD;
+	    if(tmpList.length){&#xD;
+			dorado.MessageBox.confirm(&quot;你确定要删除这条记录？&quot;,function(){&#xD;
+				&#xD;
+			var file;&#xD;
+	        tmpList.each(function(entity){&#xD;
+		    var cur=view.id('dsBtreport').getData('#');&#xD;
+            var value = &quot;/Comm_Btreport/&quot; + cur.get(&quot;oid&quot;) + &quot;/&quot;;&#xD;
+            var files = view.id('dsBtreport').getData('#.appendixdocument'); &#xD;
+		    files=files.toArray();&#xD;
+            files.each(function(f){&#xD;
+	        if(entity==f){&#xD;
+	          file=f;}&#xD;
+            })&#xD;
+&#xD;
+          file=file.get(&quot;efile&quot;);&#xD;
+         view.id(&quot;deleteFileAction&quot;).set(&quot;parameter&quot;,{&#xD;
+	     record: value,&#xD;
+	     filename: file&#xD;
+        });&#xD;
+		&#xD;
+		/*&#xD;
+ 		 * 对用户删除操作进行记录，在用户操作日志表中新增一条记录。&#xD;
+ 		 */&#xD;
+		var myDate = new Date();&#xD;
+		view.id('dsUserOperationLog').getData().insert({&#xD;
+			logOperationType:&quot;2&quot;,&#xD;
+			operationPerson: &quot;${loginUsername}&quot;,&#xD;
+			operationContent:&quot;对出差报告管理表的子表附件文档表删除所选记录&quot;,&#xD;
+			operationTime:myDate&#xD;
+		});&#xD;
+		view.id('uaUserOperationLog').execute();&#xD;
+				&#xD;
+        view.id(&quot;deleteFileAction&quot;).execute();&#xD;
+		entity.remove();&#xD;
+		&#xD;
+		});&#xD;
+		&#xD;
+	});	&#xD;
+	}&#xD;
+		else{&#xD;
+			dorado.MessageBox.alert(&quot;请选择一条要删除的记录&quot;);&#xD;
+		}&#xD;
+		arg.processDefault = false;&#xD;
+	break;&#xD;
+	default:&#xD;
+		arg.processDefault = true;&#xD;
+&#xD;
+	&#xD;
+	&#xD;
+&#xD;
+&#xD;
+	/*case &quot;-&quot;:&#xD;
+		var entity = this.id(&quot;dataSetFaultCode&quot;).getData(&quot;#&quot;);&#xD;
+		if(entity){&#xD;
+			dorado.MessageBox.confirm(&quot;你确定要删除这条记录？&quot;,function(){&#xD;
+			entity.remove();&#xD;
+			//var updateAction = this.id(&quot;updateActionCode&quot;);&#xD;
+			//updateAction.execute();&#xD;
+			});			&#xD;
+		}&#xD;
+		else{&#xD;
+			dorado.MessageBox.alert(&quot;请选择一条要删除的记录&quot;);&#xD;
+		}&#xD;
+		arg.processDefault = false;&#xD;
+	break;&#xD;
+	default:&#xD;
+		arg.processDefault = true;*/&#xD;
+}</ClientEvent>
+                <Property name="itemCodes">+,-</Property>
+                <Property name="dataSet">dsBtreport</Property>
+                <Property name="dataPath">#.appendixdocument</Property>
+              </DataPilot>
+            </ToolBar>
+            <DataGrid id="dgAppendixdocument2">
+              <Property name="readOnly">true</Property>
+              <Property name="dataSet">dsBtreport</Property>
+              <Property name="dataPath">#.appendixdocument</Property>
+              <Property name="filterMode">serverSide</Property>
+              <Property name="showFilterBar">true</Property>
+              <Property name="rowHeight">22</Property>
+              <Property name="selectionMode">multiRows</Property>
+              <RowNumColumn/>
+              <RowSelectorColumn/>
+              <DataColumn name="efile">
+                <ClientEvent name="onRenderCell">&#xD;
+//点击表行可查看链接&#xD;
+&#xD;
+jQuery(arg.dom).empty();&#xD;
+var file = arg.data.get(&quot;efile&quot;); &#xD;
+var oid = view.id('dsBtreport').getData('#').get(&quot;oid&quot;);&#xD;
+var href = &quot;/escmp/upload/Comm_Btreport/&quot; + oid + &quot;/&quot; + file;&#xD;
+jQuery(arg.dom).xCreate({&#xD;
+	tagName:&quot;A&quot;,&#xD;
+	href:href,&#xD;
+	content:arg.data.get(&quot;efile&quot;)&#xD;
+});&#xD;
+&#xD;
+</ClientEvent>
+                <Property name="property">efile</Property>
+                <Property name="width">300</Property>
+              </DataColumn>
+            </DataGrid>
+          </Children>
+        </GroupBox>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaSubmitBtreport">
+      <ClientEvent name="onClose">var cur=view.id('dsBtreport').getData('#');&#xD;
+				cur.cancel();&#xD;
+	&#xD;
+	         </ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">450</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">var dsBtreport = view.get(&quot;#dsBtreport&quot;);
+var cur=view.id('dsBtreport').getData('#');
+if(cur.get(&quot;departmentHead&quot;) == null){
+	dorado.MessageBox.alert(&quot;请先选择审阅的部领导&quot;);
+}
+else{
+	dorado.MessageBox.confirm('您是否确认请部领导审阅此出差报告?', function(){
+		cur.set(&quot;status&quot;,2);
+		view.id('uaBtreport').execute(function(){
+              	 view.id('diaSubmitBtreport').hide();
+    	});
+		dsBtreport.flushAsync();
+	});    
+}      </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsBtreport').getData('#');
+				cur.cancel();
+				view.id('diaSubmitBtreport').hide();
+				
+	
+	         </ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <CustomDropDown id="customDropDown2">
+          <Property name="editable">false</Property>
+          <Property name="autoOpen">true</Property>
+          <DataGrid>
+            <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
+var user=view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;);&#xD;
+if (user) {&#xD;
+	dropDown.close(user.get(&quot;username&quot;));&#xD;
+}</ClientEvent>
+            <Property name="showFilterBar">true</Property>
+            <Property name="rowHeight">22</Property>
+            <Property name="dataSet">dsUsers</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="height">300</Property>
+            <RowNumColumn/>
+            <DataColumn>
+              <Property name="name">username</Property>
+              <Property name="property">username</Property>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">cname</Property>
+              <Property name="property">cname</Property>
+            </DataColumn>
+            <DataColumn name="depts">
+              <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;depts&quot;);&#xD;
+var name = [];&#xD;
+if (entitylist) {&#xD;
+	entitylist.each(function(item){&#xD;
+		name.push(item.get(&quot;name&quot;));&#xD;
+	});&#xD;
+}&#xD;
+arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
+              <Property name="property">depts</Property>
+            </DataColumn>
+          </DataGrid>
+        </CustomDropDown>
+        <AutoForm id="afSubmitBtreport">
+          <Property name="cols">*</Property>
+          <Property name="dataSet">dsBtreport</Property>
+          <Property name="dataPath">#</Property>
+          <Property name="labelWidth">100</Property>
+          <AutoFormElement>
+            <Property name="name">BtPerson</Property>
+            <Property name="property">btperson</Property>
+            <Property name="trigger">customDropDown1,triggerClear</Property>
+            <Property name="readOnly">true</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">BtPlace</Property>
+            <Property name="property">btplace</Property>
+            <Property name="trigger">dataSetDropDown1</Property>
+            <Property name="readOnly">true</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">BtTime</Property>
+            <Property name="property">bttime</Property>
+            <Property name="readOnly">true</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">KeyWord</Property>
+            <Property name="property">keyword</Property>
+            <Property name="readOnly">true</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">writingPerson</Property>
+            <Property name="name">WritingPerson</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">sectionChief</Property>
+            <Property name="name">SectionChief</Property>
+            <Property name="trigger">customDropDown2</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">sectionChiefDate</Property>
+            <Property name="name">SectionChiefDate</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">departmentHead</Property>
+            <Property name="name">DepartmentHead</Property>
+            <Property name="trigger">customDropDown2</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">departmentHeadDate</Property>
+            <Property name="name">DepartmentHeadDate</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="dialogLoad">
+      <Property name="width">800</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">
+    view.id('dialogLoad').hide();
+           
+         </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var entityList=view.id('dataSetFiles').getData();
+entityList.each(function(entity){
+	entity.cancel();
+});
+view.id('dialogLoad').hide();
+
+	         </ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <Panel>
+          <Property name="caption">批量附件上传</Property>
+          <Property name="style">
+            <Property name="margin">15px</Property>
+          </Property>
+          <Property name="width">800</Property>
+          <Property name="height">400</Property>
+          <Buttons/>
+          <Children>
+            <ToolBar>
+              <ToolBarButton>
+                <Property name="caption">添加文件</Property>
+                <Property name="icon">url(>skin>common/icons.gif) -120px 0px</Property>
+                <Property name="action">batchUpload</Property>
+              </ToolBarButton>
+              <ToolBarButton>
+                <ClientEvent name="onClick">var uploadAction = view.get('#batchUpload');&#xD;
+var dataset = view.get('#dataSetFiles');&#xD;
+var selections = view.get('#dataGridFiles.selection');&#xD;
+&#xD;
+if(!selections){&#xD;
+	return;&#xD;
+}&#xD;
+&#xD;
+if(!selections.length){&#xD;
+	selections = [selections];&#xD;
+}&#xD;
+&#xD;
+var selectionCopy = [];&#xD;
+for (var i = 0; i &lt; selections.length; i++) {&#xD;
+	selectionCopy.push(selections[i]);&#xD;
+}&#xD;
+&#xD;
+for(var i=0;i&lt;selectionCopy.length;i++){&#xD;
+	var entity = selectionCopy[i];&#xD;
+	uploadAction.removeFile(entity.get('id'));&#xD;
+	entity.remove();&#xD;
+}</ClientEvent>
+                <Property name="caption">删除文件</Property>
+                <Property name="icon">url(>skin>common/icons.gif) -140px 0px</Property>
+              </ToolBarButton>
+              <Separator/>
+              <ToolBarButton>
+                <ClientEvent name="onClick">view.get('#batchUpload').start();&#xD;
+&#xD;
+	/*&#xD;
+ 	 * 对用户新增操作进行记录，在用户操作日志表中新增一条记录。&#xD;
+ 	 */&#xD;
+	var myDate = new Date();&#xD;
+	view.id('dsUserOperationLog').getData().insert({&#xD;
+		logOperationType:&quot;1&quot;,&#xD;
+		operationPerson: &quot;${loginUsername}&quot;,&#xD;
+		operationContent:&quot;对出差报告管理表子表附件文档表新增选定记录&quot;,&#xD;
+		operationTime:myDate&#xD;
+	});&#xD;
+	view.id('uaUserOperationLog').execute();</ClientEvent>
+                <Property name="caption">开始上传</Property>
+                <Property name="icon">url(>skin>common/icons.gif) -180px -220px</Property>
+              </ToolBarButton>
+              <ToolBarButton>
+                <ClientEvent name="onClick">view.get('#batchUpload').stop();</ClientEvent>
+                <Property name="caption">停止上传</Property>
+                <Property name="icon">url(>skin>common/icons.gif) -260px -220px</Property>
+              </ToolBarButton>
+            </ToolBar>
+            <DataSet id="dataSetFiles">
+              <ClientEvent name="onCreate">self.set([]);</ClientEvent>
+              <Property name="dataType">[dataTypeFiles]</Property>
+            </DataSet>
+            <DataGrid id="dataGridFiles">
+              <ClientEvent name="onCreate">var ProgressCellRenderer = $extend(dorado.widget.grid.SubControlCellRenderer, {&#xD;
+    createSubControl: function(arg) {&#xD;
+        return new dorado.widget.ProgressBar({&#xD;
+            value:arg.data.get(&quot;percent&quot;)&#xD;
+        });&#xD;
+    },&#xD;
+&#xD;
+    refreshSubControl: function(progressBar, arg) {&#xD;
+		progressBar.set(&quot;value&quot;,arg.data.get(&quot;percent&quot;));&#xD;
+        progressBar.refresh();&#xD;
+    }&#xD;
+});&#xD;
+&#xD;
+self.set(&quot;&amp;percent.renderer&quot;,new ProgressCellRenderer());</ClientEvent>
+              <Property name="dataSet">dataSetFiles</Property>
+              <Property name="selectionMode">multiRows</Property>
+              <Property name="dataType">dataTypeFiles</Property>
+              <RowNumColumn/>
+              <RowSelectorColumn/>
+              <DataColumn name="name">
+                <Property name="property">name</Property>
+              </DataColumn>
+              <DataColumn name="size">
+                <ClientEvent name="onRenderCell">arg.dom.innerHTML = prettySize(arg.data.get('size'));&#xD;
+</ClientEvent>
+                <Property name="property">size</Property>
+              </DataColumn>
+              <DataColumn name="percent">
+                <Property name="property">percent</Property>
+              </DataColumn>
+              <DataColumn name="status">
+                <Property name="property">status</Property>
+              </DataColumn>
+            </DataGrid>
+            <UploadAction id="batchUpload">
+              <ClientEvent name="onError">var error = arg.error;&#xD;
+dorado.MessageBox.show({&#xD;
+	title:error.message,&#xD;
+	message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
+	icon: &quot;ERROR&quot;,&#xD;
+	buttons: [&quot;ok&quot;]&#xD;
+});&#xD;
+</ClientEvent>
+              <ClientEvent name="onFileUploaded">var file = arg.file;//file：完成上传的文件&#xD;
+var entity = view.get('#dataSetFiles').getData(&quot;[@.get('id')=='&quot;+file.id+&quot;']&quot;);&#xD;
+entity.set('percent',100);&#xD;
+entity.set('status',file.status);&#xD;
+&#xD;
+&#xD;
+//建立链接&#xD;
+&#xD;
+var entityBtreport=view.id('dsBtreport').getData('#');&#xD;
+var returnValue = arg.file.name;&#xD;
+view.id('dsBtreport').getData('#.appendixdocument').insert({btreport:{oid:entityBtreport.get('oid')}});&#xD;
+var cur=view.id('dsBtreport').getData('#.#appendixdocument');&#xD;
+cur.set(&quot;efile&quot;,returnValue);&#xD;
+var link = view.id(&quot;lefile&quot;);&#xD;
+if(returnValue){&#xD;
+	var oid = entityBtreport.get(&quot;oid&quot;);&#xD;
+    var href = &quot;/escmp/upload/Comm_Btreport/&quot; + oid + &quot;/&quot; + returnValue;&#xD;
+	&#xD;
+   /*link.set({&#xD;
+		href: href,&#xD;
+		visible: true&#xD;
+	});*/&#xD;
+}&#xD;
+else{&#xD;
+    link.set(&quot;visible&quot;,false);&#xD;
+}&#xD;
+</ClientEvent>
+              <ClientEvent name="uploadProgress">var file = arg.file;&#xD;
+view.get('#dataSetFiles').getData(&quot;[@.get('id')=='&quot;+file.id+&quot;']&quot;).set('percent',file.percent);&#xD;
+&#xD;
+&#xD;
+</ClientEvent>
+              <ClientEvent name="onFilesAdded">//多文件上传&#xD;
+arg.files.each(function(file){&#xD;
+	view.get('#dataSetFiles').insert({&#xD;
+		id : file.id,&#xD;
+		name : file.name,&#xD;
+		size : file.size,&#xD;
+		percent : file.percent,&#xD;
+		status : file.status&#xD;
+	});&#xD;
+	&#xD;
+});&#xD;
+&#xD;
+//设置文件夹？传入后台&#xD;
+var cur=view.id('dsBtreport').getData('#');&#xD;
+var value = &quot;/Comm_Btreport/&quot; + cur.get(&quot;oid&quot;) + &quot;/&quot;;&#xD;
+self.set(&quot;multipartParams&quot;, {record: value});&#xD;
+&#xD;
+&#xD;
+&#xD;
+</ClientEvent>
+              <Property name="autoUpload">false</Property>
+              <Property name="url">>dorado/uploader/fileupload</Property>
+              <Filters/>
+            </UploadAction>
+          </Children>
+          <Tools/>
+        </Panel>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <AjaxAction id="deleteFileAction">
+      <ClientEvent name="beforeExecute">/*var file;&#xD;
+var selections = view.get(&quot;#dgAppendixdocument2.selection&quot;);&#xD;
+	var tmpList=selections.slice(0);&#xD;
+	var files = view.id('dsBtreport').getData('#.appendixdocument');&#xD;
+	if(tmpList.length){&#xD;
+			&#xD;
+	tmpList.each(function(entity){&#xD;
+			file=files.each(function(f){&#xD;
+					if(entity==f)&#xD;
+					return f;&#xD;
+				})&#xD;
+&#xD;
+		&#xD;
+		});&#xD;
+		&#xD;
+	&#xD;
+	}&#xD;
+&#xD;
+ 	 var cur=view.id('dsBtreport').getData('#');&#xD;
+var value = &quot;/Comm_Btreport/&quot; + cur.get(&quot;oid&quot;) + &quot;/&quot;;&#xD;
+var file = view.id('dsBtreport').getData('#.#appendixdocument').get(&quot;efile&quot;);&#xD;
+&#xD;
+self.set(&quot;parameter&quot;,{&#xD;
+	record: value,&#xD;
+	filename: file&#xD;
+});&#xD;
+&#xD;
+cur.set(&quot;efile&quot;,null);&#xD;
+var link = view.id(&quot;lefile&quot;);&#xD;
+link.set(&quot;visible&quot;,false);*/&#xD;
+</ClientEvent>
+      <Property name="service">defaultUploadProcessor#deleteFile</Property>
+      <Property name="modal">false</Property>
+    </AjaxAction>
+  </View>
+</ViewConfig>

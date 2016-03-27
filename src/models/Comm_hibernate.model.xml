@@ -99,6 +99,39 @@
         </Property>
       </Property>
     </PropertyDef>
+    <PropertyDef name="status">
+      <Property name="dataType">int</Property>
+      <Property name="label">状态</Property>
+      <Property name="defaultValue">0</Property>
+    </PropertyDef>
+    <PropertyDef name="sectionChief">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">审阅的室主任</Property>
+    </PropertyDef>
+    <PropertyDef name="sectionChiefDate">
+      <Property name="dataType">DateTime</Property>
+      <Property name="label">室主任审阅时间</Property>
+    </PropertyDef>
+    <PropertyDef name="departmentHead">
+      <Property></Property>
+      <Property name="label">审阅的部领导</Property>
+      <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="departmentHeadDate">
+      <Property name="dataType">DateTime</Property>
+      <Property name="label">部领导审阅时间</Property>
+    </PropertyDef>
+    <PropertyDef name="writingPerson">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">编写人</Property>
+    </PropertyDef>
+    <PropertyDef name="sharePerson">
+      <Property/>
+      <Property name="dataType">String</Property>
+      <Property name="label">分享人群</Property>
+    </PropertyDef>
   </DataType>
   <DataType name="Resourcedownload">
     <Property name="matchType">com.buaa.comm.domain.Resourcedownload</Property>
@@ -661,7 +694,7 @@ arg.parameter = parameter;</ClientEvent>
       </Property>
     </PropertyDef>
     <PropertyDef name="workStatus">
-      <Property/>
+      <Property></Property>
       <Property name="dataType">int</Property>
       <Property name="defaultValue">0</Property>
       <Property name="label">工作状态</Property>

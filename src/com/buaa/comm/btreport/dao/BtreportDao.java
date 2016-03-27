@@ -37,6 +37,27 @@ public class BtreportDao extends HibernateBaseDao {
         StringBuffer coreHql = new StringBuffer("from " + Btreport.class.getName()+" a where 1=1 ");
         
         if(null != parameter && !parameter.isEmpty()){
+        	String departmentHead = (String) parameter.get("departmentHead");
+			if (StringUtils.isNotEmpty(departmentHead)) {
+				coreHql.append(" and a.departmentHead = :dh ");
+				args.put("dh", departmentHead);
+			}
+        	String sectionChief = (String) parameter.get("sectionChief");
+			if (StringUtils.isNotEmpty(sectionChief)) {
+				coreHql.append(" and a.sectionChief = :sc ");
+				args.put("sc", sectionChief);
+			}
+			String user = (String) parameter.get("user");
+			if (StringUtils.isNotEmpty(user)) {
+				coreHql.append(" and a.writingPerson = :wp ");
+				args.put("wp", user);
+			}
+			String status = (String) parameter.get("status");
+			if (StringUtils.isNotEmpty(status)) {
+				Integer sta = Integer.parseInt(status);
+				coreHql.append(" and a.status = :ss ");
+				args.put("ss", sta);
+			}
         }
 		
 		if (null != criteria) {

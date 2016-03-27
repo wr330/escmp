@@ -104,6 +104,7 @@ dsJobstatistics.flushAsync();</ClientEvent>
       </DataColumn>
       <DataColumn name="refreshtime">
         <Property name="property">refreshtime</Property>
+        <Property name="width">120</Property>
       </DataColumn>
       <DataColumn name="arrangementdate">
         <Property name="property">arrangementdate</Property>
@@ -305,12 +306,18 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
       <Buttons>
         <Button>
           <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#');
-dorado.MessageBox.confirm('您是否确认向室主任下发本项工作项目计划?', function(){
-	cur.set(&quot;workStatus&quot;,1);
-	view.id('uaJobstatistics').execute(function(){
-    	view.id('diaJobFormulate').hide();
-    });
-}); </ClientEvent>
+if(cur.get(&quot;sectionChief&quot;) == null){
+	dorado.MessageBox.alert(&quot;请先选择要分配的室主任&quot;);
+}
+else{
+	dorado.MessageBox.confirm('您是否确认向室主任下发本项工作项目计划?', function(){
+		cur.set(&quot;workStatus&quot;,1);
+		view.id('uaJobstatistics').execute(function(){
+    		view.id('diaJobFormulate').hide();
+    	});
+	});  
+}
+</ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
         </Button>
