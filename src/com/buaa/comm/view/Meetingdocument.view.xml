@@ -30,6 +30,19 @@
         </Entity>
       </Property>
     </DataSet>
+    <DataSet id="dsFtypes">
+      <Property name="dataType">[Ftypes]</Property>
+      <Property name="dataProvider">ftypesPR#queryFtypes</Property>
+    </DataSet>
+    <DataSetDropDown id="dataSetDropDownAircraftType">
+      <Property name="autoOpen">true</Property>
+      <Property name="dataSet">dsFtypes</Property>
+      <Property name="displayProperty">ftypename</Property>
+      <Property name="editable">false</Property>
+      <Property name="property">ftypename</Property>
+      <Property name="useEmptyItem">false</Property>
+      <Property name="reloadDataOnOpen">true</Property>
+    </DataSetDropDown>
     <UpdateAction id="uaMeetingdocument">
       <Property name="dataResolver">meetingdocumentPR#saveMeetingdocument</Property>
       <UpdateItem>
@@ -82,6 +95,12 @@ if(cur){
 	</ClientEvent>
         <Property name="caption">删除</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var dsMeetingdocument = view.get(&quot;#dsMeetingdocument&quot;);&#xD;
+dsMeetingdocument.flushAsync();</ClientEvent>
+        <Property name="caption">刷新</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgMeetingdocument">
@@ -181,15 +200,6 @@ jQuery(arg.dom).xCreate({&#xD;
         </Button>
       </Buttons>
       <Children>
-        <DataSetDropDown id="dataSetDropDownAircraftType">
-          <Property name="autoOpen">true</Property>
-          <Property name="dataSet">dsDictionaryAircraftType</Property>
-          <Property name="displayProperty">name</Property>
-          <Property name="editable">false</Property>
-          <Property name="property">name</Property>
-          <Property name="useEmptyItem">true</Property>
-          <Property name="reloadDataOnOpen">true</Property>
-        </DataSetDropDown>
         <AutoForm id="afMeetingdocument">
           <Property name="cols">*,*</Property>
           <Property name="dataSet">dsMeetingdocument</Property>

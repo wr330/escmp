@@ -41,7 +41,7 @@ public class DefaultUserService extends JdbcDao implements IUserService {
 //        String sql="select * from Sys_User where CompanyId='" + companyId + "'";
 //        Collection<IUser> users=this.getJdbcTemplate().query(sql,new UserMapper());
 //        page.setEntities(users);
-        String sql = "SELECT * FROM Sys_User x WHERE ";
+        String sql = "SELECT * FROM Sys_User x WHERE x.Username != 'admin' and ";
 		ParseResult result = this.parseCriteria(criteria, false, "x");
 		if (result != null) {
 			StringBuffer sb = result.getAssemblySql();

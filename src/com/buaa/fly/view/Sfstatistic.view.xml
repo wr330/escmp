@@ -143,6 +143,7 @@ arg.value = count;</ClientEvent>
           <Property name="parentnode"></Property>
         </Entity>
       </Property>
+      <Property name="loadMode">manual</Property>
     </DataSet>
     <DataSet id="dsFighter">
       <Property name="dataType">[Fighterinfo]</Property>
@@ -416,46 +417,6 @@ if(cur){
               <Property name="dataSet">dsSfstatistic</Property>
               <Property name="cols">*,*,*,*</Property>
               <Property name="dataPath">#</Property>
-              <AutoFormElement id="autoformelement1" layoutConstraint="rowSpan:2;colSpan:2">
-                <Property name="name">ftype</Property>
-                <Property name="property">ftype</Property>
-                <Property name="editorWidth">200</Property>
-                <Property name="editable">false</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement layoutConstraint="colSpan:2;rowSpan:2">
-                <Property name="name">miji</Property>
-                <Property name="property">miji</Property>
-                <Property name="editorWidth">200</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement id="autoformelement2" layoutConstraint="colSpan:4;rowSpan:2">
-                <Property name="property">taskNo.tasknumber</Property>
-                <Property name="labelPosition">left</Property>
-                <Property name="editorWidth">200</Property>
-                <Property name="name">tasknumber</Property>
-                <Property name="trigger">triggerTaskNo</Property>
-                <Property name="editable">false</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement id="autoformelement3" layoutConstraint="colSpan:2;rowSpan:2">
-                <Property name="property">taskNo.subject</Property>
-                <Property name="labelPosition">left</Property>
-                <Property name="editorWidth">200</Property>
-                <Property name="name">subject</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement layoutConstraint="colSpan:2;rowSpan:2">
-                <Property name="name">taskexecution</Property>
-                <Property name="property">taskNo.taskexecution</Property>
-                <Property name="labelPosition">left</Property>
-                <Property name="editorWidth">200</Property>
-              </AutoFormElement>
-              <AutoFormElement>
-                <Property name="name">address</Property>
-                <Property name="property">address</Property>
-                <Property name="labelPosition">top</Property>
-              </AutoFormElement>
               <AutoFormElement>
                 <Property name="name">fdate</Property>
                 <Property name="property">fdate</Property>
@@ -508,6 +469,33 @@ if(cur){
                 <Property name="property">gdasdir</Property>
                 <Property name="labelPosition">top</Property>
               </AutoFormElement>
+              <AutoFormElement id="autoformelement2">
+                <Property name="property">taskNo.tasknumber</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="name">tasknumber</Property>
+                <Property name="trigger">triggerTaskNo</Property>
+                <Property name="editable">false</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement id="autoformelement3">
+                <Property name="property">taskNo.subject</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="name">subject</Property>
+                <Property name="readOnly">true</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">taskexecution</Property>
+                <Property name="property">taskNo.taskexecution</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="readOnly">true</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">fighterNo</Property>
+                <Property name="property">fighterno</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="trigger">dataSetDropDownFighter</Property>
+              </AutoFormElement>
               <AutoFormElement>
                 <Property name="name">JiaYou</Property>
                 <Property name="property">jiayou</Property>
@@ -519,10 +507,15 @@ if(cur){
                 <Property name="labelPosition">top</Property>
               </AutoFormElement>
               <AutoFormElement>
-                <Property name="name">fighterNo</Property>
-                <Property name="property">fighterno</Property>
+                <Property name="name">address</Property>
+                <Property name="property">address</Property>
                 <Property name="labelPosition">top</Property>
-                <Property name="trigger">dataSetDropDownFighter</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">miji</Property>
+                <Property name="property">miji</Property>
+                <Property name="labelPosition">top</Property>
+                <Editor/>
               </AutoFormElement>
               <AutoFormElement layoutConstraint="colSpan:2">
                 <Property name="name">action</Property>
@@ -544,6 +537,7 @@ if(cur){
               <Property name="dataPath">#</Property>
               <Property name="dataSet">dsSfstatistic</Property>
               <Property name="cols">*,*</Property>
+              <Property name="labelWidth">90</Property>
               <AutoFormElement id="autoformelement5" layoutConstraint="colSpan:1">
                 <Property name="name">FeiXingQK</Property>
                 <Property name="property">feixingqk</Property>
@@ -569,15 +563,13 @@ if(cur){
                 <Property name="labelPosition">top</Property>
                 <Property name="editorType">TextArea</Property>
               </AutoFormElement>
-              <AutoFormElement layoutConstraint="colSpan:2;rowSpan:2">
+              <AutoFormElement layoutConstraint="colSpan:2">
                 <Property name="name">dataAddr</Property>
                 <Property name="property">dataaddr</Property>
-                <Property name="labelPosition">top</Property>
               </AutoFormElement>
-              <AutoFormElement layoutConstraint="colSpan:2;rowSpan:2">
+              <AutoFormElement layoutConstraint="colSpan:2">
                 <Property name="name">FileName1</Property>
                 <Property name="property">filename1</Property>
-                <Property name="labelPosition">top</Property>
                 <Editor>
                   <Container>
                     <Link id="lefile1" layoutConstraint="center">
@@ -611,7 +603,7 @@ if(cur){
                 <Property name="editorWidth">100</Property>
                 <Property name="readOnly">true</Property>
                 <Property name="label">飞行员讲评</Property>
-                <Property name="labelWidth">150</Property>
+                <Property name="labelWidth">100</Property>
               </AutoFormElement>
               <AutoFormElement layoutConstraint="colSpan:2">
                 <Property name="name">TowerDir</Property>
@@ -621,7 +613,7 @@ if(cur){
                 <Property name="editable">false</Property>
                 <Property name="readOnly">true</Property>
                 <Property name="label">塔台指挥员讲评</Property>
-                <Property name="labelWidth">150</Property>
+                <Property name="labelWidth">100</Property>
               </AutoFormElement>
               <AutoFormElement layoutConstraint="colSpan:2;vAlign:top">
                 <Property name="name">PilotJP</Property>
@@ -645,7 +637,7 @@ if(cur){
                 <Property name="editorWidth">100</Property>
                 <Property name="readOnly">true</Property>
                 <Property name="label">GDAS指挥员讲评</Property>
-                <Property name="labelWidth">150</Property>
+                <Property name="labelWidth">100</Property>
               </AutoFormElement>
               <AutoFormElement layoutConstraint="colSpan:4;vAlign:top">
                 <Property name="name">GDASDirJP</Property>
@@ -668,7 +660,7 @@ if(cur){
                 <Property name="name">DailyName</Property>
                 <Property name="property">dailyname</Property>
               </AutoFormElement>
-              <AutoFormElement layoutConstraint="colSpan:4;rowSpan:4">
+              <AutoFormElement layoutConstraint="colSpan:2">
                 <Property name="name">FileName2</Property>
                 <Property name="property">filename2</Property>
                 <Editor>
@@ -688,7 +680,7 @@ if(cur){
                   </Container>
                 </Editor>
               </AutoFormElement>
-              <AutoFormElement layoutConstraint="colSpan:4;rowSpan:4">
+              <AutoFormElement layoutConstraint="colSpan:2">
                 <Property name="name">FileName3</Property>
                 <Property name="property">filename3</Property>
                 <Editor>
@@ -708,7 +700,7 @@ if(cur){
                   </Container>
                 </Editor>
               </AutoFormElement>
-              <AutoFormElement layoutConstraint="colSpan:4;rowSpan:4">
+              <AutoFormElement layoutConstraint="colSpan:2">
                 <Property name="name">FileName4</Property>
                 <Property name="property">filename4</Property>
                 <Editor>
@@ -814,8 +806,9 @@ open(path,&quot;_blank&quot;);</ClientEvent>
       <Tools/>
     </Dialog>
     <Dialog id="dgChooseTasklist">
-      <Property name="height">600</Property>
-      <Property name="width">1001</Property>
+      <Property name="height">400</Property>
+      <Property name="width">800</Property>
+      <Property name="caption">选择试飞任务单</Property>
       <Buttons>
         <Button>
           <ClientEvent name="onClick">var tasklist = view.id(&quot;dsTasklist&quot;).getData(&quot;#&quot;);
@@ -836,6 +829,11 @@ if(cur){
         </Button>
       </Buttons>
       <Children>
+        <ToolBar>
+          <DataPilot>
+            <Property name="dataSet">dsTasklist</Property>
+          </DataPilot>
+        </ToolBar>
         <DataGrid id="dgTasklist">
           <Property name="readOnly">true</Property>
           <Property name="dataSet">dsTasklist</Property>
@@ -846,11 +844,11 @@ if(cur){
           <RowNumColumn/>
           <DataColumn name="aircrafttype">
             <Property name="property">aircrafttype</Property>
-            <Property name="width">120</Property>
+            <Property name="width">60</Property>
           </DataColumn>
           <DataColumn name="tasknumber">
             <Property name="property">tasknumber</Property>
-            <Property name="width">120</Property>
+            <Property name="width">100</Property>
           </DataColumn>
           <DataColumn name="subject">
             <Property name="property">subject</Property>
@@ -858,11 +856,11 @@ if(cur){
           </DataColumn>
           <DataColumn name="taskexecution">
             <Property name="property">taskexecution</Property>
-            <Property name="width">120</Property>
+            <Property name="width">80</Property>
           </DataColumn>
           <DataColumn name="taskcontent">
             <Property name="property">taskcontent</Property>
-            <Property name="width">400</Property>
+            <Property name="width">300</Property>
           </DataColumn>
           <DataColumn name="filename">
             <ClientEvent name="onRenderCell">jQuery(arg.dom).empty();&#xD;
@@ -878,8 +876,9 @@ jQuery(arg.dom).xCreate({&#xD;
             <Property name="width">200</Property>
           </DataColumn>
           <DataColumn>
-            <Property name="width">120</Property>
+            <Property name="width">60</Property>
             <Property name="property">miji</Property>
+            <Property name="align">left</Property>
           </DataColumn>
         </DataGrid>
       </Children>
@@ -1041,7 +1040,7 @@ dsSFBaoXian.set(&quot;parameter&quot;, {
 dsSFBaoXian.flushAsync();
 var dsJiaci = this.get(&quot;#dsJiaci&quot;);
 dsJiaci.set(&quot;parameter&quot;, {
-	ftype: arg.selectedValue,
+	ftype: ftype
 });
 dsJiaci.flushAsync();
 view.id(&quot;imageBaoXian&quot;).set(&quot;image&quot;,&quot;>images/baoxian/baoxian&quot;+arg.selectedValue+&quot;.png&quot;);</ClientEvent>
@@ -1283,25 +1282,35 @@ view.id(&quot;imageBaoXian&quot;).set(&quot;image&quot;,&quot;>images/baoxian/ba
           <Property name="filterMode">serverSide</Property>
           <Property name="showFilterBar">false</Property>
           <Property name="rowHeight">22</Property>
-          <Property name="fixedColumnCount">9</Property>
+          <Property name="fixedColumnCount">8</Property>
           <Property name="sortMode">clientSide</Property>
           <RowNumColumn/>
           <DataColumn name="ftype">
             <Property name="property">ftype</Property>
-            <Property name="width">120</Property>
+            <Property name="width">60</Property>
           </DataColumn>
           <DataColumn name="fighterno">
             <Property name="property">fighterno</Property>
-            <Property name="width">120</Property>
+            <Property name="width">60</Property>
           </DataColumn>
           <DataColumn>
             <Property name="property">jiaci</Property>
-            <Property name="width">120</Property>
+            <Property name="width">60</Property>
             <Property name="name">jiaci</Property>
+            <Property name="align">left</Property>
           </DataColumn>
           <DataColumn name="fdate">
             <Property name="property">fdate</Property>
-            <Property name="width">120</Property>
+            <Property name="width">80</Property>
+          </DataColumn>
+          <DataColumn name="timeqifei">
+            <Property name="property">timeqifei</Property>
+            <Property name="width">80</Property>
+          </DataColumn>
+          <DataColumn>
+            <Property name="property">timefly</Property>
+            <Property name="width">80</Property>
+            <Property name="name">timefly</Property>
           </DataColumn>
           <DataColumn name="taskno">
             <ClientEvent name="onRenderCell">jQuery(arg.dom).empty();&#xD;
@@ -1323,46 +1332,38 @@ jQuery(arg.dom).xCreate({&#xD;
     }&#xD;
 });</ClientEvent>
             <Property name="property">taskNo.tasknumber</Property>
-            <Property name="width">120</Property>
-          </DataColumn>
-          <DataColumn name="result">
-            <Property name="property">taskNo.taskexecution</Property>
-            <Property name="width">120</Property>
+            <Property name="width">100</Property>
           </DataColumn>
           <DataColumn name="mainsubject">
             <Property name="property">taskNo.subject</Property>
-            <Property name="width">120</Property>
-          </DataColumn>
-          <DataColumn>
-            <Property name="width">120</Property>
-            <Property name="property">miji</Property>
-            <Editor/>
-          </DataColumn>
-          <DataColumn name="timeqifei">
-            <Property name="property">timeqifei</Property>
-            <Property name="width">120</Property>
-          </DataColumn>
-          <DataColumn>
-            <Property name="property">timefly</Property>
-            <Property name="width">120</Property>
-            <Property name="name">timefly</Property>
+            <Property name="width">150</Property>
           </DataColumn>
           <DataColumn>
             <Property name="property">taskNo.taskcontent</Property>
-            <Property name="width">120</Property>
-            <Property name="name">content</Property>
+            <Property name="width">200</Property>
+            <Property name="name">taskcontent</Property>
+          </DataColumn>
+          <DataColumn name="result">
+            <Property name="property">taskNo.taskexecution</Property>
+            <Property name="width">80</Property>
           </DataColumn>
           <DataColumn name="action">
             <Property name="property">action</Property>
-            <Property name="width">120</Property>
+            <Property name="width">200</Property>
           </DataColumn>
           <DataColumn name="config">
             <Property name="property">config</Property>
-            <Property name="width">120</Property>
+            <Property name="width">200</Property>
           </DataColumn>
           <DataColumn name="summary">
             <Property name="property">summary</Property>
-            <Property name="width">120</Property>
+            <Property name="width">200</Property>
+          </DataColumn>
+          <DataColumn>
+            <Property name="width">60</Property>
+            <Property name="property">miji</Property>
+            <Property name="align">left</Property>
+            <Editor/>
           </DataColumn>
         </DataGrid>
       </ControlTab>

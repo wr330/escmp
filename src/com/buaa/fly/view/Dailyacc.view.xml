@@ -13,7 +13,7 @@
       <Property name="pageSize">20</Property>
       <Property name="parameter">
         <Entity>
-          <Property name="ftype"/>
+          <Property name="ftype"></Property>
         </Entity>
       </Property>
     </DataSet>
@@ -195,7 +195,7 @@ if(cur){&#xD;
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
       <Property name="width">80%</Property>
-      <Property name="caption">日报模板</Property>
+      <Property name="caption">选择试飞信息记录</Property>
       <Property name="height">80%</Property>
       <Property name="contentOverflowY">visible</Property>
       <Buttons>
@@ -231,7 +231,6 @@ if(cur){
           <Property name="readOnly">true</Property>
           <Property name="dataSet">dsSfstatistic</Property>
           <Property name="filterMode">serverSide</Property>
-          <Property name="showFilterBar">true</Property>
           <Property name="rowHeight">22</Property>
           <Property name="selectionMode">multiRows</Property>
           <RowNumColumn/>
@@ -239,6 +238,7 @@ if(cur){
           <DataColumn>
             <Property name="width">120</Property>
             <Property name="property">miji</Property>
+            <Property name="align">left</Property>
             <Editor/>
           </DataColumn>
           <DataColumn name="ftype">

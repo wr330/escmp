@@ -16,6 +16,7 @@ import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 
+import com.buaa.fly.domain.Ftypes;
 import com.buaa.fly.domain.Subject;
 import com.buaa.fly.outlineexecution.manager.OutlineexecutionManager;
 import com.buaa.fly.subject.dao.SubjectDao;
@@ -58,9 +59,9 @@ public class SubjectManager {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void saveSubject(Map<String, Collection> dataItems) throws Exception {
-		Collection<Subject> details = (Collection<Subject>) dataItems
-				.get("dataSetSubject");
-		this.saveSubject(details);
+		Collection<Ftypes> details = (Collection<Ftypes>) dataItems.get("dsSubject");
+		for(Ftypes detail : details){
+			this.saveSubject(detail.getSubject());}
 	}
 
 	/**
@@ -140,7 +141,6 @@ public class SubjectManager {
 			String newid = UUID.randomUUID().toString();
 			item.get(i).setFtype(ftype);
 			item.get(i).setOid(newid);
-			item.get(i).setName(ftype);
 			subjectDao.copyData(item.get(i));
 			this.recurcive(oid, newid, ftype);
 		}

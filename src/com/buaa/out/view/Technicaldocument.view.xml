@@ -21,6 +21,19 @@
       <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
       <Property name="loadMode">manual</Property>
     </DataSet>
+    <DataSet id="dsFtypes">
+      <Property name="dataType">[Ftypes]</Property>
+      <Property name="dataProvider">ftypesPR#queryFtypes</Property>
+    </DataSet>
+    <DataSetDropDown id="dataSetDropDownAircraftType">
+      <Property name="autoOpen">true</Property>
+      <Property name="dataSet">dsFtypes</Property>
+      <Property name="displayProperty">ftypename</Property>
+      <Property name="editable">false</Property>
+      <Property name="property">ftypename</Property>
+      <Property name="useEmptyItem">false</Property>
+      <Property name="reloadDataOnOpen">true</Property>
+    </DataSetDropDown>
     <UpdateAction id="uaTechnicaldocument">
       <Property name="dataResolver">technicaldocumentPR#saveTechnicaldocument</Property>
       <UpdateItem>
@@ -300,6 +313,7 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <AutoFormElement>
             <Property name="name">aircrafttype</Property>
             <Property name="property">aircrafttype</Property>
+            <Property name="trigger">dataSetDropDownAircraftType</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>

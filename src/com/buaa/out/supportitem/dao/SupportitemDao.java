@@ -44,12 +44,12 @@ public class SupportitemDao extends HibernateBaseDao {
         StringBuffer coreHql = new StringBuffer("from " + Supportitem.class.getName()+" a  where 1=1 ");
         
         if(null != parameter && !parameter.isEmpty()){
-	String oid = (String)parameter.get("oid");
-	if(StringUtils.isNotEmpty( oid )){
-		coreHql.append(" and a.supportprogram.oid = :oid ");
-		args.put("oid", oid);	
-	}
-           }
+        	String oid = (String)parameter.get("oid");
+        	if(StringUtils.isNotEmpty( oid )){
+        		coreHql.append(" and a.supportprogram.oid = :oid ");
+        		args.put("oid", oid);	
+        	}
+        }
 		
 		if (null != criteria) {
 			ParseResult result = this.parseCriteria(criteria, true, "a");

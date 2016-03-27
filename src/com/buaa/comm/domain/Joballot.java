@@ -35,7 +35,9 @@ public class  Joballot implements Serializable {
 	private String personname ;
 	private Date finishtime ;
 	private String miji;
+	private int workStatus;
 	private Jobstatistics jobstatistics;
+	
 
 
 	@Id
@@ -88,6 +90,13 @@ public class  Joballot implements Serializable {
 	}
 	public void setMiji(String miji) {
 		this.miji = miji;
+	}
+	@Column(name="WorkStatus")
+	public int getWorkStatus() {
+		return workStatus;
+	}
+	public void setWorkStatus(int workStatus) {
+		this.workStatus = workStatus;
 	}
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn(name = "JobStatistics")

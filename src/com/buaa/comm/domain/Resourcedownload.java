@@ -32,7 +32,7 @@ public class  Resourcedownload implements Serializable {
 	private String description ;
 	private String filename ;
 	private String miji ;
-
+	private int downloadAmount;
 
 	@Id
 		@Column(name = "Oid", unique = true, nullable = false)
@@ -78,6 +78,13 @@ public class  Resourcedownload implements Serializable {
 	public void setMiji(String miji) {
 		this.miji = miji;
 	}
-
+	
+	@Column(name="DownloadAmount")
+	public int getDownloadAmount() {
+		return downloadAmount;
+	}
+	public void setDownloadAmount(int downloadAmount) {
+		this.downloadAmount = downloadAmount;
+	}
 
 }

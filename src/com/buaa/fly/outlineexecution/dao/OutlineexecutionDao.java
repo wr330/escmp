@@ -1,31 +1,23 @@
 package com.buaa.fly.outlineexecution.dao;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
-import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
 
-import com.bstek.bdf2.core.context.ContextHolder;
 import com.bstek.bdf2.core.orm.ParseResult;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 import com.common.HibernateBaseDao;
 
-import com.buaa.fly.domain.Dailyacc;
 import com.buaa.fly.domain.Outlineexecution;
 import com.buaa.fly.domain.Sfstatistic;
-import com.buaa.fly.domain.Subject;
-import com.buaa.fly.outlineexecution.dao.OutlineexecutionDaoforJDBC.OutlineexecutionRowMapper;
 
 @Repository("outlineexecutionDao")
 public class OutlineexecutionDao extends HibernateBaseDao {
@@ -101,7 +93,7 @@ public class OutlineexecutionDao extends HibernateBaseDao {
 	}
 	
 	/**
-	 * 同时也支持普通类型查询，在数据类型和日期类型支持区间查询
+	 * 查询方法，支持按机型、科目查询
 	 * 
 	 * @param page
 	 * @param parameter
@@ -109,21 +101,31 @@ public class OutlineexecutionDao extends HibernateBaseDao {
 	 * @throws Exception
 	 */
 	@SuppressWarnings({ "deprecation", "unchecked" })
-	public void queryOutline(Page<Outlineexecution> page,
-			Map<String, Object> parameter, Criteria criteria) throws Exception {
-		String oid = (String) parameter.get("subject");
-		String sql = "with cte as(	select a.oid from Fly_Subject a where Oid='"
-				+ oid
-				+ "'	union all select k.oid from Fly_Subject k inner join cte c on c.oid=k.ParentNode) select oid from cte";
-		Session session = this.getSessionFactory().openSession();
-		Query query = session.createSQLQuery(sql).addScalar("oid",
-				Hibernate.STRING);// 设置返回值类型，不然会报错
-		List<String> aa = query.list();
+	public void queryOutline(Page<Outlineexecution> page,Map<String, Object> parameter, Criteria criteria) throws Exception {
 		Map<String, Object> args = new HashMap<String, Object>();
-		StringBuffer coreHql = new StringBuffer("from "
-				+ Outlineexecution.class.getName() + " a where 1=1 ");
-		coreHql.append(" and a.project.oid in(:aa)");
-		args.put("aa", aa);
+		StringBuffer coreHql = new StringBuffer("from "	+ Outlineexecution.class.getName() + " a where 1=1 ");
+		String ftype = (String) parameter.get("ftype");
+		if (!StringUtils.isEmpty(ftype)) {
+			coreHql.append(" and a.aircrafttype =:ftype");
+			args.put("ftype", ftype);		
+		}
+		else
+			return;
+		String oid = (String) parameter.get("subject");
+		if(!StringUtils.isEmpty(oid)){
+		    String sql = "with cte as(select a.oid from Fly_Subject a where Oid='" + oid 
+		    		+ "' union all select k.oid from Fly_Subject k inner join cte c on c.oid=k.ParentNode) select oid from cte";
+		    Session session = this.getSessionFactory().openSession();
+			try {
+			    Query query = session.createSQLQuery(sql).addScalar("oid",Hibernate.STRING);// 设置返回值类型，不然会报错
+			    List<String> aa = query.list();
+			    coreHql.append(" and a.project.oid in(:aa)");
+			    args.put("aa", aa);
+			} finally {
+				session.flush();
+				session.close();
+			}
+		}
 		if (null != criteria) {
 			ParseResult result = this.parseCriteria(criteria, true, "a");
 			if (null != result) {
@@ -132,32 +134,54 @@ public class OutlineexecutionDao extends HibernateBaseDao {
 			}
 		}
 		String countHql = "select count(*) " + coreHql.toString();
-		String hql = coreHql.toString();
+		String hql = coreHql.toString() + " order by dbo.F_getSubjectNo(a.project.oid)";//按科目序号排序
 		this.pagingQuery(page, hql, countHql, args);
+		Session session = this.getSessionFactory().openSession();
+		try {
+			for (Outlineexecution out : page.getEntities()) {// 增加科目序号的显示
+				String sql = "select dbo.F_getSubjectNo('" + out.getProject().getOid() + "') as result";
+				Query query = session.createSQLQuery(sql).addScalar("result",Hibernate.STRING);// 设置返回值类型，不然会报错
+				List<String> result = query.list();
+				String subjectNo = result.get(0);
+				if (subjectNo.startsWith("0"))//去除最前面的0
+					subjectNo = subjectNo.substring(1, subjectNo.length());
+				out.getProject().setSubjectno(subjectNo.replaceAll(".0", "."));//去除"."后的0
+			}
+		} finally {
+			session.flush();
+			session.close();
+		}
 	}
 
 	/**
-	 * 查询方法
+	 * 查询方法,用于导出试飞大纲时查询
 	 * 
 	 * @param parameter
 	 * @throws Exception
 	 */
 	@SuppressWarnings({ "deprecation", "unchecked" })
-	public List<Outlineexecution> queryOutlineforText(String subjectOid)
+	public List<Outlineexecution> queryOutlineforText(String subjectOid,String ftype)
 			throws Exception {
-		String oid = subjectOid;
-		String sql = "with cte as(	select a.oid from Fly_Subject a where Oid='"
-				+ oid
-				+ "'	union all select k.oid from Fly_Subject k inner join cte c on c.oid=k.ParentNode) select oid from cte";
-		Session session = this.getSessionFactory().openSession();
-		Query query = session.createSQLQuery(sql).addScalar("oid",
-				Hibernate.STRING);// 设置返回值类型，不然会报错
-		List<String> aa = query.list();
 		Map<String, Object> args = new HashMap<String, Object>();
-		StringBuffer coreHql = new StringBuffer("from "
-				+ Outlineexecution.class.getName() + " a where 1=1 ");
-		coreHql.append(" and a.project.oid in(:aa)");
-		args.put("aa", aa);
+		StringBuffer coreHql = new StringBuffer("from "	+ Outlineexecution.class.getName() + " a where 1=1 ");
+		if (!StringUtils.isEmpty(ftype)) {
+			coreHql.append(" and a.aircrafttype =:ftype");
+			args.put("ftype", ftype);		
+		}
+		if(!StringUtils.isEmpty(subjectOid)){
+		    String sql = "with cte as(select a.oid from Fly_Subject a where Oid='" + subjectOid 
+		    		+ "' union all select k.oid from Fly_Subject k inner join cte c on c.oid=k.ParentNode) select oid from cte";
+		    Session session = this.getSessionFactory().openSession();
+		    try {
+		        Query query = session.createSQLQuery(sql).addScalar("oid",Hibernate.STRING);// 设置返回值类型，不然会报错
+		        List<String> aa = query.list();
+		        coreHql.append(" and a.project.oid in(:aa)");
+		        args.put("aa", aa);
+			} finally {
+				session.flush();
+				session.close();
+			}
+		}
 		String hql = coreHql.toString();
 		return this.query(hql, args);
 	}

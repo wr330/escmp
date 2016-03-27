@@ -44,6 +44,17 @@ public class JobstatisticsDao extends HibernateBaseDao {
         StringBuffer coreHql = new StringBuffer("from " + Jobstatistics.class.getName()+" a where 1=1 ");
         
         if(null != parameter && !parameter.isEmpty()){
+        	String user = (String) parameter.get("user");
+			if (StringUtils.isNotEmpty(user)) {
+				coreHql.append(" and a.sectionChief = :sc ");
+				args.put("sc", user);
+			}
+			String status = (String) parameter.get("status");
+			if (StringUtils.isNotEmpty(status)) {
+				Integer sta = Integer.parseInt(status);
+				coreHql.append(" and a.workStatus >= :ss ");
+				args.put("ss", sta);
+			}
         }
 		
 		if (null != criteria) {

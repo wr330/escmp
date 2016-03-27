@@ -45,15 +45,18 @@ public class JobstatisticsManager {
 	    jobstatisticsDao.queryJobstatistics(page,parameter,criteria);
         if(null != parameter && !parameter.isEmpty()){
         	Boolean setting = (Boolean)parameter.get("setting");
-        	if(setting)
-		        for(Jobconcern jobconcern:jobconcernManager.getJobConcernByUser()){
-			        for(Jobstatistics job:page.getEntities()){
-				        if(jobconcern.getJobstatistics().getOid().equals(job.getOid())){
-					        job.setIsfocus(true);
-				        	break;
-				        }
-			        }
-		        }
+        	if(setting != null){
+        		if(setting){
+    		        for(Jobconcern jobconcern:jobconcernManager.getJobConcernByUser()){
+    			        for(Jobstatistics job:page.getEntities()){
+    				        if(jobconcern.getJobstatistics().getOid().equals(job.getOid())){
+    					        job.setIsfocus(true);
+    				        	break;
+    				        }
+    			        }
+    		        }
+            	}
+        	}
         }
 	}
 	//首页统计展现读取数据

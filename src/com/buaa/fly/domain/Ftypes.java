@@ -2,7 +2,6 @@ package com.buaa.fly.domain;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,6 +25,7 @@ public class  Ftypes implements Serializable {
 	private String alias ;
 	private String moreinfo ;
 	private Collection<Fpici> fpici;
+	private Collection<Subject> subject;
 	
 	@Id
 	@Column(name = "ftypename", unique = true, nullable = false)
@@ -57,6 +57,13 @@ public class  Ftypes implements Serializable {
 	}
 	public void setFpici(Collection<Fpici> fpici) {
 		this.fpici=fpici;
+	}
+	@Transient
+	public Collection<Subject> getSubject() {
+		return subject;
+	}
+	public void setSubject(Collection<Subject> subject) {
+		this.subject = subject;
 	}
 
 }

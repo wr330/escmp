@@ -4,7 +4,11 @@
     <Property name="matchType">com.buaa.fly.domain.Subject</Property>
     <PropertyDef name="orderno">
       <Property name="dataType">Integer</Property>
-      <Property name="label">序号</Property>
+      <Property name="label">显示序号</Property>
+      <Validator type="range">
+        <Property name="minValue">1</Property>
+        <Property name="minValueValidateMode">allowEquals</Property>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="description">
       <Property name="dataType">String</Property>
@@ -22,7 +26,7 @@ if(!oid)&#xD;
 var parameter = {&#xD;
 		ftype:ftype,&#xD;
 		oid:oid,&#xD;
-		name:arg.data&#xD;
+		name:arg.data==undefined?null:arg.data&#xD;
 	};&#xD;
 arg.parameter = parameter;</ClientEvent>
         <Property name="service">subjectManager#subjectIsExists</Property>
@@ -51,6 +55,20 @@ arg.parameter = parameter;</ClientEvent>
       <Property name="dataProvider">outlineexecutionPR#queryOutline</Property>
       <Property name="pageSize">20</Property>
     </Reference>
+    <Reference name="children">
+      <Property name="dataType">[SELF]</Property>
+      <Property name="dataProvider">subjectPR#querySubject</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="parentnode">$${this.oid}</Property>
+          <Property name="ftype">$${this.ftype}</Property>
+        </Entity>
+      </Property>
+    </Reference>
+    <PropertyDef name="subjectno">
+      <Property name="dataType">String</Property>
+      <Property name="label">科目序号</Property>
+    </PropertyDef>
   </DataType>
   <DataType name="Tasklist" meta="x:287;y:10">
     <Property name="matchType">com.buaa.fly.domain.Tasklist</Property>
@@ -226,7 +244,11 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
       <Property name="dataType">Integer</Property>
       <Property name="label">当日架次</Property>
       <Property name="required">true</Property>
-      <Property name="defaultValue">0</Property>
+      <Property name="defaultValue">1</Property>
+      <Validator type="range">
+        <Property name="minValue">1</Property>
+        <Property name="minValueValidateMode">allowEquals</Property>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="config">
       <Property name="dataType">String</Property>
@@ -438,7 +460,7 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
     <PropertyDef name="fname">
       <Property name="dataType">String</Property>
       <Property name="label">名称</Property>
-      <Property name="required">false</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="isaffect">
       <Property name="dataType">boolean</Property>
@@ -653,6 +675,7 @@ arg.parameter = parameter;</ClientEvent>
     <PropertyDef name="ftypename">
       <Property name="dataType">String</Property>
       <Property name="label">飞机型号</Property>
+      <Property name="required">true</Property>
       <Validator type="ajax">
         <Property name="service">ftypesManager#ftypeIsExists</Property>
       </Validator>
@@ -667,6 +690,26 @@ arg.parameter = parameter;</ClientEvent>
       </Property>
       <Property name="label">fpici</Property>
     </Reference>
+    <Reference name="subject">
+      <Property name="dataProvider">subjectPR#querySubject</Property>
+      <Property name="dataType">[Subject]</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="ftype">$${this.ftypename}</Property>
+          <Property name="parentnode"></Property>
+        </Entity>
+      </Property>
+    </Reference>
+    <Reference name="outlineexecution">
+      <Property name="dataType">[Outlineexecution]</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="ftype">$${this.ftypename}</Property>
+        </Entity>
+      </Property>
+      <Property name="dataProvider">outlineexecutionPR#queryOutline</Property>
+      <Property name="pageSize">20</Property>
+    </Reference>
   </DataType>
   <DataType name="Fpici" meta="x:1239;y:10">
     <Property name="creationType">com.buaa.fly.domain.Fpici</Property>
@@ -679,6 +722,7 @@ arg.parameter = parameter;</ClientEvent>
       <Property></Property>
       <Property name="dataType">String</Property>
       <Property name="label">批次名</Property>
+      <Property name="required">true</Property>
       <Validator type="ajax">
         <ClientEvent name="beforeExecute">var ftype = arg.entity.get(&quot;fTypeName.ftypename&quot;);&#xD;
 var parameter = {&#xD;
@@ -790,6 +834,11 @@ arg.parameter = parameter;</ClientEvent>
       <Property name="dataType">int</Property>
       <Property name="label">大纲架次</Property>
       <Property name="defaultValue">1</Property>
+      <Property name="required">true</Property>
+      <Validator type="range">
+        <Property name="minValue">1</Property>
+        <Property name="minValueValidateMode">allowEquals</Property>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="combineFlights">
       <Property name="dataType">int</Property>
@@ -802,6 +851,7 @@ arg.parameter = parameter;</ClientEvent>
     <PropertyDef name="aircraftStruct">
       <Property></Property>
       <Property name="label">飞机构形</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="testStatus">
       <Property></Property>
@@ -829,6 +879,10 @@ arg.parameter = parameter;</ClientEvent>
     <PropertyDef name="shijijiaci">
       <Property name="dataType">Integer</Property>
       <Property name="label">实际架次</Property>
+      <Validator type="range">
+        <Property name="minValue">1</Property>
+        <Property name="minValueValidateMode">allowEquals</Property>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="miji">
       <Property name="dataType">String</Property>

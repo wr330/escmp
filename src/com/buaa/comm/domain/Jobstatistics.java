@@ -49,6 +49,8 @@ public class  Jobstatistics implements Serializable {
 	private String departname ;
 	private Date plancompletedate ;
 	private String miji ;
+	private int workStatus ;
+	private String sectionChief ;
 	@Transient
 	private Boolean isfocus;
 
@@ -190,6 +192,20 @@ public class  Jobstatistics implements Serializable {
 	}
 	public void setMiji(String miji) {
 		this.miji = miji;
+	}
+	@Column(name="WorkStatus")
+	public int getWorkStatus() {
+		return workStatus;
+	}
+	public void setWorkStatus(int workStatus) {
+		this.workStatus = workStatus;
+	}
+	@Column(name="SectionChief")
+	public String getSectionChief() {
+		return sectionChief;
+	}
+	public void setSectionChief(String sectionChief) {
+		this.sectionChief = sectionChief;
 	}
 	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY,mappedBy = "jobstatistics")
     public Collection<Joballot> getJoballot() {

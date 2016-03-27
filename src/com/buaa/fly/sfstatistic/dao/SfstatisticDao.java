@@ -88,23 +88,8 @@ public class SfstatisticDao extends HibernateBaseDao {
 	public Collection<Map<String, Object>> queryJiacinum(
 			Map<String, Object> parameter) throws Exception {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-		String parentnode = (String) parameter.get("parentnode");
-		Collection<Subject> dataItems;
-		List<Integer> num = new ArrayList<Integer>();
-		if (parentnode != null) {
-			dataItems = subjectManager.querySubject(parameter);
-			num = querySubjectJiaci(parameter);
-		} else {
-			Collection<Subject> dataItems0 = subjectManager
-					.querySubject(parameter);
-			List<Subject> items = (ArrayList<Subject>) dataItems0;
-			Subject item0 = items.get(0);
-			HashMap<String, Object> map0 = new HashMap<String, Object>();
-			map0.put("parentnode", item0.getOid());
-			map0.put("ftype", item0.getFtype());
-			dataItems = subjectManager.querySubject(map0);
-			num = querySubjectJiaci(map0);
-		}
+		Collection<Subject> dataItems = subjectManager.querySubject(parameter);
+		List<Integer> num = querySubjectJiaci(parameter);
 		int i = 0;
 		for (Subject item : dataItems) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
@@ -124,7 +109,6 @@ public class SfstatisticDao extends HibernateBaseDao {
 	 */
 	public List<Integer> querySubjectJiaci(Map<String, Object> parameter)
 			throws Exception {
-		Map<String, Object> args = new HashMap<String, Object>();
 		List<Integer> num = new ArrayList<Integer>();
 		String hql = "from " + Subject.class.getName() + " a where 1=1 ";
 		Collection<Subject> subjects = new ArrayList<Subject>();

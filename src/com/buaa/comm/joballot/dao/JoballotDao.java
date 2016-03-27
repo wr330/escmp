@@ -37,12 +37,23 @@ public class JoballotDao extends HibernateBaseDao {
         StringBuffer coreHql = new StringBuffer("from " + Joballot.class.getName()+" a where 1=1 ");
         
         if(null != parameter && !parameter.isEmpty()){
-	String jobstatistics = (String)parameter.get("jobstatistics");
-	if(StringUtils.isNotEmpty( jobstatistics )){
-		coreHql.append(" and a.jobstatistics.oid like :oid ");
-		args.put("oid","%" + jobstatistics + "%");	
-	}
-           }
+        	String jobstatistics = (String)parameter.get("jobstatistics");
+        	if(StringUtils.isNotEmpty( jobstatistics )){
+        		coreHql.append(" and a.jobstatistics.oid like :oid ");
+        		args.put("oid","%" + jobstatistics + "%");	
+        	}
+        	String user = (String) parameter.get("user");
+			if (StringUtils.isNotEmpty(user)) {
+				coreHql.append(" and a.personid = :pi ");
+				args.put("pi", user);
+			}
+			String status = (String) parameter.get("status");
+			if (StringUtils.isNotEmpty(status)) {
+				Integer sta = Integer.parseInt(status);
+				coreHql.append(" and a.workStatus >= :ss ");
+				args.put("ss", sta);
+			}
+        }
 		
 		if (null != criteria) {
 			ParseResult result = this.parseCriteria(criteria, true, "a");
