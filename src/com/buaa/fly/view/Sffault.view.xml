@@ -45,7 +45,7 @@ if(name != &quot;总计&quot;){&#xD;
       <Property name="pageSize">20</Property>
       <Property name="parameter">
         <Entity>
-          <Property name="ftype"/>
+          <Property name="ftype"></Property>
         </Entity>
       </Property>
     </DataSet>
@@ -392,7 +392,7 @@ view.id(&quot;dsDictionaryDeal&quot;).flushAsync(function(entitylist){&#xD;
 });</ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
-      <Property name="width">800</Property>
+      <Property name="width">1000</Property>
       <Property name="caption">问题跟踪</Property>
       <Buttons>
         <Button>
@@ -620,7 +620,13 @@ if(cur){
                 <Property name="property">foundopp</Property>
                 <Property name="labelPosition">top</Property>
                 <Editor>
-                  <Container id="containerFoundopp" layout="hbox regionPadding:20"/>
+                  <FieldSet>
+                    <Property name="collapseable">false</Property>
+                    <Buttons/>
+                    <Children>
+                      <Container id="containerFoundopp" layout="hbox regionPadding:20"/>
+                    </Children>
+                  </FieldSet>
                 </Editor>
               </AutoFormElement>
               <AutoFormElement layoutConstraint="colSpan:2">
@@ -628,7 +634,13 @@ if(cur){
                 <Property name="property">faulteffect</Property>
                 <Property name="labelPosition">top</Property>
                 <Editor>
-                  <Container id="containerResult" layout="hbox regionPadding:20"/>
+                  <FieldSet>
+                    <Property name="collapseable">false</Property>
+                    <Buttons/>
+                    <Children>
+                      <Container id="containerResult" layout="hbox regionPadding:20"/>
+                    </Children>
+                  </FieldSet>
                 </Editor>
               </AutoFormElement>
               <AutoFormElement layoutConstraint="colSpan:2">
@@ -636,7 +648,13 @@ if(cur){
                 <Property name="property">laiyuan</Property>
                 <Property name="labelPosition">top</Property>
                 <Editor>
-                  <Container id="containerLaiyuan" layout="hbox regionPadding:20"/>
+                  <FieldSet>
+                    <Property name="collapseable">false</Property>
+                    <Buttons/>
+                    <Children>
+                      <Container id="containerLaiyuan" layout="hbox regionPadding:20"/>
+                    </Children>
+                  </FieldSet>
                 </Editor>
               </AutoFormElement>
               <AutoFormElement layoutConstraint="colSpan:2">
@@ -644,7 +662,13 @@ if(cur){
                 <Property name="property">judge</Property>
                 <Property name="labelPosition">top</Property>
                 <Editor>
-                  <Container id="containerJudge" layout="hbox regionPadding:20"/>
+                  <FieldSet>
+                    <Property name="collapseable">false</Property>
+                    <Buttons/>
+                    <Children>
+                      <Container id="containerJudge" layout="hbox regionPadding:20"/>
+                    </Children>
+                  </FieldSet>
                 </Editor>
               </AutoFormElement>
               <AutoFormElement layoutConstraint="colSpan:2">
@@ -652,7 +676,13 @@ if(cur){
                 <Property name="property">type</Property>
                 <Property name="labelPosition">top</Property>
                 <Editor>
-                  <Container id="containerType" layout="hbox regionPadding:20"/>
+                  <FieldSet>
+                    <Property name="collapseable">false</Property>
+                    <Buttons/>
+                    <Children>
+                      <Container id="containerType" layout="hbox regionPadding:20"/>
+                    </Children>
+                  </FieldSet>
                 </Editor>
               </AutoFormElement>
               <AutoFormElement layoutConstraint="colSpan:2">
@@ -660,7 +690,13 @@ if(cur){
                 <Property name="property">deal</Property>
                 <Property name="labelPosition">top</Property>
                 <Editor>
-                  <Container id="containerDeal" layout="hbox regionPadding:20"/>
+                  <FieldSet>
+                    <Property name="collapseable">false</Property>
+                    <Buttons/>
+                    <Children>
+                      <Container id="containerDeal" layout="hbox regionPadding:20"/>
+                    </Children>
+                  </FieldSet>
                 </Editor>
               </AutoFormElement>
               <AutoFormElement layoutConstraint="colSpan:2">
@@ -668,7 +704,13 @@ if(cur){
                 <Property name="property">gzfs</Property>
                 <Property name="labelPosition">top</Property>
                 <Editor>
-                  <Container id="containerGzfs" layout="hbox regionPadding:20"/>
+                  <FieldSet>
+                    <Property name="collapseable">false</Property>
+                    <Buttons/>
+                    <Children>
+                      <Container id="containerGzfs" layout="hbox regionPadding:20"/>
+                    </Children>
+                  </FieldSet>
                 </Editor>
               </AutoFormElement>
             </AutoForm>
