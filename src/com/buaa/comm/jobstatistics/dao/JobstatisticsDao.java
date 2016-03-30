@@ -44,6 +44,11 @@ public class JobstatisticsDao extends HibernateBaseDao {
         StringBuffer coreHql = new StringBuffer("from " + Jobstatistics.class.getName()+" a where 1=1 ");
         
         if(null != parameter && !parameter.isEmpty()){
+        	String writingperson = (String) parameter.get("writingperson");
+			if (StringUtils.isNotEmpty(writingperson)) {
+				coreHql.append(" and a.writingperson = :wp ");
+				args.put("wp", writingperson);
+			}
         	String user = (String) parameter.get("user");
 			if (StringUtils.isNotEmpty(user)) {
 				coreHql.append(" and a.sectionChief = :sc ");
@@ -68,7 +73,7 @@ public class JobstatisticsDao extends HibernateBaseDao {
         
         String countHql = "select count(*) " + coreHql.toString();
         String hql = coreHql.toString();
-        hql = userService.checkUser(hql)+ "order by arrangementdate desc";
+        hql = userService.checkUser(hql)+ "order by workStatus asc, arrangementdate desc";
 		this.pagingQuery(page, hql, countHql, args);
 	}
 	

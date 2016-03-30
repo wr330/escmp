@@ -11,7 +11,6 @@
       <Property name="parameter">
         <Entity>
           <Property name="user">${loginUser.getUsername()}</Property>
-          <Property name="status">1</Property>
         </Entity>
       </Property>
     </DataSet>
@@ -35,11 +34,10 @@
         <Property name="dataSet">dsJoballot</Property>
       </DataPilot>
       <ToolBarButton>
-        <ClientEvent name="onClick">
-	var cur=view.id('dsJoballot').getData('#');
-	if (cur) {
-		view.id('diaJoballot').show();
-	}</ClientEvent>
+        <ClientEvent name="onClick">var cur=view.id('dsJoballot').getData('#');
+if (cur) {
+	view.id('diaJoballot').show();
+}</ClientEvent>
         <Property name="caption">执行情况汇报</Property>
         <Property name="icon">url(>skin>common/icons.gif) -160px -100px</Property>
       </ToolBarButton>
@@ -68,6 +66,13 @@ dsJoballot.flushAsync();</ClientEvent>
       <DataColumn name="content">
         <Property name="property">content</Property>
         <Property name="width">600</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">workStatus</Property>
+        <Property name="name">WorkStatus</Property>
+        <Property name="align">left</Property>
+        <Property name="width">120</Property>
+        <Editor/>
       </DataColumn>
       <DataColumn name="status">
         <Property name="property">status</Property>

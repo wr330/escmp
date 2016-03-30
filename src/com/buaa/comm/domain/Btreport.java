@@ -49,7 +49,7 @@ public class  Btreport implements Serializable {
 	private String sharePerson ;
 	
 
-
+	private Collection<BtReportSharePerson> btReportSharePerson;
 	private Collection<Appendixdocument> appendixdocument;
 
 	@Id
@@ -200,4 +200,12 @@ public class  Btreport implements Serializable {
 	public void setAppendixdocument(Collection<Appendixdocument> appendixdocument) {
 		this.appendixdocument=appendixdocument;
 	}
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY,mappedBy = "btreport")
+	public Collection<BtReportSharePerson> getBtReportSharePerson() {
+		return btReportSharePerson;
+	}
+	public void setBtReportSharePerson(Collection<BtReportSharePerson> btReportSharePerson) {
+		this.btReportSharePerson = btReportSharePerson;
+	}
+	
 }

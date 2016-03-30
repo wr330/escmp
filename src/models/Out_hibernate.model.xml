@@ -137,17 +137,17 @@
     <PropertyDef name="filename">
       <Property name="dataType">String</Property>
       <Property name="label">交接文件名</Property>
-      <Property name="required">false</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="personto">
       <Property name="dataType">String</Property>
       <Property name="label">接收人</Property>
-      <Property name="required">false</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="filenumber">
       <Property name="dataType">String</Property>
       <Property name="label">文件编号</Property>
-      <Property name="required">false</Property>
+      <Property name="required">true</Property>
       <Validator type="ajax">
         <ClientEvent name="beforeExecute">var oid = arg.entity.get(&quot;oid&quot;);&#xD;
 if(!oid)&#xD;
@@ -163,12 +163,12 @@ arg.parameter = parameter;</ClientEvent>
     <PropertyDef name="personfrom">
       <Property name="dataType">String</Property>
       <Property name="label">交接人</Property>
-      <Property name="required">false</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="handovertime">
       <Property name="dataType">Date</Property>
       <Property name="label">交接时间</Property>
-      <Property name="required">false</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="oid">
       <Property name="dataType">String</Property>

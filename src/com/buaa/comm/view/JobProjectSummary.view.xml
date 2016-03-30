@@ -8,19 +8,7 @@
       <Property name="dataType">[Jobstatistics]</Property>
       <Property name="dataProvider">jobstatisticsPR#queryJobstatistics</Property>
       <Property name="pageSize">20</Property>
-      <Property name="parameter">
-        <Entity>
-          <Property name="writingperson">${loginUser.getUsername()}</Property>
-        </Entity>
-      </Property>
-    </DataSet>
-    <DataSet id="dsDept">
-      <Property name="dataProvider">bdf2.deptSelect#loadDepts</Property>
-      <Property name="dataType">[$dataTypeDept]</Property>
-    </DataSet>
-    <DataSet id="dsUsers">
-      <Property name="dataProvider">bdf2.userMaintain#loadUsers2</Property>
-      <Property name="dataType">[User]</Property>
+      <Property name="parameter"></Property>
     </DataSet>
     <UpdateAction id="uaJobstatistics">
       <Property name="dataResolver">jobstatisticsPR#saveJobstatistics</Property>
@@ -35,74 +23,12 @@
         <Property name="dataPath"></Property>
       </DataPilot>
       <ToolBarButton>
-        <ClientEvent name="onClick">view.id('dsJobstatistics').getData().insert();
-var cur=view.id('dsJobstatistics').getData('#');
-var dateNow = new Date();
-cur.set(&quot;arrangementdate&quot;,dateNow);
-cur.set(&quot;writingperson&quot;,&quot;${loginUser.getUsername()}&quot;);
-cur.set(&quot;status&quot;,&quot;0/0&quot;);
-view.id('diaJobstatistics').show();
-
-</ClientEvent>
-        <Property name="caption">新增</Property>
-        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
-      </ToolBarButton>
-      <ToolBarButton>
-        <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#');
-if (cur) {
-	if(cur.get(&quot;workStatus&quot;) == 0){
-		view.id('diaJobstatistics').show();
-	}
-	else{
-		dorado.MessageBox.alert(&quot;工作项目已经下发不能修改&quot;);
-	}
-}</ClientEvent>
-        <Property name="caption">修改</Property>
-        <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
-      </ToolBarButton>
-      <ToolBarButton>
-        <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#');
-var ua=view.id('uaJobstatistics');
-if(cur){
-	if(cur.get(&quot;workStatus&quot;) == 0){
-		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
-			var entitylist=view.id('dsJobstatistics').getData('#.joballot');
-			entitylist.each(function(entity){
-				entity.remove();
-			})
-	    	cur.remove();
-	    	ua.execute();
-    	}); 
-	}
-	else{
-		dorado.MessageBox.alert(&quot;工作项目已经下发不能删除&quot;);
-	}
-} 
-</ClientEvent>
-        <Property name="caption">删除</Property>
-        <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
-      </ToolBarButton>
-      <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#');&#xD;
 if (cur) {&#xD;
 	view.id('diaJobSee').show();&#xD;
 }</ClientEvent>
         <Property name="caption">查看</Property>
         <Property name="icon">url(>skin>common/icons.gif) -20px -40px</Property>
-      </ToolBarButton>
-      <ToolBarButton>
-        <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#');&#xD;
-view.id(&quot;dsUsers&quot;).set(&quot;parameter&quot;,cur.get(&quot;departid&quot;)).flushAsync();&#xD;
-if (cur) {&#xD;
-	if(cur.get(&quot;workStatus&quot;) == 0){&#xD;
-		view.id('diaJobFormulate').show();&#xD;
-	}&#xD;
-else{&#xD;
-	dorado.MessageBox.alert(&quot;本项目已经下发到室主任&quot;);  &#xD;
-	}	&#xD;
-}</ClientEvent>
-        <Property name="caption">分配到执行室</Property>
-        <Property name="icon">url(>skin>common/icons.gif) -80px -20px</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var dsJobstatistics = view.get(&quot;#dsJobstatistics&quot;);&#xD;
@@ -118,6 +44,7 @@ dsJobstatistics.flushAsync();</ClientEvent>
       <Property name="filterMode">clientSide</Property>
       <Property name="showFilterBar">false</Property>
       <Property name="rowHeight">22</Property>
+      <Property name="height">50%</Property>
       <RowNumColumn/>
       <DataColumn name="projectname">
         <Property name="property">projectname</Property>
@@ -161,6 +88,7 @@ dsJobstatistics.flushAsync();</ClientEvent>
       </DataColumn>
       <DataColumn name="isfromp6">
         <Property name="property">isfromp6</Property>
+        <Property name="width">120</Property>
       </DataColumn>
       <DataColumn>
         <Property name="property">sectionChief</Property>
@@ -173,55 +101,102 @@ dsJobstatistics.flushAsync();</ClientEvent>
         <Property name="align">left</Property>
       </DataColumn>
     </DataGrid>
-    <Dialog id="diaJobstatistics">
-      <ClientEvent name="onClose">view.id(&quot;dsJobstatistics&quot;).getData(&quot;#&quot;).cancel();</ClientEvent>
+    <GroupBox>
+      <Property name="caption">具体作业分配</Property>
+      <Property name="collapseable">false</Property>
+      <Buttons/>
+      <Children>
+        <ToolBar>
+          <DataPilot>
+            <Property name="itemCodes">pages</Property>
+            <Property name="dataSet">dsJobstatistics</Property>
+            <Property name="dataPath">#.joballot</Property>
+          </DataPilot>
+          <ToolBarButton>
+            <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#.#joballot');&#xD;
+if (cur) {&#xD;
+	view.id('diaJoballotSee').show();&#xD;
+}</ClientEvent>
+            <Property name="caption">查看</Property>
+            <Property name="icon">url(>skin>common/icons.gif) -20px -40px</Property>
+          </ToolBarButton>
+          <ToolBarButton>
+            <ClientEvent name="onClick">view.id(&quot;dsJobstatistics&quot;).getData(&quot;#&quot;).reset(&quot;joballot&quot;)&#xD;
+</ClientEvent>
+            <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+            <Property name="caption">刷新</Property>
+          </ToolBarButton>
+        </ToolBar>
+        <DataGrid id="dgJoballot">
+          <Property name="readOnly">true</Property>
+          <Property name="dataSet">dsJobstatistics</Property>
+          <Property name="dataPath">#.joballot</Property>
+          <Property name="filterMode">clientSide</Property>
+          <Property name="showFilterBar">false</Property>
+          <Property name="rowHeight">22</Property>
+          <Property name="selectionMode">none</Property>
+          <RowNumColumn/>
+          <DataColumn name="personid">
+            <Property name="property">personid</Property>
+            <Property name="width">120</Property>
+          </DataColumn>
+          <DataColumn name="personname">
+            <Property name="property">personname</Property>
+            <Property name="width">120</Property>
+          </DataColumn>
+          <DataColumn name="content">
+            <Property name="property">content</Property>
+            <Property name="width">600</Property>
+          </DataColumn>
+          <DataColumn>
+            <Property name="property">workStatus</Property>
+            <Property name="name">WorkStatus</Property>
+            <Property name="align">left</Property>
+            <Property name="width">120</Property>
+            <Editor/>
+          </DataColumn>
+          <DataColumn name="status">
+            <Property name="property">status</Property>
+            <Property name="width">120</Property>
+          </DataColumn>
+          <DataColumn name="finishtime">
+            <Property name="property">finishtime</Property>
+            <Property name="width">120</Property>
+          </DataColumn>
+          <DataColumn>
+            <Property name="property">miji</Property>
+            <Property name="width">120</Property>
+            <Property name="name">miji</Property>
+            <Property name="align">left</Property>
+          </DataColumn>
+        </DataGrid>
+      </Children>
+    </GroupBox>
+    <Dialog id="diaJoballotSee">
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
-      <Property name="width">800</Property>
-      <Property name="caption">工作项目管理</Property>
+      <Property name="width">500</Property>
+      <Property name="caption">工作项目作业分配</Property>
       <Buttons>
         <Button>
-          <ClientEvent name="onClick">view.id('uaJobstatistics').execute(function(){
-               view.id('diaJobstatistics').hide();
-           });</ClientEvent>
+          <ClientEvent name="onClick">view.id('diaJoballotSee').hide();
+
+         </ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
         </Button>
         <Button>
-          <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#');
-				cur.cancel();
-				view.id('diaJobstatistics').hide();
+          <ClientEvent name="onClick">view.id('diaJoballotSee').hide();
+	     
 	         </ClientEvent>
           <Property name="caption">取消</Property>
           <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
         </Button>
       </Buttons>
       <Children>
-        <CustomDropDown id="customDropDownDept">
-          <Property name="height">200</Property>
-          <Property name="autoOpen">true</Property>
-          <DataTree>
-            <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
-var node = self.get(&quot;currentNode&quot;);&#xD;
-if (node ) {&#xD;
-	dropDown.close(node.get(&quot;data.name&quot;));&#xD;
-	var cur=view.id('dsJobstatistics').getData('#');&#xD;
-    cur.set(&quot;departid&quot;,node.get(&quot;data.id&quot;));&#xD;
-}</ClientEvent>
-            <Property name="dataSet">dsDept</Property>
-            <BindingConfigs>
-              <BindingConfig>
-                <Property name="childrenProperty">children</Property>
-                <Property name="expandLevel">2</Property>
-                <Property name="labelProperty">name</Property>
-                <Property name="recursive">true</Property>
-                <Property name="icon">url(>skin>common/icons.gif) -260px -40px</Property>
-              </BindingConfig>
-            </BindingConfigs>
-          </DataTree>
-        </CustomDropDown>
-        <CustomDropDown id="customDropDownUser">
-          <ClientEvent name="beforeExecute">view.id(&quot;dsUsers&quot;).set(&quot;parameter&quot;,null).flushAsync();</ClientEvent>
+        <CustomDropDown id="customDropDownUser2">
+          <ClientEvent name="beforeExecute">var cur=view.id('dsJobstatistics').getData('#');&#xD;
+view.id(&quot;dsUsers&quot;).set(&quot;parameter&quot;,cur.get(&quot;departid&quot;)).flushAsync();</ClientEvent>
           <Property name="editable">false</Property>
           <Property name="autoOpen">true</Property>
           <DataGrid>
@@ -229,8 +204,8 @@ if (node ) {&#xD;
 var user=view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;);&#xD;
 if (user) {&#xD;
 	dropDown.close(user.get(&quot;cname&quot;));&#xD;
-	var cur=view.id('dsJobstatistics').getData('#');&#xD;
-    cur.set(&quot;sourcepersonid&quot;,user.get(&quot;username&quot;));&#xD;
+	var cur=view.id('dsJobstatistics').getData('#.#joballot');&#xD;
+    cur.set(&quot;personid&quot;,user.get(&quot;username&quot;));&#xD;
 }</ClientEvent>
             <Property name="showFilterBar">true</Property>
             <Property name="rowHeight">22</Property>
@@ -259,144 +234,53 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
             </DataColumn>
           </DataGrid>
         </CustomDropDown>
-        <AutoForm id="afJobstatistics">
-          <Property name="cols">*,*</Property>
+        <AutoForm id="afJoballot">
           <Property name="dataSet">dsJobstatistics</Property>
-          <Property name="dataPath">#</Property>
-          <Property name="labelWidth">90</Property>
+          <Property name="dataPath">#.#joballot</Property>
+          <Property name="cols">*</Property>
+          <Property name="readOnly">true</Property>
           <AutoFormElement>
-            <Property name="name">ProjectName</Property>
-            <Property name="property">projectname</Property>
+            <Property name="name">personname</Property>
+            <Property name="property">personname</Property>
+            <Property name="trigger">customDropDownUser2</Property>
+            <Editor/>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="name">DepartName</Property>
-            <Property name="property">departname</Property>
-            <Property name="trigger">customDropDownDept</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">WritingPerson</Property>
-            <Property name="property">writingperson</Property>
+            <Property name="name">personid</Property>
+            <Property name="property">personid</Property>
             <Property name="readOnly">true</Property>
+            <Editor/>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="name">ArrangementDate</Property>
-            <Property name="property">arrangementdate</Property>
-            <Property name="readOnly">true</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">PlanCompleteDate</Property>
-            <Property name="property">plancompletedate</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">RealCompleteDate</Property>
-            <Property name="property">realcompletedate</Property>
-            <Property name="readOnly">true</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">SourcePersonName</Property>
-            <Property name="property">sourcepersonname</Property>
-            <Property name="trigger">customDropDownUser</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">SourceEvent</Property>
-            <Property name="property">sourceevent</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">IsFromP6</Property>
-            <Property name="property">isfromp6</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">AddP6</Property>
-            <Property name="property">addp6</Property>
-          </AutoFormElement>
-          <AutoFormElement layoutConstraint="colSpan:2">
-            <Property name="name">Content</Property>
+            <Property name="name">content</Property>
             <Property name="property">content</Property>
             <Property name="editorType">TextArea</Property>
-            <Property name="height">150</Property>
+            <Property name="height">250</Property>
+            <Editor/>
           </AutoFormElement>
-          <AutoFormElement layoutConstraint="colSpan:2">
-            <Property name="name">Tag</Property>
-            <Property name="property">tag</Property>
-            <Property name="editorType">TextArea</Property>
-            <Property name="height">50</Property>
+          <AutoFormElement>
+            <Property name="property">workStatus</Property>
+            <Property name="name">WorkStatus</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">status</Property>
+            <Property name="property">status</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">finishtime</Property>
+            <Property name="property">finishtime</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">miji</Property>
             <Property name="property">miji</Property>
+            <Editor/>
           </AutoFormElement>
         </AutoForm>
-      </Children>
-      <Tools/>
-    </Dialog>
-    <Dialog id="diaJobFormulate">
-      <ClientEvent name="onClose">view.id(&quot;dsJobstatistics&quot;).getData(&quot;#&quot;).cancel();</ClientEvent>
-      <Property name="center">true</Property>
-      <Property name="modal">true</Property>
-      <Property name="width">450</Property>
-      <Property name="caption">选择室主任</Property>
-      <Buttons>
-        <Button>
-          <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#');
-var user=view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;);
-dorado.MessageBox.confirm('您是否确认向室主任下发本项工作项目计划?', function(){
-	cur.set(&quot;workStatus&quot;,1);
-	cur.set(&quot;sectionChief&quot;,user.get(&quot;username&quot;));
-	view.id('uaJobstatistics').execute(function(){
-    	view.id('diaJobFormulate').hide();
-    });
-});
-</ClientEvent>
-          <Property name="caption">确定</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
-        </Button>
-        <Button>
-          <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#');
-				cur.cancel();
-				view.id('diaJobFormulate').hide();
-	         </ClientEvent>
-          <Property name="caption">取消</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
-        </Button>
-      </Buttons>
-      <Children>
-        <DataGrid>
-          <ClientEvent name="onDataRowClick">var cur=view.id('dsJobstatistics').getData('#');&#xD;
-var user=view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;);&#xD;
-dorado.MessageBox.confirm('您是否确认向室主任下发本项工作项目计划?', function(){&#xD;
-	cur.set(&quot;workStatus&quot;,1);&#xD;
-	cur.set(&quot;sectionChief&quot;,user.get(&quot;username&quot;));&#xD;
-	view.id('uaJobstatistics').execute(function(){&#xD;
-    	view.id('diaJobFormulate').hide();&#xD;
-    });&#xD;
-});&#xD;
-</ClientEvent>
-          <Property name="showFilterBar">true</Property>
-          <Property name="rowHeight">22</Property>
-          <Property name="dataSet">dsUsers</Property>
-          <Property name="readOnly">true</Property>
-          <Property name="height">300</Property>
-          <RowNumColumn/>
-          <DataColumn>
-            <Property name="name">username</Property>
-            <Property name="property">username</Property>
-          </DataColumn>
-          <DataColumn>
-            <Property name="name">cname</Property>
-            <Property name="property">cname</Property>
-          </DataColumn>
-          <DataColumn name="depts">
-            <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;depts&quot;);&#xD;
-var name = [];&#xD;
-if (entitylist) {&#xD;
-	entitylist.each(function(item){&#xD;
-		name.push(item.get(&quot;name&quot;));&#xD;
-	});&#xD;
-}&#xD;
-arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
-            <Property name="property">depts</Property>
-          </DataColumn>
-        </DataGrid>
       </Children>
       <Tools/>
     </Dialog>

@@ -55,9 +55,49 @@
         <Property name="dataPath"></Property>
       </DataPilot>
       <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#');&#xD;
+if (cur) {&#xD;
+	view.id('diaJobSee').show();&#xD;
+}</ClientEvent>
+        <Property name="caption">查看</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -20px -40px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var cur = view.id('dsJobstatistics').getData('#');
+var currentJoballot = view.id('dsJobstatistics').getData('#.#joballot');
+var allJoballot = view.id('dsJobstatistics').getData('#.joballot');
+if(currentJoballot){
+	dorado.MessageBox.confirm('您是否确认向专业室成员进行具体作业分配?', function(){
+		allJoballot = allJoballot.toArray();
+		allJoballot.each(function(joballot){
+			if(joballot.get(&quot;workStatus&quot;) == 0){
+				joballot.set(&quot;workStatus&quot;,1);
+			}	
+		})
+		cur.set(&quot;workStatus&quot;,2);
+		view.id('uaJobstatistics').execute();
+	}); 
+}
+else{
+	dorado.MessageBox.alert(&quot;没有进行具体作业分配&quot;);
+}
+	
+	</ClientEvent>
+        <Property name="caption">分配到科员</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -240px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#');
 if (cur) {
-	view.id('diaJobstatistics').show();
+	if(cur.get(&quot;workStatus&quot;) == 2){
+		view.id('diaJobstatistics').show();
+	}
+	else if(cur.get(&quot;workStatus&quot;) == 1){
+		dorado.MessageBox.alert(&quot;本项目正在分配中，不能向领导汇报&quot;);
+	}
+	else{
+		dorado.MessageBox.alert(&quot;本项目已完成，不能向领导再次汇报&quot;);
+	}
 }
 
 
@@ -83,15 +123,12 @@ dsJobstatistics.flushAsync();</ClientEvent>
       <RowNumColumn/>
       <DataColumn name="projectname">
         <Property name="property">projectname</Property>
-        <Property name="width">120</Property>
       </DataColumn>
       <DataColumn name="departname">
         <Property name="property">departname</Property>
-        <Property name="width">120</Property>
       </DataColumn>
       <DataColumn name="status">
         <Property name="property">status</Property>
-        <Property name="width">120</Property>
       </DataColumn>
       <DataColumn name="refreshtime">
         <Property name="property">refreshtime</Property>
@@ -99,39 +136,42 @@ dsJobstatistics.flushAsync();</ClientEvent>
       </DataColumn>
       <DataColumn name="arrangementdate">
         <Property name="property">arrangementdate</Property>
-        <Property name="width">120</Property>
       </DataColumn>
       <DataColumn name="plancompletedate">
         <Property name="property">plancompletedate</Property>
-        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">workStatus</Property>
+        <Property name="name">WorkStatus</Property>
+        <Property name="align">left</Property>
+        <Editor/>
       </DataColumn>
       <DataColumn name="realcompletedate">
         <Property name="property">realcompletedate</Property>
-        <Property name="width">120</Property>
       </DataColumn>
       <DataColumn name="writingperson">
         <Property name="property">writingperson</Property>
-        <Property name="width">120</Property>
       </DataColumn>
       <DataColumn name="sourcepersonname">
         <Property name="property">sourcepersonname</Property>
-        <Property name="width">120</Property>
       </DataColumn>
       <DataColumn name="sourceevent">
         <Property name="property">sourceevent</Property>
-        <Property name="width">120</Property>
       </DataColumn>
       <DataColumn name="addp6">
         <Property name="property">addp6</Property>
-        <Property name="width">120</Property>
       </DataColumn>
       <DataColumn name="isfromp6">
         <Property name="property">isfromp6</Property>
         <Property name="width">120</Property>
       </DataColumn>
       <DataColumn>
+        <Property name="property">sectionChief</Property>
+        <Property name="name">sectionChief</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
         <Property name="property">miji</Property>
-        <Property name="width">120</Property>
         <Property name="name">miji</Property>
         <Property name="align">left</Property>
       </DataColumn>
@@ -184,18 +224,6 @@ if(cur){
             <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
           </ToolBarButton>
           <ToolBarButton>
-            <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#');
-var cur1=view.id('dsJobstatistics').getData('#.#joballot');
-dorado.MessageBox.confirm('您是否确认向专业室成员分配本项工作条目?', function(){
-	cur.set(&quot;workStatus&quot;,2);
-	cur1.set(&quot;workStatus&quot;,1);
-	view.id('uaJobstatistics').execute();
-	}); 	
-</ClientEvent>
-            <Property name="caption">分配到科员</Property>
-            <Property name="icon">url(>skin>common/icons.gif) -240px -0px</Property>
-          </ToolBarButton>
-          <ToolBarButton>
             <ClientEvent name="onClick">view.id(&quot;dsJobstatistics&quot;).getData(&quot;#&quot;).reset(&quot;joballot&quot;)&#xD;
 </ClientEvent>
             <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
@@ -223,6 +251,13 @@ dorado.MessageBox.confirm('您是否确认向专业室成员分配本项工作�
             <Property name="property">content</Property>
             <Property name="width">600</Property>
           </DataColumn>
+          <DataColumn>
+            <Property name="property">workStatus</Property>
+            <Property name="name">WorkStatus</Property>
+            <Property name="align">left</Property>
+            <Property name="width">120</Property>
+            <Editor/>
+          </DataColumn>
           <DataColumn name="status">
             <Property name="property">status</Property>
             <Property name="width">120</Property>
@@ -249,12 +284,18 @@ dorado.MessageBox.confirm('您是否确认向专业室成员分配本项工作�
       <Buttons>
         <Button>
           <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#');
-dorado.MessageBox.confirm('您是否确认已完成本工作项目?', function(){	
-	cur.set(&quot;workStatus&quot;,3);
-	view.id('uaJobstatistics').execute(function(){
-               view.id('diaJobstatistics').hide();
-    });
-});  
+if(cur.get(&quot;realcompletedate&quot;) != null){
+	dorado.MessageBox.confirm('您是否确认已完成本工作项目?', function(){	
+		cur.set(&quot;workStatus&quot;,3);
+		view.id('uaJobstatistics').execute(function(){
+           view.id('diaJobstatistics').hide();
+    	});
+	});	  
+}
+else{
+	dorado.MessageBox.alert(&quot;需要填写实际完成时间&quot;);
+}
+
         </ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
@@ -344,6 +385,11 @@ dorado.MessageBox.confirm('您是否确认已完成本工作项目?', function()
             <Property name="name">miji</Property>
             <Property name="property">miji</Property>
             <Property name="readOnly">true</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">SectionChief</Property>
+            <Property name="property">sectionChief</Property>
+            <Property name="trigger">customDropDownUser2</Property>
           </AutoFormElement>
         </AutoForm>
       </Children>
@@ -455,6 +501,101 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
             <Property name="name">miji</Property>
             <Property name="property">miji</Property>
             <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaJobSee">
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">800</Property>
+      <Property name="caption">工作项目管理</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('diaJobSee').hide();</ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">view.id('diaJobSee').hide();
+	         </ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afJobSee">
+          <Property name="cols">*,*</Property>
+          <Property name="dataSet">dsJobstatistics</Property>
+          <Property name="dataPath">#</Property>
+          <Property name="labelWidth">90</Property>
+          <Property name="readOnly">true</Property>
+          <AutoFormElement>
+            <Property name="name">ProjectName</Property>
+            <Property name="property">projectname</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">DepartName</Property>
+            <Property name="property">departname</Property>
+            <Property name="trigger">customDropDownDept</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">WritingPerson</Property>
+            <Property name="property">writingperson</Property>
+            <Property name="readOnly">true</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">ArrangementDate</Property>
+            <Property name="property">arrangementdate</Property>
+            <Property name="readOnly">true</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">PlanCompleteDate</Property>
+            <Property name="property">plancompletedate</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">RealCompleteDate</Property>
+            <Property name="property">realcompletedate</Property>
+            <Property name="readOnly">true</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">SourcePersonName</Property>
+            <Property name="property">sourcepersonname</Property>
+            <Property name="trigger">customDropDownUser</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">SourceEvent</Property>
+            <Property name="property">sourceevent</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">IsFromP6</Property>
+            <Property name="property">isfromp6</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">AddP6</Property>
+            <Property name="property">addp6</Property>
+          </AutoFormElement>
+          <AutoFormElement layoutConstraint="colSpan:2">
+            <Property name="name">Content</Property>
+            <Property name="property">content</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">150</Property>
+          </AutoFormElement>
+          <AutoFormElement layoutConstraint="colSpan:2">
+            <Property name="name">Tag</Property>
+            <Property name="property">tag</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">50</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">SectionChief</Property>
+            <Property name="property">sectionChief</Property>
+            <Property name="trigger">customDropDownUser2</Property>
           </AutoFormElement>
         </AutoForm>
       </Children>

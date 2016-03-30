@@ -1,29 +1,22 @@
-package com.buaa.comm.btreport.dao;
+package com.buaa.comm.btReportSharePerson.dao;
 
 import java.util.HashMap;
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import javax.annotation.Resource;
 
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 import org.apache.commons.lang.StringUtils;
 
 import com.bstek.bdf2.core.orm.ParseResult;
-import com.bstek.bdf2.core.view.user.QueryUserData;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
+import com.buaa.comm.domain.BtReportSharePerson;
 import com.common.HibernateBaseDao;
 
-import com.buaa.comm.domain.Btreport;
+@Repository("btReportSharePersonDao")
+public class BtReportSharePersonDao extends HibernateBaseDao {
 
-@Repository("btreportDao")
-public class BtreportDao extends HibernateBaseDao {
-	@Resource
-	private QueryUserData userService;
 	/**
 	 * 同时也支持普通类型查询，在数据类型和日期类型支持区间查询
 	 * 
@@ -32,30 +25,25 @@ public class BtreportDao extends HibernateBaseDao {
 	 * @param criteria
 	 * @throws Exception
 	 */
-	public void queryBtreport(Page<Btreport> page, Map<String, Object> parameter,Criteria criteria) throws Exception {
+	public void queryBtReportSharePerson(Page<BtReportSharePerson> page, Map<String, Object> parameter,Criteria criteria) throws Exception {
         Map<String, Object> args = new HashMap<String,Object>();
-        StringBuffer coreHql = new StringBuffer("from " + Btreport.class.getName()+" a where 1=1 ");
+        StringBuffer coreHql = new StringBuffer("from " + BtReportSharePerson.class.getName()+" a where 1=1 ");
         
         if(null != parameter && !parameter.isEmpty()){
-        	String departmentHead = (String) parameter.get("departmentHead");
-			if (StringUtils.isNotEmpty(departmentHead)) {
-				coreHql.append(" and a.departmentHead = :dh ");
-				args.put("dh", departmentHead);
+			String oid = (String) parameter.get("oid");
+			if (StringUtils.isNotEmpty(oid)) {
+				coreHql.append(" and a.btreport.oid = :oid ");
+				args.put("oid", oid);
 			}
-        	String sectionChief = (String) parameter.get("sectionChief");
-			if (StringUtils.isNotEmpty(sectionChief)) {
-				coreHql.append(" and a.sectionChief = :sc ");
-				args.put("sc", sectionChief);
-			}
-			String user = (String) parameter.get("user");
-			if (StringUtils.isNotEmpty(user)) {
-				coreHql.append(" and a.writingPerson = :wp ");
-				args.put("wp", user);
+			String sharePerson = (String) parameter.get("sharePerson");
+			if (StringUtils.isNotEmpty(sharePerson)) {
+				coreHql.append(" and a.userName = :spun ");
+				args.put("spun", sharePerson);
 			}
 			String status = (String) parameter.get("status");
 			if (StringUtils.isNotEmpty(status)) {
 				Integer sta = Integer.parseInt(status);
-				coreHql.append(" and a.status >= :ss ");
+				coreHql.append(" and a.btreport.status >= :ss ");
 				args.put("ss", sta);
 			}
         }
@@ -68,8 +56,6 @@ public class BtreportDao extends HibernateBaseDao {
 		}
         String countHql = "select count(*) " + coreHql.toString();
         String hql = coreHql.toString();
-        hql = userService.checkUser(hql);
-        hql += " order by status asc, bttime desc";
 		this.pagingQuery(page, hql, countHql, args);
 	}
 	
@@ -78,10 +64,10 @@ public class BtreportDao extends HibernateBaseDao {
 	 * @param detail
 	 * @throws Exception
 	 */
-	public void saveData(Btreport detail) throws Exception {
+	public void saveData(BtReportSharePerson detail) throws Exception {
 		Session session = this.getSessionFactory().openSession();
 		try {
-			//detail.setOid(UUID.randomUUID().toString());
+			detail.setOid(UUID.randomUUID().toString());
 			session.save(detail);
 		} finally {
 			session.flush();
@@ -94,7 +80,7 @@ public class BtreportDao extends HibernateBaseDao {
 	 * @param detail
 	 * @throws Exception
 	 */
-	public void updateData(Btreport detail) throws Exception {
+	public void updateData(BtReportSharePerson detail) throws Exception {
 		Session session = this.getSessionFactory().openSession();
 		try {
 			session.update(detail);
@@ -109,7 +95,7 @@ public class BtreportDao extends HibernateBaseDao {
 	 * @param detail
 	 * @throws Exception
 	 */
-	public void deleteData(Btreport detail) throws Exception {
+	public void deleteData(BtReportSharePerson detail) throws Exception {
 		Session session = this.getSessionFactory().openSession();
 		try {
 			session.delete(detail);

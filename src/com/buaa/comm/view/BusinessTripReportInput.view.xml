@@ -86,7 +86,6 @@
       <Property name="parameter">
         <Entity>
           <Property name="user">${loginUser.getUsername()}</Property>
-          <Property name="status">0</Property>
         </Entity>
       </Property>
     </DataSet>
@@ -139,9 +138,17 @@ dialog.show();
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsBtreport').getData('#');
 if (cur) {
-	var dialog=view.id('diaBtreport');
-	dialog.set(&quot;caption&quot;,&quot;修改出差报告&quot;);
-	dialog.show();
+	if(cur.get(&quot;status&quot;) == 0){
+		var dialog=view.id('diaBtreport');
+		dialog.set(&quot;caption&quot;,&quot;修改出差报告&quot;);
+		dialog.show();
+	}
+	else if(cur.get(&quot;status&quot;) == 3){
+		dorado.MessageBox.alert(&quot;出差报告已共享不能修改&quot;);
+	}
+	else{
+		dorado.MessageBox.alert(&quot;出差报告已提交领导审阅不能修改&quot;);
+	}
 }</ClientEvent>
         <Property name="caption">修改</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
@@ -169,6 +176,9 @@ if(cur){
 				
 		}); 
 	}
+	else if(cur.get(&quot;status&quot;) == 3){
+		dorado.MessageBox.alert(&quot;出差报告已共享不能修改&quot;);
+	}
 	else{
 		dorado.MessageBox.alert(&quot;此出差报告已交领导审阅不能删除&quot;);
 	}	
@@ -180,12 +190,34 @@ if(cur){
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsBtreport').getData('#');&#xD;
 if (cur) {&#xD;
-	var dialog=view.id('diaSubmitBtreport');&#xD;
-	dialog.set(&quot;caption&quot;,&quot;提交出差报告&quot;);&#xD;
-	dialog.show();&#xD;
+	view.id('diaSeeBtreport').show();&#xD;
+}</ClientEvent>
+        <Property name="caption">查看</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -20px -40px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsBtreport').getData('#');&#xD;
+if (cur) {&#xD;
+	if(cur.get(&quot;status&quot;) == 0){&#xD;
+		var dialog=view.id('diaSubmitBtreport');&#xD;
+		dialog.set(&quot;caption&quot;,&quot;提交出差报告&quot;);&#xD;
+		dialog.show();&#xD;
+	}&#xD;
+	else if(cur.get(&quot;status&quot;) == 3){&#xD;
+		dorado.MessageBox.alert(&quot;出差报告已共享不能再次提交&quot;);&#xD;
+	}&#xD;
+	else{&#xD;
+		dorado.MessageBox.alert(&quot;出差报告已提交领导审阅不能再次提交&quot;);&#xD;
+	}&#xD;
 }</ClientEvent>
         <Property name="caption">提交到室主任</Property>
         <Property name="icon">url(>skin>common/icons.gif) -140px -180px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var dsBtreport = view.get(&quot;#dsBtreport&quot;);&#xD;
+dsBtreport.flushAsync();</ClientEvent>
+        <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+        <Property name="caption">刷新</Property>
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgBtreport">
@@ -196,7 +228,7 @@ if (cur) {&#xD;
       <Property name="filterMode">clientSide</Property>
       <Property name="showFilterBar">false</Property>
       <Property name="rowHeight">22</Property>
-      <Property name="fixedColumnCount">8</Property>
+      <Property name="fixedColumnCount">9</Property>
       <RowNumColumn/>
       <DataColumn>
         <Property name="property">writingPerson</Property>
@@ -226,7 +258,14 @@ if (cur) {&#xD;
       </DataColumn>
       <DataColumn name="jobcontent">
         <Property name="property">jobcontent</Property>
+        <Property name="width">200</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">status</Property>
+        <Property name="name">Status</Property>
+        <Property name="align">left</Property>
         <Property name="width">120</Property>
+        <Editor/>
       </DataColumn>
       <DataColumn name="technicalquestion">
         <Property name="property">technicalquestion</Property>
@@ -722,6 +761,168 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
             <Editor/>
           </AutoFormElement>
         </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaSeeBtreport">
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">800</Property>
+      <Property name="caption">出差报告管理</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('diaSeeBtreport').hide();
+ 
+         </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">view.id('diaSeeBtreport').hide();       </ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afSeeBtreport">
+          <Property name="cols">*,*</Property>
+          <Property name="dataSet">dsBtreport</Property>
+          <Property name="dataPath">#</Property>
+          <Property name="labelWidth">100</Property>
+          <Property name="readOnly">true</Property>
+          <AutoFormElement>
+            <Property name="name">BtPerson</Property>
+            <Property name="property">btperson</Property>
+            <Property name="trigger">customDropDown1,triggerClear</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">BtPlace</Property>
+            <Property name="property">btplace</Property>
+            <Property name="trigger">dataSetDropDown1</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">BtTime</Property>
+            <Property name="property">bttime</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">KeyWord</Property>
+            <Property name="property">keyword</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">BtTask</Property>
+            <Property name="property">bttask</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">80</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">JobContent</Property>
+            <Property name="property">jobcontent</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">80</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">RemainedProblem</Property>
+            <Property name="property">remainedproblem</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">80</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">TechnicalQuestion</Property>
+            <Property name="property">technicalquestion</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">80</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">GainAndAdvice</Property>
+            <Property name="property">gainandadvice</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">80</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">Conclusion</Property>
+            <Property name="property">conclusion</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">80</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">writingPerson</Property>
+            <Property name="name">WritingPerson</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">sectionChief</Property>
+            <Property name="name">SectionChief</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">sectionChiefDate</Property>
+            <Property name="name">SectionChiefDate</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">departmentHead</Property>
+            <Property name="name">DepartmentHead</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">departmentHeadDate</Property>
+            <Property name="name">DepartmentHeadDate</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+        <GroupBox>
+          <Property name="caption">附件文档</Property>
+          <Property name="collapseable">false</Property>
+          <Property name="height">250</Property>
+          <Buttons/>
+          <Children>
+            <ToolBar>
+              <DataPilot>
+                <Property name="itemCodes">pages</Property>
+                <Property name="dataSet">dsBtreport</Property>
+                <Property name="dataPath">#.appendixdocument</Property>
+              </DataPilot>
+            </ToolBar>
+            <DataGrid id="dgSeeAppendixdocument">
+              <Property name="readOnly">true</Property>
+              <Property name="dataSet">dsBtreport</Property>
+              <Property name="dataPath">#.appendixdocument</Property>
+              <Property name="filterMode">serverSide</Property>
+              <Property name="showFilterBar">true</Property>
+              <Property name="rowHeight">22</Property>
+              <Property name="selectionMode">multiRows</Property>
+              <RowNumColumn/>
+              <RowSelectorColumn/>
+              <DataColumn name="efile">
+                <ClientEvent name="onRenderCell">&#xD;
+//点击表行可查看链接&#xD;
+&#xD;
+jQuery(arg.dom).empty();&#xD;
+var file = arg.data.get(&quot;efile&quot;); &#xD;
+var oid = view.id('dsBtreport').getData('#').get(&quot;oid&quot;);&#xD;
+var href = &quot;/escmp/upload/Comm_Btreport/&quot; + oid + &quot;/&quot; + file;&#xD;
+jQuery(arg.dom).xCreate({&#xD;
+	tagName:&quot;A&quot;,&#xD;
+	href:href,&#xD;
+	content:arg.data.get(&quot;efile&quot;)&#xD;
+});&#xD;
+&#xD;
+</ClientEvent>
+                <Property name="property">efile</Property>
+                <Property name="width">300</Property>
+              </DataColumn>
+            </DataGrid>
+          </Children>
+        </GroupBox>
       </Children>
       <Tools/>
     </Dialog>

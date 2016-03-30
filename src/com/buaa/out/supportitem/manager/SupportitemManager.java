@@ -1,7 +1,5 @@
 package com.buaa.out.supportitem.manager;
 
-
-
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
@@ -15,12 +13,8 @@ import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 import com.buaa.out.domain.Supportitem;
-import com.buaa.out.domain.Supportprogram;
 import com.buaa.out.supportitem.dao.SupportitemDao;
 import com.buaa.sys.userOperationLog.manager.UserOperationLogManager;
-
-
-
 
 @Component("supportitemManager")
 public class SupportitemManager {

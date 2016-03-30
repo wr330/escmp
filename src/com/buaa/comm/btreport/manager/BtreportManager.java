@@ -16,6 +16,7 @@ import com.bstek.dorado.data.provider.Page;
 
 import com.buaa.comm.domain.Btreport;
 import com.buaa.comm.btreport.dao.BtreportDao;
+import com.buaa.comm.btReportSharePerson.manager.BtReportSharePersonManager;
 import com.buaa.comm.appendixdocument.manager.AppendixdocumentManager;
 import com.buaa.sys.userOperationLog.manager.UserOperationLogManager;
 
@@ -24,10 +25,12 @@ public class BtreportManager {
 	
 	@Resource
 	private BtreportDao btreportDao;
-		@Resource
+	@Resource
+	private BtReportSharePersonManager btReportSharePersonManager;
+	@Resource
 	private AppendixdocumentManager appendixdocumentManager;
-		@Resource	
-		private UserOperationLogManager userOperationLogManager;
+	@Resource	
+	private UserOperationLogManager userOperationLogManager;
 	/**                  
 	* 分页查询信息，带有criteria
 	* 将criteria转换为一个Map
@@ -66,22 +69,23 @@ public class BtreportManager {
 				Date myDate = new Date();
 				if (state.equals(EntityState.NEW)) {
 					btreportDao.saveData(item);
-						appendixdocumentManager.saveAppendixdocument(item.getAppendixdocument());
-						//对用户新增操作进行记录，在用户操作日志表中新增一条记录。
-						userOperationLogManager.recordUserOperationLog(0, myDate, un, "对出差报告表新增一条记录");
+					appendixdocumentManager.saveAppendixdocument(item.getAppendixdocument());
+					//对用户新增操作进行记录，在用户操作日志表中新增一条记录。
+					userOperationLogManager.recordUserOperationLog(0, myDate, un, "对出差报告表新增一条记录");
 				} else if (state.equals(EntityState.MODIFIED)) {
 					btreportDao.updateData(item);
-						appendixdocumentManager.saveAppendixdocument(item.getAppendixdocument());
-						//对用户修改操作进行记录，在用户操作日志表中新增一条记录。
-						userOperationLogManager.recordUserOperationLog(1, myDate, un, "对出差报告表修改一条记录");
+					appendixdocumentManager.saveAppendixdocument(item.getAppendixdocument());
+					//对用户修改操作进行记录，在用户操作日志表中新增一条记录。
+					userOperationLogManager.recordUserOperationLog(1, myDate, un, "对出差报告表修改一条记录");
 				} else if (state.equals(EntityState.DELETED)) {
-						appendixdocumentManager.deleteItems(item.getOid());
+					appendixdocumentManager.deleteItems(item.getOid());
 					btreportDao.deleteData(item);
 					//对用户删除操作进行记录，在用户操作日志表中新增一条记录。
 					userOperationLogManager.recordUserOperationLog(2, myDate, un, "对出差报告表删除一条记录");
 				} else if (state.equals(EntityState.NONE)) {
-											appendixdocumentManager.saveAppendixdocument(item.getAppendixdocument());
+					appendixdocumentManager.saveAppendixdocument(item.getAppendixdocument());
 				}
+				btReportSharePersonManager.saveBtReportSharePerson(item.getBtReportSharePerson());
 			}
 		}
 	 }
