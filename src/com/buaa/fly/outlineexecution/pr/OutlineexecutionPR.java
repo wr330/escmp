@@ -171,10 +171,10 @@ public class OutlineexecutionPR {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		//String parentnode = (String) parameter.get("parentnode");
 		Collection<Subject> dataItems;
-		List<Integer> num = new ArrayList<Integer>();
+		//List<Integer> num = new ArrayList<Integer>();
 //		if (parentnode != null) {
 			dataItems = subjectManager.querySubject(parameter);
-			num = sfstatisticDao.querySubjectJiaci(parameter);
+			//num = sfstatisticDao.querySubjectJiaci(parameter);
 //		} else {
 //			Collection<Subject> dataItems0 = subjectManager
 //					.querySubject(parameter);
@@ -186,7 +186,7 @@ public class OutlineexecutionPR {
 //			dataItems = subjectManager.querySubject(map0);
 //			num = sfstatisticDao.querySubjectJiaci(map0);
 //		}
-		int i = 0;
+		//int i = 0;
 		for (Subject item : dataItems) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			Float statistic = (float) 0;
@@ -198,14 +198,14 @@ public class OutlineexecutionPR {
 							/ (float) (item.getOutlineexecution().get(0)
 									.getOutlineFlights());
 				} else {
-					statistic = (float) (num.get(i))
+					statistic = (float) (sfstatisticDao.querynum(item.getOid()))
 							/ (float) (item.getOutlineexecution().get(0)
 									.getOutlineFlights());
 				}
 			map.put("price", statistic * 100);
 			map.put("name", item.getName());
 			list.add(map);
-			i++;
+			//i++;
 		}
 		return list;
 	}

@@ -252,6 +252,11 @@ if(cur){
         <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
       </ToolBarButton>
       <ToolBarButton>
+        <ClientEvent name="onClick">view.id('dgShifeirequestacc').set(&quot;showFilterBar&quot;,!view.id('dgShifeirequestacc').get(&quot;showFilterBar&quot;));</ClientEvent>
+        <Property name="caption">自定义查询</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
         <ClientEvent name="onClick">var dsShifeirequestacc = view.id(&quot;dsShifeirequestacc&quot;);&#xD;
 dsShifeirequestacc.flushAsync();</ClientEvent>
         <Property name="caption">刷新</Property>

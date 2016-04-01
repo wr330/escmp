@@ -248,6 +248,11 @@ if(cur){&#xD;
                   <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
                 </ToolBarButton>
                 <ToolBarButton>
+                  <ClientEvent name="onClick">view.id('dgFtype').set(&quot;showFilterBar&quot;,!view.id('dgFtype').get(&quot;showFilterBar&quot;));</ClientEvent>
+                  <Property name="caption">自定义查询</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
                   <ClientEvent name="onClick">view.id(&quot;dsExamples&quot;).getData(&quot;!CURRENT_ROOT&quot;).reset(&quot;categories&quot;);</ClientEvent>
                   <Property name="caption">刷新</Property>
                   <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
@@ -340,6 +345,11 @@ if(cur){&#xD;
 }</ClientEvent>
                   <Property name="caption">删除</Property>
                   <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">view.id('dgFpici').set(&quot;showFilterBar&quot;,!view.id('dgFpici').get(&quot;showFilterBar&quot;));</ClientEvent>
+                  <Property name="caption">自定义查询</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
                 </ToolBarButton>
                 <ToolBarButton>
                   <ClientEvent name="onClick">view.id(&quot;dsExamples&quot;).getData(&quot;!CURRENT_TYPE&quot;).reset(&quot;fpici&quot;);</ClientEvent>
@@ -436,6 +446,11 @@ if(cur){&#xD;
 }</ClientEvent>
                   <Property name="caption">删除</Property>
                   <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">view.id('dgFighterinfo').set(&quot;showFilterBar&quot;,!view.id('dgFighterinfo').get(&quot;showFilterBar&quot;));</ClientEvent>
+                  <Property name="caption">自定义查询</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
                 </ToolBarButton>
                 <ToolBarButton>
                   <ClientEvent name="onClick">view.id(&quot;dsExamples&quot;).getData(&quot;!CURRENT_PICI&quot;).reset(&quot;fighterinfo&quot;);&#xD;

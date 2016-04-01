@@ -32,6 +32,8 @@ public class OutlineexecutionManager {
 	private CombineVehicleManager combineVehicleManager;
 	@Resource
 	private CombineVehicleDao combineVehicleDao;
+	@Resource
+	private ExportOutline exportOutline;
 
 	/**
 	 * 大纲查询方法
@@ -125,10 +127,10 @@ public class OutlineexecutionManager {
 	@Expose
 	public String downloadFile(String id, String fname) throws Exception {
 
-		List<Outlineexecution> outlineexecution = outlineexecutionDao
+		Collection<Outlineexecution> outlineexecution = outlineexecutionDao
 				.queryOutlineforText(id,fname);
 		if (null != outlineexecution && outlineexecution.size() > 0) {
-			ExportOutline.generateOutlineexecution(outlineexecution);
+			exportOutline.generateOutlineexecution(outlineexecution);
 		}
 		else
 			throw new Exception("当前节点下没有试飞大纲！");

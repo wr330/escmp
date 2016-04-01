@@ -89,14 +89,11 @@ public class SfstatisticDao extends HibernateBaseDao {
 			Map<String, Object> parameter) throws Exception {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		Collection<Subject> dataItems = subjectManager.querySubject(parameter);
-		List<Integer> num = querySubjectJiaci(parameter);
-		int i = 0;
 		for (Subject item : dataItems) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
-			map.put("count", num.get(i));
+			map.put("count", this.querynum(item.getOid()));
 			map.put("name", item.getName());
 			list.add(map);
-			i++;
 		}
 		return list;
 	}
@@ -223,7 +220,63 @@ public class SfstatisticDao extends HibernateBaseDao {
 		}
 		return jiaci;
 	}
+	
 
+	/**
+	 * 根据科目oid查询架次数
+	 * 
+	 * @param oid
+	 * @throws Exception
+	 */
+	public int querynum(String oid){
+		Collection<Sfstatistic> details = this.querySfstatisticById(oid);
+		int jiaci = 0;
+		if (null != details && details.size() > 0) {
+			for (Sfstatistic item : details) {
+				jiaci ++;
+			}
+		}
+		return jiaci;
+		
+	}
+	/**
+	 * 根据科目oid查询飞行统计
+	 * 
+	 * @param oid
+	 * @throws Exception
+	 */
+	public Collection<Sfstatistic> querySfstatisticById(String oid){
+		Map<String, Object> args = new HashMap<String, Object>();
+		String sql = "with cte as(select a.oid, a.name from Fly_Subject a where Oid='"
+				+ oid + "' union all select k.oid, k.name from Fly_Subject k inner join cte c on c.oid = k.Parentnode) select name from cte";
+		Session session = this.getSessionFactory().openSession();
+		try {
+			Query query = session.createSQLQuery(sql).addScalar("name",
+					Hibernate.STRING);// 设置返回值类型，不然会报错
+			List<String> result = query.list();
+			if (result.isEmpty()) {
+			} else {
+				String sql1 = "select oid from (select oid,','+subject+',' as newsubject from Fly_Tasklist) a where 1=0 ";
+				for(int i=0; i<result.size(); i++){
+					sql1 += "or a.newsubject like " + "'%," +result.get(i) + ",%'";
+				}
+				//String sql1 = "select oid from (select oid,','+subject+',' as newsubject from Fly_Tasklist) a where a.newsubject like '%[," + name +",]%'";
+				Query query1 = session.createSQLQuery(sql1).addScalar("oid",
+						Hibernate.STRING);
+				List<String> result1 = query1.list();
+				if (result1.isEmpty()) {	
+				}else{
+					String hql = "from "+ Sfstatistic.class.getName() + " a where a.taskNo.oid in (:result1)";
+					args.put("result1", result1);
+					return this.query(hql,args);
+				}
+			}
+		} finally {
+			session.flush();
+			session.close();
+		}
+		return null;
+	}
 	/**
 	 * 数据添加
 	 * 

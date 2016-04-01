@@ -138,7 +138,8 @@ link.set(&quot;visible&quot;,false);</ClientEvent>
 var nodes=view.get(&quot;#dTFtypes&quot;).getCheckedNodes();&#xD;
 nodes.each(function(node){&#xD;
 	node.set(&quot;checked&quot;,false);&#xD;
-}); </ClientEvent>
+});&#xD;
+</ClientEvent>
       <Property name="dataResolver">flightrestrictPR#saveFlightrestrict</Property>
       <UpdateItem>
         <Property name="dataSet">dsFlightrestrict</Property>
@@ -222,7 +223,7 @@ if(tmpList.length != 0){
 	});
 }
 view.id('uaFlightrestrict').execute(function(){
-    view.id('diaFlightrestrict').hide();
+	view.id('diaFlightrestrict').hide();
 });</ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
@@ -245,7 +246,7 @@ nodes.each(function(node){
         <TabControl id="tab">
           <Property name="currentTab">0</Property>
           <ControlTab>
-            <Property name="caption">基本信息</Property>
+            <Property name="caption">基础信息</Property>
             <AutoForm id="afFlightrestrict">
               <Property name="cols">*</Property>
               <Property name="dataSet">dsFlightrestrict</Property>
@@ -315,8 +316,8 @@ nodes.each(function(node){
             </AutoForm>
           </ControlTab>
           <ControlTab>
-            <Property name="caption">飞机关联信息</Property>
-            <DataTree id="dTFtypes" layoutConstraint="right">
+            <Property name="caption">飞机信息</Property>
+            <DataTree id="dTFtypes" layoutConstraint="left">
               <ClientEvent name="onReady">var Root = view.get(&quot;@Root&quot;);&#xD;
 var ProductTree = view.get(&quot;@Ftypes&quot;);&#xD;
 var Equipment = view.get(&quot;@Fpici&quot;);&#xD;
@@ -412,6 +413,151 @@ select(this.get(&quot;#dTFtypes.nodes&quot;));</ClientEvent>
       </Children>
       <Tools/>
     </Dialog>
+    <Dialog id="diaShowFlightrestrict">
+      <ClientEvent name="onClose">var nodes=view.get(&quot;#dTFtypes2&quot;).getCheckedNodes();&#xD;
+nodes.each(function(node){&#xD;
+	node.set(&quot;checked&quot;,false);&#xD;
+});&#xD;
+view.id('diaShowFlightrestrict').hide();</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">500</Property>
+      <Property name="caption">使用限制</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">var nodes=view.get(&quot;#dTFtypes2&quot;).getCheckedNodes();
+nodes.each(function(node){
+	node.set(&quot;checked&quot;,false);
+});
+view.id('diaShowFlightrestrict').hide();</ClientEvent>
+          <Property name="caption">关闭</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <TabControl id="tab1">
+          <Property name="currentTab">0</Property>
+          <ControlTab>
+            <Property name="caption">基础信息</Property>
+            <AutoForm>
+              <Property name="cols">*</Property>
+              <Property name="dataSet">dsFlightrestrict</Property>
+              <Property name="dataPath">#</Property>
+              <Property name="readOnly">true</Property>
+              <AutoFormElement>
+                <Property name="name">fname</Property>
+                <Property name="property">fname</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">fno</Property>
+                <Property name="property">fno</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">maincontent</Property>
+                <Property name="property">maincontent</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">major</Property>
+                <Property name="property">major</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">begindate</Property>
+                <Property name="property">begindate</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">affect</Property>
+                <Property name="property">affect</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">modifydate</Property>
+                <Property name="property">modifydate</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">isnew</Property>
+                <Property name="property">isnew</Property>
+                <Property name="trigger">ddTrueorFalse</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">isaffect</Property>
+                <Property name="property">isaffect</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">miji</Property>
+                <Property name="property">miji</Property>
+                <Editor/>
+              </AutoFormElement>
+            </AutoForm>
+          </ControlTab>
+          <ControlTab>
+            <Property name="caption">飞机信息</Property>
+            <DataTree id="dTFtypes2" layoutConstraint="left">
+              <ClientEvent name="onGetBindingData">var fighterxzh = view.id('dsFlightrestrict').getData('#.fighterxzh');&#xD;
+function select(nodes) {&#xD;
+    nodes.each(function(node) {&#xD;
+        select(node.get(&quot;nodes&quot;));&#xD;
+        if(node.get(&quot;bindingConfig.name&quot;) == &quot;flight&quot;){&#xD;
+			fighterxzh.each(function(entity){&#xD;
+				if(entity.get(&quot;referenceName&quot;) == node.get(&quot;data.outfactoryno&quot;))&#xD;
+					node.set(&quot;checked&quot;, true);&#xD;
+			});&#xD;
+		}&#xD;
+		if(node.get(&quot;bindingConfig.name&quot;) == &quot;pname&quot;){&#xD;
+			fighterxzh.each(function(entity){&#xD;
+				if(entity.get(&quot;referenceName&quot;) == node.get(&quot;data.piciID&quot;))&#xD;
+					node.set(&quot;checked&quot;,true);&#xD;
+			});&#xD;
+		}&#xD;
+		if(node.get(&quot;bindingConfig.name&quot;) == &quot;name&quot;){&#xD;
+			fighterxzh.each(function(entity){&#xD;
+				if(entity.get(&quot;referenceName&quot;) == node.get(&quot;data.ftypename&quot;))&#xD;
+					node.set(&quot;checked&quot;,true);&#xD;
+			});&#xD;
+		}&#xD;
+    });&#xD;
+}&#xD;
+select(this.get(&quot;#dTFtypes2.nodes&quot;));</ClientEvent>
+              <Property name="dataSet">dsExamples</Property>
+              <Property name="currentNodeDataPath">CURRENT_NODE</Property>
+              <Property name="expandingMode">async</Property>
+              <Property name="selectionMode">multiRows</Property>
+              <BindingConfigs>
+                <BindingConfig>
+                  <Property name="labelProperty">label</Property>
+                  <Property name="expandLevel">1</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -220px -80px</Property>
+                  <Property name="name">label</Property>
+                  <Property name="checkable">true</Property>
+                  <BindingConfig>
+                    <Property name="labelProperty">ftypename</Property>
+                    <Property name="name">name</Property>
+                    <Property name="childrenProperty">categories</Property>
+                    <Property name="expandLevel">1</Property>
+                    <Property name="icon"> url(>skin>common/icons.gif) -220px -80px</Property>
+                    <Property name="checkable">true</Property>
+                    <BindingConfig>
+                      <Property name="childrenProperty">fpici</Property>
+                      <Property name="icon"> url(>skin>common/icons.gif) -240px -160px</Property>
+                      <Property name="labelProperty">piciName</Property>
+                      <Property name="name">pname</Property>
+                      <Property name="expandLevel">1</Property>
+                      <Property name="checkable">true</Property>
+                      <BindingConfig>
+                        <Property name="childrenProperty">fighterinfo</Property>
+                        <Property name="labelProperty">outfactoryno</Property>
+                        <Property name="name">flight</Property>
+                        <Property name="icon"> url(>skin>common/icons.gif) -20px -100px</Property>
+                        <Property name="checkable">true</Property>
+                      </BindingConfig>
+                    </BindingConfig>
+                  </BindingConfig>
+                </BindingConfig>
+              </BindingConfigs>
+            </DataTree>
+          </ControlTab>
+        </TabControl>
+      </Children>
+      <Tools/>
+    </Dialog>
     <ToolBar>
       <FormElement id="info">
         <Property name="property">name</Property>
@@ -430,7 +576,6 @@ select(this.get(&quot;#dTFtypes.nodes&quot;));</ClientEvent>
 nodes.each(function(node){
 	node.set(&quot;checked&quot;,false);
 });
-view.id(&quot;tab&quot;).set(&quot;currentTab&quot;, 0);
 var guid = &quot;&quot;;
 for(var i=1;i&lt;=32;i++){
 	var n = Math.floor(Math.random()*16.0).toString(16);
@@ -440,6 +585,7 @@ for(var i=1;i&lt;=32;i++){
 }
 dialog = view.id('diaFlightrestrict');
 dialog.set(&quot;caption&quot;,&quot;新增使用限制&quot;);
+view.id(&quot;tab&quot;).set(&quot;currentTab&quot;,0);
 view.id('dsFlightrestrict').getData().insert({
 	id: guid
 });
@@ -451,11 +597,11 @@ view.id('diaFlightrestrict').show();
         <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
       </ToolBarButton>
       <ToolBarButton>
-        <ClientEvent name="onClick">dialog = view.id('diaFlightrestrict');
+        <ClientEvent name="onClick">var dialog = view.id('diaFlightrestrict');
 dialog.set(&quot;caption&quot;,&quot;修改使用限制&quot;);
+view.id(&quot;tab&quot;).set(&quot;currentTab&quot;,0);
 var cur = view.id('dsFlightrestrict').getData('#');
 if (cur) {
-	view.id(&quot;tab&quot;).set(&quot;currentTab&quot;, 0);
 	view.id('diaFlightrestrict').show();
 	var file = cur.get(&quot;filename&quot;);
     var link = view.id(&quot;lefile&quot;);
@@ -486,6 +632,22 @@ if(cur){
 	</ClientEvent>
         <Property name="caption">删除</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var dialog = view.id('diaShowFlightrestrict');
+var cur = view.id('dsFlightrestrict').getData('#');
+if (cur) {
+	view.id(&quot;tab1&quot;).set(&quot;currentTab&quot;,0);
+	dialog.show();
+}
+view.id(&quot;dsFlightrestrict&quot;).getData(&quot;#&quot;).reset(&quot;fighterxzh&quot;);</ClientEvent>
+        <Property name="caption">浏览</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -40px -100px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">view.id('dgFlightrestrict').set(&quot;showFilterBar&quot;,!view.id('dgFlightrestrict').get(&quot;showFilterBar&quot;));</ClientEvent>
+        <Property name="caption">自定义查询</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var dsFlightrestrict = view.id(&quot;dsFlightrestrict&quot;);&#xD;

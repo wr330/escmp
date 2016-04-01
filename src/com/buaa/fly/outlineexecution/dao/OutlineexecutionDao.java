@@ -160,7 +160,7 @@ public class OutlineexecutionDao extends HibernateBaseDao {
 	 * @throws Exception
 	 */
 	@SuppressWarnings({ "deprecation", "unchecked" })
-	public List<Outlineexecution> queryOutlineforText(String subjectOid,String ftype)
+	public Collection<Outlineexecution> queryOutlineforText(String subjectOid,String ftype)
 			throws Exception {
 		Map<String, Object> args = new HashMap<String, Object>();
 		StringBuffer coreHql = new StringBuffer("from "	+ Outlineexecution.class.getName() + " a where 1=1 ");
@@ -182,10 +182,10 @@ public class OutlineexecutionDao extends HibernateBaseDao {
 				session.close();
 			}
 		}
-		String hql = coreHql.toString();
+		String hql = coreHql.toString() + " order by dbo.F_getSubjectNo(a.project.oid)";//按科目序号排序
 		return this.query(hql, args);
 	}
-
+	
 	/**
 	 * 数据添加
 	 * 

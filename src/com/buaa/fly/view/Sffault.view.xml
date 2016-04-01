@@ -289,7 +289,15 @@ if(cur){&#xD;
 	cur.cancel();&#xD;
 	view.id('diaSffault').hide();&#xD;
 }</ClientEvent>
-      <ClientEvent name="beforeShow">view.id(&quot;dsDictionaryGzfs&quot;).flushAsync(function(entitylist){&#xD;
+      <ClientEvent name="beforeShow">var cur = view.id('dsSffault').getData(&quot;#&quot;).get(&quot;foundopp&quot;);&#xD;
+if(cur != null &amp;&amp; cur.indexOf(&quot;飞行中&quot;) != -1){&#xD;
+	view.set({&#xD;
+					&quot;^Dirty.disabled&quot; : false});&#xD;
+}else{&#xD;
+	view.set({&#xD;
+					&quot;^Dirty.disabled&quot; : true});&#xD;
+}&#xD;
+view.id(&quot;dsDictionaryGzfs&quot;).flushAsync(function(entitylist){&#xD;
 	var gzfs = view.id(&quot;dsSffault&quot;).getData(&quot;#&quot;).get(&quot;gzfs&quot;);&#xD;
 	view.id(&quot;containerGzfs&quot;).removeAllChildren();//先清空组件&#xD;
 	entitylist.each(function(entity){//遍历数据字典&#xD;
@@ -361,21 +369,33 @@ view.id(&quot;dsDictionaryFoundOpp&quot;).flushAsync(function(entitylist){&#xD;
 		onValueChange:function(){&#xD;
 			var value = checkbox.get(&quot;value&quot;);&#xD;
 			if(value){&#xD;
+				var Sfstatistic = this.get('#dsSfstatistic').getData(&quot;#&quot;);&#xD;
+				if(Sfstatistic){&#xD;
 				view.id(&quot;diaSfstatistic&quot;).show();&#xD;
+				view.set({&#xD;
+					&quot;^Dirty.disabled&quot; : false});&#xD;
+				}else{&#xD;
+					dorado.MessageBox.alert(&quot;没有相应的飞行统计信息！&quot;);&#xD;
+					checkbox.set(&quot;checked&quot;,false);&#xD;
+				}&#xD;
 			}else{&#xD;
 				var dsSffault = view.id(&quot;dsSffault&quot;);&#xD;
 				dsSffault.getData(&quot;#&quot;).set(&quot;fdata&quot;,null);&#xD;
+				view.set({&#xD;
+					&quot;^Dirty.disabled&quot; : true});&#xD;
 			}&#xD;
 		}&#xD;
 	});&#xD;
 	view.id(&quot;containerFoundopp&quot;).addChild(checkbox);&#xD;
 	entitylist.each(function(entity){//遍历数据字典&#xD;
 		var name = entity.get(&quot;name&quot;);&#xD;
+		if(name != &quot;飞行中&quot;){&#xD;
 		var box = new dorado.widget.CheckBox();&#xD;
 		box.set(&quot;caption&quot;,name);//设置显示标题&#xD;
 		if(foundopp!=null&amp;&amp;foundopp.indexOf(name)!=-1)//包含的选项自动打钩&#xD;
             box.set(&quot;checked&quot;,true);&#xD;
         view.id(&quot;containerFoundopp&quot;).addChild(box);//添加显示组件&#xD;
+        }&#xD;
 	});&#xD;
 });&#xD;
 view.id(&quot;dsDictionaryDeal&quot;).flushAsync(function(entitylist){&#xD;
@@ -612,108 +632,144 @@ if(cur){
           </ControlTab>
           <ControlTab>
             <Property name="caption">简要信息</Property>
-            <AutoForm id="afSffault2">
-              <Property name="dataSet">dsSffault</Property>
-              <Property name="dataPath">#</Property>
-              <AutoFormElement layoutConstraint="colSpan:2">
-                <Property name="name">foundopp</Property>
-                <Property name="property">foundopp</Property>
-                <Property name="labelPosition">top</Property>
-                <Editor>
-                  <FieldSet>
-                    <Property name="collapseable">false</Property>
-                    <Buttons/>
-                    <Children>
-                      <Container id="containerFoundopp" layout="hbox regionPadding:20"/>
-                    </Children>
-                  </FieldSet>
-                </Editor>
-              </AutoFormElement>
-              <AutoFormElement layoutConstraint="colSpan:2">
-                <Property name="name">faulteffect</Property>
-                <Property name="property">faulteffect</Property>
-                <Property name="labelPosition">top</Property>
-                <Editor>
-                  <FieldSet>
-                    <Property name="collapseable">false</Property>
-                    <Buttons/>
-                    <Children>
-                      <Container id="containerResult" layout="hbox regionPadding:20"/>
-                    </Children>
-                  </FieldSet>
-                </Editor>
-              </AutoFormElement>
-              <AutoFormElement layoutConstraint="colSpan:2">
-                <Property name="name">laiyuan</Property>
-                <Property name="property">laiyuan</Property>
-                <Property name="labelPosition">top</Property>
-                <Editor>
-                  <FieldSet>
-                    <Property name="collapseable">false</Property>
-                    <Buttons/>
-                    <Children>
-                      <Container id="containerLaiyuan" layout="hbox regionPadding:20"/>
-                    </Children>
-                  </FieldSet>
-                </Editor>
-              </AutoFormElement>
-              <AutoFormElement layoutConstraint="colSpan:2">
-                <Property name="name">judge</Property>
-                <Property name="property">judge</Property>
-                <Property name="labelPosition">top</Property>
-                <Editor>
-                  <FieldSet>
-                    <Property name="collapseable">false</Property>
-                    <Buttons/>
-                    <Children>
-                      <Container id="containerJudge" layout="hbox regionPadding:20"/>
-                    </Children>
-                  </FieldSet>
-                </Editor>
-              </AutoFormElement>
-              <AutoFormElement layoutConstraint="colSpan:2">
-                <Property name="name">type</Property>
-                <Property name="property">type</Property>
-                <Property name="labelPosition">top</Property>
-                <Editor>
-                  <FieldSet>
-                    <Property name="collapseable">false</Property>
-                    <Buttons/>
-                    <Children>
-                      <Container id="containerType" layout="hbox regionPadding:20"/>
-                    </Children>
-                  </FieldSet>
-                </Editor>
-              </AutoFormElement>
-              <AutoFormElement layoutConstraint="colSpan:2">
-                <Property name="name">deal</Property>
-                <Property name="property">deal</Property>
-                <Property name="labelPosition">top</Property>
-                <Editor>
-                  <FieldSet>
-                    <Property name="collapseable">false</Property>
-                    <Buttons/>
-                    <Children>
-                      <Container id="containerDeal" layout="hbox regionPadding:20"/>
-                    </Children>
-                  </FieldSet>
-                </Editor>
-              </AutoFormElement>
-              <AutoFormElement layoutConstraint="colSpan:2">
-                <Property name="name">gzfs</Property>
-                <Property name="property">gzfs</Property>
-                <Property name="labelPosition">top</Property>
-                <Editor>
-                  <FieldSet>
-                    <Property name="collapseable">false</Property>
-                    <Buttons/>
-                    <Children>
-                      <Container id="containerGzfs" layout="hbox regionPadding:20"/>
-                    </Children>
-                  </FieldSet>
-                </Editor>
-              </AutoFormElement>
-            </AutoForm>
+            <Container layout="anchor">
+              <Property name="width">1000</Property>
+              <AutoForm id="afSffault2">
+                <Property name="dataSet">dsSffault</Property>
+                <Property name="dataPath">#</Property>
+                <AutoFormElement layoutConstraint="colSpan:2">
+                  <Property name="name">foundopp</Property>
+                  <Property name="property">foundopp</Property>
+                  <Property name="labelPosition">top</Property>
+                  <Property name="showLabel">false</Property>
+                  <Editor>
+                    <FieldSet>
+                      <Property name="collapseable">false</Property>
+                      <Property name="height">50</Property>
+                      <Property name="caption">发现时机</Property>
+                      <Buttons/>
+                      <Children>
+                        <Container id="containerFoundopp" layout="hbox regionPadding:20"/>
+                      </Children>
+                    </FieldSet>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement layoutConstraint="colSpan:2">
+                  <Property name="name">faulteffect</Property>
+                  <Property name="property">faulteffect</Property>
+                  <Property name="labelPosition">top</Property>
+                  <Property name="showLabel">false</Property>
+                  <Editor>
+                    <FieldSet>
+                      <Property name="collapseable">false</Property>
+                      <Property name="caption">故障后果</Property>
+                      <Property name="height">50</Property>
+                      <Buttons/>
+                      <Children>
+                        <Container id="containerResult" layout="hbox regionPadding:20"/>
+                      </Children>
+                    </FieldSet>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement layoutConstraint="colSpan:2">
+                  <Property name="name">laiyuan</Property>
+                  <Property name="property">laiyuan</Property>
+                  <Property name="labelPosition">top</Property>
+                  <Property name="showLabel">false</Property>
+                  <Editor>
+                    <FieldSet>
+                      <Property name="collapseable">false</Property>
+                      <Property name="caption">信息来源</Property>
+                      <Property name="height">50</Property>
+                      <Buttons/>
+                      <Children>
+                        <Container id="containerLaiyuan" layout="hbox regionPadding:20"/>
+                      </Children>
+                    </FieldSet>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement layoutConstraint="colSpan:2">
+                  <Property name="name">judge</Property>
+                  <Property name="property">judge</Property>
+                  <Property name="labelPosition">top</Property>
+                  <Property name="showLabel">false</Property>
+                  <Editor>
+                    <FieldSet>
+                      <Property name="collapseable">false</Property>
+                      <Property name="height">50</Property>
+                      <Property name="caption">判明方式</Property>
+                      <Buttons/>
+                      <Children>
+                        <Container id="containerJudge" layout="hbox regionPadding:20"/>
+                      </Children>
+                    </FieldSet>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement layoutConstraint="colSpan:2">
+                  <Property name="name">type</Property>
+                  <Property name="property">type</Property>
+                  <Property name="labelPosition">top</Property>
+                  <Property name="showLabel">false</Property>
+                  <Editor>
+                    <FieldSet>
+                      <Property name="collapseable">false</Property>
+                      <Property name="height">50</Property>
+                      <Property name="caption">问题责任</Property>
+                      <Buttons/>
+                      <Children>
+                        <Container id="containerType" layout="hbox regionPadding:20"/>
+                      </Children>
+                    </FieldSet>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement layoutConstraint="colSpan:2">
+                  <Property name="name">deal</Property>
+                  <Property name="property">deal</Property>
+                  <Property name="labelPosition">top</Property>
+                  <Property name="showLabel">false</Property>
+                  <Editor>
+                    <FieldSet>
+                      <Property name="collapseable">false</Property>
+                      <Property name="height">50</Property>
+                      <Property name="caption">现场处理方式</Property>
+                      <Buttons/>
+                      <Children>
+                        <Container id="containerDeal" layout="hbox regionPadding:20"/>
+                      </Children>
+                    </FieldSet>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement layoutConstraint="colSpan:2">
+                  <Property name="name">gzfs</Property>
+                  <Property name="property">gzfs</Property>
+                  <Property name="labelPosition">top</Property>
+                  <Property name="showLabel">false</Property>
+                  <Editor>
+                    <FieldSet>
+                      <Property name="collapseable">false</Property>
+                      <Property name="height">50</Property>
+                      <Property name="caption">跟踪方式</Property>
+                      <Buttons/>
+                      <Children>
+                        <Container id="containerGzfs" layout="hbox regionPadding:20"/>
+                      </Children>
+                    </FieldSet>
+                  </Editor>
+                </AutoFormElement>
+              </AutoForm>
+              <Button layoutConstraint="anchorRight:container;top:35;right:40">
+                <ClientEvent name="onClick">var cur = this.get(&quot;#dsSffault.data:#&quot;);&#xD;
+var Sfstatistic = this.get('#dsSfstatistic');&#xD;
+Sfstatistic.set(&quot;parameter&quot;,{&#xD;
+	id: cur.get(&quot;fdata&quot;),&#xD;
+	ftype: cur.get(&quot;ftype&quot;)}&#xD;
+);&#xD;
+Sfstatistic.flushAsync();&#xD;
+view.id('diaShowSfstatistic').show();</ClientEvent>
+                <Property name="caption">飞行信息</Property>
+                <Property name="tags">Dirty</Property>
+              </Button>
+            </Container>
           </ControlTab>
           <ControlTab>
             <Property name="caption">详细信息</Property>
@@ -781,94 +837,6 @@ if(cur){
               </AutoFormElement>
             </AutoForm>
           </ControlTab>
-          <ControlTab>
-            <ClientEvent name="onClick">var cur = view.id('dsSffault').getData(&quot;#&quot;).get(&quot;foundopp&quot;);&#xD;
-if(cur != null &amp;&amp; cur.indexOf(&quot;飞行中&quot;) != -1){&#xD;
-	view.id(&quot;DataGridSfstatistic&quot;).set(&quot;visible&quot;,true);&#xD;
-}else{&#xD;
-	view.id(&quot;DataGridSfstatistic&quot;).set(&quot;visible&quot;,false);&#xD;
-}&#xD;
-var cur = this.get(&quot;#dsSffault.data:#&quot;);&#xD;
-var Sfstatistic = this.get('#dsSfstatistic');&#xD;
-Sfstatistic.set(&quot;parameter&quot;,{&#xD;
-	id: cur.get(&quot;fdata&quot;),&#xD;
-	ftype: cur.get(&quot;ftype&quot;)}&#xD;
-);&#xD;
-Sfstatistic.flushAsync();</ClientEvent>
-            <Property name="caption">试飞信息</Property>
-            <Container>
-              <Property name="width">1000</Property>
-              <DataGrid id="DataGridSfstatistic">
-                <Property name="readOnly">true</Property>
-                <Property name="dataSet">dsSfstatistic</Property>
-                <Property name="filterMode">serverSide</Property>
-                <Property name="showFilterBar">true</Property>
-                <Property name="rowHeight">22</Property>
-                <Property name="visible">false</Property>
-                <RowNumColumn/>
-                <DataColumn name="ftype">
-                  <Property name="property">ftype</Property>
-                  <Property name="width">120</Property>
-                </DataColumn>
-                <DataColumn name="fighterno">
-                  <Property name="property">fighterno</Property>
-                  <Property name="width">120</Property>
-                </DataColumn>
-                <DataColumn>
-                  <Property name="property">jiaci</Property>
-                  <Property name="width">120</Property>
-                  <Property name="name">jiaci</Property>
-                </DataColumn>
-                <DataColumn name="fdate">
-                  <Property name="property">fdate</Property>
-                  <Property name="width">120</Property>
-                </DataColumn>
-                <DataColumn name="taskno">
-                  <Property name="property">taskNo.tasknumber</Property>
-                  <Property name="width">120</Property>
-                </DataColumn>
-                <DataColumn name="result">
-                  <Property name="property">taskNo.taskexecution</Property>
-                  <Property name="width">120</Property>
-                </DataColumn>
-                <DataColumn name="mainsubject">
-                  <Property name="property">taskNo.subject</Property>
-                  <Property name="width">120</Property>
-                </DataColumn>
-                <DataColumn>
-                  <Property name="width">120</Property>
-                  <Property name="property">miji</Property>
-                  <Editor/>
-                </DataColumn>
-                <DataColumn name="timeqifei">
-                  <Property name="property">timeqifei</Property>
-                  <Property name="width">120</Property>
-                </DataColumn>
-                <DataColumn>
-                  <Property name="property">timefly</Property>
-                  <Property name="width">120</Property>
-                  <Property name="name">timefly</Property>
-                </DataColumn>
-                <DataColumn>
-                  <Property name="property">taskNo.taskcontent</Property>
-                  <Property name="width">120</Property>
-                  <Property name="name">content</Property>
-                </DataColumn>
-                <DataColumn name="action">
-                  <Property name="property">action</Property>
-                  <Property name="width">120</Property>
-                </DataColumn>
-                <DataColumn name="config">
-                  <Property name="property">config</Property>
-                  <Property name="width">120</Property>
-                </DataColumn>
-                <DataColumn name="summary">
-                  <Property name="property">summary</Property>
-                  <Property name="width">120</Property>
-                </DataColumn>
-              </DataGrid>
-            </Container>
-          </ControlTab>
         </TabControl>
       </Children>
       <Tools/>
@@ -882,8 +850,11 @@ Sfstatistic.flushAsync();</ClientEvent>
         <Button>
           <ClientEvent name="onClick">var cur = view.id(&quot;dsSfstatistic&quot;).getData('#');&#xD;
 var cur1 = view.id('dsSffault').getData('#');&#xD;
-cur1.set(&quot;fdata&quot;,cur.get(&quot;id&quot;));&#xD;
-view.id('diaSfstatistic').hide();&#xD;
+if(cur){&#xD;
+	cur1.set(&quot;fdata&quot;,cur.get(&quot;id&quot;));&#xD;
+	view.id('diaSfstatistic').hide();&#xD;
+}&#xD;
+&#xD;
     &#xD;
 </ClientEvent>
           <Property name="caption">确定</Property>
@@ -1016,11 +987,6 @@ if(ftype){&#xD;
 	dialog.set(&quot;caption&quot;,&quot;修改问题跟踪&quot;);
 	view.id('diaSffault').show();
 	view.id(&quot;tab&quot;).set(&quot;currentIndex&quot;,0);
-	var dsSfstatistic = this.get(&quot;#dsSfstatistic&quot;);
-	dsSfstatistic.set(&quot;parameter&quot;, {
-		ftype: ftype
-	});
-	dsSfstatistic.flushAsync();
 	}
 }else{
 	dorado.MessageBox.alert(&quot;请先切换至“问题跟踪管理”页面！&quot;);
@@ -1044,6 +1010,24 @@ if(ftype){&#xD;
 	</ClientEvent>
         <Property name="caption">删除</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">if(view.id(&quot;tabControl1&quot;).get(&quot;currentIndex&quot;) == 1){
+	var cur=view.id('dsSffault').getData('#');
+	if (cur) {
+		view.id('diaShowSffault').show();
+		view.id(&quot;tab&quot;).set(&quot;currentIndex&quot;,0);
+	}
+}else{
+	dorado.MessageBox.alert(&quot;请先切换至“问题跟踪管理”页面！&quot;);
+}</ClientEvent>
+        <Property name="caption">浏览</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -40px -100px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">view.id('dgSffault').set(&quot;showFilterBar&quot;,!view.id('dgSffault').get(&quot;showFilterBar&quot;));</ClientEvent>
+        <Property name="caption">自定义查询</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var dsSffault = this.get(&quot;#dsSffault&quot;);&#xD;
@@ -1457,5 +1441,754 @@ jQuery(arg.dom).xCreate({&#xD;
         </DataGrid>
       </ControlTab>
     </TabControl>
+    <Dialog id="diaShowSfstatistic">
+      <ClientEvent name="onClose">var cur = this.get(&quot;#dsSffault.data:#&quot;);&#xD;
+var Sfstatistic = this.get('#dsSfstatistic');&#xD;
+Sfstatistic.set(&quot;parameter&quot;,{&#xD;
+	ftype: cur.get(&quot;ftype&quot;)}&#xD;
+);&#xD;
+Sfstatistic.flushAsync();&#xD;
+view.id('diaShowSfstatistic').hide();</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">800</Property>
+      <Property name="caption">试飞信息</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">var cur = this.get(&quot;#dsSffault.data:#&quot;);&#xD;
+var Sfstatistic = this.get('#dsSfstatistic');&#xD;
+Sfstatistic.set(&quot;parameter&quot;,{&#xD;
+	ftype: cur.get(&quot;ftype&quot;)}&#xD;
+);&#xD;
+Sfstatistic.flushAsync();&#xD;
+view.id('diaShowSfstatistic').hide();</ClientEvent>
+          <Property name="caption">关闭</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <TabControl>
+          <ControlTab>
+            <Property name="caption">基本信息</Property>
+            <AutoForm id="autoform">
+              <Property name="dataSet">dsSfstatistic</Property>
+              <Property name="cols">*,*,*,*</Property>
+              <Property name="dataPath">#</Property>
+              <Property name="readOnly">true</Property>
+              <AutoFormElement>
+                <Property name="name">fdate</Property>
+                <Property name="property">fdate</Property>
+                <Property name="labelPosition">top</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">TimeQifei</Property>
+                <Property name="property">timeqifei</Property>
+                <Property name="labelPosition">top</Property>
+                <Editor>
+                  <DateTimeSpinner/>
+                </Editor>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">TimeLand</Property>
+                <Property name="property">timeland</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="readOnly">false</Property>
+                <Editor>
+                  <DateTimeSpinner/>
+                </Editor>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">TimeFly</Property>
+                <Property name="property">timefly</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="readOnly">true</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">JiaCi</Property>
+                <Property name="property">jiaci</Property>
+                <Property name="labelPosition">top</Property>
+                <Editor>
+                  <NumberSpinner/>
+                </Editor>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">pilot</Property>
+                <Property name="property">pilot</Property>
+                <Property name="labelPosition">top</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">TowerDir</Property>
+                <Property name="property">towerdir</Property>
+                <Property name="labelPosition">top</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">GDASDir</Property>
+                <Property name="property">gdasdir</Property>
+                <Property name="labelPosition">top</Property>
+              </AutoFormElement>
+              <AutoFormElement id="autoformelement2">
+                <Property name="property">taskNo.tasknumber</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="name">tasknumber</Property>
+                <Property name="editable">false</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement id="autoformelement3">
+                <Property name="property">taskNo.subject</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="name">subject</Property>
+                <Property name="readOnly">true</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">taskexecution</Property>
+                <Property name="property">taskNo.taskexecution</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="readOnly">true</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">fighterNo</Property>
+                <Property name="property">fighterno</Property>
+                <Property name="labelPosition">top</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">JiaYou</Property>
+                <Property name="property">jiayou</Property>
+                <Property name="labelPosition">top</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">YuYou</Property>
+                <Property name="property">yuyou</Property>
+                <Property name="labelPosition">top</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">address</Property>
+                <Property name="property">address</Property>
+                <Property name="labelPosition">top</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">miji</Property>
+                <Property name="property">miji</Property>
+                <Property name="labelPosition">top</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:2">
+                <Property name="name">action</Property>
+                <Property name="property">action</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="editorType">TextArea</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:2">
+                <Property name="name">config</Property>
+                <Property name="property">config</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="editorType">TextArea</Property>
+              </AutoFormElement>
+            </AutoForm>
+          </ControlTab>
+          <ControlTab>
+            <Property name="caption">试飞日志</Property>
+            <AutoForm>
+              <Property name="dataPath">#</Property>
+              <Property name="dataSet">dsSfstatistic</Property>
+              <Property name="cols">*,*</Property>
+              <Property name="labelWidth">90</Property>
+              <Property name="readOnly">true</Property>
+              <AutoFormElement id="autoformelement5" layoutConstraint="colSpan:1">
+                <Property name="name">FeiXingQK</Property>
+                <Property name="property">feixingqk</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="editorType">TextArea</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:1">
+                <Property name="name">JianKongJL</Property>
+                <Property name="property">jiankongjl</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="editorType">TextArea</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:1">
+                <Property name="name">PilotPJ</Property>
+                <Property name="property">pilotpj</Property>
+                <Property name="editorType">TextArea</Property>
+                <Property name="labelPosition">top</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:1">
+                <Property name="name">summary</Property>
+                <Property name="property">summary</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="editorType">TextArea</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:2">
+                <Property name="name">dataAddr</Property>
+                <Property name="property">dataaddr</Property>
+              </AutoFormElement>
+            </AutoForm>
+          </ControlTab>
+          <ControlTab>
+            <Property name="caption">飞行员讲评</Property>
+            <AutoForm>
+              <Property name="dataPath">#</Property>
+              <Property name="dataSet">dsSfstatistic</Property>
+              <Property name="cols">*,*,*,*</Property>
+              <Property name="readOnly">true</Property>
+              <AutoFormElement layoutConstraint="colSpan:2">
+                <Property name="name">pilot</Property>
+                <Property name="property">pilot</Property>
+                <Property name="labelPosition">left</Property>
+                <Property name="editable">false</Property>
+                <Property name="editorWidth">100</Property>
+                <Property name="readOnly">true</Property>
+                <Property name="label">飞行员讲评</Property>
+                <Property name="labelWidth">100</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:2">
+                <Property name="name">TowerDir</Property>
+                <Property name="property">towerdir</Property>
+                <Property name="labelPosition">left</Property>
+                <Property name="editorWidth">100</Property>
+                <Property name="editable">false</Property>
+                <Property name="readOnly">true</Property>
+                <Property name="label">塔台指挥员讲评</Property>
+                <Property name="labelWidth">100</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:2;vAlign:top">
+                <Property name="name">PilotJP</Property>
+                <Property name="property">pilotjp</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="editorType">TextArea</Property>
+                <Property name="showLabel">false</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:2;vAlign:top">
+                <Property name="name">TowerDirJP</Property>
+                <Property name="property">towerdirjp</Property>
+                <Property name="editorType">TextArea</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="showLabel">false</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:4">
+                <Property name="name">GDASDir</Property>
+                <Property name="property">gdasdir</Property>
+                <Property name="labelPosition">left</Property>
+                <Property name="editable">false</Property>
+                <Property name="editorWidth">100</Property>
+                <Property name="readOnly">true</Property>
+                <Property name="label">GDAS指挥员讲评</Property>
+                <Property name="labelWidth">100</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:4;vAlign:top">
+                <Property name="name">GDASDirJP</Property>
+                <Property name="property">gdasdirjp</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="editorType">TextArea</Property>
+                <Property name="editorWidth">350</Property>
+                <Property name="showLabel">false</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="rowSpan:2;colSpan:2">
+                <Property name="name">Checker</Property>
+                <Property name="property">checker</Property>
+                <Property name="editorWidth">100</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="rowSpan:2">
+                <Property name="name">Xianchang</Property>
+                <Property name="property">xianchang</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="rowSpan:2">
+                <Property name="name">DailyName</Property>
+                <Property name="property">dailyname</Property>
+              </AutoFormElement>
+            </AutoForm>
+          </ControlTab>
+        </TabControl>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaShowSffault">
+      <ClientEvent name="onClose">view.id('diaShowSffault').hide();&#xD;
+</ClientEvent>
+      <ClientEvent name="beforeShow">var cur = view.id('dsSffault').getData(&quot;#&quot;).get(&quot;foundopp&quot;);&#xD;
+if(cur != null &amp;&amp; cur.indexOf(&quot;飞行中&quot;) != -1){&#xD;
+	view.set({&#xD;
+					&quot;^Dirty1.disabled&quot; : false});&#xD;
+}else{&#xD;
+	view.set({&#xD;
+					&quot;^Dirty1.disabled&quot; : true});&#xD;
+}&#xD;
+view.id(&quot;dsDictionaryGzfs&quot;).flushAsync(function(entitylist){&#xD;
+	var gzfs = view.id(&quot;dsSffault&quot;).getData(&quot;#&quot;).get(&quot;gzfs&quot;);&#xD;
+	view.id(&quot;containerGzfs1&quot;).removeAllChildren();//先清空组件&#xD;
+	entitylist.each(function(entity){//遍历数据字典&#xD;
+		var name = entity.get(&quot;name&quot;);&#xD;
+		var box = new dorado.widget.CheckBox();&#xD;
+		box.set(&quot;caption&quot;,name);//设置显示标题&#xD;
+		if(gzfs!=null&amp;&amp;gzfs.indexOf(name)!=-1)//包含的选项自动打钩&#xD;
+            box.set(&quot;checked&quot;,true);&#xD;
+        view.id(&quot;containerGzfs1&quot;).addChild(box);//添加显示组件&#xD;
+	});&#xD;
+});&#xD;
+view.id(&quot;dsDictionaryResult&quot;).flushAsync(function(entitylist){&#xD;
+	var result = view.id(&quot;dsSffault&quot;).getData(&quot;#&quot;).get(&quot;faulteffect&quot;);&#xD;
+	view.id(&quot;containerResult1&quot;).removeAllChildren();//先清空组件&#xD;
+	entitylist.each(function(entity){//遍历数据字典&#xD;
+		var name = entity.get(&quot;name&quot;);&#xD;
+		var box = new dorado.widget.CheckBox();&#xD;
+		box.set(&quot;caption&quot;,name);//设置显示标题&#xD;
+		if(result!=null&amp;&amp;result.indexOf(name)!=-1)//包含的选项自动打钩&#xD;
+            box.set(&quot;checked&quot;,true);&#xD;
+        view.id(&quot;containerResult1&quot;).addChild(box);//添加显示组件&#xD;
+	});&#xD;
+});&#xD;
+view.id(&quot;dsDictionaryOrigin&quot;).flushAsync(function(entitylist){&#xD;
+	var laiyuan = view.id(&quot;dsSffault&quot;).getData(&quot;#&quot;).get(&quot;laiyuan&quot;);&#xD;
+	view.id(&quot;containerLaiyuan1&quot;).removeAllChildren();//先清空组件&#xD;
+	entitylist.each(function(entity){//遍历数据字典&#xD;
+		var name = entity.get(&quot;name&quot;);&#xD;
+		var box = new dorado.widget.CheckBox();&#xD;
+		box.set(&quot;caption&quot;,name);//设置显示标题&#xD;
+		if(laiyuan!=null&amp;&amp;laiyuan.indexOf(name)!=-1)//包含的选项自动打钩&#xD;
+            box.set(&quot;checked&quot;,true);&#xD;
+        view.id(&quot;containerLaiyuan1&quot;).addChild(box);//添加显示组件&#xD;
+	});&#xD;
+});&#xD;
+view.id(&quot;dsDictionaryDutyType&quot;).flushAsync(function(entitylist){&#xD;
+	var type = view.id(&quot;dsSffault&quot;).getData(&quot;#&quot;).get(&quot;type&quot;);&#xD;
+	view.id(&quot;containerType1&quot;).removeAllChildren();//先清空组件&#xD;
+	entitylist.each(function(entity){//遍历数据字典&#xD;
+		var name = entity.get(&quot;name&quot;);&#xD;
+		var box = new dorado.widget.CheckBox();&#xD;
+		box.set(&quot;caption&quot;,name);//设置显示标题&#xD;
+		if(type!=null&amp;&amp;type.indexOf(name)!=-1)//包含的选项自动打钩&#xD;
+            box.set(&quot;checked&quot;,true);&#xD;
+        view.id(&quot;containerType1&quot;).addChild(box);//添加显示组件&#xD;
+	});&#xD;
+});&#xD;
+view.id(&quot;dsDictionaryType&quot;).flushAsync(function(entitylist){&#xD;
+	var judge = view.id(&quot;dsSffault&quot;).getData(&quot;#&quot;).get(&quot;judge&quot;);&#xD;
+	view.id(&quot;containerJudge1&quot;).removeAllChildren();//先清空组件&#xD;
+	entitylist.each(function(entity){//遍历数据字典&#xD;
+		var name = entity.get(&quot;name&quot;);&#xD;
+		var box = new dorado.widget.CheckBox();&#xD;
+		box.set(&quot;caption&quot;,name);//设置显示标题&#xD;
+		if(judge!=null&amp;&amp;judge.indexOf(name)!=-1)//包含的选项自动打钩&#xD;
+            box.set(&quot;checked&quot;,true);&#xD;
+        view.id(&quot;containerJudge1&quot;).addChild(box);//添加显示组件&#xD;
+	});&#xD;
+});&#xD;
+view.id(&quot;dsDictionaryFoundOpp&quot;).flushAsync(function(entitylist){&#xD;
+	var foundopp = view.id(&quot;dsSffault&quot;).getData(&quot;#&quot;).get(&quot;foundopp&quot;);&#xD;
+	view.id(&quot;containerFoundopp1&quot;).removeAllChildren();//先清空组件&#xD;
+	/*var checkbox = new dorado.widget.CheckBox();&#xD;
+	if(foundopp != null &amp;&amp; foundopp.indexOf(&quot;飞行中&quot;) != -1)//包含的选项自动打钩&#xD;
+		checkbox.set(&quot;checked&quot;,true);&#xD;
+	checkbox.set({&#xD;
+		id:&quot;checkbox&quot;,&#xD;
+		caption:&quot;飞行中&quot;,&#xD;
+		onValueChange:function(){&#xD;
+			var value = checkbox.get(&quot;value&quot;);&#xD;
+			if(value){&#xD;
+				var Sfstatistic = this.get('#dsSfstatistic').getData(&quot;#&quot;);&#xD;
+				if(Sfstatistic){&#xD;
+				view.id(&quot;diaSfstatistic&quot;).show();&#xD;
+				view.set({&#xD;
+					&quot;^Dirty.disabled&quot; : false});&#xD;
+				}else{&#xD;
+					dorado.MessageBox.alert(&quot;没有相应的飞行统计信息！&quot;);&#xD;
+					checkbox.set(&quot;checked&quot;,false);&#xD;
+				}&#xD;
+			}else{&#xD;
+				var dsSffault = view.id(&quot;dsSffault&quot;);&#xD;
+				dsSffault.getData(&quot;#&quot;).set(&quot;fdata&quot;,null);&#xD;
+				view.set({&#xD;
+					&quot;^Dirty.disabled&quot; : true});&#xD;
+			}&#xD;
+		}&#xD;
+	});&#xD;
+	view.id(&quot;containerFoundopp&quot;).addChild(checkbox);*/&#xD;
+	entitylist.each(function(entity){//遍历数据字典&#xD;
+		var name = entity.get(&quot;name&quot;);&#xD;
+		//if(name != &quot;飞行中&quot;){&#xD;
+		var box = new dorado.widget.CheckBox();&#xD;
+		box.set(&quot;caption&quot;,name);//设置显示标题&#xD;
+		if(foundopp!=null&amp;&amp;foundopp.indexOf(name)!=-1)//包含的选项自动打钩&#xD;
+            box.set(&quot;checked&quot;,true);&#xD;
+        view.id(&quot;containerFoundopp1&quot;).addChild(box);//添加显示组件&#xD;
+        //}&#xD;
+	});&#xD;
+});&#xD;
+view.id(&quot;dsDictionaryDeal&quot;).flushAsync(function(entitylist){&#xD;
+	var deal = view.id(&quot;dsSffault&quot;).getData(&quot;#&quot;).get(&quot;deal&quot;);&#xD;
+	view.id(&quot;containerDeal1&quot;).removeAllChildren();//先清空组件&#xD;
+	entitylist.each(function(entity){//遍历数据字典&#xD;
+		var name = entity.get(&quot;name&quot;);&#xD;
+		var box = new dorado.widget.CheckBox();&#xD;
+		box.set(&quot;caption&quot;,name);//设置显示标题&#xD;
+		if(deal!=null&amp;&amp;deal.indexOf(name)!=-1)//包含的选项自动打钩&#xD;
+            box.set(&quot;checked&quot;,true);&#xD;
+        view.id(&quot;containerDeal1&quot;).addChild(box);//添加显示组件&#xD;
+	});&#xD;
+});</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">1000</Property>
+      <Property name="caption">问题跟踪</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('diaShowSffault').hide();
+</ClientEvent>
+          <Property name="caption">关闭</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <TabControl>
+          <ControlTab>
+            <Property name="caption">基本信息</Property>
+            <AutoForm>
+              <Property name="dataSet">dsSffault</Property>
+              <Property name="dataPath">#</Property>
+              <Property name="readOnly">true</Property>
+              <AutoFormElement layoutConstraint="colSpan:2">
+                <Property name="name">ftype</Property>
+                <Property name="property">ftype</Property>
+                <Property name="readOnly">true</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:1;rowSpan:1">
+                <Property name="name">adrs</Property>
+                <Property name="property">adrs</Property>
+                <Property name="trigger">dataSetDropDownAdrs</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="hintPosition">right</Property>
+                <Property name="editorWidth">200</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:1;rowSpan:1">
+                <Property name="editorWidth">200</Property>
+                <Property name="name">miji</Property>
+                <Property name="property">miji</Property>
+                <Property name="labelPosition">top</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:2">
+                <Property name="name">name</Property>
+                <Property name="property">name</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="editorWidth">300</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">partname</Property>
+                <Property name="property">partname</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">partmodel</Property>
+                <Property name="property">partmodel</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">danwei</Property>
+                <Property name="property">danwei</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">bumen</Property>
+                <Property name="property">bumen</Property>
+                <Property name="trigger">dataSetDropDownDepartment</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:2">
+                <Property name="name">fileNo</Property>
+                <Property name="property">fileno</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="editorWidth">200</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">repeat</Property>
+                <Property name="property">repeat</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">repeattime</Property>
+                <Property name="property">repeattime</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">zerenren</Property>
+                <Property name="property">zerenren</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">majorsystem</Property>
+                <Property name="property">majorsystem</Property>
+                <Property name="trigger">dataSetDropDownMajorSystem</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">zongshi</Property>
+                <Property name="property">zongshi</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">inputdate</Property>
+                <Property name="property">inputdate</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">inputer</Property>
+                <Property name="property">inputer</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">fighterNo</Property>
+                <Property name="property">fighterno</Property>
+                <Property name="label">飞机编号</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:2">
+                <Property name="name">date</Property>
+                <Property name="property">date</Property>
+                <Property name="editorWidth">200</Property>
+                <Property name="labelPosition">top</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:2">
+                <Property name="name">system</Property>
+                <Property name="property">system</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="editorWidth">150</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="rowSpan:2">
+                <Property name="name">relateBuMen</Property>
+                <Property name="property">relatebumen</Property>
+                <Property name="trigger">dataSetDropDownDepartment</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="rowSpan:2">
+                <Property name="name">relatemajor</Property>
+                <Property name="property">relatemajor</Property>
+                <Property name="trigger">dataSetDropDownMajorSystem</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="rowSpan:2">
+                <Property name="name">pici</Property>
+                <Property name="property">pici</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="rowSpan:2">
+                <Property name="name">status</Property>
+                <Property name="property">status</Property>
+                <Property name="trigger">dataSetDropDownStatus</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:2;rowSpan:1">
+                <Property name="name">GuiLing</Property>
+                <Property name="property">guiling</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="editorWidth">100</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="rowSpan:1;colSpan:2">
+                <Property name="name">XCcharger</Property>
+                <Property name="property">xccharger</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="editorWidth">200</Property>
+              </AutoFormElement>
+            </AutoForm>
+          </ControlTab>
+          <ControlTab>
+            <Property name="caption">简要信息</Property>
+            <Container layout="anchor">
+              <Property name="width">1000</Property>
+              <AutoForm>
+                <Property name="dataSet">dsSffault</Property>
+                <Property name="dataPath">#</Property>
+                <Property name="readOnly">true</Property>
+                <AutoFormElement layoutConstraint="colSpan:2">
+                  <Property name="name">foundopp</Property>
+                  <Property name="property">foundopp</Property>
+                  <Property name="labelPosition">top</Property>
+                  <Property name="showLabel">false</Property>
+                  <Editor>
+                    <FieldSet>
+                      <Property name="collapseable">false</Property>
+                      <Property name="height">50</Property>
+                      <Property name="caption">发现时机</Property>
+                      <Buttons/>
+                      <Children>
+                        <Container id="containerFoundopp1" layout="hbox regionPadding:20"/>
+                      </Children>
+                    </FieldSet>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement layoutConstraint="colSpan:2">
+                  <Property name="name">faulteffect</Property>
+                  <Property name="property">faulteffect</Property>
+                  <Property name="labelPosition">top</Property>
+                  <Property name="showLabel">false</Property>
+                  <Editor>
+                    <FieldSet>
+                      <Property name="collapseable">false</Property>
+                      <Property name="caption">故障后果</Property>
+                      <Property name="height">50</Property>
+                      <Buttons/>
+                      <Children>
+                        <Container id="containerResult1" layout="hbox regionPadding:20"/>
+                      </Children>
+                    </FieldSet>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement layoutConstraint="colSpan:2">
+                  <Property name="name">laiyuan</Property>
+                  <Property name="property">laiyuan</Property>
+                  <Property name="labelPosition">top</Property>
+                  <Property name="showLabel">false</Property>
+                  <Editor>
+                    <FieldSet>
+                      <Property name="collapseable">false</Property>
+                      <Property name="caption">信息来源</Property>
+                      <Property name="height">50</Property>
+                      <Buttons/>
+                      <Children>
+                        <Container id="containerLaiyuan1" layout="hbox regionPadding:20"/>
+                      </Children>
+                    </FieldSet>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement layoutConstraint="colSpan:2">
+                  <Property name="name">judge</Property>
+                  <Property name="property">judge</Property>
+                  <Property name="labelPosition">top</Property>
+                  <Property name="showLabel">false</Property>
+                  <Editor>
+                    <FieldSet>
+                      <Property name="collapseable">false</Property>
+                      <Property name="height">50</Property>
+                      <Property name="caption">判明方式</Property>
+                      <Buttons/>
+                      <Children>
+                        <Container id="containerJudge1" layout="hbox regionPadding:20"/>
+                      </Children>
+                    </FieldSet>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement layoutConstraint="colSpan:2">
+                  <Property name="name">type</Property>
+                  <Property name="property">type</Property>
+                  <Property name="labelPosition">top</Property>
+                  <Property name="showLabel">false</Property>
+                  <Editor>
+                    <FieldSet>
+                      <Property name="collapseable">false</Property>
+                      <Property name="height">50</Property>
+                      <Property name="caption">问题责任</Property>
+                      <Buttons/>
+                      <Children>
+                        <Container id="containerType1" layout="hbox regionPadding:20"/>
+                      </Children>
+                    </FieldSet>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement layoutConstraint="colSpan:2">
+                  <Property name="name">deal</Property>
+                  <Property name="property">deal</Property>
+                  <Property name="labelPosition">top</Property>
+                  <Property name="showLabel">false</Property>
+                  <Editor>
+                    <FieldSet>
+                      <Property name="collapseable">false</Property>
+                      <Property name="height">50</Property>
+                      <Property name="caption">现场处理方式</Property>
+                      <Buttons/>
+                      <Children>
+                        <Container id="containerDeal1" layout="hbox regionPadding:20"/>
+                      </Children>
+                    </FieldSet>
+                  </Editor>
+                </AutoFormElement>
+                <AutoFormElement layoutConstraint="colSpan:2">
+                  <Property name="name">gzfs</Property>
+                  <Property name="property">gzfs</Property>
+                  <Property name="labelPosition">top</Property>
+                  <Property name="showLabel">false</Property>
+                  <Editor>
+                    <FieldSet>
+                      <Property name="collapseable">false</Property>
+                      <Property name="height">50</Property>
+                      <Property name="caption">跟踪方式</Property>
+                      <Buttons/>
+                      <Children>
+                        <Container id="containerGzfs1" layout="hbox regionPadding:20"/>
+                      </Children>
+                    </FieldSet>
+                  </Editor>
+                </AutoFormElement>
+              </AutoForm>
+              <Button layoutConstraint="anchorRight:container;top:35;right:40">
+                <ClientEvent name="onClick">var cur = this.get(&quot;#dsSffault.data:#&quot;);&#xD;
+var Sfstatistic = this.get('#dsSfstatistic');&#xD;
+Sfstatistic.set(&quot;parameter&quot;,{&#xD;
+	id: cur.get(&quot;fdata&quot;),&#xD;
+	ftype: cur.get(&quot;ftype&quot;)}&#xD;
+);&#xD;
+Sfstatistic.flushAsync();&#xD;
+view.id('diaShowSfstatistic').show();</ClientEvent>
+                <Property name="caption">飞行信息</Property>
+                <Property name="tags">Dirty1</Property>
+              </Button>
+            </Container>
+          </ControlTab>
+          <ControlTab>
+            <Property name="caption">详细信息</Property>
+            <AutoForm>
+              <Property name="dataSet">dsSffault</Property>
+              <Property name="dataPath">#</Property>
+              <Property name="readOnly">true</Property>
+              <AutoFormElement>
+                <Property name="name">WaiChangXXMS</Property>
+                <Property name="property">waichangxxms</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="editorType">TextArea</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">miaoshu</Property>
+                <Property name="property">miaoshu</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="editorType">TextArea</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">YuanyinFX</Property>
+                <Property name="property">yuanyinfx</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="editorType">TextArea</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">qingkuang</Property>
+                <Property name="property">qingkuang</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="editorType">TextArea</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">Result</Property>
+                <Property name="property">result</Property>
+                <Property name="label">处理结果</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="editorType">TextArea</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">summary</Property>
+                <Property name="property">summary</Property>
+                <Property name="labelPosition">top</Property>
+                <Property name="editorType">TextArea</Property>
+              </AutoFormElement>
+            </AutoForm>
+          </ControlTab>
+          <ControlTab>
+            <Property name="caption">更新记录</Property>
+            <AutoForm>
+              <Property name="labelWidth">90</Property>
+              <Property name="dataSet">dsSffault</Property>
+              <Property name="dataPath">#</Property>
+              <Property name="readOnly">true</Property>
+              <AutoFormElement layoutConstraint="colSpan:2;rowSpan:8">
+                <Property name="name">gengxinJL</Property>
+                <Property name="property">gengxinjl</Property>
+                <Property name="editorType">TextArea</Property>
+                <Property name="readOnly">true</Property>
+                <Property name="height">250</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:2">
+                <Property name="property">gengxincontent</Property>
+                <Property name="editorType">TextArea</Property>
+                <Property name="name">gengxinContent</Property>
+                <Property name="height">50</Property>
+                <Editor/>
+              </AutoFormElement>
+            </AutoForm>
+          </ControlTab>
+        </TabControl>
+      </Children>
+      <Tools/>
+    </Dialog>
   </View>
 </ViewConfig>

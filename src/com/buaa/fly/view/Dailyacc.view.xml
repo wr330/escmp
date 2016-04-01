@@ -381,6 +381,11 @@ dsDailyacc.flushAsync();</ClientEvent>
         <Property name="width">57</Property>
       </ToolBarButton>
       <ToolBarButton>
+        <ClientEvent name="onClick">view.id('dgDailyacc').set(&quot;showFilterBar&quot;,!view.id('dgDailyacc').get(&quot;showFilterBar&quot;));</ClientEvent>
+        <Property name="caption">自定义查询</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
         <ClientEvent name="onClick">var ftype = view.id(&quot;formElement1&quot;).get(&quot;value&quot;);&#xD;
 if(ftype){&#xD;
 	view.id('diaTemplate').show();&#xD;

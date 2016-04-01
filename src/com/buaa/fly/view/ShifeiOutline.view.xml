@@ -5,7 +5,20 @@
   </Property>
   <Arguments/>
   <Context/>
-  <Model/>
+  <Model>
+    <DataType name="dataTypeSubject" parent="Subject">
+      <Reference name="children">
+        <Property name="dataType">[SELF]</Property>
+        <Property name="dataProvider">subjectPR#querySubject</Property>
+        <Property name="parameter">
+          <Entity>
+            <Property name="parentnode">$${this.oid}</Property>
+            <Property name="ftype">$${this.ftype}</Property>
+          </Entity>
+        </Property>
+      </Reference>
+    </DataType>
+  </Model>
   <View>
     <Property name="contentOverflow">scroll</Property>
     <DataSet id="dsSubject">
@@ -22,6 +35,25 @@
       <Property name="dataProvider">outlineexecutionPR#statisticOutline</Property>
       <Property name="parameter"></Property>
       <Property name="loadMode">manual</Property>
+    </DataSet>
+    <DataSet id="dsDictionaryState">
+      <Property name="parameter">
+        <Entity>
+          <Property name="dictype">Dic_CompleteState</Property>
+          <Property name="status">0</Property>
+        </Entity>
+      </Property>
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+    </DataSet>
+    <DataSet id="dataSetSubject">
+      <Property name="dataProvider">subjectPR#querySubject</Property>
+      <Property name="dataType">[dataTypeSubject]</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="parentnode"></Property>
+          <Property name="ftype"></Property>
+        </Entity>
+      </Property>
     </DataSet>
     <UpdateAction id="uaSubject">
       <Property name="dataResolver">subjectPR#saveSubject</Property>
@@ -60,7 +92,12 @@ if(!result){&#xD;
 dsSubject.set(&quot;parameter&quot;, {&#xD;
 	ftypename: arg.selectedValue&#xD;
 });&#xD;
-dsSubject.flushAsync();</ClientEvent>
+dsSubject.flushAsync();&#xD;
+var dataSetSubject = this.get(&quot;#dataSetSubject&quot;);&#xD;
+dataSetSubject.set(&quot;parameter&quot;, {&#xD;
+	ftype: arg.selectedValue&#xD;
+});&#xD;
+dataSetSubject.flushAsync();</ClientEvent>
       <Property name="autoOpen">true</Property>
       <Property name="dataSet">dsFtypes</Property>
       <Property name="displayProperty">ftypename</Property>
@@ -68,6 +105,43 @@ dsSubject.flushAsync();</ClientEvent>
       <Property name="property">ftypename</Property>
       <Property name="reloadDataOnOpen">true</Property>
     </DataSetDropDown>
+    <DataSetDropDown id="dataSetDropDownState">
+      <Property name="autoOpen">true</Property>
+      <Property name="dataSet">dsDictionaryState</Property>
+      <Property name="displayProperty">name</Property>
+      <Property name="editable">false</Property>
+      <Property name="property">name</Property>
+      <Property name="reloadDataOnOpen">true</Property>
+    </DataSetDropDown>
+    <CustomDropDown id="showCustomDropDown">
+      <ClientEvent name="onClose">var doopDown = this.get(&quot;#&quot;)&#xD;
+</ClientEvent>
+      <Property name="autoOpen">true</Property>
+      <Property name="height">200</Property>
+      <Property name="editable">false</Property>
+      <DataTree id="dataTree" layoutConstraint="left">
+        <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
+var dataTree1 = this.get(&quot;#dataTree&quot;);&#xD;
+var name = dataTree1.get(&quot;currentNode.data&quot;).get(&quot;name&quot;);&#xD;
+dropDown.close(name);</ClientEvent>
+        <Property name="dataSet">dataSetSubject</Property>
+        <Property name="draggable">false</Property>
+        <Property name="droppable">false</Property>
+        <Property name="width">650</Property>
+        <Property name="height">90%</Property>
+        <BindingConfigs>
+          <BindingConfig>
+            <Property name="childrenProperty">children</Property>
+            <Property name="tipProperty">description</Property>
+            <Property name="labelProperty">name</Property>
+            <Property name="recursive">true</Property>
+            <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
+            <Property name="autoCheckChildren">true</Property>
+            <Property name="expandLevel">4</Property>
+          </BindingConfig>
+        </BindingConfigs>
+      </DataTree>
+    </CustomDropDown>
     <Dialog id="diaOutlineexecution">
       <ClientEvent name="onClose">var cur=view.id('dsSubject').getData('!CURRENT_ROOT.#outlineexecution');&#xD;
 if(cur){&#xD;
@@ -165,6 +239,7 @@ if(cur){
           <AutoFormElement>
             <Property name="name">completestate</Property>
             <Property name="property">completestate</Property>
+            <Property name="trigger">dataSetDropDownState</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
@@ -210,6 +285,7 @@ if(cur){&#xD;
               <RowNumColumn/>
               <DataColumn>
                 <Property name="property">combineSubject</Property>
+                <Property name="trigger">showCustomDropDown</Property>
               </DataColumn>
               <DataColumn>
                 <Property name="property">combineNumber</Property>
@@ -385,6 +461,21 @@ if(cur){&#xD;
                       <Property name="disabled">false</Property>
                     </ToolBarButton>
                     <ToolBarButton>
+                      <ClientEvent name="onClick">view.id('diaShowOutlineexecution').show();	&#xD;
+&#xD;
+</ClientEvent>
+                      <Property name="caption">浏览</Property>
+                      <Property name="icon">url(>skin>common/icons.gif) -40px -100px</Property>
+                      <Property name="tags">onDirtyNode</Property>
+                      <Property name="width">57</Property>
+                      <Property name="disabled">false</Property>
+                    </ToolBarButton>
+                    <ToolBarButton>
+                      <ClientEvent name="onClick">view.id('dgOutline').set(&quot;showFilterBar&quot;,!view.id('dgOutline').get(&quot;showFilterBar&quot;));</ClientEvent>
+                      <Property name="caption">自定义查询</Property>
+                      <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
+                    </ToolBarButton>
+                    <ToolBarButton>
                       <ClientEvent name="onClick">var dsSubject = view.id(&quot;dsSubject&quot;);&#xD;
 dsSubject.getData('!CURRENT_ROOT').reset(&quot;outlineexecution&quot;);&#xD;
 </ClientEvent>
@@ -439,7 +530,7 @@ if(cur){&#xD;
                       <Property name="icon">url(>skin>common/icons.gif) -240px -40px</Property>
                     </ToolBarButton>
                   </ToolBar>
-                  <DataGrid>
+                  <DataGrid id="dgOutline">
                     <Property name="readOnly">true</Property>
                     <Property name="filterMode">serverSide</Property>
                     <Property name="rowHeight">22</Property>
@@ -568,5 +659,111 @@ dorado.DataPath.registerInterceptor(&quot;CURRENT_SUBJECT&quot;, function(data) 
         </Container>
       </SideControl>
     </SplitPanel>
+    <Dialog id="diaShowOutlineexecution">
+      <ClientEvent name="onClose">view.id('diaShowOutlineexecution').hide();</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">800</Property>
+      <Property name="caption">试飞大纲执行情况</Property>
+      <Property name="height">500</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('diaShowOutlineexecution').hide();
+</ClientEvent>
+          <Property name="caption">关闭</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm>
+          <Property name="cols">*,*</Property>
+          <Property name="dataSet">dsSubject</Property>
+          <Property name="dataPath">!CURRENT_ROOT.#outlineexecution</Property>
+          <Property name="dataType">Outlineexecution</Property>
+          <Property name="readOnly">true</Property>
+          <AutoFormElement>
+            <Property name="name">project</Property>
+            <Property name="property">project.name</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">aircrafttype</Property>
+            <Property name="property">aircrafttype</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">aircraftStruct</Property>
+            <Property name="property">aircraftStruct</Property>
+            <Property name="editorType">TextArea</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">testMethod</Property>
+            <Property name="property">testMethod</Property>
+            <Property name="editorType">TextArea</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">testStatus</Property>
+            <Property name="property">testStatus</Property>
+            <Property name="editorType">TextArea</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">engineState</Property>
+            <Property name="property">engineState</Property>
+            <Property name="editorType">TextArea</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">outlineFlights</Property>
+            <Property name="property">outlineFlights</Property>
+            <Property name="editorType">NumberSpinner</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">shijijiaci</Property>
+            <Property name="property">shijijiaci</Property>
+            <Property name="editorType">NumberSpinner</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">completestate</Property>
+            <Property name="property">completestate</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+          </AutoFormElement>
+        </AutoForm>
+        <Panel>
+          <Buttons/>
+          <Children>
+            <DataGrid layoutConstraint="center">
+              <Property name="dataPath">!CURRENT_ROOT.#outlineexecution.combineVehicle</Property>
+              <Property name="filterMode">serverSide</Property>
+              <Property name="rowHeight">22</Property>
+              <Property name="dataSet">dsSubject</Property>
+              <Property name="readOnly">true</Property>
+              <RowNumColumn/>
+              <DataColumn>
+                <Property name="property">combineSubject</Property>
+              </DataColumn>
+              <DataColumn>
+                <Property name="property">combineNumber</Property>
+                <Property name="editorType">NumberSpinner</Property>
+                <Property name="align">left</Property>
+                <Property name="width">150</Property>
+              </DataColumn>
+            </DataGrid>
+          </Children>
+          <Tools/>
+        </Panel>
+      </Children>
+      <Tools/>
+    </Dialog>
   </View>
 </ViewConfig>
