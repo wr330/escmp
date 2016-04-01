@@ -24,6 +24,7 @@ public class AuditLog implements Serializable{
 
 	private String oid;
 	private String operationPerson;
+	private String operationPersonName;
 	private Date operationTime;
 	private String operationContent;
 	private int operationType;
@@ -42,9 +43,18 @@ public class AuditLog implements Serializable{
 	public String getOperationPerson() {
 		return operationPerson;
 	}
-
+	
 	public void setOperationPerson(String operationPerson) {
 		this.operationPerson = operationPerson;
+	}
+	
+	@Column(name = "OperationPersonName")
+	public String getOperationPersonName() {
+		return operationPersonName;
+	}
+
+	public void setOperationPersonName(String operationPersonName) {
+		this.operationPersonName = operationPersonName;
 	}
 
 	@Column(name = "OperationTime")
@@ -66,14 +76,11 @@ public class AuditLog implements Serializable{
 	}
 
 	@Column(name = "OperationType")
-	public int getoperationType() {
+	public int getOperationType() {
 		return operationType;
 	}
 
-	public void setoperationType(int operationType) {
+	public void setOperationType(int operationType) {
 		this.operationType = operationType;
 	}
-
-	
-	
 }

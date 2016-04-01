@@ -18,30 +18,15 @@
     <ToolBar>
       <DataPilot/>
       <ToolBarButton>
-        <ClientEvent name="onClick">view.id('dsAuditLog').getData().insert();&#xD;
-view.id('diaAuditLog').show();</ClientEvent>
-        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
-        <Property name="caption">新增</Property>
+        <Property name="action">export2ReportAction1</Property>
+        <Property name="caption">导出Excel</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -40px -140px</Property>
       </ToolBarButton>
       <ToolBarButton>
-        <ClientEvent name="onClick">var cur=view.id('dsAuditLog').getData('#');&#xD;
-if (cur) {&#xD;
-	view.id('diaAuditLog').show();&#xD;
-}</ClientEvent>
-        <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
-        <Property name="caption">修改</Property>
-      </ToolBarButton>
-      <ToolBarButton>
-        <ClientEvent name="onClick">var cur=view.id('dsAuditLog').getData('#');&#xD;
-	var ua=view.id('uaAuditLog')&#xD;
-	if(cur){&#xD;
-		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){&#xD;
-			cur.remove();&#xD;
-			ua.execute();&#xD;
-			}); &#xD;
-		} </ClientEvent>
-        <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
-        <Property name="caption">删除</Property>
+        <ClientEvent name="onClick">var dsAuditLog = view.get(&quot;#dsAuditLog&quot;);&#xD;
+dsAuditLog.flushAsync();</ClientEvent>
+        <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+        <Property name="caption">刷新</Property>
       </ToolBarButton>
     </ToolBar>
     <FieldSet>
@@ -99,7 +84,7 @@ if (cur) {&#xD;
           <FormElement id="formElement2">
             <Property name="editorWidth">150</Property>
             <Property name="label">操作人</Property>
-            <Property name="trigger">dataSetDropDown1</Property>
+            <Property name="trigger">operationPerson</Property>
             <Property name="labelAlign">right</Property>
             <Editor/>
           </FormElement>
@@ -142,21 +127,34 @@ dsAuditLog.flushAsync();&#xD;
         </ToolBar>
       </Children>
     </FieldSet>
-    <DataGrid>
+    <DataGrid id="dataGrid1">
       <Property name="dataSet">dsAuditLog</Property>
       <Property name="readOnly">true</Property>
       <Property name="rowHeight">22</Property>
-      <DataColumn name="operationPerson">
-        <Property name="property">operationPerson</Property>
-      </DataColumn>
+      <ColumnGroup>
+        <Property name="caption">操作人</Property>
+        <DataColumn>
+          <Property name="property">operationPerson</Property>
+          <Property name="width">100</Property>
+          <Editor/>
+        </DataColumn>
+        <DataColumn>
+          <Property name="property">operationPersonName</Property>
+          <Property name="width">100</Property>
+          <Editor/>
+        </DataColumn>
+      </ColumnGroup>
       <DataColumn name="operationTime">
         <Property name="property">operationTime</Property>
+        <Property name="align">left</Property>
       </DataColumn>
       <DataColumn name="operationContent">
         <Property name="property">operationContent</Property>
+        <Property name="align">left</Property>
       </DataColumn>
       <DataColumn name="operationType">
         <Property name="property">operationType</Property>
+        <Property name="align">left</Property>
       </DataColumn>
     </DataGrid>
     <Dialog id="diaAuditLog">
@@ -236,17 +234,6 @@ if (user) {&#xD;
         </DataColumn>
       </DataGrid>
     </CustomDropDown>
-    <DataSetDropDown id="dataSetDropDown1">
-      <ClientEvent name="onValueSelect">var dsAuditLog = this.get(&quot;#dsAuditLog&quot;);&#xD;
-dsAuditLog.set(&quot;parameter&quot;, {&#xD;
-	operationPerson: arg.selectedValue&#xD;
-});&#xD;
-dsAuditLog.flushAsync();</ClientEvent>
-      <Property name="property">username</Property>
-      <Property name="dataSet">dsUsers</Property>
-      <Property name="useEmptyItem">true</Property>
-      <Property name="editable">false</Property>
-    </DataSetDropDown>
     <AutoMappingDropDown id="mmm">
       <ClientEvent name="onValueSelect">var dsAuditLog = this.get(&quot;#dsAuditLog&quot;);&#xD;
 dsAuditLog.set(&quot;parameter&quot;, {&#xD;
@@ -257,5 +244,32 @@ dsAuditLog.flushAsync();</ClientEvent>
     </AutoMappingDropDown>
     <DateDropDown id="dateDropDown1"/>
     <DateDropDown id="dateDropDown2"/>
+    <DataSetDropDown id="operationPerson">
+      <ClientEvent name="onValueSelect">var dsAuditLog = this.get(&quot;#dsAuditLog&quot;);&#xD;
+dsAuditLog.set(&quot;parameter&quot;, {&#xD;
+	operationPerson: arg.selectedValue&#xD;
+});&#xD;
+dsAuditLog.flushAsync();&#xD;
+</ClientEvent>
+      <Property name="dataSet">dsUsers</Property>
+      <Property name="property">username</Property>
+      <Property name="useEmptyItem">true</Property>
+      <Property name="reloadDataOnOpen">true</Property>
+      <DataColumn>
+        <Property name="property">username</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="name">cname</Property>
+        <Editor/>
+      </DataColumn>
+    </DataSetDropDown>
+    <Export2ReportAction id="export2ReportAction1">
+      <Property name="template">dataGrid1</Property>
+      <Property name="showTitle">true</Property>
+      <Property name="dataScope">serverAll</Property>
+      <Property name="fileName">AuditLog</Property>
+      <Property name="titleName">按条件查询的操作日志</Property>
+    </Export2ReportAction>
   </View>
 </ViewConfig>

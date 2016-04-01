@@ -68,12 +68,13 @@ public class UserOperationLogManager {
 			}
 		}
 	 }
-	 public void recordUserOperationLog(int operationType,Date operationTime,String operationPerson,String operationContent) throws Exception{
+	 public void recordUserOperationLog(int operationType,Date operationTime,String operationPerson,String operationPersonName,String operationContent) throws Exception{
 		 	UserOperationLog userOperationLog = new UserOperationLog();
 		 	userOperationLog.setLogOperationType(operationType);
 			userOperationLog.setOperationTime(operationTime);
 			userOperationLog.setOperationPerson(operationPerson);
+			userOperationLog.setOperationPersonName(operationPersonName);
 			userOperationLog.setOperationContent(operationContent);
-			userOperationLogDao.saveData(userOperationLog);
+			userOperationLogDao.saveData(userOperationLog);  
 	 }
 }

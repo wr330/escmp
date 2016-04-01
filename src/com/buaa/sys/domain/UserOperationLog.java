@@ -23,6 +23,7 @@ public class UserOperationLog implements Serializable{
 	private String oid;
 	private int logOperationType;
 	private String operationPerson;
+	private String operationPersonName;
 	private String operationWorkType;
 	private String operationContent;
 	private String operationReason;
@@ -56,6 +57,15 @@ public class UserOperationLog implements Serializable{
 		this.operationPerson = operationPerson;
 	}
 	
+	@Column(name = "OperationPersonName")
+	public String getOperationPersonName() {
+		return operationPersonName;
+	}
+
+	public void setOperationPersonName(String operationPersonName) {
+		this.operationPersonName = operationPersonName;
+	}
+
 	@Column(name = "OperationWorkType")
 	public String getOperationWorkType() {
 		return operationWorkType;

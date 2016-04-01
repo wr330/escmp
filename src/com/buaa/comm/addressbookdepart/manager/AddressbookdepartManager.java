@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
+import com.bstek.bdf2.core.business.IUser;
 import com.bstek.bdf2.core.context.ContextHolder;
 import com.bstek.dorado.data.entity.EntityState;
 import com.bstek.dorado.data.entity.EntityUtils;
@@ -59,17 +60,19 @@ public class AddressbookdepartManager {
 		if (null != details && details.size() > 0) {
 	    	for(Addressbookdepart item : details) {
 				EntityState state = EntityUtils.getState(item);
-				String un = ContextHolder.getLoginUserName();
+				IUser loginUser = ContextHolder.getLoginUser();
+				String ucn = loginUser.getCname();
+				String un = loginUser.getUsername();
 				Date myDate = new Date();
 				if (state.equals(EntityState.NEW)) {
 					addressbookdepartDao.saveData(item);
 					//对用户新增操作进行记录，在用户操作日志表中新增一条记录。
-					userOperationLogManager.recordUserOperationLog(0, myDate, un, "对通讯录部门表新增一条记录");
+					userOperationLogManager.recordUserOperationLog(0, myDate, un, ucn,"对通讯录部门表新增一条记录");
 				} 
 				if (state.equals(EntityState.MODIFIED)|| state.equals(EntityState.MOVED)) {
 					addressbookdepartDao.updateData(item);
 					//对用户修改操作进行记录，在用户操作日志表中新增一条记录。
-					userOperationLogManager.recordUserOperationLog(1, myDate, un, "对通讯录部门表修改一条记录");
+					userOperationLogManager.recordUserOperationLog(1, myDate, un, ucn,"对通讯录部门表修改一条记录");
 				} 
 				if(item.getChildren()!=null){
 					saveAddressbookdepart(item.getChildren());
@@ -77,7 +80,7 @@ public class AddressbookdepartManager {
 				if (state.equals(EntityState.DELETED)) {
 					addressbookdepartDao.deleteData(item);
 					//对用户删除操作进行记录，在用户操作日志表中新增一条记录。
-					userOperationLogManager.recordUserOperationLog(2, myDate, un, "对通讯录部门表删除一条记录");
+					userOperationLogManager.recordUserOperationLog(2, myDate, un, ucn,"对通讯录部门表删除一条记录");
 				}
 			}
 		}

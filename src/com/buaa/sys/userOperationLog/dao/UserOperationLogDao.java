@@ -134,6 +134,5 @@ public class UserOperationLogDao extends HibernateBaseDao{
 			session.flush();
 			session.close();
 		}
-	}
-        
+	}  
 }
