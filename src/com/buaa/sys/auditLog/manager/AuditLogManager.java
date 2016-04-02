@@ -37,7 +37,6 @@ public class AuditLogManager {
 	public void queryAuditLog(Page<AuditLog> page,Map<String, Object> parameter,Criteria criteria) throws Exception {
 		auditLogDao.queryAuditLog(page,parameter,criteria);
 	}
-	
 	/**
 	 * 数据保存，对多个数据集的操作，包括增删改
 	 * @param dataItems
@@ -48,8 +47,6 @@ public class AuditLogManager {
 	    Collection<AuditLog> details =(Collection<AuditLog>) dataItems.get("dsAuditLog");
 		this.saveAuditLog(details);
 	 }
-	 
-	 
 	 /**
 	 * 针对单个数据集操作 包括增删改
 	 * 
@@ -69,9 +66,7 @@ public class AuditLogManager {
 									} else if (state.equals(EntityState.NONE)) {
 										
 				}
-
 			}
 		}
 	 }
-	
 }

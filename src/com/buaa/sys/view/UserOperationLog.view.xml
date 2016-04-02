@@ -2,17 +2,7 @@
 <ViewConfig>
   <Arguments/>
   <Context/>
-  <Model>
-    <DataType name="dataTypeTime" parent="Time">
-      <Reference name="reference1">
-        <Property name="dataType">[SELF]</Property>
-        <Property name="parameter">
-          <Entity/>
-        </Property>
-        <Property name="dataProvider">timePR#queryTime</Property>
-      </Reference>
-    </DataType>
-  </Model>
+  <Model/>
   <View>
     <DataSet id="dsUserOperationLog">
       <Property name="dataProvider">userOperationLogPR#queryUserOperationLog</Property>
@@ -31,30 +21,15 @@
         <Property name="dataSet">dsUserOperationLog</Property>
       </DataPilot>
       <ToolBarButton>
-        <ClientEvent name="onClick">	view.id('dsUserOperationLog').getData().insert();&#xD;
-	view.id('diaUserOperationLog').show();</ClientEvent>
-        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
-        <Property name="caption">新增</Property>
+        <Property name="caption">导出Excel</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -40px -140px</Property>
+        <Property name="action">export2ReportAction1</Property>
       </ToolBarButton>
       <ToolBarButton>
-        <ClientEvent name="onClick">	var cur=view.id('dsUserOperationLog').getData('#');&#xD;
-	if (cur) {&#xD;
-		view.id('diaUserOperationLog').show();&#xD;
-	}</ClientEvent>
-        <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
-        <Property name="caption">修改</Property>
-      </ToolBarButton>
-      <ToolBarButton>
-        <ClientEvent name="onClick">var cur=view.id('dsUserOperationLog').getData('#');&#xD;
-	var ua=view.id('uaUserOperationLog')&#xD;
-	if(cur){&#xD;
-		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){&#xD;
-			cur.remove();&#xD;
-			ua.execute();&#xD;
-			}); &#xD;
-		} </ClientEvent>
-        <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
-        <Property name="caption">删除</Property>
+        <ClientEvent name="onClick">var dsUserOperationLog = view.get(&quot;#dsUserOperationLog&quot;);&#xD;
+dsUserOperationLog.flushAsync();</ClientEvent>
+        <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+        <Property name="caption">刷新</Property>
       </ToolBarButton>
     </ToolBar>
     <FieldSet>
@@ -100,8 +75,8 @@
           <FormElement id="formElement2">
             <Property name="editorWidth">150</Property>
             <Property name="label">操作人</Property>
+            <Property name="labelAlign">center</Property>
             <Property name="trigger">operationPerson</Property>
-            <Property name="labelAlign">right</Property>
             <Editor/>
           </FormElement>
           <FormElement id="formElement3">
@@ -143,29 +118,40 @@ dsUserOperationLog.flushAsync();&#xD;
         </ToolBar>
       </Children>
     </FieldSet>
-    <DataGrid>
+    <DataGrid id="dataGrid1">
       <Property name="dataSet">dsUserOperationLog</Property>
       <Property name="filterMode">serverSide</Property>
       <Property name="readOnly">true</Property>
       <Property name="rowHeight">22</Property>
+      <Property name="dataType">UserOperationLog</Property>
       <DataColumn name="logOperationType">
         <Property name="property">logOperationType</Property>
+        <Property name="align">left</Property>
+        <Property name="width">120</Property>
       </DataColumn>
-      <DataColumn name="operationPerson">
-        <Property name="property">operationPerson</Property>
-      </DataColumn>
-      <DataColumn name="operationWorkType">
-        <Property name="property">operationWorkType</Property>
-      </DataColumn>
+      <ColumnGroup>
+        <Property name="caption">操作人</Property>
+        <DataColumn>
+          <Property name="property">operationPerson</Property>
+          <Property name="width">100</Property>
+          <Editor/>
+        </DataColumn>
+        <DataColumn>
+          <Property name="width">100</Property>
+          <Property name="property">operationPersonName</Property>
+          <Editor/>
+        </DataColumn>
+      </ColumnGroup>
       <DataColumn name="operationContent">
         <Property name="property">operationContent</Property>
         <Property name="editorType">TextEditor</Property>
-      </DataColumn>
-      <DataColumn name="operationReason">
-        <Property name="property">operationReason</Property>
+        <Property name="align">left</Property>
+        <Property name="width">300</Property>
       </DataColumn>
       <DataColumn name="operationTime">
         <Property name="property">operationTime</Property>
+        <Property name="align">left</Property>
+        <Property name="width">200</Property>
       </DataColumn>
     </DataGrid>
     <Dialog id="diaUserOperationLog">
@@ -227,46 +213,6 @@ dsUserOperationLog.flushAsync();&#xD;
       <Property name="dataType">[User]</Property>
       <Property name="dataProvider">bdf2.userMaintain#loadUsers2</Property>
     </DataSet>
-    <CustomDropDown id="customDDUser">
-      <Property name="autoOpen">true</Property>
-      <Property name="editable">false</Property>
-      <Property name="userData"></Property>
-      <DataGrid>
-        <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
-var user=view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;);&#xD;
-if (user) {&#xD;
-	dropDown.close(user.get(&quot;username&quot;));&#xD;
-	var cur=view.id('dsUserOperationLog').getData(&quot;#&quot;);&#xD;
-    cur.set(&quot;operationPerson&quot;,user.get(&quot;username&quot;));&#xD;
-}</ClientEvent>
-        <Property name="dataSet">dsUsers</Property>
-        <Property name="readOnly">true</Property>
-        <Property name="rowHeight">22</Property>
-        <Property name="showFilterBar">true</Property>
-        <Property name="height">300</Property>
-        <DataColumn name="username">
-          <Property name="property">username</Property>
-        </DataColumn>
-        <DataColumn name="cname">
-          <Property name="property">cname</Property>
-        </DataColumn>
-        <DataColumn name="depts">
-          <Property name="property">depts</Property>
-        </DataColumn>
-      </DataGrid>
-    </CustomDropDown>
-    <DataSetDropDown id="operationPerson">
-      <ClientEvent name="onValueSelect">var dsUserOperationLog = this.get(&quot;#dsUserOperationLog&quot;);&#xD;
-dsUserOperationLog.set(&quot;parameter&quot;, {&#xD;
-	operationPerson: arg.selectedValue&#xD;
-});&#xD;
-dsUserOperationLog.flushAsync();</ClientEvent>
-      <Property name="autoOpen">true</Property>
-      <Property name="editable">false</Property>
-      <Property name="useEmptyItem">true</Property>
-      <Property name="dataSet">dsUsers</Property>
-      <Property name="property">username</Property>
-    </DataSetDropDown>
     <AutoMappingDropDown id="DropDown1">
       <ClientEvent name="onValueSelect">var dsUserOperationLog = this.get(&quot;#dsUserOperationLog&quot;);&#xD;
 dsUserOperationLog.set(&quot;parameter&quot;, {&#xD;
@@ -282,5 +228,32 @@ dsUserOperationLog.flushAsync();</ClientEvent>
 </ClientEvent>
     </DateDropDown>
     <DateDropDown id="dateDropDown2"/>
+    <DataSetDropDown id="operationPerson">
+      <ClientEvent name="onValueSelect">var dsUserOperationLog = this.get(&quot;#dsUserOperationLog&quot;);&#xD;
+dsUserOperationLog.set(&quot;parameter&quot;, {&#xD;
+	operationPerson: arg.selectedValue&#xD;
+});&#xD;
+dsUserOperationLog.flushAsync();&#xD;
+</ClientEvent>
+      <Property name="dataSet">dsUsers</Property>
+      <Property name="property">username</Property>
+      <Property name="useEmptyItem">true</Property>
+      <Property name="reloadDataOnOpen">true</Property>
+      <DataColumn>
+        <Property name="property">username</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">cname</Property>
+        <Editor/>
+      </DataColumn>
+    </DataSetDropDown>
+    <Export2ReportAction id="export2ReportAction1">
+      <Property name="template">dataGrid1</Property>
+      <Property name="showTitle">true</Property>
+      <Property name="dataScope">serverAll</Property>
+      <Property name="fileName">UserOperationLog</Property>
+      <Property name="titleName">按条件查询的操作日志</Property>
+    </Export2ReportAction>
   </View>
 </ViewConfig>

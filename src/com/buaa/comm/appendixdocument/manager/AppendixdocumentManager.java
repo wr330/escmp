@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
+import com.bstek.bdf2.core.business.IUser;
 import com.bstek.bdf2.core.context.ContextHolder;
 import com.bstek.dorado.data.entity.EntityState;
 import com.bstek.dorado.data.entity.EntityUtils;
@@ -59,20 +60,22 @@ public class AppendixdocumentManager {
 		if (null != details && details.size() > 0) {
 	    	for(Appendixdocument item : details) {
 				EntityState state = EntityUtils.getState(item);
-				String un = ContextHolder.getLoginUserName();
+				IUser loginUser = ContextHolder.getLoginUser();
+				String ucn = loginUser.getCname();
+				String un = loginUser.getUsername();
 				Date myDate = new Date();
 				if (state.equals(EntityState.NEW)) {
 					appendixdocumentDao.saveData(item);
 					//对用户新增操作进行记录，在用户操作日志表中新增一条记录。
-					userOperationLogManager.recordUserOperationLog(0, myDate, un, "对通讯录表新增一条记录");
+					userOperationLogManager.recordUserOperationLog(0, myDate, un, ucn,"对通讯录表新增一条记录");
 									} else if (state.equals(EntityState.MODIFIED)) {
 					appendixdocumentDao.updateData(item);
 					//对用户修改操作进行记录，在用户操作日志表中新增一条记录。
-					userOperationLogManager.recordUserOperationLog(1, myDate, un, "对通讯录表新增一条记录");
+					userOperationLogManager.recordUserOperationLog(1, myDate, un, ucn,"对通讯录表新增一条记录");
 									} else if (state.equals(EntityState.DELETED)) {
 					appendixdocumentDao.deleteData(item);
 					//对用户删除操作进行记录，在用户操作日志表中删除一条记录。
-					userOperationLogManager.recordUserOperationLog(2, myDate, un, "对保障计划表新增一条记录");
+					userOperationLogManager.recordUserOperationLog(2, myDate, un, ucn,"对保障计划表新增一条记录");
 				} else if (state.equals(EntityState.NONE)) {
 						EntityState btreportState = EntityUtils.getState(item.getBtreport());
 		
