@@ -39,7 +39,7 @@ public class NewsTree implements Serializable {
 	}
 	//界面显示过长，将截取 zx
 	public String getNodeTitle2() {
-		if(nodeTitle.length()<38)
+		if(nodeTitle.length()<34)
 			return nodeTitle;
 		char[] q = nodeTitle.toCharArray();
 		double t=0;
@@ -49,7 +49,7 @@ public class NewsTree implements Serializable {
 				t += 1.5526;
 			else
 				t += 1;
-			if(t > 59)
+			if(t > 49)
 				return temp + "...";
 			temp += q[i];
 		}

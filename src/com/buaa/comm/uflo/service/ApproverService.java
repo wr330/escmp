@@ -17,24 +17,10 @@ public class ApproverService {
 	public Collection<DefaultUser> getManager(String promoterName,Session session) {
 		    List<DefaultUser> manager = new ArrayList<DefaultUser>(); 
 		    String hql = "from " + Role.class.getName() + " where NAME_= :name";
-		    List<Role> role1= session.createQuery(hql).setString("name","工会主席").list();
+		    List<Role> role1= session.createQuery(hql).setString("name","新闻审核").list();
 		    if(role1 != null && role1.size()!=0){
 				hql = "from " + RoleMember.class.getName() + " where ROLE_ID_= :roleId";
 				List<RoleMember> members = session.createQuery(hql).setString("roleId",role1.get(0).getId()).list();
-				if(members != null && members.size()!=0){
-					for(RoleMember member:members){
-						hql = "from " + DefaultUser.class.getName() + " where Username = :name";
-						List<DefaultUser> user = session.createQuery(hql).setString("name",member.getUsername()).list();
-						if(member.isGranted() && !manager.contains(user.get(0)))
-							manager.add(user.get(0));
-					}
-				}
-		    }
-		    hql = "from " + Role.class.getName() + " where NAME_= :name";
-		    List<Role> role2= session.createQuery(hql).setString("name","支部书记").list();
-		    if(role1 != null && role1.size()!=0){
-				hql = "from " + RoleMember.class.getName() + " where ROLE_ID_= :roleId";
-				List<RoleMember> members = session.createQuery(hql).setString("roleId",role2.get(0).getId()).list();
 				if(members != null && members.size()!=0){
 					for(RoleMember member:members){
 						hql = "from " + DefaultUser.class.getName() + " where Username = :name";

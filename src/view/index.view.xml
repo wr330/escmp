@@ -47,8 +47,10 @@
     </DataType>
   </Model>
   <View>
+    <Property name="contentOverflow">hidden</Property>
     <Portal>
       <Property name="portletPadding">5</Property>
+      <Property name="height">957</Property>
       <Columns>
         <Column>
           <Property name="width">25%</Property>
@@ -95,8 +97,9 @@ action.execute(function(result){&#xD;
         <Portlet>
           <Property name="caption">外场人员统计</Property>
           <Property name="column">0</Property>
-          <Property name="height">773</Property>
+          <Property name="height">360</Property>
           <Property name="closeable">false</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -140px -180px</Property>
           <Property name="showCaptionBar">false</Property>
           <Children>
             <ToolBar>
@@ -115,7 +118,6 @@ action.execute(function(result){&#xD;
               <Property name="dataSet">dsRenyuantongji</Property>
               <Property name="filterMode">serverSide</Property>
               <Property name="readOnly">true</Property>
-              <Property name="height">300</Property>
               <RowNumColumn/>
               <DataColumn>
                 <Property name="property">registrationexecutor</Property>
@@ -180,33 +182,26 @@ dsRenyuantongji.flushAsync();</ClientEvent>
               </Property>
               <Property name="dataType">dtS</Property>
             </DataSet>
-            <ToolBar>
-              <ToolBarLabel>
-                <Property name="text">根据时间统计在外工作人员数量</Property>
-              </ToolBarLabel>
-            </ToolBar>
           </Children>
         </Portlet>
         <Portlet>
-          <Property name="caption">p2</Property>
+          <Property name="caption">保障设备技术状态查询</Property>
+          <Property name="column">0</Property>
+          <Property name="height">360</Property>
+          <Property name="closeable">false</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -140px -60px</Property>
+          <Children/>
+        </Portlet>
+        <Portlet>
+          <Property name="caption">部内新闻</Property>
           <Property name="column">1</Property>
           <Property name="height">360</Property>
           <Property name="closeable">false</Property>
-          <Property name="showCaptionBar">false</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -0px -160px</Property>
           <Children>
-            <TabControl>
-              <Property name="visible">true</Property>
-              <IFrameTab>
-                <Property name="caption">部内动态</Property>
-                <Property name="path">home/news2</Property>
-                <Property name="icon">url(>skin>common/icons.gif) -0px -20px</Property>
-              </IFrameTab>
-              <IFrameTab>
-                <Property name="path">home/news1</Property>
-                <Property name="caption">新闻报道</Property>
-                <Property name="icon">url(>skin>common/icons.gif) -0px -160px</Property>
-              </IFrameTab>
-            </TabControl>
+            <IFrame>
+              <Property name="path">home/news2</Property>
+            </IFrame>
           </Children>
         </Portlet>
         <Portlet>
@@ -365,7 +360,7 @@ view.id('diaJob').hide();</ClientEvent>
         </Portlet>
         <Portlet>
           <Property name="column">1</Property>
-          <Property name="height">408</Property>
+          <Property name="height">363</Property>
           <Property name="closeable">false</Property>
           <Property name="caption">p1</Property>
           <Property name="showCaptionBar">false</Property>
@@ -504,28 +499,21 @@ dsFlightrestrict.flushAsync();</ClientEvent>
                     <RowNumColumn/>
                     <DataColumn name="fname">
                       <Property name="property">fname</Property>
-                      <Property name="width">150</Property>
                     </DataColumn>
                     <DataColumn name="begindate">
                       <Property name="property">begindate</Property>
-                      <Property name="width">80</Property>
                     </DataColumn>
                     <DataColumn name="isaffect">
                       <Property name="property">isaffect</Property>
-                      <Property name="width">80</Property>
-                      <Property name="align">center</Property>
                     </DataColumn>
                     <DataColumn name="maincontent">
                       <Property name="property">maincontent</Property>
-                      <Property name="width">250</Property>
                     </DataColumn>
                     <DataColumn name="major">
                       <Property name="property">major</Property>
-                      <Property name="width">150</Property>
                     </DataColumn>
                     <DataColumn>
                       <Property name="property">miji</Property>
-                      <Property name="align">center</Property>
                       <Editor/>
                     </DataColumn>
                   </DataGrid>
@@ -600,12 +588,6 @@ statisticjiaci.flushAsync();</ClientEvent>
                             </Property>
                             <Property name="dataSet">statisticjiaci</Property>
                             <Property name="title">百分比</Property>
-                            <Property name="dataLabels">
-                              <Property name="enabled">true</Property>
-                              <Property name="hideOnOverflow">false</Property>
-                              <Property name="color">black</Property>
-                              <Property name="labelPadding">-20</Property>
-                            </Property>
                           </Column>
                         </Series>
                       </Chart>
@@ -684,6 +666,7 @@ if(cur){&#xD;
           <Property name="height">300</Property>
           <Property name="closeable">false</Property>
           <Property name="showCaptionBar">true</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -260px -20px</Property>
           <Children>
             <BlockView id="blockView2" layoutConstraint="anchorLeft:container;left:50%">
               <ClientEvent name="onCreate">self.set(&quot;renderer&quot;, new dorado.widget.blockview.ImageBlockRenderer({&#xD;
@@ -761,8 +744,9 @@ else if(current.value == &quot;文件上传&quot;){&#xD;
         <Portlet>
           <Property name="caption">常用资源下载</Property>
           <Property name="column">2</Property>
-          <Property name="height">673</Property>
+          <Property name="height">630</Property>
           <Property name="closeable">false</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -140px -280px</Property>
           <Children/>
         </Portlet>
       </Portlets>

@@ -8,8 +8,10 @@
       <Property name="background">url(images/home/main.jpg) top repeat-x</Property>
     </Property>
     <Property name="styleSheetFile">view/home.css</Property>
-    <SplitPanel>
+    <SplitPanel layoutConstraint="center ">
       <Property name="direction">top</Property>
+      <Property name="width">1920</Property>
+      <Property name="height">1057</Property>
       <MainControl>
         <IFrame id="iFrame">
           <Property name="path">view.index.d</Property>
@@ -17,11 +19,9 @@
       </MainControl>
       <SideControl>
         <Panel layout="anchor">
-          <Property name="height">100</Property>
           <Property name="contentOverflow">hidden</Property>
           <Property name="border">none</Property>
           <Property name="background">url(images/home/header.jpg) top repeat-x</Property>
-          <Property name="width">100%</Property>
           <Buttons/>
           <Children>
             <Container layoutConstraint="anchorLeft:container;left:10;top:5">

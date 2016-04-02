@@ -1,17 +1,17 @@
 @charset "utf-8";
 /*slider*/
-.slider_box{margin:0 auto 0 auto;height:320px;overflow:hidden;position:relative;width:640px;} 
+.slider_box{margin:0 auto 0 auto;height:320px;overflow:hidden;position:relative;width:427px;float:left;background:url(../../images/bg_simple.gif) top left no-repeat;} 
 .mask{height:80px;overflow:hidden;background:#000;opacity:0.7;filter:alpha(opacity:70);width:100%;position:absolute;left:0;bottom:0;z-index:1;border-top:solid 2px #ddd;}
 .silder_con{overflow:hidden;position:absolute;}
-.silder_panel{width:640px;height:320px;overflow:hidden;float:left;position:relative;}
-.silder_panel img{width:640px;height:320px;display:block;overflow:hidden;overflow:hidden}
-.silder_nav li{float:left;padding:0px;border:1px solid #fff;margin:6px;display:inline;position:relative;}
+.silder_panel{width:427px;height:320px;overflow:hidden;float:left;position:relative;}
+.silder_panel img{width:427px;height:320px;display:block;overflow:hidden;overflow:hidden}
+.silder_nav li{float:left;padding:0px;border:1px solid #fff;margin:4px;display:inline;position:relative;}
 .silder_nav li.current{border:3px solid #7acf39;margin:37px 4px;}
-.silder_nav li,.silder_nav img{display:block;width:80px;height:40px;margin-bottom:2px;overflow:hidden;}
+.silder_nav li,.silder_nav img{display:block;width:50px;height:38px;margin-bottom:2px;overflow:hidden;}
 .slider_box a.prev,.slider_box a.next{display:block;width:45px;height:100px;line-height:999em;overflow:hidden;z-indent:9;position:absolute;cursor:pointer;margin:85px 0 0 0;background:url(../images/silder_btn.gif) no-repeat;}
 .slider_box a.prev{left:0;background-position:left 0;}
 .slider_box a.next{right:0;background-position:right 0;} 
-.silder_intro{position:absolute;left:30;bottom:0;z-index:9;width:640px;height:80px;overflow:hidden;color:#fff;padding-left:5px;}
+.silder_intro{position:absolute;left:30;bottom:0;z-index:9;width:427px;height:80px;overflow:hidden;color:#fff;padding-left:5px;}
 .silder_intro p{font-size:16px;font-weight:bold;margin:5px 0 5px 0;height:22px;line-height:22px;text-align:center;}
-.dec{float:right;height:100px;width:605px;bottom:-10px;right:0;overflow:hidden;z-index:9;position:absolute;}
+.dec{float:right;height:100px;width:392px;bottom:-10px;right:0;overflow:hidden;z-index:9;position:absolute;}
 .dec li{margin-top:45px;float:left;display:inline;}

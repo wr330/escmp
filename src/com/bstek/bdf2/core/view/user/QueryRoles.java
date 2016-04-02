@@ -3,7 +3,9 @@ package com.bstek.bdf2.core.view.user;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 import org.hibernate.Session;
@@ -58,5 +60,25 @@ public class QueryRoles extends HibernateDao{
 			session.close();
 		}
 	}
+	/**
+	 * 添加校验，判断角色名称唯一
+	 */
+	@Expose
+	public String roleIsExists(String id, String name) {
+		String hql = "select count(*) from " + Role.class.getName()
+				+ " u where u.name = :name";
+		Map<String, Object> parameterMap = new HashMap<String, Object>();
+		parameterMap.put("name", name);
+		if (id != null) {
+			hql += " and u.id != :id";
+			parameterMap.put("id", id);
+		}
+		int count = this.queryForInt(hql, parameterMap);
 
+		String returnStr = null;
+		if (count > 0) {
+			returnStr = "此编号已存在！";
+		}
+		return returnStr;
+	}
 }
