@@ -135,7 +135,7 @@ dropDown.close(name);</ClientEvent>
             <Property name="tipProperty">description</Property>
             <Property name="labelProperty">name</Property>
             <Property name="recursive">true</Property>
-            <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
+            <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
             <Property name="autoCheckChildren">true</Property>
             <Property name="expandLevel">4</Property>
           </BindingConfig>
@@ -335,6 +335,12 @@ if(cur){&#xD;
                 </Property>
                 <Property name="dataSet">statisticjiaci</Property>
                 <Property name="title">百分比</Property>
+                <Property name="dataLabels">
+                  <Property name="hideOnOverflow">false</Property>
+                  <Property name="enabled">true</Property>
+                  <Property name="color">black</Property>
+                  <Property name="labelPadding">-20</Property>
+                </Property>
               </Column>
             </Series>
           </Chart>

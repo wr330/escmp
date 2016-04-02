@@ -766,7 +766,7 @@ Sfstatistic.set(&quot;parameter&quot;,{&#xD;
 );&#xD;
 Sfstatistic.flushAsync();&#xD;
 view.id('diaShowSfstatistic').show();</ClientEvent>
-                <Property name="caption">飞行信息</Property>
+                <Property name="caption">查看飞行信息</Property>
                 <Property name="tags">Dirty</Property>
               </Button>
             </Container>
@@ -1722,6 +1722,7 @@ view.id(&quot;dsDictionaryGzfs&quot;).flushAsync(function(entitylist){&#xD;
 		var name = entity.get(&quot;name&quot;);&#xD;
 		var box = new dorado.widget.CheckBox();&#xD;
 		box.set(&quot;caption&quot;,name);//设置显示标题&#xD;
+		box.set(&quot;readOnly&quot;,true);&#xD;
 		if(gzfs!=null&amp;&amp;gzfs.indexOf(name)!=-1)//包含的选项自动打钩&#xD;
             box.set(&quot;checked&quot;,true);&#xD;
         view.id(&quot;containerGzfs1&quot;).addChild(box);//添加显示组件&#xD;
@@ -1734,6 +1735,7 @@ view.id(&quot;dsDictionaryResult&quot;).flushAsync(function(entitylist){&#xD;
 		var name = entity.get(&quot;name&quot;);&#xD;
 		var box = new dorado.widget.CheckBox();&#xD;
 		box.set(&quot;caption&quot;,name);//设置显示标题&#xD;
+		box.set(&quot;readOnly&quot;,true);&#xD;
 		if(result!=null&amp;&amp;result.indexOf(name)!=-1)//包含的选项自动打钩&#xD;
             box.set(&quot;checked&quot;,true);&#xD;
         view.id(&quot;containerResult1&quot;).addChild(box);//添加显示组件&#xD;
@@ -1746,6 +1748,7 @@ view.id(&quot;dsDictionaryOrigin&quot;).flushAsync(function(entitylist){&#xD;
 		var name = entity.get(&quot;name&quot;);&#xD;
 		var box = new dorado.widget.CheckBox();&#xD;
 		box.set(&quot;caption&quot;,name);//设置显示标题&#xD;
+		box.set(&quot;readOnly&quot;,true);&#xD;
 		if(laiyuan!=null&amp;&amp;laiyuan.indexOf(name)!=-1)//包含的选项自动打钩&#xD;
             box.set(&quot;checked&quot;,true);&#xD;
         view.id(&quot;containerLaiyuan1&quot;).addChild(box);//添加显示组件&#xD;
@@ -1758,6 +1761,7 @@ view.id(&quot;dsDictionaryDutyType&quot;).flushAsync(function(entitylist){&#xD;
 		var name = entity.get(&quot;name&quot;);&#xD;
 		var box = new dorado.widget.CheckBox();&#xD;
 		box.set(&quot;caption&quot;,name);//设置显示标题&#xD;
+		box.set(&quot;readOnly&quot;,true);&#xD;
 		if(type!=null&amp;&amp;type.indexOf(name)!=-1)//包含的选项自动打钩&#xD;
             box.set(&quot;checked&quot;,true);&#xD;
         view.id(&quot;containerType1&quot;).addChild(box);//添加显示组件&#xD;
@@ -1770,6 +1774,7 @@ view.id(&quot;dsDictionaryType&quot;).flushAsync(function(entitylist){&#xD;
 		var name = entity.get(&quot;name&quot;);&#xD;
 		var box = new dorado.widget.CheckBox();&#xD;
 		box.set(&quot;caption&quot;,name);//设置显示标题&#xD;
+		box.set(&quot;readOnly&quot;,true);&#xD;
 		if(judge!=null&amp;&amp;judge.indexOf(name)!=-1)//包含的选项自动打钩&#xD;
             box.set(&quot;checked&quot;,true);&#xD;
         view.id(&quot;containerJudge1&quot;).addChild(box);//添加显示组件&#xD;
@@ -1810,6 +1815,7 @@ view.id(&quot;dsDictionaryFoundOpp&quot;).flushAsync(function(entitylist){&#xD;
 		//if(name != &quot;飞行中&quot;){&#xD;
 		var box = new dorado.widget.CheckBox();&#xD;
 		box.set(&quot;caption&quot;,name);//设置显示标题&#xD;
+		box.set(&quot;readOnly&quot;,true);&#xD;
 		if(foundopp!=null&amp;&amp;foundopp.indexOf(name)!=-1)//包含的选项自动打钩&#xD;
             box.set(&quot;checked&quot;,true);&#xD;
         view.id(&quot;containerFoundopp1&quot;).addChild(box);//添加显示组件&#xD;
@@ -1823,6 +1829,7 @@ view.id(&quot;dsDictionaryDeal&quot;).flushAsync(function(entitylist){&#xD;
 		var name = entity.get(&quot;name&quot;);&#xD;
 		var box = new dorado.widget.CheckBox();&#xD;
 		box.set(&quot;caption&quot;,name);//设置显示标题&#xD;
+		box.set(&quot;readOnly&quot;,true);&#xD;
 		if(deal!=null&amp;&amp;deal.indexOf(name)!=-1)//包含的选项自动打钩&#xD;
             box.set(&quot;checked&quot;,true);&#xD;
         view.id(&quot;containerDeal1&quot;).addChild(box);//添加显示组件&#xD;
@@ -2113,7 +2120,7 @@ Sfstatistic.set(&quot;parameter&quot;,{&#xD;
 );&#xD;
 Sfstatistic.flushAsync();&#xD;
 view.id('diaShowSfstatistic').show();</ClientEvent>
-                <Property name="caption">飞行信息</Property>
+                <Property name="caption">查看飞行信息</Property>
                 <Property name="tags">Dirty1</Property>
               </Button>
             </Container>

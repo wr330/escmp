@@ -94,17 +94,17 @@ if(NodeType==&quot;flight&quot;){&#xD;
           <BindingConfig>
             <Property name="labelProperty">label</Property>
             <Property name="expandLevel">1</Property>
-            <Property name="icon"> url(>skin>common/icons.gif) -220px -80px</Property>
+            <Property name="icon">url(>skin>common/icons.gif) -260px -40px</Property>
             <Property name="name">label</Property>
             <BindingConfig>
               <Property name="labelProperty">ftypename</Property>
               <Property name="name">name</Property>
               <Property name="childrenProperty">categories</Property>
               <Property name="expandLevel">1</Property>
-              <Property name="icon"> url(>skin>common/icons.gif) -220px -80px</Property>
+              <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
               <BindingConfig>
                 <Property name="childrenProperty">fpici</Property>
-                <Property name="icon"> url(>skin>common/icons.gif) -240px -160px</Property>
+                <Property name="icon">url(>skin>common/icons.gif) -200px -80px</Property>
                 <Property name="labelProperty">piciName</Property>
                 <Property name="name">pname</Property>
                 <Property name="expandLevel">1</Property>
@@ -112,7 +112,7 @@ if(NodeType==&quot;flight&quot;){&#xD;
                   <Property name="childrenProperty">fighterinfo</Property>
                   <Property name="labelProperty">outfactoryno</Property>
                   <Property name="name">flight</Property>
-                  <Property name="icon"> url(>skin>common/icons.gif) -20px -100px</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
                 </BindingConfig>
               </BindingConfig>
             </BindingConfig>
@@ -379,7 +379,7 @@ select(this.get(&quot;#dTFtypes.nodes&quot;));</ClientEvent>
                 <BindingConfig>
                   <Property name="labelProperty">label</Property>
                   <Property name="expandLevel">1</Property>
-                  <Property name="icon"> url(>skin>common/icons.gif) -220px -80px</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -260px -40px</Property>
                   <Property name="name">label</Property>
                   <Property name="checkable">true</Property>
                   <BindingConfig>
@@ -387,11 +387,11 @@ select(this.get(&quot;#dTFtypes.nodes&quot;));</ClientEvent>
                     <Property name="name">name</Property>
                     <Property name="childrenProperty">categories</Property>
                     <Property name="expandLevel">1</Property>
-                    <Property name="icon"> url(>skin>common/icons.gif) -220px -80px</Property>
+                    <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
                     <Property name="checkable">true</Property>
                     <BindingConfig>
                       <Property name="childrenProperty">fpici</Property>
-                      <Property name="icon"> url(>skin>common/icons.gif) -240px -160px</Property>
+                      <Property name="icon">url(>skin>common/icons.gif) -200px -80px</Property>
                       <Property name="labelProperty">piciName</Property>
                       <Property name="name">pname</Property>
                       <Property name="expandLevel">1</Property>
@@ -400,7 +400,7 @@ select(this.get(&quot;#dTFtypes.nodes&quot;));</ClientEvent>
                         <Property name="childrenProperty">fighterinfo</Property>
                         <Property name="labelProperty">outfactoryno</Property>
                         <Property name="name">flight</Property>
-                        <Property name="icon"> url(>skin>common/icons.gif) -20px -100px</Property>
+                        <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
                         <Property name="checkable">true</Property>
                       </BindingConfig>
                     </BindingConfig>
@@ -524,7 +524,7 @@ select(this.get(&quot;#dTFtypes2.nodes&quot;));</ClientEvent>
                 <BindingConfig>
                   <Property name="labelProperty">label</Property>
                   <Property name="expandLevel">1</Property>
-                  <Property name="icon"> url(>skin>common/icons.gif) -220px -80px</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -260px -40px</Property>
                   <Property name="name">label</Property>
                   <Property name="checkable">true</Property>
                   <BindingConfig>
@@ -532,11 +532,11 @@ select(this.get(&quot;#dTFtypes2.nodes&quot;));</ClientEvent>
                     <Property name="name">name</Property>
                     <Property name="childrenProperty">categories</Property>
                     <Property name="expandLevel">1</Property>
-                    <Property name="icon"> url(>skin>common/icons.gif) -220px -80px</Property>
+                    <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
                     <Property name="checkable">true</Property>
                     <BindingConfig>
                       <Property name="childrenProperty">fpici</Property>
-                      <Property name="icon"> url(>skin>common/icons.gif) -240px -160px</Property>
+                      <Property name="icon">url(>skin>common/icons.gif) -200px -80px</Property>
                       <Property name="labelProperty">piciName</Property>
                       <Property name="name">pname</Property>
                       <Property name="expandLevel">1</Property>
@@ -545,7 +545,7 @@ select(this.get(&quot;#dTFtypes2.nodes&quot;));</ClientEvent>
                         <Property name="childrenProperty">fighterinfo</Property>
                         <Property name="labelProperty">outfactoryno</Property>
                         <Property name="name">flight</Property>
-                        <Property name="icon"> url(>skin>common/icons.gif) -20px -100px</Property>
+                        <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
                         <Property name="checkable">true</Property>
                       </BindingConfig>
                     </BindingConfig>

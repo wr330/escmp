@@ -1,5 +1,6 @@
 package com.buaa.fly.outlineexecution.pr;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -189,20 +190,22 @@ public class OutlineexecutionPR {
 		//int i = 0;
 		for (Subject item : dataItems) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
-			Float statistic = (float) 0;
+			float statistic = 0;
 			if (item.getOutlineexecution().size() > 0
 					&& item.getOutlineexecution() != null)
 				if (item.getOutlineexecution().get(0).getShijijiaci() != null) {
-					statistic = (float) (item.getOutlineexecution().get(0)
+					statistic = (float)(item.getOutlineexecution().get(0)
 							.getShijijiaci())
-							/ (float) (item.getOutlineexecution().get(0)
+							/ (float)(item.getOutlineexecution().get(0)
 									.getOutlineFlights());
 				} else {
-					statistic = (float) (sfstatisticDao.querynum(item.getOid()))
-							/ (float) (item.getOutlineexecution().get(0)
+					statistic = (float)(sfstatisticDao.querynum(item.getOid()))
+							/ (float)(item.getOutlineexecution().get(0)
 									.getOutlineFlights());
 				}
-			map.put("price", statistic * 100);
+			DecimalFormat df = new DecimalFormat("#.00");
+	        String price = df.format(statistic*100);
+			map.put("price", price);
 			map.put("name", item.getName());
 			list.add(map);
 			//i++;

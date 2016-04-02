@@ -183,7 +183,7 @@ view.get(&quot;#chooseSubject&quot;).close();&#xD;
               <Property name="tipProperty">description</Property>
               <Property name="labelProperty">name</Property>
               <Property name="recursive">true</Property>
-              <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
+              <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
               <Property name="expandLevel">3</Property>
               <Property name="childrenProperty">children</Property>
               <Property name="checkable">true</Property>
@@ -386,7 +386,7 @@ if(value){&#xD;
               <Property name="tipProperty">description</Property>
               <Property name="labelProperty">name</Property>
               <Property name="recursive">true</Property>
-              <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
+              <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
               <Property name="checkable">true</Property>
               <Property name="autoCheckChildren">true</Property>
               <Property name="expandLevel">4</Property>

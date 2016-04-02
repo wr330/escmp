@@ -446,17 +446,17 @@ if(NodeType==&quot;flight&quot;){&#xD;
                         <BindingConfig>
                           <Property name="labelProperty">label</Property>
                           <Property name="expandLevel">1</Property>
-                          <Property name="icon"> url(>skin>common/icons.gif) -220px -80px</Property>
+                          <Property name="icon">url(>skin>common/icons.gif) -260px -40px</Property>
                           <Property name="name">label</Property>
                           <BindingConfig>
                             <Property name="labelProperty">ftypename</Property>
                             <Property name="name">name</Property>
                             <Property name="childrenProperty">categories</Property>
                             <Property name="expandLevel">1</Property>
-                            <Property name="icon"> url(>skin>common/icons.gif) -220px -80px</Property>
+                            <Property name="icon">url(>skin>common/icons.gif) -160px -80px</Property>
                             <BindingConfig>
                               <Property name="childrenProperty">fpici</Property>
-                              <Property name="icon"> url(>skin>common/icons.gif) -240px -160px</Property>
+                              <Property name="icon">url(>skin>common/icons.gif) -200px -80px</Property>
                               <Property name="labelProperty">piciName</Property>
                               <Property name="name">pname</Property>
                               <Property name="expandLevel">1</Property>
@@ -464,7 +464,7 @@ if(NodeType==&quot;flight&quot;){&#xD;
                                 <Property name="childrenProperty">fighterinfo</Property>
                                 <Property name="labelProperty">outfactoryno</Property>
                                 <Property name="name">flight</Property>
-                                <Property name="icon"> url(>skin>common/icons.gif) -20px -100px</Property>
+                                <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
                               </BindingConfig>
                             </BindingConfig>
                           </BindingConfig>
@@ -504,21 +504,28 @@ dsFlightrestrict.flushAsync();</ClientEvent>
                     <RowNumColumn/>
                     <DataColumn name="fname">
                       <Property name="property">fname</Property>
+                      <Property name="width">150</Property>
                     </DataColumn>
                     <DataColumn name="begindate">
                       <Property name="property">begindate</Property>
+                      <Property name="width">80</Property>
                     </DataColumn>
                     <DataColumn name="isaffect">
                       <Property name="property">isaffect</Property>
+                      <Property name="width">80</Property>
+                      <Property name="align">center</Property>
                     </DataColumn>
                     <DataColumn name="maincontent">
                       <Property name="property">maincontent</Property>
+                      <Property name="width">250</Property>
                     </DataColumn>
                     <DataColumn name="major">
                       <Property name="property">major</Property>
+                      <Property name="width">150</Property>
                     </DataColumn>
                     <DataColumn>
                       <Property name="property">miji</Property>
+                      <Property name="align">center</Property>
                       <Editor/>
                     </DataColumn>
                   </DataGrid>
@@ -547,7 +554,7 @@ dsFlightrestrict.flushAsync();</ClientEvent>
                     <Property name="parameter">
                       <Entity>
                         <Property name="parentnode"></Property>
-                        <Property name="ftypename"/>
+                        <Property name="ftypename"></Property>
                       </Entity>
                     </Property>
                     <Property name="loadMode">manual</Property>
@@ -593,6 +600,12 @@ statisticjiaci.flushAsync();</ClientEvent>
                             </Property>
                             <Property name="dataSet">statisticjiaci</Property>
                             <Property name="title">百分比</Property>
+                            <Property name="dataLabels">
+                              <Property name="enabled">true</Property>
+                              <Property name="hideOnOverflow">false</Property>
+                              <Property name="color">black</Property>
+                              <Property name="labelPadding">-20</Property>
+                            </Property>
                           </Column>
                         </Series>
                       </Chart>
