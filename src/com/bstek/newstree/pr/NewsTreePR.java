@@ -18,10 +18,12 @@ import com.bstek.dorado.annotation.Expose;
 import com.bstek.dorado.data.entity.EntityState;
 import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.data.entity.FilterType;
+import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 import com.bstek.newstree.common.NrsConst;
 import com.bstek.newstree.domain.NewsTree;
 import com.bstek.newstree.service.NewsService;
+import com.bstek.uflo.console.view.ProcessMaintain;
 import com.opensymphony.oscache.base.Cache;
 import com.opensymphony.oscache.web.ServletCacheAdministrator;
 /**
@@ -138,7 +140,10 @@ public class NewsTreePR {
 				newsService.modifyNews(newsTree);
 				flushOscache(newsTree);
 			} else if (entityState.equals(EntityState.DELETED)) {
-				
+		        this.newsService.deleteNews(newsTree.getNodeId());
+			    if(!newsTree.getStatu().equals("save"))
+				    newsService.deleteUFLO(newsTree.getNodeId());//删除相应流程实例
+				flushOscache(newsTree);
 			}
 
 		}
@@ -311,5 +316,10 @@ public class NewsTreePR {
 	@Expose
 	public Boolean canDelete(){
 		return ContextHolder.getLoginUser().isAdministrator();
+	}
+	//获取部内动态和新闻报道下的新闻
+	@DataProvider
+	public void queryNews(Page<NewsTree> page,String username,Criteria criteria)throws Exception{
+		newsService.queryNews(page, username,criteria);
 	}
 }

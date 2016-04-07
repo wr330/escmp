@@ -8,25 +8,48 @@
     <PropertyDef name="nodeTitle">
       <Property name="dataType">String</Property>
       <Property name="required">true</Property>
+      <Property name="label">标题</Property>
     </PropertyDef>
     <PropertyDef name="nodeContent">
       <Property name="dataType">String</Property>
-      <Property name="required">false</Property>
+      <Property name="label">内容</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="parentId">
       <Property name="dataType">String</Property>
+      <Property name="label">新闻类别</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="value">新闻报道</Property>
+              <Property name="key">classic_news</Property>
+            </Entity>
+            <Entity>
+              <Property name="value">部内动态（图片新闻）</Property>
+              <Property name="key">hot_news</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+      <Property name="required">true</Property>
+      <Property name="defaultValue">classic_news</Property>
     </PropertyDef>
     <PropertyDef name="createDate">
       <Property name="dataType">Date</Property>
+      <Property name="label">创建日期</Property>
     </PropertyDef>
     <PropertyDef name="updateDate">
       <Property name="dataType">Date</Property>
+      <Property name="label">更新日期</Property>
     </PropertyDef>
     <PropertyDef name="createUser">
       <Property name="dataType">String</Property>
+      <Property name="label">创建人</Property>
     </PropertyDef>
     <PropertyDef name="updateUser">
       <Property name="dataType">String</Property>
+      <Property name="label">更新人</Property>
     </PropertyDef>
     <PropertyDef name="statu">
       <Property name="dataType">String</Property>
@@ -34,19 +57,19 @@
         <Property name="mapValues">
           <Collection>
             <Entity>
-              <Property name="label">待审批</Property>
+              <Property name="label">草稿</Property>
               <Property name="value">save</Property>
             </Entity>
             <Entity>
-              <Property name="label">主任审批</Property>
+              <Property name="label">主任审核</Property>
               <Property name="value">managerApproving</Property>
             </Entity>
             <Entity>
-              <Property name="label">部长审批</Property>
+              <Property name="label">部长审定</Property>
               <Property name="value">ministerApproving</Property>
             </Entity>
             <Entity>
-              <Property name="label">驳回修改</Property>
+              <Property name="label">驳回</Property>
               <Property name="value">reject</Property>
             </Entity>
             <Entity>
@@ -58,7 +81,7 @@
         <Property name="keyProperty">value</Property>
         <Property name="valueProperty">label</Property>
       </Property>
-      <Property name="required">true</Property>
+      <Property name="label">状态</Property>
     </PropertyDef>
     <PropertyDef name="isleaf">
       <Property name="dataType">String</Property>
@@ -82,7 +105,8 @@
     <PropertyDef name="orderDate">
       <Property name="dataType">DateTime</Property>
       <Property name="displayFormat">Y-m-d H:i:s</Property>
-      <Property name="required">true</Property>
+      <Property name="label">发布时间</Property>
+      <Property name="required">false</Property>
     </PropertyDef>
     <PropertyDef name="icon">
       <Property name="dataType">String</Property>
@@ -90,6 +114,7 @@
     <PropertyDef name="nodeCode">
       <Property name="dataType">String</Property>
       <Property name="required">true</Property>
+      <Property name="label">编码</Property>
       <Validator type="ajax">
         <ClientEvent name="beforeExecute">var newsEntity = arg.entity;&#xD;
 var newsId = newsEntity.get(&quot;nodeId&quot;);&#xD;
@@ -97,7 +122,6 @@ arg.parameter = {id:newsId,validateData:arg.data};</ClientEvent>
         <Property name="service">newsTreePR#checkNodeCode</Property>
       </Validator>
     </PropertyDef>
-    <PropertyDef name="propertyDef1"/>
   </DataType>
   <DataType name="DataCode" meta="x:135;y:-1">
     <Property name="matchType">com.bstek.datadictionary.domain.DataCode</Property>

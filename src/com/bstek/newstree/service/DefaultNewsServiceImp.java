@@ -3,16 +3,21 @@ package com.bstek.newstree.service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import com.bstek.bdf2.core.context.ContextHolder;
+import com.bstek.bdf2.core.orm.ParseResult;
 import com.bstek.bdf2.core.orm.jdbc.JdbcDao;
 //import com.bstek.bdf.pagination.JdbcDaoSupportExt;
 //import com.bstek.bdf.pagination.Pagination;
 
+import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 import com.bstek.newstree.domain.NewsTree;
 /**
@@ -269,13 +274,59 @@ public class DefaultNewsServiceImp extends JdbcDao implements NewsService {
 	}
 	//由newsId获取taskId
 	public int getTaskIdBynewsId(String newsId) throws Exception {
-		String sql = " SELECT ID_ FROM UFLO_TASK WHERE BUSINESS_ID_ = '"+ newsId + "'";
+		String sql = " SELECT max(ID_) FROM UFLO_TASK WHERE BUSINESS_ID_ = '"+ newsId + "'";
 		return this.getJdbcTemplate().queryForInt(sql);
 	}
 	//设置Task表的description
 	public void updateTask(String businessId, String description) throws Exception {
-		 String sql = "update UFLO_TASK set DESCRIPTION_= ? where BUSINESS_ID_= ? ";
-       this.getJdbcTemplate().update(sql, new Object[] { description, businessId });
+		 String sql = "update UFLO_TASK set DESCRIPTION_= ? where BUSINESS_ID_= ?;" +
+		 		"update UFLO_HIS_TASK set DESCRIPTION_= ? where BUSINESS_ID_= ?";
+       this.getJdbcTemplate().update(sql, new Object[] { description, businessId, description, businessId });
 		
+	}
+	//删除稿件相关流程实例
+	public void deleteUFLO(String businessId) throws Exception {
+		 String sql = "delete from UFLO_TASK where BUSINESS_ID_= ?;" +
+		 		"delete from UFLO_PROCESS_INSTANCE where BUSINESS_ID_= ?";
+       this.getJdbcTemplate().update(sql, new Object[] { businessId,businessId });
+		
+	}
+	//获取部内动态和新闻报道下的新闻
+	@SuppressWarnings({ "deprecation" })
+	public void queryNews(Page<NewsTree> page,String username,Criteria criteria) throws Exception {
+		Map<String, Object> args = new HashMap<String, Object>();
+		StringBuffer coreSql = new StringBuffer(" from nrs_news_tree where parent_id in('classic_news','hot_news') ");
+		if (null != username) {//我的稿件
+			coreSql.append("and create_user=:username");
+			args.put("username",username);
+		}
+		else{//稿件汇总
+			coreSql.append("and statu='publish'");
+		}
+		if (null != criteria) {
+			ParseResult result = this.parseCriteria(criteria, true, null);
+			if (null != result) {
+				String sql1 = result.getAssemblySql().toString();
+				sql1 = sql1.replaceAll("nodeTitle ", "node_Title ");//防止查询报错
+				sql1 = sql1.replaceAll("parentId ", "parent_Id ");
+				sql1 = sql1.replaceAll("createUser ", "create_User ");
+				sql1 = sql1.replaceAll("createDate ", "create_Date ");
+				sql1 = sql1.replaceAll("orderDate ", "order_Date ");
+				sql1 = sql1.replaceAll("nodeCode ", "node_Code ");
+				coreSql.append(" and " + sql1);
+				Collection<String> keys = result.getValueMap().keySet();
+				for(String key : keys){
+					args.put(key.toLowerCase(), result.getValueMap().get(key));//key转换成小写,防止查询报错
+				}
+			}
+		}
+		String sql = "select * " + coreSql.toString() + " order by(case statu when 'managerApproving' then 1 when 'ministerApproving' then 2 when 'publish' then 4 else 0 end),order_date desc";
+		NamedParameterJdbcTemplate namedjdbcTemplate=this.getNamedParameterJdbcTemplate();
+		String querySql=this.getDialect(this.getJdbcTemplate()).getPaginationSql(sql, page.getPageNo(), page.getPageSize());
+		String countSql="select count(*) " + coreSql.toString();
+		countSql = countSql.toLowerCase();//转换成全小写
+		page.setEntities((Collection<NewsTree>)namedjdbcTemplate.query(querySql,args,new NewsRowMapper()));
+	    page.setEntityCount(namedjdbcTemplate.queryForInt(countSql,args));				
+		//this.pagingQuery(page, sql, new NewsRowMapper(), args);
 	}
 }

@@ -53,7 +53,7 @@ if(currentTab.get(&quot;name&quot;) == &quot;todo&quot;){&#xD;
       <Property name="creationType">com.bstek.uflo.model.task.Task</Property>
       <PropertyDef name="id">
         <Property name="dataType">long</Property>
-        <Property name="label">ID</Property>
+        <Property name="label">任务ID</Property>
       </PropertyDef>
       <PropertyDef name="taskName">
         <Property name="dataType">String</Property>
@@ -61,7 +61,7 @@ if(currentTab.get(&quot;name&quot;) == &quot;todo&quot;){&#xD;
       </PropertyDef>
       <PropertyDef name="assignee">
         <Property name="dataType">String</Property>
-        <Property name="label">所有者</Property>
+        <Property name="label">处理人</Property>
       </PropertyDef>
       <PropertyDef name="owner">
         <Property name="dataType">String</Property>
@@ -158,7 +158,7 @@ if(currentTab.get(&quot;name&quot;) == &quot;todo&quot;){&#xD;
       <Property name="creationType">com.bstek.uflo.model.HistoryTask</Property>
       <PropertyDef name="id">
         <Property name="dataType">long</Property>
-        <Property name="label">ID</Property>
+        <Property name="label">任务ID</Property>
       </PropertyDef>
       <PropertyDef name="nodeName">
         <Property name="dataType">String</Property>
@@ -188,7 +188,7 @@ if(currentTab.get(&quot;name&quot;) == &quot;todo&quot;){&#xD;
       </PropertyDef>
       <PropertyDef name="assignee">
         <Property name="dataType">String</Property>
-        <Property name="label">领取人</Property>
+        <Property name="label">处理人</Property>
       </PropertyDef>
       <PropertyDef name="historyProcessInstanceId">
         <Property name="dataType">long</Property>
@@ -197,38 +197,23 @@ if(currentTab.get(&quot;name&quot;) == &quot;todo&quot;){&#xD;
         <Property name="dataType">long</Property>
         <Property name="label">流程实例ID</Property>
       </PropertyDef>
+      <PropertyDef name="opinion">
+        <Property name="dataType">String</Property>
+        <Property name="label">意见</Property>
+      </PropertyDef>
     </DataType>
   </Model>
   <View>
     <ClientEvent name="onCreate">self.taskAlarmTime = 0;&#xD;
 &#xD;
-window.closeProcessDialog=function(type){&#xD;
+window.closeProcessDialog=function(){&#xD;
 	view.get(&quot;#dialogCompleteTask&quot;).hide();&#xD;
 	var dataSetTodoTask = view.get(&quot;#dataSetTodoTask&quot;);&#xD;
-	var dataSetExpiredTask = view.get(&quot;#dataSetExpiredTask&quot;);&#xD;
-	if(type == 1){&#xD;
-		dataSetTodoTask.flushAsync();&#xD;
-	}else if(type == 2){&#xD;
-		dataSetExpiredTask.flushAsync();&#xD;
-	}else{&#xD;
-		dataSetTodoTask.flushAsync();&#xD;
-		dataSetExpiredTask.flushAsync();&#xD;
-	}&#xD;
+	dataSetTodoTask.flushAsync();&#xD;
 }</ClientEvent>
     <DataSet id="dataSetTodoTask">
       <Property name="dataType">[dataTypeTask]</Property>
-      <Property name="pageSize">20</Property>
-      <Property name="dataProvider">uflo.todoTaskMaintain#loadTodoTask</Property>
-    </DataSet>
-    <DataSet id="dataSetParticipatingTask">
-      <Property name="dataType">[dataTypeTask]</Property>
-      <Property name="pageSize">20</Property>
-      <Property name="dataProvider">uflo.todoTaskMaintain#loadParticipatingTask</Property>
-    </DataSet>
-    <DataSet id="dataSetExpiredTask">
-      <Property name="dataType">[dataTypeTask]</Property>
-      <Property name="pageSize">20</Property>
-      <Property name="dataProvider">uflo.todoTaskMaintain#loadExpiredTask</Property>
+      <Property name="dataProvider">taskMaintain#loadTask</Property>
     </DataSet>
     <DataSet id="dataSetHistoryTask">
       <Property name="dataType">[dataTypeHistoryTask]</Property>
@@ -236,41 +221,12 @@ window.closeProcessDialog=function(type){&#xD;
       <Property name="dataProvider">uflo.todoTaskMaintain#loadHistoryTask</Property>
     </DataSet>
     <TabControl id="tabControlTodoTask">
-      <ClientEvent name="onTabChange">var name = arg.newTab.get(&quot;name&quot;);&#xD;
-if(name == &quot;todo&quot;){&#xD;
-	view.id(&quot;ajaxActionGetTaskAlarmTime&quot;).execute(function(time){&#xD;
-		view.taskAlarmTime = time;&#xD;
-	});&#xD;
-};&#xD;
-</ClientEvent>
       <Property name="height">100%</Property>
       <ControlTab>
         <Property name="caption">待处理的任务</Property>
         <Property name="name">todo</Property>
         <Container>
           <ToolBar>
-            <DataPilot>
-              <Property name="dataSet">dataSetTodoTask</Property>
-              <Property name="itemCodes">pages,pageSize</Property>
-            </DataPilot>
-            <ToolBarButton id="toolBarButtonRelease">
-              <ClientEvent name="onClick">var current = view.id(&quot;dataSetTodoTask&quot;).getData(&quot;#&quot;);&#xD;
-if(!current){&#xD;
-	dorado.MessageBox.alert(&quot;没有任务可释放！&quot;);&#xD;
-}&#xD;
-else&#xD;
-    dorado.MessageBox.confirm(&quot;您确定要释放当前任务吗？&quot;,function(){&#xD;
-	var dataSetTodoTask = view.get(&quot;#dataSetTodoTask&quot;);&#xD;
-	view.get(&quot;#ajaxActionReleaseTask&quot;).set(&quot;parameter&quot;,dataSetTodoTask.getData(&quot;#.id&quot;)).execute(function(){&#xD;
-		dorado.MessageBox.alert(&quot;释放成功！&quot;);&#xD;
-		dataSetTodoTask.flushAsync();&#xD;
-	});&#xD;
-})&#xD;
-</ClientEvent>
-              <Property name="caption">释放任务</Property>
-              <Property name="icon">url(>skin>common/icons.gif) -260px -80px</Property>
-              <Property name="visible">true</Property>
-            </ToolBarButton>
             <ToolBarButton id="buttonProcess">
               <ClientEvent name="onClick">var current = view.id(&quot;dataSetTodoTask&quot;).getData(&quot;#&quot;);&#xD;
 if(!current){&#xD;
@@ -298,8 +254,19 @@ diagram.show();</ClientEvent>
               <Property name="caption">流程图</Property>
               <Property name="icon">url(skin>common/icons.gif) -300px -20px</Property>
             </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">view.id('dgTodo').set(&quot;showFilterBar&quot;,!view.id('dgTodo').get(&quot;showFilterBar&quot;));</ClientEvent>
+              <Property name="caption">自定义查询</Property>
+              <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">var dataSetTodoTask = this.get(&quot;#dataSetTodoTask&quot;);&#xD;
+dataSetTodoTask.flushAsync();</ClientEvent>
+              <Property name="caption">刷新</Property>
+              <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+            </ToolBarButton>
           </ToolBar>
-          <DataGrid>
+          <DataGrid id="dgTodo">
             <ClientEvent name="onRenderRow">var dueDate = arg.data.get(&quot;duedate&quot;);&#xD;
 var dueDateTime = 0;&#xD;
 if(dueDate){&#xD;
@@ -377,9 +344,9 @@ if(message != &quot;&quot;){&#xD;
 </ClientEvent>
             <Property name="dataSet">dataSetTodoTask</Property>
             <Property name="readOnly">true</Property>
-            <Property name="showFilterBar">true</Property>
             <Property name="sortMode">serverSide</Property>
             <Property name="filterMode">serverSide</Property>
+            <RowNumColumn/>
             <DataColumn name="id">
               <Property name="property">id</Property>
               <Property name="width">60</Property>
@@ -388,9 +355,7 @@ if(message != &quot;&quot;){&#xD;
             </DataColumn>
             <DataColumn name="taskName">
               <Property name="property">taskName</Property>
-            </DataColumn>
-            <DataColumn name="description">
-              <Property name="property">description</Property>
+              <Property name="width">100</Property>
             </DataColumn>
             <DataColumn>
               <Property name="property">assignee</Property>
@@ -398,26 +363,17 @@ if(message != &quot;&quot;){&#xD;
               <Property name="width">80</Property>
               <Editor/>
             </DataColumn>
-            <DataColumn>
-              <Property name="property">state</Property>
-              <Property name="name">state</Property>
-              <Property name="width">80</Property>
-            </DataColumn>
-            <DataColumn name="createDate">
-              <Property name="property">createDate</Property>
-              <Property name="width">150</Property>
+            <DataColumn name="description">
+              <Property name="property">description</Property>
             </DataColumn>
             <DataColumn>
               <Property name="property">type</Property>
               <Property name="name">type</Property>
               <Property name="width">80</Property>
-              <Property name="visible">false</Property>
             </DataColumn>
-            <DataColumn name="duedate">
-              <Property name="property">duedate</Property>
-              <Property name="width">120</Property>
-              <Property name="filterable">false</Property>
-              <Property name="visible">false</Property>
+            <DataColumn name="createDate">
+              <Property name="property">createDate</Property>
+              <Property name="width">150</Property>
             </DataColumn>
           </DataGrid>
           <Dialog id="dialogCompleteTask">
@@ -433,179 +389,6 @@ if(message != &quot;&quot;){&#xD;
             </Children>
             <Tools/>
           </Dialog>
-          <AjaxAction id="ajaxActionGetTaskAlarmTime">
-            <Property name="service">uflo.todoTaskMaintain#getTaskAlarmTime</Property>
-          </AjaxAction>
-          <AjaxAction id="ajaxActionReleaseTask">
-            <Property name="service">uflo.todoTaskMaintain#releaseTask</Property>
-            <Property name="successMessage">操作成功</Property>
-          </AjaxAction>
-        </Container>
-      </ControlTab>
-      <ControlTab>
-        <Property name="caption">待领取的任务</Property>
-        <Property name="name">competitive</Property>
-        <Container>
-          <ToolBar>
-            <DataPilot>
-              <Property name="dataSet">dataSetParticipatingTask</Property>
-              <Property name="itemCodes">pages,pageSize</Property>
-            </DataPilot>
-            <ToolBarButton id="buttonClaim">
-              <ClientEvent name="onClick">var taskId=view.id(&quot;dataSetParticipatingTask&quot;).getData(&quot;#.id&quot;);&#xD;
-if(!taskId){&#xD;
-	dorado.MessageBox.alert(&quot;请先选中要完成的任务&quot;);&#xD;
-	return;&#xD;
-}&#xD;
-var action=view.id(&quot;ajaxActionClaimTask&quot;);&#xD;
-action.set(&quot;parameter&quot;,taskId);&#xD;
-dorado.MessageBox.confirm(&quot;真的要领取当前任务吗？&quot;,function(){&#xD;
-	action.execute(function(){&#xD;
-		view.id(&quot;dataSetParticipatingTask&quot;).flushAsync();&#xD;
-	});&#xD;
-});</ClientEvent>
-              <Property name="caption">领取任务</Property>
-              <Property name="icon">url(skin>common/icons.gif) -240px -100px</Property>
-            </ToolBarButton>
-            <ToolBarButton id="toolBarButtonParticipatingDiagram">
-              <ClientEvent name="onClick">var id=view.id(&quot;dataSetParticipatingTask&quot;).getData(&quot;#.id&quot;);&#xD;
-if(!id){&#xD;
-	dorado.MessageBox.alert(&quot;请先选中一条任务&quot;);&#xD;
-	return;&#xD;
-}&#xD;
-var diagram=view.id(&quot;ufloProcessDiagramDisplayByTask&quot;);&#xD;
-diagram.set(&quot;requestParameterValue&quot;,id)&#xD;
-diagram.show();</ClientEvent>
-              <Property name="caption">流程图</Property>
-              <Property name="icon">url(skin>common/icons.gif) -300px -20px</Property>
-            </ToolBarButton>
-          </ToolBar>
-          <DataGrid>
-            <Property name="dataSet">dataSetParticipatingTask</Property>
-            <Property name="readOnly">true</Property>
-            <Property name="showFilterBar">true</Property>
-            <Property name="filterMode">serverSide</Property>
-            <Property name="sortMode">serverSide</Property>
-            <DataColumn name="id">
-              <Property name="property">id</Property>
-              <Property name="width">60</Property>
-              <Property name="filterable">false</Property>
-            </DataColumn>
-            <DataColumn name="taskName">
-              <Property name="property">taskName</Property>
-            </DataColumn>
-            <DataColumn name="description">
-              <Property name="property">description</Property>
-            </DataColumn>
-            <DataColumn>
-              <Property name="property">assignee</Property>
-              <Property name="name">assignee</Property>
-              <Property name="width">80</Property>
-              <Editor/>
-            </DataColumn>
-            <DataColumn name="createDate">
-              <Property name="property">createDate</Property>
-              <Property name="width">120</Property>
-            </DataColumn>
-            <DataColumn name="duedate">
-              <Property name="property">duedate</Property>
-              <Property name="width">120</Property>
-              <Property name="filterable">false</Property>
-              <Property name="visible">false</Property>
-            </DataColumn>
-          </DataGrid>
-          <AjaxAction id="ajaxActionClaimTask">
-            <Property name="service">uflo.todoTaskMaintain#claimTask</Property>
-            <Property name="successMessage">操作成功</Property>
-          </AjaxAction>
-        </Container>
-      </ControlTab>
-      <ControlTab>
-        <Property name="caption">过期任务</Property>
-        <Property name="name">expired</Property>
-        <Property name="visible">false</Property>
-        <Container>
-          <ToolBar>
-            <DataPilot>
-              <Property name="dataSet">dataSetExpiredTask</Property>
-              <Property name="itemCodes">pages,pageSize</Property>
-            </DataPilot>
-            <ToolBarButton id="buttonExpiredProcess">
-              <ClientEvent name="onClick">var current = view.id(&quot;dataSetExpiredTask&quot;).getData(&quot;#&quot;);&#xD;
-if(!current){&#xD;
-	dorado.MessageBox.alert(&quot;没有任务可处理！&quot;);&#xD;
-}&#xD;
-var url = current.get(&quot;url&quot;);&#xD;
-var taskId = current.get(&quot;id&quot;);&#xD;
-var processInstanceId = current.get(&quot;processInstanceId&quot;);&#xD;
-var processId = current.get(&quot;processId&quot;);&#xD;
-var businessId = current.get(&quot;businessId&quot;);&#xD;
-view.id(&quot;iFrameProcessTask&quot;).set(&quot;path&quot;,url + &quot;?taskId=&quot; + taskId + &quot;&amp;processInstanceId=&quot; + processInstanceId + &quot;&amp;processId=&quot; + processId + &quot;&amp;businessId=&quot; + businessId + &quot;&amp;type=&quot; + 2);&#xD;
-view.id(&quot;dialogCompleteTask&quot;).show();</ClientEvent>
-              <Property name="caption">处理任务</Property>
-              <Property name="icon">url(skin>common/icons.gif) -20px 0px</Property>
-            </ToolBarButton>
-            <ToolBarButton id="toolBarButtonExpiredDiagram">
-              <ClientEvent name="onClick">var id=view.id(&quot;dataSetExpiredTask&quot;).getData(&quot;#.id&quot;);&#xD;
-if(!id){&#xD;
-	dorado.MessageBox.alert(&quot;请先选中一条任务&quot;);&#xD;
-	return;&#xD;
-}&#xD;
-var diagram=view.id(&quot;ufloProcessDiagramDisplayByTask&quot;);&#xD;
-diagram.set(&quot;requestParameterValue&quot;,id)&#xD;
-diagram.show();</ClientEvent>
-              <Property name="caption">流程图</Property>
-              <Property name="icon">url(skin>common/icons.gif) -300px -20px</Property>
-            </ToolBarButton>
-          </ToolBar>
-          <DataGrid>
-            <Property name="dataSet">dataSetExpiredTask</Property>
-            <Property name="readOnly">true</Property>
-            <Property name="showFilterBar">true</Property>
-            <Property name="sortMode">serverSide</Property>
-            <Property name="filterMode">serverSide</Property>
-            <DataColumn name="id">
-              <Property name="property">id</Property>
-              <Property name="width">60</Property>
-              <Property name="filterable">false</Property>
-            </DataColumn>
-            <DataColumn name="taskName">
-              <Property name="property">taskName</Property>
-            </DataColumn>
-            <DataColumn name="description">
-              <Property name="property">description</Property>
-              <Property name="filterable">false</Property>
-            </DataColumn>
-            <DataColumn>
-              <Property name="property">type</Property>
-              <Property name="name">type</Property>
-              <Property name="filterable">false</Property>
-              <Property name="width">80</Property>
-            </DataColumn>
-            <DataColumn>
-              <Property name="property">state</Property>
-              <Property name="name">state</Property>
-              <Property name="filterable">false</Property>
-              <Property name="width">40</Property>
-            </DataColumn>
-            <DataColumn>
-              <Property name="property">assignee</Property>
-              <Property name="name">assignee</Property>
-              <Property name="filterable">false</Property>
-              <Property name="width">80</Property>
-              <Editor/>
-            </DataColumn>
-            <DataColumn name="createDate">
-              <Property name="property">createDate</Property>
-              <Property name="filterable">false</Property>
-              <Property name="width">120</Property>
-            </DataColumn>
-            <DataColumn name="duedate">
-              <Property name="property">duedate</Property>
-              <Property name="width">120</Property>
-              <Property name="filterable">false</Property>
-            </DataColumn>
-          </DataGrid>
         </Container>
       </ControlTab>
       <ControlTab>
@@ -615,7 +398,6 @@ diagram.show();</ClientEvent>
           <ToolBar>
             <DataPilot>
               <Property name="dataSet">dataSetHistoryTask</Property>
-              <Property name="itemCodes">pages,pageSize</Property>
             </DataPilot>
             <ToolBarButton id="toolBarButtonHistoryDiagram">
               <ClientEvent name="onClick">var id=view.id(&quot;dataSetHistoryTask&quot;).getData(&quot;#.processId&quot;);&#xD;
@@ -629,13 +411,24 @@ diagram.show();</ClientEvent>
               <Property name="caption">流程图</Property>
               <Property name="icon">url(skin>common/icons.gif) -300px -20px</Property>
             </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">view.id('dgHistory').set(&quot;showFilterBar&quot;,!view.id('dgHistory').get(&quot;showFilterBar&quot;));</ClientEvent>
+              <Property name="caption">自定义查询</Property>
+              <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">var dataSetHistoryTask = this.get(&quot;#dataSetHistoryTask&quot;);&#xD;
+dataSetHistoryTask.flushAsync();</ClientEvent>
+              <Property name="caption">刷新</Property>
+              <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+            </ToolBarButton>
           </ToolBar>
-          <DataGrid>
+          <DataGrid id="dgHistory">
             <Property name="dataSet">dataSetHistoryTask</Property>
             <Property name="readOnly">true</Property>
-            <Property name="showFilterBar">true</Property>
             <Property name="filterMode">serverSide</Property>
             <Property name="sortMode">serverSide</Property>
+            <RowNumColumn/>
             <DataColumn name="id">
               <Property name="property">id</Property>
               <Property name="filterable">false</Property>
@@ -644,13 +437,17 @@ diagram.show();</ClientEvent>
             </DataColumn>
             <DataColumn name="taskName">
               <Property name="property">taskName</Property>
+              <Property name="width">80</Property>
+            </DataColumn>
+            <DataColumn name="assignee">
+              <Property name="property">assignee</Property>
+              <Property name="width">100</Property>
             </DataColumn>
             <DataColumn name="description">
               <Property name="property">description</Property>
             </DataColumn>
-            <DataColumn name="assignee">
-              <Property name="property">assignee</Property>
-              <Property name="width">80</Property>
+            <DataColumn name="opinion">
+              <Property name="property">opinion</Property>
             </DataColumn>
             <DataColumn name="createDate">
               <Property name="property">createDate</Property>

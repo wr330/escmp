@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <ClientEvent name="onCreate">dorado.ueditor.registerMode(&quot;custom&quot;, [&#xD;
+'Undo','Redo','Bold','Italic','Underline','StrikeThrough','Superscript','Subscript'&#xD;
+,'PastePlain','Indent','Outdent','Horizontal'&#xD;
+]);&#xD;
+self.checkButton = function(){&#xD;
+	var cur=view.id('dataSetNews').getData('#');&#xD;
+    this.set(&quot;^tag1.disabled&quot;, cur &amp;&amp; cur.get('statu')!='save' &amp;&amp; cur.get('statu')!='reject');&#xD;
+    this.set(&quot;#tbApplyPublish.visible&quot;,cur &amp;&amp; cur.get('statu')=='save');&#xD;
+    this.set(&quot;#tbFlowChart.visible&quot;,cur &amp;&amp; cur.get('statu')!='save' &amp;&amp; cur.get('statu')!='publish');&#xD;
+}&#xD;
+</ClientEvent>
+    <DataSet id="dataSetNews">
+      <ClientEvent name="onLoadData">view.checkButton();</ClientEvent>
+      <Property name="dataType">[dataTypeNews]</Property>
+      <Property name="loadMode">lazy</Property>
+      <Property name="dataProvider">newsTreePR#queryNews</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="username">${loginUser.getUsername()}</Property>
+        </Entity>
+      </Property>
+    </DataSet>
+    <DataSet id="dataSetUsers">
+      <Property name="dataType">[User]</Property>
+      <Property name="loadMode">lazy</Property>
+      <Property name="dataProvider">newsPublishService#loadUsers</Property>
+    </DataSet>
+    <UfloProcessDiagram id="ufloProcessDiagram1">
+      <Property name="requestParameterType">taskId</Property>
+    </UfloProcessDiagram>
+    <UpdateAction id="uaNews">
+      <Property name="successMessage">保存数据成功</Property>
+      <Property name="dataResolver">newsTreePR#saveAllNews</Property>
+      <UpdateItem>
+        <Property name="dataSet">dataSetNews</Property>
+        <Property name="dataPath">!DIRTY_TREE</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <AjaxAction id="applyPublishAction">
+      <Property name="service">newsPublishService#applyPublish</Property>
+      <Property name="parameter"></Property>
+    </AjaxAction>
+    <AjaxAction id="flowChartAction">
+      <ClientEvent name="beforeExecute">var cur=view.id('dataSetNews').getData('#');&#xD;
+self.set(&quot;parameter&quot;,cur.get(&quot;nodeId&quot;));</ClientEvent>
+      <ClientEvent name="onSuccess">var taskId = self.get(&quot;returnValue&quot;);&#xD;
+this.get(&quot;#ufloProcessDiagram1&quot;).set(&quot;requestParameterValue&quot;,taskId);&#xD;
+view.id(&quot;ufloProcessDiagram1&quot;).show();</ClientEvent>
+      <Property name="service">newsPublishService#getTaskId</Property>
+    </AjaxAction>
+    <ToolBar>
+      <DataPilot>
+        <Property name="dataSet">dataSetNews</Property>
+      </DataPilot>
+      <ToolBarButton>
+        <ClientEvent name="onClick">	 var date = new Date();
+	 view.id('dataSetNews').getData().insert({
+				icon: '',
+				nodeTitle: '',
+				nodeContent: '',
+				statu: 'save',
+				isleaf: 'true',
+				nodeCode:date.getFullYear().toString()+date.getMonth().toString()+date.getDay().toString()+date.getHours().toString()+date.getMinutes().toString()+date.getSeconds().toString()
+			});
+	view.id(&quot;bOk&quot;).set(&quot;disabled&quot;,false);
+	view.id(&quot;afNews&quot;).set(&quot;readOnly&quot;,false);
+	var dialog=view.id('diaNews');
+	dialog.set(&quot;caption&quot;,&quot;新增稿件&quot;);
+	dialog.show();	</ClientEvent>
+        <Property name="caption">新增</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">
+	var cur=view.id('dataSetNews').getData('#');
+	if (cur) {
+	    view.id(&quot;bOk&quot;).set(&quot;disabled&quot;,false);
+	    view.id(&quot;afNews&quot;).set(&quot;readOnly&quot;,false);
+		var dialog=view.id('diaNews');
+		dialog.set(&quot;caption&quot;,&quot;修改稿件&quot;);
+		dialog.show();
+	}</ClientEvent>
+        <Property name="caption">修改</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+        <Property name="tags">tag1</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">    var cur = this.id(&quot;dataSetNews&quot;).getData(&quot;#&quot;);
+    var deleteAjaxAction = this.id(&quot;ajaxActionDelete&quot;);
+    if (cur) {
+	    var statu = cur.get(&quot;statu&quot;);
+        if(statu == &quot;save&quot; || statu == &quot;reject&quot;){
+            var ua=view.id('uaNews');
+	        dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+		        cur.remove();
+		        ua.execute();
+				view.checkButton();
+	        }); 
+		}
+		else
+             dorado.MessageBox.alert(&quot;当前新闻已申请发布，不允许删除！&quot;);
+    }</ClientEvent>
+        <Property name="caption">删除</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+        <Property name="tags">tag1</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">
+	var cur=view.id('dataSetNews').getData('#');
+	if (cur) {
+	    view.id(&quot;bOk&quot;).set(&quot;disabled&quot;,true);
+	    view.id(&quot;afNews&quot;).set(&quot;readOnly&quot;,true);
+		var dialog=view.id('diaNews');
+		dialog.set(&quot;caption&quot;,&quot;浏览稿件&quot;);
+		dialog.show();
+	}</ClientEvent>
+        <Property name="caption">浏览</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -40px -100px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">view.id('dgNews').set(&quot;showFilterBar&quot;,!view.id('dgNews').get(&quot;showFilterBar&quot;));</ClientEvent>
+        <Property name="caption">自定义查询</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var dataSetNews = this.get(&quot;#dataSetNews&quot;);&#xD;
+dataSetNews.flushAsync();</ClientEvent>
+        <Property name="caption">刷新</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+      </ToolBarButton>
+      <ToolBarButton id="tbApplyPublish">
+        <ClientEvent name="onClick">var cur=view.id('dataSetNews').getData('#');&#xD;
+if (cur) &#xD;
+	this.id(&quot;dialog&quot;).show();</ClientEvent>
+        <Property name="caption">申请发布</Property>
+        <Property name="visible">false</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -0px -120px</Property>
+      </ToolBarButton>
+      <ToolBarButton id="tbFlowChart">
+        <Property name="caption">查看流程图</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -100px -100px</Property>
+        <Property name="visible">false</Property>
+        <Property name="action">flowChartAction</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid id="dgNews">
+      <ClientEvent name="onCurrentChange">view.checkButton();</ClientEvent>
+      <Property name="dataSet">dataSetNews</Property>
+      <Property name="filterMode">serverSide</Property>
+      <Property name="readOnly">true</Property>
+      <Property name="rowHeight">22</Property>
+      <Property name="dataType">dataTypeNews</Property>
+      <RowNumColumn/>
+      <DataColumn name="nodeTitle">
+        <Property name="property">nodeTitle</Property>
+        <Property name="width">500</Property>
+      </DataColumn>
+      <DataColumn name="parentId">
+        <Property name="property">parentId</Property>
+      </DataColumn>
+      <DataColumn name="statu">
+        <ClientEvent name="onRenderCell">var statu = arg.data.get(&quot;statu&quot;);&#xD;
+arg.dom.style.color = (statu=='save' || statu == 'reject') ? &quot;red&quot; : &quot;&quot;;&#xD;
+arg.processDefault = true;</ClientEvent>
+        <Property name="property">statu</Property>
+      </DataColumn>
+      <DataColumn name="createUser">
+        <Property name="property">createUser</Property>
+      </DataColumn>
+      <DataColumn name="createDate">
+        <Property name="property">createDate</Property>
+      </DataColumn>
+      <DataColumn name="orderDate">
+        <Property name="property">orderDate</Property>
+      </DataColumn>
+      <DataColumn name="nodeCode">
+        <Property name="property">nodeCode</Property>
+      </DataColumn>
+    </DataGrid>
+    <Dialog id="diaNews">
+      <ClientEvent name="onClose">	var cur=view.id('dataSetNews').getData('#');&#xD;
+	cur.cancel();&#xD;
+	view.id('diaNews').hide();</ClientEvent>
+      <ClientEvent name="onHide">view.checkButton();</ClientEvent>
+      <Property name="width">80%</Property>
+      <Property name="maximizeable">true</Property>
+      <Buttons>
+        <Button id="bOk">
+          <ClientEvent name="onClick">view.id('uaNews').execute(function(){
+    view.id('diaNews').hide();
+});</ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">	var cur=view.id('dataSetNews').getData('#');
+	cur.cancel();
+	view.id('diaNews').hide();</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <HtmlContainer>
+          <ClientEvent name="onCreate">self.getDom().innerHTML = '&lt;p style=\'   background-color: #FFFFA2;'+&#xD;
+'border-color: #CAA700;border-style: solid;border-width: 1px;'+&#xD;
+'margin: 0;padding: 4px;\'>'+&#xD;
+'为了页面展示,请设置图片宽度小于500px;统一字体为宋体,大小为14px'+&#xD;
+'&lt;/p>';&#xD;
+</ClientEvent>
+          <Property name="height">650</Property>
+          <Property name="contentOverflow">hidden</Property>
+          <AutoForm id="afNews">
+            <Property name="dataSet">dataSetNews</Property>
+            <Property name="dataPath">#</Property>
+            <Property name="cols">*</Property>
+            <Property name="dataType">dataTypeNews</Property>
+            <AutoFormElement>
+              <Property name="name">parentId</Property>
+              <Property name="property">parentId</Property>
+              <Property name="editable">false</Property>
+              <Editor/>
+            </AutoFormElement>
+            <AutoFormElement>
+              <Property name="name">nodeTitle</Property>
+              <Property name="property">nodeTitle</Property>
+              <Property name="name">nodeTitle</Property>
+              <Editor/>
+            </AutoFormElement>
+            <AutoFormElement>
+              <Property name="name">nodeContent</Property>
+              <Property name="property">nodeContent</Property>
+              <Property name="ignored">false</Property>
+              <Property name="name">nodeContent</Property>
+              <Property name="height">550</Property>
+              <Editor>
+                <UEditor>
+                  <Property name="defaultFontSize">14px</Property>
+                </UEditor>
+              </Editor>
+            </AutoFormElement>
+          </AutoForm>
+        </HtmlContainer>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="dialog">
+      <Property name="width">500</Property>
+      <Property name="height">350</Property>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="draggable">true</Property>
+      <Property name="droppable">true</Property>
+      <Property name="caption">选择审核处理人</Property>
+      <Property name="minimizeable">false</Property>
+      <Property name="maximizeable">true</Property>
+      <Property name="closeable">true</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">var user = this.id(&quot;dataSetUsers&quot;).getData(&quot;#&quot;);&#xD;
+if(user){&#xD;
+	var cur=view.id('dataSetNews').getData('#');&#xD;
+	var value = cur.get(&quot;nodeId&quot;,&quot;always&quot;);&#xD;
+	var action = this.id(&quot;applyPublishAction&quot;);&#xD;
+	var parameter = {&#xD;
+	    newsId:value,&#xD;
+	    userName:user.get(&quot;username&quot;)&#xD;
+    };&#xD;
+	action.set(&quot;parameter&quot;,parameter).execute(function(){&#xD;
+        action.set(&quot;successMessage&quot;,&quot;已成功启动流程申请，请等候审批&quot;);&#xD;
+		cur.set(&quot;statu&quot;,&quot;managerApproving&quot;);&#xD;
+		view.id('uaNews').execute(function(){&#xD;
+			view.checkButton();&#xD;
+            view.id('dialog').hide();&#xD;
+        });&#xD;
+	});&#xD;
+}&#xD;
+else{&#xD;
+	dorado.MessageBox.alert(&quot;请选择审批处理人！&quot;);&#xD;
+}</ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var dialog = this.id(&quot;dialog&quot;);&#xD;
+dialog.hide();</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <Container>
+          <DataGrid>
+            <Property name="dataSet">dataSetUsers</Property>
+            <Property name="readOnly">true</Property>
+            <DataColumn>
+              <Property name="name">username</Property>
+              <Property name="property">username</Property>
+              <Editor/>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">cname</Property>
+              <Property name="property">cname</Property>
+              <Editor/>
+            </DataColumn>
+          </DataGrid>
+        </Container>
+      </Children>
+      <Tools/>
+    </Dialog>
+  </View>
+</ViewConfig>

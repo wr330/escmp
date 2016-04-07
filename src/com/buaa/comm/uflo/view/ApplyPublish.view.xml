@@ -3,48 +3,6 @@
   <Arguments/>
   <Context/>
   <Model>
-    <DataType name="News">
-      <Property name="creationType">com.bstek.newstree.domain.NewsTree</Property>
-      <PropertyDef name="nodeId">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="nodeTitle">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="nodeContent">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="parentId">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="createDate">
-        <Property name="dataType">Date</Property>
-      </PropertyDef>
-      <PropertyDef name="updateDate">
-        <Property name="dataType">Date</Property>
-      </PropertyDef>
-      <PropertyDef name="createUser">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="updateUser">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="statu">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="isleaf">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="orderDate">
-        <Property name="dataType">Date</Property>
-      </PropertyDef>
-      <PropertyDef name="icon">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="nodeCode">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-    </DataType>
     <DataType name="dataTypeHistoryTask">
       <Property name="creationType">com.bstek.uflo.model.HistoryTask</Property>
       <PropertyDef name="id">
@@ -103,51 +61,6 @@
         <Property name="dataType">String</Property>
       </PropertyDef>
     </DataType>
-    <DataType name="dataTypeUsers">
-      <Property name="creationType">com.bstek.bdf2.core.model.DefaultUser</Property>
-      <PropertyDef name="username">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="password">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="salt">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="cname">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="ename">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="male">
-        <Property name="dataType">boolean</Property>
-      </PropertyDef>
-      <PropertyDef name="enabled">
-        <Property name="dataType">boolean</Property>
-      </PropertyDef>
-      <PropertyDef name="administrator">
-        <Property name="dataType">boolean</Property>
-      </PropertyDef>
-      <PropertyDef name="birthday">
-        <Property name="dataType">Date</Property>
-      </PropertyDef>
-      <PropertyDef name="mobile">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="address">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="email">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="companyId">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="createDate">
-        <Property name="dataType">Date</Property>
-      </PropertyDef>
-    </DataType>
   </Model>
   <View>
     <UfloProcessDiagram id="ufloProcessDiagram1">
@@ -157,7 +70,7 @@
     <DataSet id="dataSetNews">
       <Property name="parameter">${request.getParameter(&quot;businessId&quot;)}</Property>
       <Property name="dataProvider">newsPublishService#loadNews</Property>
-      <Property name="dataType">News</Property>
+      <Property name="dataType">dataTypeNews</Property>
     </DataSet>
     <DataSet id="dataSetHistoryTask">
       <Property name="dataType">[dataTypeHistoryTask]</Property>
@@ -165,7 +78,7 @@
       <Property name="parameter">${request.getParameter(&quot;taskId&quot;)}</Property>
     </DataSet>
     <DataSet id="dataSetUsers">
-      <Property name="dataType">[$dataTypeUser]</Property>
+      <Property name="dataType">[User]</Property>
       <Property name="loadMode">lazy</Property>
       <Property name="dataProvider">newsPublishService#loadUsers</Property>
       <Property name="parameter">${request.getParameter(&quot;userName&quot;)}</Property>
@@ -173,9 +86,10 @@
     <TabControl>
       <ControlTab>
         <Property name="caption">新闻编辑</Property>
-        <AutoForm id="autoForm1" layoutConstraint="center">
+        <AutoForm id="autoForm1">
           <Property name="dataSet">dataSetNews</Property>
-          <Property name="dataType">News</Property>
+          <Property name="dataType">dataTypeNews</Property>
+          <Property name="cols">*</Property>
           <ToolBar layoutConstraint="colSpan:2">
             <Button>
               <ClientEvent name="onClick">this.id(&quot;dialog&quot;).show();</ClientEvent>
@@ -189,41 +103,62 @@
               <Property name="icon"> url(>skin>common/icons.gif) -100px -100px</Property>
             </Button>
           </ToolBar>
-          <AutoFormElement layoutConstraint="colSpan:2">
+          <AutoFormElement>
             <Property name="property">nodeTitle</Property>
-            <Property name="dataSet">dataSetNews</Property>
-            <Property name="label">标题</Property>
-            <Property name="editorType">TextEditor</Property>
             <Property name="name">nodeTitle</Property>
             <Editor/>
           </AutoFormElement>
-          <AutoFormElement layoutConstraint="colSpan:2">
+          <AutoFormElement>
             <Property name="property">nodeContent</Property>
-            <Property name="dataSet">dataSetNews</Property>
-            <Property name="label">内容</Property>
             <Property name="name">nodeContent</Property>
+            <Property name="height">550</Property>
             <Editor>
-              <UEditor id="uEditor1">
-                <Property name="dataSet">dataSetNews</Property>
-                <Property name="property">nodeContent</Property>
-                <Property name="height">600</Property>
+              <UEditor>
+                <Property name="defaultFontSize">14px</Property>
               </UEditor>
             </Editor>
           </AutoFormElement>
-          <Dialog id="dialog">
-            <Property name="width">500</Property>
-            <Property name="height">350</Property>
-            <Property name="center">true</Property>
-            <Property name="modal">true</Property>
-            <Property name="draggable">true</Property>
-            <Property name="droppable">true</Property>
-            <Property name="caption">选择审核处理人</Property>
-            <Property name="minimizeable">false</Property>
-            <Property name="maximizeable">true</Property>
-            <Property name="closeable">true</Property>
-            <Buttons>
-              <Button>
-                <ClientEvent name="onClick">var user = this.id(&quot;dataSetUsers&quot;).getData(&quot;#&quot;);&#xD;
+        </AutoForm>
+      </ControlTab>
+      <ControlTab>
+        <Property name="caption">审批历史</Property>
+        <DataGrid>
+          <Property name="dataSet">dataSetHistoryTask</Property>
+          <Property name="readOnly">true</Property>
+          <RowNumColumn/>
+          <DataColumn name="taskName">
+            <Property name="property">taskName</Property>
+            <Property name="width">80</Property>
+          </DataColumn>
+          <DataColumn name="assignee">
+            <Property name="property">assignee</Property>
+            <Property name="width">80</Property>
+          </DataColumn>
+          <DataColumn name="opinion">
+            <Property name="property">opinion</Property>
+          </DataColumn>
+          <DataColumn name="endDate">
+            <Property name="property">endDate</Property>
+            <Property name="width">120</Property>
+            <Property name="displayFormat">Y-m-d H:i:s</Property>
+          </DataColumn>
+        </DataGrid>
+      </ControlTab>
+    </TabControl>
+    <Dialog id="dialog">
+      <Property name="width">500</Property>
+      <Property name="height">350</Property>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="draggable">true</Property>
+      <Property name="droppable">true</Property>
+      <Property name="caption">选择审核处理人</Property>
+      <Property name="minimizeable">false</Property>
+      <Property name="maximizeable">true</Property>
+      <Property name="closeable">true</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">var user = this.id(&quot;dataSetUsers&quot;).getData(&quot;#&quot;);&#xD;
 if(user){&#xD;
 	var entity = this.id(&quot;dataSetNews&quot;).getData(&quot;#&quot;);&#xD;
 	var value = entity.getText(&quot;nodeId&quot;,&quot;always&quot;);&#xD;
@@ -245,61 +180,35 @@ else{&#xD;
 	dorado.MessageBox.alert(&quot;请选择审核处理人！&quot;);&#xD;
 }&#xD;
 </ClientEvent>
-                <Property name="caption">确定</Property>
-              </Button>
-              <Button>
-                <ClientEvent name="onClick">var dialog = this.id(&quot;dialog&quot;);&#xD;
+          <Property name="caption">确定</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var dialog = this.id(&quot;dialog&quot;);&#xD;
 dialog.hide();&#xD;
 </ClientEvent>
-                <Property name="caption">取消</Property>
-              </Button>
-            </Buttons>
-            <Children>
-              <Container>
-                <DataGrid>
-                  <Property name="dataSet">dataSetUsers</Property>
-                  <Property name="readOnly">true</Property>
-                  <DataColumn>
-                    <Property name="name">username</Property>
-                    <Property name="property">username</Property>
-                    <Editor/>
-                  </DataColumn>
-                  <DataColumn>
-                    <Property name="name">cname</Property>
-                    <Property name="property">cname</Property>
-                    <Editor/>
-                  </DataColumn>
-                </DataGrid>
-              </Container>
-            </Children>
-            <Tools/>
-          </Dialog>
-        </AutoForm>
-      </ControlTab>
-      <ControlTab>
-        <Property name="caption">审批历史</Property>
-        <DataGrid>
-          <Property name="dataSet">dataSetHistoryTask</Property>
-          <Property name="readOnly">true</Property>
-          <DataColumn name="taskName">
-            <Property name="property">taskName</Property>
-            <Property name="width">80</Property>
-          </DataColumn>
-          <DataColumn name="assignee">
-            <Property name="property">assignee</Property>
-            <Property name="width">80</Property>
-          </DataColumn>
-          <DataColumn name="opinion">
-            <Property name="property">opinion</Property>
-          </DataColumn>
-          <DataColumn name="endDate">
-            <Property name="property">endDate</Property>
-            <Property name="width">120</Property>
-            <Property name="displayFormat">Y-m-d H:i:s</Property>
-          </DataColumn>
-        </DataGrid>
-      </ControlTab>
-    </TabControl>
+          <Property name="caption">取消</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <Container>
+          <DataGrid>
+            <Property name="dataSet">dataSetUsers</Property>
+            <Property name="readOnly">true</Property>
+            <DataColumn>
+              <Property name="name">username</Property>
+              <Property name="property">username</Property>
+              <Editor/>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">cname</Property>
+              <Property name="property">cname</Property>
+              <Editor/>
+            </DataColumn>
+          </DataGrid>
+        </Container>
+      </Children>
+      <Tools/>
+    </Dialog>
     <AjaxAction id="ApplyAction">
       <ClientEvent name="onSuccess">//var isSuccess = self.get(&quot;returnValue&quot;);&#xD;
 //if(isSuccess)&#xD;

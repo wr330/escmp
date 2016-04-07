@@ -3,48 +3,6 @@
   <Arguments/>
   <Context/>
   <Model>
-    <DataType name="News">
-      <Property name="creationType">com.bstek.newstree.domain.NewsTree</Property>
-      <PropertyDef name="nodeId">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="nodeTitle">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="nodeContent">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="parentId">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="createDate">
-        <Property name="dataType">Date</Property>
-      </PropertyDef>
-      <PropertyDef name="updateDate">
-        <Property name="dataType">Date</Property>
-      </PropertyDef>
-      <PropertyDef name="createUser">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="updateUser">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="statu">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="isleaf">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="orderDate">
-        <Property name="dataType">Date</Property>
-      </PropertyDef>
-      <PropertyDef name="icon">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="nodeCode">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-    </DataType>
     <DataType name="dataTypeHistoryTask">
       <Property name="creationType">com.bstek.uflo.model.HistoryTask</Property>
       <PropertyDef name="id">
@@ -109,16 +67,6 @@
       <Property name="requestParameterType">taskId</Property>
       <Property name="requestParameterValue">${request.getParameter(&quot;taskId&quot;)}</Property>
     </UfloProcessDiagram>
-    <DataSet id="dataSetNews">
-      <Property name="parameter">${request.getParameter(&quot;businessId&quot;)}</Property>
-      <Property name="dataProvider">newsPublishService#loadNews</Property>
-      <Property name="dataType">News</Property>
-    </DataSet>
-    <DataSet id="dataSetHistoryTask">
-      <Property name="dataType">[dataTypeHistoryTask]</Property>
-      <Property name="dataProvider">newsPublishService#loadHistoryTask</Property>
-      <Property name="parameter">${request.getParameter(&quot;taskId&quot;)}</Property>
-    </DataSet>
     <AutoForm>
       <ToolBar layoutConstraint="colSpan:2">
         <Button>
@@ -145,30 +93,35 @@
         <Editor/>
       </AutoFormElement>
     </AutoForm>
+    <DataSet id="dataSetNews">
+      <Property name="parameter">${request.getParameter(&quot;businessId&quot;)}</Property>
+      <Property name="dataProvider">newsPublishService#loadNews</Property>
+      <Property name="dataType">dataTypeNews</Property>
+    </DataSet>
+    <DataSet id="dataSetHistoryTask">
+      <Property name="dataType">[dataTypeHistoryTask]</Property>
+      <Property name="dataProvider">newsPublishService#loadHistoryTask</Property>
+      <Property name="parameter">${request.getParameter(&quot;taskId&quot;)}</Property>
+    </DataSet>
     <TabControl>
       <ControlTab>
         <Property name="caption">新闻详情</Property>
-        <AutoForm id="autoForm1" layoutConstraint="center">
+        <AutoForm id="autoForm1">
           <Property name="dataSet">dataSetNews</Property>
-          <Property name="dataType">News</Property>
-          <AutoFormElement layoutConstraint="colSpan:2">
+          <Property name="dataType">dataTypeNews</Property>
+          <Property name="cols">*</Property>
+          <AutoFormElement>
             <Property name="property">nodeTitle</Property>
-            <Property name="dataSet">dataSetNews</Property>
-            <Property name="label">标题</Property>
-            <Property name="editorType">TextEditor</Property>
             <Property name="name">nodeTitle</Property>
             <Editor/>
           </AutoFormElement>
-          <AutoFormElement layoutConstraint="colSpan:2">
+          <AutoFormElement>
             <Property name="property">nodeContent</Property>
-            <Property name="dataSet">dataSetNews</Property>
-            <Property name="label">内容</Property>
             <Property name="name">nodeContent</Property>
+            <Property name="height">550</Property>
             <Editor>
-              <UEditor id="uEditor1">
-                <Property name="dataSet">dataSetNews</Property>
-                <Property name="property">nodeContent</Property>
-                <Property name="height">600</Property>
+              <UEditor>
+                <Property name="defaultFontSize">14px</Property>
               </UEditor>
             </Editor>
           </AutoFormElement>
@@ -179,6 +132,7 @@
         <DataGrid>
           <Property name="dataSet">dataSetHistoryTask</Property>
           <Property name="readOnly">true</Property>
+          <RowNumColumn/>
           <DataColumn name="taskName">
             <Property name="property">taskName</Property>
             <Property name="width">80</Property>

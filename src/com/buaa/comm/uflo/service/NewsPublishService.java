@@ -27,6 +27,8 @@ import com.bstek.uflo.query.HistoryTaskQuery;
 import com.bstek.uflo.service.HistoryService;
 import com.bstek.uflo.service.StartProcessInfo;
 import com.bstek.uflo.service.TaskOpinion;
+import com.bstek.uflo.service.TaskService;
+import com.bstek.uflo.utils.EnvironmentUtils;
 
 
 @Component("newsPublishService")
@@ -46,7 +48,6 @@ public class NewsPublishService  extends HibernateDao {
 		this.newsService = newsService;
 	}
 	@Expose
-	@DataResolver
 	//启动发布申请流程
 	public void applyPublish(String newsId,String userName) throws Exception{
 		NewsTree currentNews = newsService.getCurrentNewsById(newsId);
@@ -60,8 +61,8 @@ public class NewsPublishService  extends HibernateDao {
 			//int taskId = newsService.getTaskIdBynewsId(newsId);
 			//taskClient.changeTaskAssignee(Long.valueOf(taskId), userName);
 			newsService.updateTask(newsId, currentNews.getNodeTitle());
-			currentNews.setStatu("managerApproving");
-			newsService.modifyNews(currentNews);
+			//currentNews.setStatu("managerApproving");
+			//newsService.modifyNews(currentNews);
 		}
 	}
 	//选择审核人
@@ -79,23 +80,27 @@ public class NewsPublishService  extends HibernateDao {
 	@Autowired
 	@Qualifier(TaskClient.BEAN_ID)
 	private TaskClient taskClient;
+    @Autowired
+	@Qualifier("uflo.taskService")
+	private TaskService taskService;
+	  
 	@Expose
-	@DataResolver
 	//流程审批处理
 	public Boolean approvePublish(String taskId,String opinion,String newsId,String result,String title,String content) throws Exception{
-		if(result.equals("通过")){
-			Session session = this.getSessionFactory().openSession();
-			try{
-				Task task = (Task)session.get(Task.class, Long.parseLong(taskId));
-				if(task.getTaskName().equals("审核")){
-					ApproverService approverService = new ApproverService();
-					Collection<String> minister = approverService.getMinister(session);
-					if( minister== null || minister.isEmpty())
-						return false;
-				}
-			}finally{
-				session.close();
+		Session session = this.getSessionFactory().openSession();
+		try{
+			Task task = (Task)session.get(Task.class, Long.parseLong(taskId));
+			if(result.equals("通过") && task.getTaskName().equals("审核")){
+				ApproverService approverService = new ApproverService();
+				Collection<String> minister = approverService.getMinister(session);
+				if( minister== null || minister.isEmpty())
+					return false;
 			}
+			else if(task.getTaskName().equals("审定")){//先领取任务
+				taskService.claim(Long.parseLong(taskId), EnvironmentUtils.getEnvironment().getLoginUser());
+			}
+		}finally{
+			session.close();
 		}
 		TaskOpinion taskOpinion = new TaskOpinion(opinion);
 		taskClient.start(Long.valueOf(taskId));
@@ -130,7 +135,6 @@ public class NewsPublishService  extends HibernateDao {
 
 	}
 	@Expose
-	@DataResolver
 	//驳回后重新提交审批
 	public void applyPublish(String taskId,String newsId,String title,String content,String userName) throws Exception{
 		manager = userName;
@@ -159,7 +163,6 @@ public class NewsPublishService  extends HibernateDao {
 	}
 	//查看流程图时获取任务ID
 	@Expose
-	@DataProvider
 	public int getTaskId(String businessId) throws Exception{
 		return newsService.getTaskIdBynewsId(businessId);
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 //import com.bstek.bdf.pagination.Pagination;
+import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 import com.bstek.newstree.domain.NewsTree;
 
@@ -39,4 +40,8 @@ public interface NewsService {
 	public int getTaskIdBynewsId(String newsId) throws Exception;
 	
 	public void updateTask(String taskId, String description) throws Exception;
+	
+	public void deleteUFLO(String businessId) throws Exception;
+	
+	public void queryNews(Page<NewsTree> page,String username,Criteria criteria) throws Exception;
 }
