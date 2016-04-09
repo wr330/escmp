@@ -139,7 +139,6 @@ public class SupportprogramDao extends HibernateBaseDao {
 		Integer year = (Integer)parameter.get("year");
 		String time = year + "/01/01";
 		String time1 = year + "/12/31";
-		//hql+=" and ((u.worktime>='" + time + "' and u.endtime<='" + time1 + "') or (u.worktime<'" + time + "' and u.endtime>'" + time + "') or (u.worktime>='" + time + "' and u.worktime<'" + time1 + "'and u.endtime >'" + time1 + "') or (u.worktime >='" + time + "' and u.worktime < '" + time1 +"'))";
 		hql+=" and ((u.worktime<'" + time + "' and u.endtime>'" + time +  "') or (u.worktime >='" + time + "' and u.worktime < '" + time1 +"'))";
 		return this.query(hql,map);						
 	}

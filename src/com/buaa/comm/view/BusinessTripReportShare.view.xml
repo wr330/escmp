@@ -54,6 +54,12 @@
       </Property>
       <Property name="dataProvider">btReportSharePersonPR#queryBtReportSharePerson</Property>
     </DataSet>
+    <UpdateAction id="uaBtReportSharePerson">
+      <Property name="dataResolver">btReportSharePersonPR#saveBtReportSharePerson</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsBtReportSharePerson</Property>
+      </UpdateItem>
+    </UpdateAction>
     <ToolBar>
       <DataPilot>
         <Property name="itemCodes">pages</Property>
@@ -62,8 +68,19 @@
       </DataPilot>
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsBtReportSharePerson').getData('#');&#xD;
+var dateNow = new Date();&#xD;
 if (cur) {&#xD;
-	view.id('diaSeeBtreport').show();&#xD;
+	if(cur.get(&quot;readStatus&quot;) == 0){&#xD;
+		cur.set(&quot;firstReadTime&quot;,dateNow);&#xD;
+		cur.set(&quot;latelyReadTime&quot;,dateNow);&#xD;
+		cur.set(&quot;readStatus&quot;,1);&#xD;
+	}&#xD;
+	else{&#xD;
+		cur.set(&quot;latelyReadTime&quot;,dateNow);&#xD;
+	}&#xD;
+	view.id('uaBtReportSharePerson').execute(function(){&#xD;
+    	view.id('diaSeeBtreport').show();&#xD;
+    });&#xD;
 }&#xD;
 </ClientEvent>
         <Property name="caption">查看</Property>
@@ -77,12 +94,32 @@ dsBtReportSharePerson.flushAsync();</ClientEvent>
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgBtReportSharePerson">
+      <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;readStatus&quot;);&#xD;
+if(status == 0){&#xD;
+	arg.dom.style.color = &quot;red&quot;;&#xD;
+}&#xD;
+else{&#xD;
+	arg.dom.style.color = &quot;&quot;;&#xD;
+}&#xD;
+arg.processDefault = true;</ClientEvent>
       <Property name="dataSet">dsBtReportSharePerson</Property>
-      <Property name="height">300</Property>
       <Property name="fixedColumnCount">9</Property>
       <Property name="readOnly">true</Property>
       <Property name="rowHeight">22</Property>
       <RowNumColumn/>
+      <DataColumn name="readStatus">
+        <Property name="property">readStatus</Property>
+        <Property name="width">120</Property>
+        <Property name="align">left</Property>
+      </DataColumn>
+      <DataColumn name="firstReadTime">
+        <Property name="property">firstReadTime</Property>
+        <Property name="width">150</Property>
+      </DataColumn>
+      <DataColumn name="latelyReadTime">
+        <Property name="property">latelyReadTime</Property>
+        <Property name="width">150</Property>
+      </DataColumn>
       <DataColumn>
         <Property name="property">btreport.writingPerson</Property>
         <Property name="width">120</Property>
@@ -171,43 +208,8 @@ dsBtReportSharePerson.flushAsync();</ClientEvent>
         <Editor/>
       </DataColumn>
     </DataGrid>
-    <GroupBox>
-      <Property name="caption">附件文档</Property>
-      <Property name="collapseable">false</Property>
-      <Buttons/>
-      <Children>
-        <DataGrid id="dgAppendixdocument">
-          <Property name="readOnly">true</Property>
-          <Property name="dataSet">dsBtReportSharePerson</Property>
-          <Property name="dataPath">#.btreport.appendixdocument</Property>
-          <Property name="height">300</Property>
-          <Property name="filterMode">clientSide</Property>
-          <Property name="showFilterBar">false</Property>
-          <Property name="rowHeight">22</Property>
-          <RowNumColumn/>
-          <DataColumn name="efile">
-            <ClientEvent name="onRenderCell">//显示link&#xD;
-jQuery(arg.dom).empty();&#xD;
-var file = arg.data.get(&quot;efile&quot;); &#xD;
-var oid = view.id('dsBtreport').getData('#').get(&quot;oid&quot;);&#xD;
-var href = &quot;/escmp/upload/Comm_Btreport/&quot; + oid + &quot;/&quot; + file;&#xD;
-jQuery(arg.dom).xCreate({&#xD;
-	tagName:&quot;A&quot;,&#xD;
-	href:href,&#xD;
-	content:arg.data.get(&quot;efile&quot;)&#xD;
-});</ClientEvent>
-            <Property name="property">efile</Property>
-            <Property name="width">300</Property>
-          </DataColumn>
-        </DataGrid>
-      </Children>
-    </GroupBox>
     <Dialog id="diaSeeBtreport">
-      <ClientEvent name="onClose">var cur=view.id('dsBtreport').getData('#');&#xD;
-				cur.cancel();&#xD;
-				view.id('diaBtreport').hide();&#xD;
-				&#xD;
-	&#xD;
+      <ClientEvent name="onClose">&#xD;
 	         </ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
@@ -215,22 +217,11 @@ jQuery(arg.dom).xCreate({&#xD;
       <Property name="caption">出差报告管理</Property>
       <Buttons>
         <Button>
-          <ClientEvent name="onClick">view.id('uaBtreport').execute(function(){
-               view.id('diaBtreport').hide();
-           });
+          <ClientEvent name="onClick">view.id('diaSeeBtreport').hide();
+
          </ClientEvent>
-          <Property name="caption">确定</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
-        </Button>
-        <Button>
-          <ClientEvent name="onClick">var cur=view.id('dsBtreport').getData('#');
-				cur.cancel();
-				view.id('diaBtreport').hide();
-				
-	
-	         </ClientEvent>
-          <Property name="caption">取消</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+          <Property name="caption">关闭</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -40px -0px</Property>
         </Button>
       </Buttons>
       <Children>
@@ -240,6 +231,26 @@ jQuery(arg.dom).xCreate({&#xD;
           <Property name="dataPath">#</Property>
           <Property name="labelWidth">90</Property>
           <Property name="readOnly">true</Property>
+          <AutoFormElement>
+            <Property name="name">userName</Property>
+            <Property name="property">userName</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">readStatus</Property>
+            <Property name="property">readStatus</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">firstReadTime</Property>
+            <Property name="property">firstReadTime</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">latelyReadTime</Property>
+            <Property name="property">latelyReadTime</Property>
+            <Editor/>
+          </AutoFormElement>
           <AutoFormElement>
             <Property name="name">BtPerson</Property>
             <Property name="property">btreport.btperson</Property>

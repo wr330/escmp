@@ -13,10 +13,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
 
+@XmlRootElement(name="Technicaldocument",namespace="http://www.bstek.com/ws")
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 @Table(name="Out_TechnicalDocument")
 public class  Technicaldocument implements Serializable {
@@ -44,6 +50,8 @@ public class  Technicaldocument implements Serializable {
 	private byte[] datablock ;
 	private Integer bytes ;
 	private String miji ;
+	private Boolean sendStatus;
+	
 
 	
 	@Id
@@ -166,5 +174,12 @@ public class  Technicaldocument implements Serializable {
 	}
 	public void setMiji(String miji) {
 		this.miji = miji;
+	}
+	@Column(name="SendStatus")
+	public Boolean getSendStatus() {
+		return sendStatus;
+	}
+	public void setSendStatus(Boolean sendStatus) {
+		this.sendStatus = sendStatus;
 	}
 }

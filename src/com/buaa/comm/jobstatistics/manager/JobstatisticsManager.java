@@ -29,12 +29,12 @@ public class JobstatisticsManager {
 	
 	@Resource
 	private JobstatisticsDao jobstatisticsDao;
-		@Resource
+	@Resource
 	private JoballotManager joballotManager;
-		@Resource
+	@Resource
 	private JobconcernManager jobconcernManager;
-		@Resource	
-		private UserOperationLogManager userOperationLogManager;	
+	@Resource	
+	private UserOperationLogManager userOperationLogManager;	
 	/**                  
 	* 分页查询信息，带有criteria
 	* 将criteria转换为一个Map

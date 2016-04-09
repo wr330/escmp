@@ -67,15 +67,15 @@ public class AppendixdocumentManager {
 				if (state.equals(EntityState.NEW)) {
 					appendixdocumentDao.saveData(item);
 					//对用户新增操作进行记录，在用户操作日志表中新增一条记录。
-					userOperationLogManager.recordUserOperationLog(0, myDate, un, ucn,"对通讯录表新增一条记录");
+					userOperationLogManager.recordUserOperationLog(0, myDate, un, ucn,"对出差报告附件表新增一条记录");
 									} else if (state.equals(EntityState.MODIFIED)) {
 					appendixdocumentDao.updateData(item);
 					//对用户修改操作进行记录，在用户操作日志表中新增一条记录。
-					userOperationLogManager.recordUserOperationLog(1, myDate, un, ucn,"对通讯录表新增一条记录");
+					userOperationLogManager.recordUserOperationLog(1, myDate, un, ucn,"对出差报告附件表新增一条记录");
 									} else if (state.equals(EntityState.DELETED)) {
 					appendixdocumentDao.deleteData(item);
 					//对用户删除操作进行记录，在用户操作日志表中删除一条记录。
-					userOperationLogManager.recordUserOperationLog(2, myDate, un, ucn,"对保障计划表新增一条记录");
+					userOperationLogManager.recordUserOperationLog(2, myDate, un, ucn,"对出差报告附件表新增一条记录");
 				} else if (state.equals(EntityState.NONE)) {
 						EntityState btreportState = EntityUtils.getState(item.getBtreport());
 		

@@ -2,8 +2,6 @@ package com.buaa.comm.jobstatistics.dao;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -70,11 +68,28 @@ public class JobstatisticsDao extends HibernateBaseDao {
 			}
 		}
 
-        
         String countHql = "select count(*) " + coreHql.toString();
         String hql = coreHql.toString();
         hql = userService.checkUser(hql)+ "order by workStatus asc, arrangementdate desc";
 		this.pagingQuery(page, hql, countHql, args);
+	}
+	
+	/**                  
+	* 根据用户名，按室主任是此用户名且工作状态是分配中的条件，搜索工作计划表
+	* @param username    
+	* @throws Exception
+	*/
+	public Integer queryJob(String username) throws Exception {
+		Map<String, Object> args = new HashMap<String,Object>();
+        StringBuffer coreHql = new StringBuffer("from " + Jobstatistics.class.getName()+" a where 1=1 ");
+		if (StringUtils.isNotEmpty(username)) {
+				coreHql.append(" and a.sectionChief = :sc ");
+				args.put("sc", username);
+		}
+        String hql = coreHql.toString() + "and a.workStatus = 1";
+        Collection<Jobstatistics> dataItems = this.query(hql,args);
+        Integer jobCount = dataItems.size();
+        return jobCount;
 	}
 	
 	/**
