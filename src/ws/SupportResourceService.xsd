@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.bstek.com/ws" xmlns:tns="http://www.bstek.com/ws" elementFormDefault="qualified">
+    <element name="SupportResourceRequest">
+        <complexType>
+            <all>
+                <element name="test" type="string"></element>
+            </all>
+        </complexType>
+    </element>
+    <element name="SupportResourceResponse">
+        <complexType>
+            <sequence>
+                <element name="technicaldocuments" maxOccurs="unbounded" type="tns:Technicaldocument"></element>
+            </sequence>
+        </complexType>
+    </element>
+     
+    <complexType name="Technicaldocument">
+        <all>
+	 		<element name="documenttype" type="string"></element>
+	 		<element name="aircrafttype" type="string"></element>
+	 		<element name="number" type="string"></element>
+	 		<element name="title" type="string"></element>
+	 		<element name="efile" type="string"></element>
+	 		<element name="contentabstract" type="string"></element>
+	 		<element name="contenttype" type="string"></element>
+	 		<element name="transceivertype" type="string"></element>
+	 		<element name="major" type="string"></element>
+	 		<element name="responsibleperson" type="string"></element>
+	 		<element name="issuedate" type="date"></element>
+	 		<element name="recipient" type="string"></element>
+	 		<element name="execution" type="string"></element>
+	 		<element name="miji" type="string"></element>
+	 		<element name="sendStatus" type="boolean"></element>
+        </all>
+    </complexType>
+</schema>

@@ -42,6 +42,14 @@ if (cur) {
         <Property name="icon">url(>skin>common/icons.gif) -160px -100px</Property>
       </ToolBarButton>
       <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsJoballot').getData('#');&#xD;
+if (cur) {&#xD;
+	view.id('diaJoballotSee').show();&#xD;
+}</ClientEvent>
+        <Property name="caption">查看</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -20px -40px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
         <ClientEvent name="onClick">var dsJoballot = view.get(&quot;#dsJoballot&quot;);&#xD;
 dsJoballot.flushAsync();</ClientEvent>
         <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
@@ -49,12 +57,35 @@ dsJoballot.flushAsync();</ClientEvent>
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgJoballot">
+      <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;workStatus&quot;);&#xD;
+if(status == 1){&#xD;
+	arg.dom.style.color = &quot;red&quot;;&#xD;
+}&#xD;
+else{&#xD;
+	arg.dom.style.color = &quot;&quot;;&#xD;
+}&#xD;
+arg.processDefault = true;</ClientEvent>
       <Property name="readOnly">true</Property>
       <Property name="dataSet">dsJoballot</Property>
       <Property name="filterMode">clientSide</Property>
       <Property name="showFilterBar">false</Property>
       <Property name="rowHeight">22</Property>
       <RowNumColumn/>
+      <DataColumn>
+        <Property name="property">jobstatistics.projectname</Property>
+        <Property name="width">120</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">jobstatistics.departname</Property>
+        <Property name="width">120</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">jobstatistics.content</Property>
+        <Property name="width">350</Property>
+        <Editor/>
+      </DataColumn>
       <DataColumn name="personid">
         <Property name="property">personid</Property>
         <Property name="width">120</Property>
@@ -65,7 +96,7 @@ dsJoballot.flushAsync();</ClientEvent>
       </DataColumn>
       <DataColumn name="content">
         <Property name="property">content</Property>
-        <Property name="width">600</Property>
+        <Property name="width">350</Property>
       </DataColumn>
       <DataColumn>
         <Property name="property">workStatus</Property>
@@ -84,7 +115,7 @@ dsJoballot.flushAsync();</ClientEvent>
       </DataColumn>
       <DataColumn>
         <Property name="property">miji</Property>
-        <Property name="width">120</Property>
+        <Property name="width">90</Property>
         <Property name="name">miji</Property>
         <Property name="align">left</Property>
       </DataColumn>
@@ -157,6 +188,80 @@ dorado.MessageBox.confirm('您是否确认已完成所分配的工作?', functio
             <Property name="name">miji</Property>
             <Property name="property">miji</Property>
             <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaJoballotSee">
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">700</Property>
+      <Property name="caption">工作项目作业分配管理</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('diaJoballotSee').hide(); </ClientEvent>
+          <Property name="caption">关闭</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -40px -0px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afJoballotSee">
+          <Property name="dataSet">dsJoballot</Property>
+          <Property name="cols">*</Property>
+          <Property name="readOnly">true</Property>
+          <AutoFormElement>
+            <Property name="property">jobstatistics.projectname</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">jobstatistics.departname</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">jobstatistics.content</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">250</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">personname</Property>
+            <Property name="property">personname</Property>
+            <Property name="trigger">customDropDownUser2</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">personid</Property>
+            <Property name="property">personid</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">content</Property>
+            <Property name="property">content</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">250</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">status</Property>
+            <Property name="property">status</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">finishtime</Property>
+            <Property name="property">finishtime</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
             <Editor/>
           </AutoFormElement>
         </AutoForm>

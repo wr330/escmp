@@ -221,6 +221,20 @@ dsBtreport.flushAsync();</ClientEvent>
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgBtreport">
+      <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;status&quot;);&#xD;
+if(status == 0){&#xD;
+	arg.dom.style.color = &quot;red&quot;;&#xD;
+}&#xD;
+else if(status == 1){&#xD;
+	arg.dom.style.color = &quot;blue&quot;;&#xD;
+}&#xD;
+else if(status == 2){&#xD;
+	arg.dom.style.color = &quot;green&quot;;&#xD;
+}&#xD;
+else{&#xD;
+	arg.dom.style.color = &quot;&quot;;&#xD;
+}&#xD;
+arg.processDefault = true;</ClientEvent>
       <Property name="readOnly">true</Property>
       <Property name="dataSet">dsBtreport</Property>
       <Property name="dataPath"></Property>
@@ -316,32 +330,56 @@ dsBtreport.flushAsync();</ClientEvent>
       </DataColumn>
     </DataGrid>
     <GroupBox>
-      <Property name="caption">附件文档</Property>
+      <Property name="caption">报告共享人</Property>
       <Property name="collapseable">false</Property>
       <Buttons/>
       <Children>
-        <DataGrid id="dgAppendixdocument">
-          <Property name="readOnly">true</Property>
+        <ToolBar>
+          <DataPilot>
+            <Property name="itemCodes">pages</Property>
+            <Property name="dataSet">dsBtreport</Property>
+            <Property name="dataPath">#.btReportSharePerson</Property>
+          </DataPilot>
+          <ToolBarButton>
+            <ClientEvent name="onClick">var cur=view.id('dsBtreport').getData('#.#btReportSharePerson');&#xD;
+if (cur) {&#xD;
+	view.id('diaSeeSharePerson').show();&#xD;
+}</ClientEvent>
+            <Property name="caption">查看</Property>
+            <Property name="icon">url(>skin>common/icons.gif) -20px -40px</Property>
+          </ToolBarButton>
+          <ToolBarButton>
+            <ClientEvent name="onClick">view.id(&quot;dsBtreport&quot;).getData(&quot;#&quot;).reset(&quot;btReportSharePerson&quot;);</ClientEvent>
+            <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+            <Property name="caption">刷新</Property>
+          </ToolBarButton>
+        </ToolBar>
+        <DataGrid>
           <Property name="dataSet">dsBtreport</Property>
-          <Property name="dataPath">#.appendixdocument</Property>
-          <Property name="height">300</Property>
-          <Property name="filterMode">clientSide</Property>
-          <Property name="showFilterBar">false</Property>
+          <Property name="dataPath">#.btReportSharePerson</Property>
           <Property name="rowHeight">22</Property>
-          <RowNumColumn/>
-          <DataColumn name="efile">
-            <ClientEvent name="onRenderCell">//显示link&#xD;
-jQuery(arg.dom).empty();&#xD;
-var file = arg.data.get(&quot;efile&quot;); &#xD;
-var oid = view.id('dsBtreport').getData('#').get(&quot;oid&quot;);&#xD;
-var href = &quot;/escmp/upload/Comm_Btreport/&quot; + oid + &quot;/&quot; + file;&#xD;
-jQuery(arg.dom).xCreate({&#xD;
-	tagName:&quot;A&quot;,&#xD;
-	href:href,&#xD;
-	content:arg.data.get(&quot;efile&quot;)&#xD;
-});</ClientEvent>
-            <Property name="property">efile</Property>
-            <Property name="width">300</Property>
+          <Property name="readOnly">true</Property>
+          <DataColumn name="userName">
+            <Property name="property">userName</Property>
+            <Property name="width">120</Property>
+          </DataColumn>
+          <DataColumn name="personName">
+            <Property name="property">personName</Property>
+            <Property name="width">120</Property>
+          </DataColumn>
+          <DataColumn name="readStatus">
+            <Property name="property">readStatus</Property>
+            <Property name="width">120</Property>
+            <Property name="align">left</Property>
+          </DataColumn>
+          <DataColumn name="firstReadTime">
+            <Property name="property">firstReadTime</Property>
+            <Property name="width">150</Property>
+          </DataColumn>
+          <DataColumn>
+            <Property name="property">latelyReadTime</Property>
+            <Property name="width">150</Property>
+            <Property name="name">latelyReadTime</Property>
           </DataColumn>
         </DataGrid>
       </Children>
@@ -764,165 +802,51 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
       </Children>
       <Tools/>
     </Dialog>
-    <Dialog id="diaSeeBtreport">
+    <Dialog id="diaSeeSharePerson">
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
-      <Property name="width">800</Property>
-      <Property name="caption">出差报告管理</Property>
+      <Property name="width">450</Property>
+      <Property name="caption">报告共享人管理</Property>
       <Buttons>
         <Button>
-          <ClientEvent name="onClick">view.id('diaSeeBtreport').hide();
- 
-         </ClientEvent>
-          <Property name="caption">确定</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
-        </Button>
-        <Button>
-          <ClientEvent name="onClick">view.id('diaSeeBtreport').hide();       </ClientEvent>
-          <Property name="caption">取消</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+          <ClientEvent name="onClick">view.id('diaSeeSharePerson').hide();       </ClientEvent>
+          <Property name="caption">关闭</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -40px -0px</Property>
         </Button>
       </Buttons>
       <Children>
-        <AutoForm id="afSeeBtreport">
-          <Property name="cols">*,*</Property>
+        <AutoForm id="afSeeSharePerson">
+          <Property name="cols">*</Property>
           <Property name="dataSet">dsBtreport</Property>
-          <Property name="dataPath">#</Property>
+          <Property name="dataPath">#.#btReportSharePerson</Property>
           <Property name="labelWidth">100</Property>
           <Property name="readOnly">true</Property>
           <AutoFormElement>
-            <Property name="name">BtPerson</Property>
-            <Property name="property">btperson</Property>
-            <Property name="trigger">customDropDown1,triggerClear</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">BtPlace</Property>
-            <Property name="property">btplace</Property>
-            <Property name="trigger">dataSetDropDown1</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">BtTime</Property>
-            <Property name="property">bttime</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">KeyWord</Property>
-            <Property name="property">keyword</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">BtTask</Property>
-            <Property name="property">bttask</Property>
-            <Property name="editorType">TextArea</Property>
-            <Property name="height">80</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">JobContent</Property>
-            <Property name="property">jobcontent</Property>
-            <Property name="editorType">TextArea</Property>
-            <Property name="height">80</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">RemainedProblem</Property>
-            <Property name="property">remainedproblem</Property>
-            <Property name="editorType">TextArea</Property>
-            <Property name="height">80</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">TechnicalQuestion</Property>
-            <Property name="property">technicalquestion</Property>
-            <Property name="editorType">TextArea</Property>
-            <Property name="height">80</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">GainAndAdvice</Property>
-            <Property name="property">gainandadvice</Property>
-            <Property name="editorType">TextArea</Property>
-            <Property name="height">80</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">Conclusion</Property>
-            <Property name="property">conclusion</Property>
-            <Property name="editorType">TextArea</Property>
-            <Property name="height">80</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">miji</Property>
-            <Property name="property">miji</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="property">writingPerson</Property>
-            <Property name="name">WritingPerson</Property>
-            <Property name="readOnly">true</Property>
+            <Property name="name">personName</Property>
+            <Property name="property">personName</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="property">sectionChief</Property>
-            <Property name="name">SectionChief</Property>
-            <Property name="readOnly">true</Property>
+            <Property name="name">userName</Property>
+            <Property name="property">userName</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="property">sectionChiefDate</Property>
-            <Property name="name">SectionChiefDate</Property>
-            <Property name="readOnly">true</Property>
+            <Property name="name">readStatus</Property>
+            <Property name="property">readStatus</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="property">departmentHead</Property>
-            <Property name="name">DepartmentHead</Property>
-            <Property name="readOnly">true</Property>
+            <Property name="name">firstReadTime</Property>
+            <Property name="property">firstReadTime</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="property">departmentHeadDate</Property>
-            <Property name="name">DepartmentHeadDate</Property>
-            <Property name="readOnly">true</Property>
+            <Property name="name">latelyReadTime</Property>
+            <Property name="property">latelyReadTime</Property>
             <Editor/>
           </AutoFormElement>
         </AutoForm>
-        <GroupBox>
-          <Property name="caption">附件文档</Property>
-          <Property name="collapseable">false</Property>
-          <Property name="height">250</Property>
-          <Buttons/>
-          <Children>
-            <ToolBar>
-              <DataPilot>
-                <Property name="itemCodes">pages</Property>
-                <Property name="dataSet">dsBtreport</Property>
-                <Property name="dataPath">#.appendixdocument</Property>
-              </DataPilot>
-            </ToolBar>
-            <DataGrid id="dgSeeAppendixdocument">
-              <Property name="readOnly">true</Property>
-              <Property name="dataSet">dsBtreport</Property>
-              <Property name="dataPath">#.appendixdocument</Property>
-              <Property name="filterMode">serverSide</Property>
-              <Property name="showFilterBar">true</Property>
-              <Property name="rowHeight">22</Property>
-              <Property name="selectionMode">multiRows</Property>
-              <RowNumColumn/>
-              <RowSelectorColumn/>
-              <DataColumn name="efile">
-                <ClientEvent name="onRenderCell">&#xD;
-//点击表行可查看链接&#xD;
-&#xD;
-jQuery(arg.dom).empty();&#xD;
-var file = arg.data.get(&quot;efile&quot;); &#xD;
-var oid = view.id('dsBtreport').getData('#').get(&quot;oid&quot;);&#xD;
-var href = &quot;/escmp/upload/Comm_Btreport/&quot; + oid + &quot;/&quot; + file;&#xD;
-jQuery(arg.dom).xCreate({&#xD;
-	tagName:&quot;A&quot;,&#xD;
-	href:href,&#xD;
-	content:arg.data.get(&quot;efile&quot;)&#xD;
-});&#xD;
-&#xD;
-</ClientEvent>
-                <Property name="property">efile</Property>
-                <Property name="width">300</Property>
-              </DataColumn>
-            </DataGrid>
-          </Children>
-        </GroupBox>
       </Children>
       <Tools/>
     </Dialog>

@@ -1,5 +1,6 @@
 package com.buaa.comm.btReportSharePerson.dao;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -56,7 +57,26 @@ public class BtReportSharePersonDao extends HibernateBaseDao {
 		}
         String countHql = "select count(*) " + coreHql.toString();
         String hql = coreHql.toString();
+        hql += " order by readStatus asc, firstReadTime desc";
 		this.pagingQuery(page, hql, countHql, args);
+	}
+	
+	/**                  
+	* 根据用户名，按共享人用户名是此用户名且阅读状态是未阅的条件，搜索出差报告共享人群表
+	* @param username    
+	* @throws Exception
+	*/
+	public Integer queryBtreportShare(String username) throws Exception {
+		Map<String, Object> args = new HashMap<String,Object>();
+		StringBuffer coreHql = new StringBuffer("from " + BtReportSharePerson.class.getName()+" a where 1=1 ");
+		if (StringUtils.isNotEmpty(username)) {
+			coreHql.append(" and a.userName = :spun ");
+			args.put("spun", username);
+		}
+        String hql = coreHql.toString() + "and a.readStatus = 0";
+        Collection<BtReportSharePerson> dataItems = this.query(hql,args);
+        Integer btreportShareCount = dataItems.size();
+        return btreportShareCount;
 	}
 	
 	/**

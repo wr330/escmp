@@ -1,10 +1,8 @@
 package com.buaa.comm.btreport.dao;
 
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -71,6 +69,42 @@ public class BtreportDao extends HibernateBaseDao {
         hql = userService.checkUser(hql);
         hql += " order by status asc, bttime desc";
 		this.pagingQuery(page, hql, countHql, args);
+	}
+	
+	/**                  
+	* 根据用户名，按审阅室主任是此用户名且工作状态是审阅中的条件，搜索出差报告表
+	* @param username    
+	* @throws Exception
+	*/
+	public Integer queryBtreport(String username) throws Exception {
+		Map<String, Object> args = new HashMap<String,Object>();
+		StringBuffer coreHql = new StringBuffer("from " + Btreport.class.getName()+" a where 1=1 ");
+		if (StringUtils.isNotEmpty(username)) {
+			coreHql.append(" and a.sectionChief = :sc ");
+			args.put("sc", username);
+		}
+        String hql = coreHql.toString() + "and a.status = 1";
+        Collection<Btreport> dataItems = this.query(hql,args);
+        Integer btreportSCount = dataItems.size();
+        return btreportSCount;
+	}
+	
+	/**                  
+	* 根据用户名，按审阅部领导是此用户名且工作状态是审阅中的条件，搜索出差报告表
+	* @param username    
+	* @throws Exception
+	*/
+	public Integer queryBtreportDH(String username) throws Exception {
+		Map<String, Object> args = new HashMap<String,Object>();
+		StringBuffer coreHql = new StringBuffer("from " + Btreport.class.getName()+" a where 1=1 ");
+		if (StringUtils.isNotEmpty(username)) {
+			coreHql.append(" and a.departmentHead = :dh ");
+			args.put("dh", username);
+		}
+        String hql = coreHql.toString() + "and a.status = 2";
+        Collection<Btreport> dataItems = this.query(hql,args);
+        Integer btreportDCount = dataItems.size();
+        return btreportDCount;
 	}
 	
 	/**

@@ -138,6 +138,17 @@ dsBtreport.flushAsync();</ClientEvent>
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgBtreport">
+      <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;status&quot;);&#xD;
+if(status == 1){&#xD;
+	arg.dom.style.color = &quot;red&quot;;&#xD;
+}&#xD;
+else if(status == 2){&#xD;
+	arg.dom.style.color = &quot;green&quot;;&#xD;
+}&#xD;
+else{&#xD;
+	arg.dom.style.color = &quot;&quot;;&#xD;
+}&#xD;
+arg.processDefault = true;</ClientEvent>
       <Property name="readOnly">true</Property>
       <Property name="dataSet">dsBtreport</Property>
       <Property name="dataPath"></Property>
@@ -233,32 +244,56 @@ dsBtreport.flushAsync();</ClientEvent>
       </DataColumn>
     </DataGrid>
     <GroupBox>
-      <Property name="caption">附件文档</Property>
+      <Property name="caption">报告共享人</Property>
       <Property name="collapseable">false</Property>
       <Buttons/>
       <Children>
-        <DataGrid id="dgAppendixdocument">
-          <Property name="readOnly">true</Property>
+        <ToolBar>
+          <DataPilot>
+            <Property name="itemCodes">pages</Property>
+            <Property name="dataSet">dsBtreport</Property>
+            <Property name="dataPath">#.btReportSharePerson</Property>
+          </DataPilot>
+          <ToolBarButton>
+            <ClientEvent name="onClick">var cur=view.id('dsBtreport').getData('#.#btReportSharePerson');&#xD;
+if (cur) {&#xD;
+	view.id('diaSeeSharePerson').show();&#xD;
+}</ClientEvent>
+            <Property name="caption">查看</Property>
+            <Property name="icon">url(>skin>common/icons.gif) -20px -40px</Property>
+          </ToolBarButton>
+          <ToolBarButton>
+            <ClientEvent name="onClick">view.id(&quot;dsBtreport&quot;).getData(&quot;#&quot;).reset(&quot;btReportSharePerson&quot;);</ClientEvent>
+            <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+            <Property name="caption">刷新</Property>
+          </ToolBarButton>
+        </ToolBar>
+        <DataGrid>
           <Property name="dataSet">dsBtreport</Property>
-          <Property name="dataPath">#.appendixdocument</Property>
-          <Property name="height">300</Property>
-          <Property name="filterMode">clientSide</Property>
-          <Property name="showFilterBar">false</Property>
+          <Property name="dataPath">#.btReportSharePerson</Property>
           <Property name="rowHeight">22</Property>
-          <RowNumColumn/>
-          <DataColumn name="efile">
-            <ClientEvent name="onRenderCell">//显示link&#xD;
-jQuery(arg.dom).empty();&#xD;
-var file = arg.data.get(&quot;efile&quot;); &#xD;
-var oid = view.id('dsBtreport').getData('#').get(&quot;oid&quot;);&#xD;
-var href = &quot;/escmp/upload/Comm_Btreport/&quot; + oid + &quot;/&quot; + file;&#xD;
-jQuery(arg.dom).xCreate({&#xD;
-	tagName:&quot;A&quot;,&#xD;
-	href:href,&#xD;
-	content:arg.data.get(&quot;efile&quot;)&#xD;
-});</ClientEvent>
-            <Property name="property">efile</Property>
-            <Property name="width">300</Property>
+          <Property name="readOnly">true</Property>
+          <DataColumn name="userName">
+            <Property name="property">userName</Property>
+            <Property name="width">120</Property>
+          </DataColumn>
+          <DataColumn name="personName">
+            <Property name="property">personName</Property>
+            <Property name="width">120</Property>
+          </DataColumn>
+          <DataColumn name="readStatus">
+            <Property name="property">readStatus</Property>
+            <Property name="width">120</Property>
+            <Property name="align">left</Property>
+          </DataColumn>
+          <DataColumn name="firstReadTime">
+            <Property name="property">firstReadTime</Property>
+            <Property name="width">150</Property>
+          </DataColumn>
+          <DataColumn>
+            <Property name="property">latelyReadTime</Property>
+            <Property name="width">150</Property>
+            <Property name="name">latelyReadTime</Property>
           </DataColumn>
         </DataGrid>
       </Children>
@@ -702,13 +737,8 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <ClientEvent name="onClick">view.id('diaSeeBtreport').hide();
  
          </ClientEvent>
-          <Property name="caption">确定</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
-        </Button>
-        <Button>
-          <ClientEvent name="onClick">view.id('diaSeeBtreport').hide();       </ClientEvent>
-          <Property name="caption">取消</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+          <Property name="caption">关闭</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -40px -0px</Property>
         </Button>
       </Buttons>
       <Children>
@@ -1088,5 +1118,53 @@ link.set(&quot;visible&quot;,false);*/&#xD;
       <Property name="service">defaultUploadProcessor#deleteFile</Property>
       <Property name="modal">false</Property>
     </AjaxAction>
+    <Dialog id="diaSeeSharePerson">
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">450</Property>
+      <Property name="caption">报告共享人管理</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('diaSeeSharePerson').hide();       </ClientEvent>
+          <Property name="caption">关闭</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -40px -0px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afSeeSharePerson">
+          <Property name="cols">*</Property>
+          <Property name="dataSet">dsBtreport</Property>
+          <Property name="dataPath">#.#btReportSharePerson</Property>
+          <Property name="labelWidth">100</Property>
+          <Property name="readOnly">true</Property>
+          <AutoFormElement>
+            <Property name="name">personName</Property>
+            <Property name="property">personName</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">userName</Property>
+            <Property name="property">userName</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">readStatus</Property>
+            <Property name="property">readStatus</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">firstReadTime</Property>
+            <Property name="property">firstReadTime</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">latelyReadTime</Property>
+            <Property name="property">latelyReadTime</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
   </View>
 </ViewConfig>

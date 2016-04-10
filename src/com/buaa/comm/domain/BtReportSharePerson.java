@@ -31,6 +31,8 @@ public class BtReportSharePerson implements Serializable {
 	private String userName ;
 	private int readStatus ;
 	private Btreport btreport ;
+	private Date firstReadTime ;
+	private Date latelyReadTime;
 	
 	@Id
 	@Column(name = "Oid", unique = true, nullable = false)
@@ -65,6 +67,22 @@ public class BtReportSharePerson implements Serializable {
 		this.readStatus = readStatus;
 	}
 	
+	@Column(name="FirstReadTime")
+	public Date getFirstReadTime() {
+		return firstReadTime;
+	}
+	public void setFirstReadTime(Date firstReadTime) {
+		this.firstReadTime = firstReadTime;
+	}
+	
+	@Column(name="LatelyReadTime")
+	public Date getLatelyReadTime() {
+		return latelyReadTime;
+	}
+	public void setLatelyReadTime(Date latelyReadTime) {
+		this.latelyReadTime = latelyReadTime;
+	}
+	
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn(name = "Jobstatistic")
 	public Btreport getBtreport() {
@@ -73,5 +91,6 @@ public class BtReportSharePerson implements Serializable {
 	public void setBtreport(Btreport btreport) {
 		this.btreport = btreport;
 	}
+	
 	
 }

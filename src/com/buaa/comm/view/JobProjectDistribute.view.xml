@@ -113,6 +113,17 @@ dsJobstatistics.flushAsync();</ClientEvent>
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgJobstatistics">
+      <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;workStatus&quot;);&#xD;
+if(status == 1){&#xD;
+	arg.dom.style.color = &quot;red&quot;;&#xD;
+}&#xD;
+else if(status == 2){&#xD;
+	arg.dom.style.color = &quot;green&quot;;&#xD;
+}&#xD;
+else{&#xD;
+	arg.dom.style.color = &quot;&quot;;&#xD;
+}&#xD;
+arg.processDefault = true;</ClientEvent>
       <Property name="readOnly">true</Property>
       <Property name="dataSet">dsJobstatistics</Property>
       <Property name="dataPath"></Property>
@@ -188,40 +199,59 @@ dsJobstatistics.flushAsync();</ClientEvent>
             <Property name="dataPath">#.joballot</Property>
           </DataPilot>
           <ToolBarButton>
-            <ClientEvent name="onClick">
-	var cur=view.id('dsJobstatistics').getData('#');
-	if(cur){
-	view.id('dsJobstatistics').getData('#.joballot').insert({jobstatistics:{oid:cur.get('oid')}});
-	view.id('diaJoballot').show();
-    }
-	
-
-	</ClientEvent>
+            <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#');
+if(cur){
+	if(cur.get(&quot;workStatus&quot;) == 3){
+		dorado.MessageBox.alert(&quot;工作项目已完成，不能进行具体作业分配&quot;);
+	}
+	else{
+		view.id('dsJobstatistics').getData('#.joballot').insert({jobstatistics:{oid:cur.get('oid')}});
+		view.id('diaJoballot').show();
+	}
+}</ClientEvent>
             <Property name="caption">新增</Property>
             <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
           </ToolBarButton>
           <ToolBarButton>
-            <ClientEvent name="onClick">
-	var cur=view.id('dsJobstatistics').getData('#.#joballot');
-	if (cur) {
+            <ClientEvent name="onClick">var cur = view.id('dsJobstatistics').getData('#');
+var curJoballot = view.id('dsJobstatistics').getData('#.#joballot');
+if(curJoballot){
+	if(cur.get(&quot;workStatus&quot;) == 3){
+		dorado.MessageBox.alert(&quot;工作项目已完成，不能修改具体作业分配情况&quot;);
+	}
+	else{
 		view.id('diaJoballot').show();
-	}</ClientEvent>
+	}
+}</ClientEvent>
             <Property name="caption">修改</Property>
             <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
           </ToolBarButton>
           <ToolBarButton>
-            <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#.#joballot');
+            <ClientEvent name="onClick">var cur = view.id('dsJobstatistics').getData('#');
+var curJoballot = view.id('dsJobstatistics').getData('#.#joballot');
 var ua=view.id('uaJobstatistics');
-if(cur){
-	dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
-		view.refreshStatus();
-		cur.remove();
-		ua.execute();
-	}); 
-} 
-	</ClientEvent>
+if(curJoballot){
+	if(cur.get(&quot;workStatus&quot;) == 3){
+		dorado.MessageBox.alert(&quot;工作项目已完成，不能删除具体作业分配情况&quot;);
+	}
+	else{
+		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+			view.refreshStatus();
+			cur.remove();
+			ua.execute();
+		}); 
+	}	
+} </ClientEvent>
             <Property name="caption">删除</Property>
             <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+          </ToolBarButton>
+          <ToolBarButton>
+            <ClientEvent name="onClick">var cur = view.id('dsJobstatistics').getData('#.#joballot');&#xD;
+if (cur) {&#xD;
+	view.id('diaJoballotSee').show();&#xD;
+}</ClientEvent>
+            <Property name="caption">查看</Property>
+            <Property name="icon">url(>skin>common/icons.gif) -20px -40px</Property>
           </ToolBarButton>
           <ToolBarButton>
             <ClientEvent name="onClick">view.id(&quot;dsJobstatistics&quot;).getData(&quot;#&quot;).reset(&quot;joballot&quot;)&#xD;
@@ -231,6 +261,17 @@ if(cur){
           </ToolBarButton>
         </ToolBar>
         <DataGrid id="dgJoballot">
+          <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;workStatus&quot;);&#xD;
+if(status == 0){&#xD;
+	arg.dom.style.color = &quot;red&quot;;&#xD;
+}&#xD;
+else if(status == 1){&#xD;
+	arg.dom.style.color = &quot;green&quot;;&#xD;
+}&#xD;
+else{&#xD;
+	arg.dom.style.color = &quot;&quot;;&#xD;
+}&#xD;
+arg.processDefault = true;</ClientEvent>
           <Property name="readOnly">true</Property>
           <Property name="dataSet">dsJobstatistics</Property>
           <Property name="dataPath">#.joballot</Property>
@@ -514,14 +555,8 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
       <Buttons>
         <Button>
           <ClientEvent name="onClick">view.id('diaJobSee').hide();</ClientEvent>
-          <Property name="caption">确定</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
-        </Button>
-        <Button>
-          <ClientEvent name="onClick">view.id('diaJobSee').hide();
-	         </ClientEvent>
-          <Property name="caption">取消</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+          <Property name="caption">关闭</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -40px -0px</Property>
         </Button>
       </Buttons>
       <Children>
@@ -596,6 +631,64 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
             <Property name="name">SectionChief</Property>
             <Property name="property">sectionChief</Property>
             <Property name="trigger">customDropDownUser2</Property>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaJoballotSee">
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">500</Property>
+      <Property name="caption">工作项目作业分配管理</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('diaJoballotSee').hide(); </ClientEvent>
+          <Property name="caption">关闭</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -40px -0px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afJoballotSee">
+          <Property name="dataSet">dsJobstatistics</Property>
+          <Property name="dataPath">#.#joballot</Property>
+          <Property name="cols">*</Property>
+          <Property name="readOnly">true</Property>
+          <AutoFormElement>
+            <Property name="name">personname</Property>
+            <Property name="property">personname</Property>
+            <Property name="trigger">customDropDownUser2</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">personid</Property>
+            <Property name="property">personid</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">content</Property>
+            <Property name="property">content</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">250</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">status</Property>
+            <Property name="property">status</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">finishtime</Property>
+            <Property name="property">finishtime</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+            <Editor/>
           </AutoFormElement>
         </AutoForm>
       </Children>

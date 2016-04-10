@@ -41,7 +41,7 @@ public class AppendixdocumentDao extends HibernateBaseDao {
 	String btreport = (String)parameter.get("btreport");
 	if(StringUtils.isNotEmpty( btreport )){
 		coreHql.append(" and a.btreport.oid like :oid ");
-		args.put("oid","%" + btreport + "%");	
+		args.put("oid", btreport );	
 	}
            }
 		
@@ -56,7 +56,6 @@ public class AppendixdocumentDao extends HibernateBaseDao {
         
         String countHql = "select count(*) " + coreHql.toString();
         String hql = coreHql.toString();
-        hql = userService.checkUser(hql);
 		this.pagingQuery(page, hql, countHql, args);
 	}
 	

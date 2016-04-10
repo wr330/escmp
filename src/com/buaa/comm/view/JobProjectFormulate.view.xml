@@ -112,6 +112,20 @@ dsJobstatistics.flushAsync();</ClientEvent>
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgJobstatistics">
+      <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;workStatus&quot;);&#xD;
+if(status == 0){&#xD;
+	arg.dom.style.color = &quot;red&quot;;&#xD;
+}&#xD;
+else if(status == 1){&#xD;
+	arg.dom.style.color = &quot;blue&quot;;&#xD;
+}&#xD;
+else if(status == 2){&#xD;
+	arg.dom.style.color = &quot;green&quot;;&#xD;
+}&#xD;
+else{&#xD;
+	arg.dom.style.color = &quot;&quot;;&#xD;
+}&#xD;
+arg.processDefault = true;</ClientEvent>
       <Property name="readOnly">true</Property>
       <Property name="dataSet">dsJobstatistics</Property>
       <Property name="dataPath"></Property>
@@ -408,14 +422,8 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
       <Buttons>
         <Button>
           <ClientEvent name="onClick">view.id('diaJobSee').hide();</ClientEvent>
-          <Property name="caption">确定</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
-        </Button>
-        <Button>
-          <ClientEvent name="onClick">view.id('diaJobSee').hide();
-	         </ClientEvent>
-          <Property name="caption">取消</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+          <Property name="caption">关闭</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -40px -0px</Property>
         </Button>
       </Buttons>
       <Children>

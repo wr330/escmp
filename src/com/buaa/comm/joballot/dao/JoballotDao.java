@@ -1,5 +1,6 @@
 package com.buaa.comm.joballot.dao;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,7 @@ import com.bstek.dorado.data.provider.Page;
 import com.common.HibernateBaseDao;
 
 import com.buaa.comm.domain.Joballot;
+import com.buaa.comm.domain.Jobstatistics;
 
 @Repository("joballotDao")
 public class JoballotDao extends HibernateBaseDao {
@@ -63,11 +65,28 @@ public class JoballotDao extends HibernateBaseDao {
 			}
 		}
 
-        
         String countHql = "select count(*) " + coreHql.toString();
         String hql = coreHql.toString();
-        hql = userService.checkUser(hql);
+        hql = userService.checkUser(hql)+ "order by workStatus asc";
 		this.pagingQuery(page, hql, countHql, args);
+	}
+	
+	/**                  
+	* 根据用户名，按职工编号是此用户名且工作状态是执行中的条件，搜索工作计划表
+	* @param username    
+	* @throws Exception
+	*/
+	public Integer queryJoballotCount(String username) throws Exception {
+		Map<String, Object> args = new HashMap<String,Object>();
+		StringBuffer coreHql = new StringBuffer("from " + Joballot.class.getName()+" a where 1=1 ");
+		if (StringUtils.isNotEmpty(username)) {
+			coreHql.append(" and a.personid = :pi ");
+			args.put("pi", username);
+		}
+        String hql = coreHql.toString() + "and a.workStatus = 1";
+        Collection<Joballot> dataItems = this.query(hql,args);
+        Integer joballotCount = dataItems.size();
+        return joballotCount;
 	}
 	
 	/**
