@@ -1055,7 +1055,7 @@ dsSffault.flushAsync();</ClientEvent>
               <Property name="column">0</Property>
               <Property name="closeable">false</Property>
               <Property name="caption">跟踪方式统计</Property>
-              <Property name="height">275</Property>
+              <Property name="height">360</Property>
               <Property name="border">normal</Property>
               <Children>
                 <DataGrid>
@@ -1100,7 +1100,7 @@ jQuery(arg.dom).xCreate({&#xD;
               <Property name="column">0</Property>
               <Property name="closeable">false</Property>
               <Property name="caption">问题处理状态统计</Property>
-              <Property name="height">275</Property>
+              <Property name="height">360</Property>
               <Property name="border">normal</Property>
               <Children>
                 <DataGrid>
@@ -1145,7 +1145,7 @@ jQuery(arg.dom).xCreate({&#xD;
               <Property name="column">1</Property>
               <Property name="closeable">false</Property>
               <Property name="caption">问题责任统计</Property>
-              <Property name="height">275</Property>
+              <Property name="height">360</Property>
               <Property name="border">normal</Property>
               <Children>
                 <DataGrid>
@@ -1190,7 +1190,7 @@ jQuery(arg.dom).xCreate({&#xD;
               <Property name="column">1</Property>
               <Property name="closeable">false</Property>
               <Property name="caption">部门统计</Property>
-              <Property name="height">275</Property>
+              <Property name="height">360</Property>
               <Property name="border">normal</Property>
               <Children>
                 <DataGrid>
@@ -1235,7 +1235,7 @@ jQuery(arg.dom).xCreate({&#xD;
               <Property name="column">2</Property>
               <Property name="closeable">false</Property>
               <Property name="caption">专业统计</Property>
-              <Property name="height">560</Property>
+              <Property name="height">735</Property>
               <Property name="border">normal</Property>
               <Children>
                 <DataGrid>

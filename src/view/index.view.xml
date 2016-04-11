@@ -237,6 +237,13 @@ dsRenyuantongji.flushAsync();</ClientEvent>
                 <Property name="property">projectname</Property>
               </DataColumn>
               <DataColumn name="status">
+                <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;status&quot;);&#xD;
+var array = status.split('/');&#xD;
+if(parseInt(array[0])==0)&#xD;
+    arg.dom.style.color = &quot;red&quot;;&#xD;
+else if(array[0]==array[1])&#xD;
+    arg.dom.style.color = &quot;grey&quot;;&#xD;
+arg.processDefault = true;</ClientEvent>
                 <Property name="property">status</Property>
               </DataColumn>
               <DataColumn name="departname">

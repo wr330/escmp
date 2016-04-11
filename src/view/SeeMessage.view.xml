@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="dataTypeMessage" parent="$dataTypeMessage"/>
+  </Model>
+  <View layout="native">
+    <ClientEvent name="onReady">view.id(&quot;$dialogSeeMessage&quot;).show();</ClientEvent>
+    <DataSet id="$dataSetSendMessage">
+      <Property name="dataType">[dataTypeMessage]</Property>
+      <Property name="dataProvider">bdf2.seeMessage#loadSendMessages</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <DataSet id="$dataSetReceiveMessage">
+      <Property name="dataType">[dataTypeMessage]</Property>
+      <Property name="dataProvider">bdf2.seeMessage#loadReceiveMessages</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
+    <Dialog id="$dialogSeeMessage">
+      <ClientEvent name="onShow">if (window.webkitNotifications&#xD;
+			&amp;&amp; window.webkitNotifications.checkPermission() != 0) {&#xD;
+		var a = $DomUtils.xCreate({&#xD;
+			tagName : &quot;button&quot;,&#xD;
+			content : &quot;立即开启&quot;,&#xD;
+			onclick : function() {&#xD;
+				window.webkitNotifications.requestPermission();&#xD;
+				return false;&#xD;
+			}&#xD;
+		});&#xD;
+		dorado.widget.NotifyTipManager.notify(&quot;&quot;,{content:a,caption:&quot;新增桌面通知功能&quot;});&#xD;
+	};&#xD;
+	</ClientEvent>
+      <ClientEvent name="onHide">window.close();//关闭当前窗口</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="width">700</Property>
+      <Property name="height">500</Property>
+      <Property name="caption">查看消息</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id(&quot;$dialogSeeMessage&quot;).hide();&#xD;
+	</ClientEvent>
+          <Property name="caption">关闭窗口</Property>
+          <Property name="icon">url(skin>common/icons.gif) -40px 0px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <TabControl>
+          <ControlTab>
+            <Property name="caption">我收到的消息</Property>
+            <Container>
+              <ToolBar>
+                <DataPilot>
+                  <Property name="dataSet">$dataSetReceiveMessage</Property>
+                  <Property name="itemCodes">pages</Property>
+                </DataPilot>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var data=view.id(&quot;$dataSetReceiveMessage&quot;).getData(&quot;#&quot;);&#xD;
+	if(data){&#xD;
+		view.id(&quot;$dialogMessageDetail&quot;).show();&#xD;
+		view.id(&quot;$autoFormMessageDetail&quot;).set(&quot;entity&quot;,data.toJSON());&#xD;
+		if(!data.get(&quot;read&quot;)){&#xD;
+			data.set(&quot;read&quot;,true);&#xD;
+			view.id(&quot;$updateActionSetRead&quot;).execute();&#xD;
+		}&#xD;
+	}else{&#xD;
+		dorado.MessageBox.alert(&quot;当前没有消息可供显示&quot;)&#xD;
+	}&#xD;
+	</ClientEvent>
+                  <Property name="caption">查看明细</Property>
+                  <Property name="icon">url(skin>common/icons.gif) -180px -80px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var data=view.id(&quot;$dataSetReceiveMessage&quot;).getData(&quot;#&quot;);&#xD;
+	if(data){&#xD;
+		if(!data.get(&quot;read&quot;)){&#xD;
+			data.set(&quot;read&quot;,true);&#xD;
+			view.id(&quot;$updateActionSetRead&quot;).execute();&#xD;
+		}else{&#xD;
+			dorado.MessageBox.alert(&quot;当前消息已为已读状态&quot;);&#xD;
+		}&#xD;
+	}else{&#xD;
+		dorado.MessageBox.alert(&quot;当前没有可供操作的消息&quot;);&#xD;
+	}&#xD;
+	&#xD;
+	</ClientEvent>
+                  <Property name="caption">设置成已读</Property>
+                  <Property name="icon">url(skin>common/icons.gif) -180px -100px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <Property name="caption">删除消息</Property>
+                  <Property name="icon">url(skin>common/icons.gif) -140px 0px</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid>
+                <Property name="dataSet">$dataSetReceiveMessage</Property>
+                <Property name="showFilterBar">true</Property>
+                <Property name="readOnly">true</Property>
+                <RowNumColumn/>
+                <DataColumn name="title">
+                  <ClientEvent name="onRenderCell">var read=arg.data.get(&quot;read&quot;);&#xD;
+	if(read){&#xD;
+		arg.dom.innerHTML=&quot;&lt;font color='green'>&quot;+arg.data.get(&quot;title&quot;)+&quot;&lt;/font>&quot;;&#xD;
+		arg.processDefault=false;&#xD;
+	}else{&#xD;
+		arg.dom.innerHTML=arg.data.get(&quot;title&quot;);	&#xD;
+	}&#xD;
+	</ClientEvent>
+                  <Property name="property">title</Property>
+                  <Property name="width">200</Property>
+                </DataColumn>
+                <DataColumn name="sendDate">
+                  <Property name="property">sendDate</Property>
+                </DataColumn>
+                <DataColumn name="sender">
+                  <Property name="property">sender</Property>
+                </DataColumn>
+                <DataColumn name="receiver">
+                  <Property name="property">receiver</Property>
+                </DataColumn>
+                <DataColumn name="read">
+                  <Property name="property">read</Property>
+                  <Property name="width">90</Property>
+                </DataColumn>
+              </DataGrid>
+            </Container>
+          </ControlTab>
+          <ControlTab>
+            <Property name="caption">我发送的消息</Property>
+            <Container>
+              <ToolBar>
+                <DataPilot>
+                  <Property name="dataSet">$dataSetSendMessage</Property>
+                  <Property name="itemCodes">pages</Property>
+                </DataPilot>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var data=view.id(&quot;$dataSetSendMessage&quot;).getData(&quot;#&quot;);&#xD;
+	if(data){&#xD;
+		view.id(&quot;$dialogMessageDetail&quot;).show();&#xD;
+		view.id(&quot;$autoFormMessageDetail&quot;).set(&quot;entity&quot;,data.toJSON());&#xD;
+	}else{&#xD;
+		dorado.MessageBox.alert(&quot;当前没有消息可供显示&quot;)&#xD;
+	}&#xD;
+	</ClientEvent>
+                  <Property name="caption">查看明细</Property>
+                  <Property name="icon">url(skin>common/icons.gif) -180px -80px</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid>
+                <Property name="dataSet">$dataSetSendMessage</Property>
+                <Property name="showFilterBar">true</Property>
+                <Property name="readOnly">true</Property>
+                <RowNumColumn/>
+                <DataColumn name="title">
+                  <ClientEvent name="onRenderCell">var read=arg.data.get(&quot;read&quot;);&#xD;
+	if(read){&#xD;
+		arg.dom.innerHTML=&quot;&lt;font color='green'>&quot;+arg.data.get(&quot;title&quot;)+&quot;&lt;/font>&quot;;&#xD;
+		arg.processDefault=false;&#xD;
+	}else{&#xD;
+		arg.dom.innerHTML=arg.data.get(&quot;title&quot;);	&#xD;
+	}&#xD;
+	</ClientEvent>
+                  <Property name="property">title</Property>
+                  <Property name="width">200</Property>
+                </DataColumn>
+                <DataColumn name="sendDate">
+                  <Property name="property">sendDate</Property>
+                </DataColumn>
+                <DataColumn name="receiver">
+                  <Property name="property">receiver</Property>
+                </DataColumn>
+                <DataColumn name="read">
+                  <Property name="property">read</Property>
+                  <Property name="width">80</Property>
+                </DataColumn>
+                <DataColumn name="reply">
+                  <Property name="property">reply</Property>
+                  <Property name="width">90</Property>
+                </DataColumn>
+              </DataGrid>
+            </Container>
+          </ControlTab>
+        </TabControl>
+        <Dialog id="$dialogMessageDetail">
+          <Property name="center">true</Property>
+          <Property name="modal">true</Property>
+          <Property name="width">500</Property>
+          <Property name="height">300</Property>
+          <Buttons>
+            <Button>
+              <ClientEvent name="onClick">view.id(&quot;$dialogMessageDetail&quot;).hide();&#xD;
+	</ClientEvent>
+              <Property name="caption">关闭窗口</Property>
+            </Button>
+          </Buttons>
+          <Children>
+            <AutoForm id="$autoFormMessageDetail">
+              <Property name="readOnly">true</Property>
+              <Property name="cols">*</Property>
+              <AutoFormElement>
+                <Property name="name">title</Property>
+                <Property name="property">title</Property>
+                <Property name="label">标题</Property>
+                <Editor/>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">content</Property>
+                <Property name="property">content</Property>
+                <Property name="editorType">TextArea</Property>
+                <Property name="label">内容</Property>
+                <Property name="height">160</Property>
+                <Editor/>
+              </AutoFormElement>
+            </AutoForm>
+          </Children>
+          <Tools/>
+        </Dialog>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <UpdateAction id="$updateActionSetRead">
+      <Property name="dataResolver">bdf2.seeMessage#updateMessage</Property>
+      <Property name="successMessage">消息设置成已读</Property>
+      <UpdateItem>
+        <Property name="dataSet">$dataSetReceiveMessage</Property>
+        <Property name="dataPath">#</Property>
+      </UpdateItem>
+    </UpdateAction>
+  </View>
+</ViewConfig>

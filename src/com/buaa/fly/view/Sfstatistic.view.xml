@@ -1190,7 +1190,7 @@ if(ftype){
     var link1 = view.id(&quot;lefile1&quot;);
     if(file1){
         var oid = cur.get(&quot;id&quot;);
-		var href = &quot;ServletDownload?filename=Fly_Tasklist/&quot; + oid + &quot;/&quot; + file1;
+		var href = &quot;ServletDownload?filename=Fly_Sfstatistic/&quot; + oid + &quot;/&quot; + file1;
         link1.set({
 	       href: href,
 	       visible: true
@@ -1202,7 +1202,7 @@ if(ftype){
     var link2 = view.id(&quot;lefile2&quot;);
     if(file2){
         var oid = cur.get(&quot;id&quot;);
-		var href = &quot;ServletDownload?filename=Fly_Tasklist/&quot; + oid + &quot;/&quot; + file2;
+		var href = &quot;ServletDownload?filename=Fly_Sfstatistic/&quot; + oid + &quot;/&quot; + file2;
         link2.set({
 	       href: href,
 	       visible: true
@@ -1214,7 +1214,7 @@ if(ftype){
     var link3 = view.id(&quot;lefile3&quot;);
     if(file3){
         var oid = cur.get(&quot;id&quot;);
-		var href = &quot;ServletDownload?filename=Fly_Tasklist/&quot; + oid + &quot;/&quot; + file3;
+		var href = &quot;ServletDownload?filename=Fly_Sfstatistic/&quot; + oid + &quot;/&quot; + file3;
         link3.set({
 	       href: href,
 	       visible: true
@@ -1226,7 +1226,7 @@ if(ftype){
     var link4 = view.id(&quot;lefile4&quot;);
     if(file4){
         var oid = cur.get(&quot;id&quot;);
-		var href = &quot;ServletDownload?filename=Fly_Tasklist/&quot; + oid + &quot;/&quot; + file4;
+		var href = &quot;ServletDownload?filename=Fly_Sfstatistic/&quot; + oid + &quot;/&quot; + file4;
         link4.set({
 	       href: href,
 	       visible: true
@@ -1355,7 +1355,7 @@ view.id(&quot;imageBaoXian&quot;).set(&quot;image&quot;,&quot;>images/baoxian/ba
             <Portlet>
               <Property name="column">0</Property>
               <Property name="closeable">false</Property>
-              <Property name="height">345</Property>
+              <Property name="height">360</Property>
               <Property name="border">normal</Property>
               <Property name="caption">月架次统计</Property>
               <Children>
@@ -1383,7 +1383,7 @@ view.id(&quot;imageBaoXian&quot;).set(&quot;image&quot;,&quot;>images/baoxian/ba
               <Property name="column">0</Property>
               <Property name="closeable">false</Property>
               <Property name="caption">月出勤统计</Property>
-              <Property name="height">250</Property>
+              <Property name="height">360</Property>
               <Property name="border">normal</Property>
               <Children>
                 <DataGrid>
@@ -1437,7 +1437,7 @@ view.id(&quot;imageBaoXian&quot;).set(&quot;image&quot;,&quot;>images/baoxian/ba
               <Property name="column">1</Property>
               <Property name="closeable">false</Property>
               <Property name="caption">试飞科目统计</Property>
-              <Property name="height">345</Property>
+              <Property name="height">360</Property>
               <Property name="border">normal</Property>
               <Children>
                 <DataGrid>
@@ -1461,7 +1461,7 @@ view.id(&quot;imageBaoXian&quot;).set(&quot;image&quot;,&quot;>images/baoxian/ba
               <Property name="column">1</Property>
               <Property name="closeable">false</Property>
               <Property name="caption">包线扩展统计</Property>
-              <Property name="height">250</Property>
+              <Property name="height">360</Property>
               <Property name="border">normal</Property>
               <Children>
                 <DataGrid>
@@ -1483,7 +1483,7 @@ view.id(&quot;imageBaoXian&quot;).set(&quot;image&quot;,&quot;>images/baoxian/ba
               <Property name="column">2</Property>
               <Property name="closeable">false</Property>
               <Property name="caption">最新10条试飞信息</Property>
-              <Property name="height">425</Property>
+              <Property name="height">440</Property>
               <Property name="border">normal</Property>
               <Children>
                 <DataGrid id="dgSfstatistic10">
@@ -1530,7 +1530,7 @@ view.id(&quot;imageBaoXian&quot;).set(&quot;image&quot;,&quot;>images/baoxian/ba
               <Property name="column">2</Property>
               <Property name="closeable">false</Property>
               <Property name="caption">试飞包线图</Property>
-              <Property name="height">250</Property>
+              <Property name="height">360</Property>
               <Property name="border">normal</Property>
               <Children>
                 <Container layoutConstraint="anchorLeft:container;left:10;top:5">

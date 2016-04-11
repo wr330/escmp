@@ -14,7 +14,9 @@ import org.springframework.stereotype.Component;
 import com.bstek.bdf2.core.business.IUser;
 import com.bstek.bdf2.core.context.ContextHolder;
 import com.bstek.bdf2.core.exception.NoneLoginException;
+import com.bstek.bdf2.core.view.frame.main.register.message.FetchMessageCount;
 import com.bstek.dorado.annotation.Expose;
+import com.bstek.uflo.model.task.TaskState;
 import com.bstek.uflo.query.TaskQuery;
 import com.bstek.uflo.service.TaskService;
 import com.buaa.comm.btReportSharePerson.dao.BtReportSharePersonDao;
@@ -28,6 +30,8 @@ public class TodoDao extends JdbcBaseDao {
 	@Autowired
 	@Qualifier(TaskService.BEAN_ID)
 	private TaskService taskService;
+	@Resource
+	private FetchMessageCount fetchMessageCount;
 	@Resource
 	private JobstatisticsDao jobstatisticsDao;
 	@Resource
@@ -45,12 +49,23 @@ public class TodoDao extends JdbcBaseDao {
 			throw new NoneLoginException("Please login first.");
 		}
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-		Map<String, Object> map = null;				
-		TaskQuery ownerQuery = taskService.createTaskQuery();//获取新闻发布工作流待办任务
-		ownerQuery.assignee(user.getUsername());
-		if(ownerQuery.count()>0){
+		Map<String, Object> map = null;		
+		int messageCount = fetchMessageCount.count();//获取未读消息数量
+		if(messageCount>0){
 			map = new HashMap<String, Object>();
-			map.put("title", "新闻管理有：<font color=red>"+ownerQuery.count()+"</font>个任务待处理");
+			map.put("title", "站内消息有：<font color=red>"+messageCount+"</font>条消息未读");
+			map.put("url", "view.SeeMessage.d");
+			list.add(map);
+		}
+		TaskQuery ownerQuery1 = taskService.createTaskQuery();//获取新闻发布工作流待办任务
+		ownerQuery1.assignee(user.getUsername());				
+		TaskQuery ownerQuery2 = taskService.createTaskQuery();//获取新闻发布工作流可领取待办任务
+		ownerQuery2.addParticipator(user.getUsername());
+		ownerQuery2.addTaskState(TaskState.Ready);
+		int newsCount = ownerQuery1.count()+ownerQuery2.count();
+		if(newsCount>0){
+			map = new HashMap<String, Object>();
+			map.put("title", "新闻管理有：<font color=red>"+newsCount+"</font>个任务待处理");
 			map.put("url", "com.buaa.comm.view.TodoTaskMaintain.d");
 			list.add(map);
 		}

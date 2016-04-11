@@ -151,7 +151,7 @@ public class JobstatisticsDao extends HibernateBaseDao {
 	    if(count>0)//主任默认显示其专业室负责的项目		   
 	    	hql += " or a.departid in(select deptId from " + UserDept.class.getName() + " where USERNAME_ =  '" + username + "')";
 	    hql += " or a.oid in (select c.jobstatistics from " + Joballot.class.getName()+" c where c.personid = '" + username + "')";//默认显示本人参与的项目
-	    hql += " order by a.arrangementdate desc";
+	    hql += " order by a.status,a.arrangementdate desc";
 	    return this.query(hql);
 	}    
 }

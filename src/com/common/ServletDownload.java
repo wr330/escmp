@@ -16,6 +16,8 @@ import org.hibernate.Session;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.buaa.fly.domain.Sfstatistic;
+
 
 public class ServletDownload extends HttpServlet {  
     private static final long serialVersionUID = 1L;  
@@ -65,11 +67,17 @@ public class ServletDownload extends HttpServlet {
         if(!FileHelper.existFile(path,name)){//如果文件不存在，从数据库读取二进制流生成文件
         	String table = filename.substring(0,filename.indexOf('/'));//获取表名
         	String oid = filename.substring(filename.indexOf('/')+1,filename.lastIndexOf('/'));//获取主键Oid
-        	String sql = "select datablock from "+table+" where Oid='"+oid+"'";
-        	Session session = hibernateBaseDao.getSessionFactory().openSession();
-        	List<byte[]> result = session.createSQLQuery(sql).list();
-        	byte[] datablock = result.get(0);
-			FileHelper.createFile(path,name,datablock);
+        	if(table.equals("Fly_Sfstatistic")){
+        		byte[] datablock = flySpecialDeal(path,oid,name);
+			    FileHelper.createFile(path,name,datablock);
+        	}
+        	else{
+        	    String sql = "select datablock from "+table+" where Oid='"+oid+"'";
+        	    Session session = hibernateBaseDao.getSessionFactory().openSession();
+        	    List<byte[]> result = session.createSQLQuery(sql).list();
+        	    byte[] datablock = result.get(0);
+			    FileHelper.createFile(path,name,datablock);
+        	}
 		}
         String fullFileName = getServletContext().getRealPath("/upload/" + filename);//获取目标文件的绝对路径    
         InputStream in = new FileInputStream(fullFileName);//读文件
@@ -82,7 +90,20 @@ public class ServletDownload extends HttpServlet {
         in.close();  
         out.close();  
     }  
-  
+    //试飞信息模块特殊处理
+	private byte[] flySpecialDeal(String path,String oid,String name) throws IOException{
+    	String hql = "from "  + Sfstatistic.class.getName() + " where Oid='"+oid+"'";
+    	Sfstatistic sf = (Sfstatistic) hibernateBaseDao.query(hql).get(0);
+    	if(sf.getFilename1().equals(name))
+    		return sf.getDatablock1();
+    	else if(sf.getFilename2().equals(name))
+    		return sf.getDatablock2();
+    	else if(sf.getFilename3().equals(name))
+    		return sf.getDatablock3();
+    	else if(sf.getFilename4().equals(name))
+    		return sf.getDatablock4();
+    	return null;
+    }
     /** 
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response) 
      */  
