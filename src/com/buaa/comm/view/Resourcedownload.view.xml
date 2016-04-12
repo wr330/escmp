@@ -39,6 +39,7 @@
       </DataPilot>
       <ToolBarButton>
         <ClientEvent name="onClick">	view.id('dsResourcedownload').getData().insert();
+	var dateNow = new Date();
 	var cur=view.id('dsResourcedownload').getData('#');
 	var guid = &quot;&quot;;
 	for(var i=1;i&lt;=32;i++){
@@ -48,6 +49,8 @@
 		   guid += &quot;-&quot;;
 	}
 	cur.set(&quot;oid&quot;,guid);
+	cur.set(&quot;uploadTime&quot;,dateNow);
+	cur.set(&quot;uploadPerson&quot;,&quot;${loginUser.getUsername()}&quot;);
 	var dialog=view.id('diaResourcedownload');
 	dialog.set(&quot;caption&quot;,&quot;新增常用资源&quot;);
 	dialog.show();
@@ -109,6 +112,18 @@ dsResourcedownload.flushAsync();</ClientEvent>
       <Property name="showFilterBar">false</Property>
       <Property name="rowHeight">22</Property>
       <RowNumColumn/>
+      <DataColumn>
+        <Property name="width">120</Property>
+        <Property name="property">uploadPerson</Property>
+        <Property name="name">uploadPerson</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="width">150</Property>
+        <Property name="property">uploadTime</Property>
+        <Property name="name">uploadTime</Property>
+        <Editor/>
+      </DataColumn>
       <DataColumn name="filename">
         <Property name="property">filename</Property>
         <Property name="width">120</Property>
@@ -189,6 +204,18 @@ jQuery(arg.dom).xCreate({&#xD;
           <Property name="cols">*</Property>
           <Property name="dataSet">dsResourcedownload</Property>
           <Property name="dataPath">#</Property>
+          <AutoFormElement>
+            <Property name="property">uploadPerson</Property>
+            <Property name="name">UploadPerson</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">uploadTime</Property>
+            <Property name="name">UploadTime</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
           <AutoFormElement>
             <Property name="name">FileName</Property>
             <Property name="property">filename</Property>

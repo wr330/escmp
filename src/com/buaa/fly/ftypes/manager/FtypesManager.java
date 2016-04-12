@@ -1,11 +1,14 @@
 package com.buaa.fly.ftypes.manager;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
+import com.bstek.bdf2.core.business.IUser;
+import com.bstek.bdf2.core.context.ContextHolder;
 import com.bstek.dorado.annotation.Expose;
 import com.bstek.dorado.data.entity.EntityState;
 import com.bstek.dorado.data.entity.EntityUtils;
@@ -21,6 +24,7 @@ import com.buaa.fly.fpici.dao.FpiciDao;
 import com.buaa.fly.fpici.manager.FpiciManager;
 import com.buaa.fly.subject.dao.SubjectDao;
 import com.buaa.fly.subject.manager.SubjectManager;
+import com.buaa.sys.userOperationLog.manager.UserOperationLogManager;
 
 @Component("ftypesManager")
 public class FtypesManager {
@@ -31,6 +35,8 @@ public class FtypesManager {
 	private FpiciManager fpiciManager;
 	@Resource
 	private FpiciDao fpiciDao;
+	@Resource	
+	private UserOperationLogManager userOperationLogManager;
 
 	/**
 	 * 查询信息
@@ -69,18 +75,28 @@ public class FtypesManager {
 		if (null != details && details.size() > 0) {
 			for (Ftypes item : details) {
 				EntityState state = EntityUtils.getState(item);
+				IUser loginUser = ContextHolder.getLoginUser();
+				String ucn = loginUser.getCname();
+				String un = loginUser.getUsername();
+				Date myDate = new Date();
 				if (state.equals(EntityState.NEW)) {
 					if (ftypeIsExists(item.getFtypename()) != null)
 						throw new Exception("此机型已存在！");
 					ftypesDao.saveData(item);
+					//对用户新增操作进行记录，在用户操作日志表中新增一条记录。
+					userOperationLogManager.recordUserOperationLog(0, myDate, un, ucn,"对飞机机型表新增一条记录");
 				} else if (state.equals(EntityState.MODIFIED)) {
 					ftypesDao.updateData(item);
+					//对用户修改操作进行记录，在用户操作日志表中新增一条记录。
+					userOperationLogManager.recordUserOperationLog(1, myDate, un, ucn,"对飞机机型表修改选定记录");
 				} else if (state.equals(EntityState.DELETED)) {
 					Collection<Fpici> picis = fpiciDao
 							.queryFighterinfobyType(item.getFtypename());
 					if (picis != null)
 						fpiciDao.deleteData(picis);
 					ftypesDao.deleteData(item);
+					//对用户删除操作进行记录，在用户操作日志表中新增一条记录。
+					userOperationLogManager.recordUserOperationLog(2, myDate, un, ucn,"对飞机机型表删除选定记录");
 				} else if (state.equals(EntityState.NONE)) {
 				
 				}

@@ -72,6 +72,15 @@
         </Property>
       </Property>
       <Property name="defaultValue">0</Property>
+      <Validator type="custom">
+        <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
+if (arg.data &lt;= secret) {&#xD;
+	arg.result = { state:&quot;ok&quot;};&#xD;
+} &#xD;
+else {&#xD;
+	arg.result = { state:&quot;error&quot;, text: &quot;新增数据的密级超过自己对应密级&quot;};	&#xD;
+}</ClientEvent>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="maker">
       <Property name="dataType">String</Property>
@@ -247,6 +256,15 @@ arg.parameter = parameter;</ClientEvent>
         </Property>
       </Property>
       <Property name="defaultValue">0</Property>
+      <Validator type="custom">
+        <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
+if (arg.data &lt;= secret) {&#xD;
+	arg.result = { state:&quot;ok&quot;};&#xD;
+} &#xD;
+else {&#xD;
+	arg.result = { state:&quot;error&quot;, text: &quot;新增数据的密级超过自己对应密级&quot;};	&#xD;
+}</ClientEvent>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="bytes">
       <Property name="dataType">Integer</Property>
@@ -350,6 +368,15 @@ arg.parameter = parameter;</ClientEvent>
         </Property>
       </Property>
       <Property name="defaultValue">0</Property>
+      <Validator type="custom">
+        <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
+if (arg.data &lt;= secret) {&#xD;
+	arg.result = { state:&quot;ok&quot;};&#xD;
+} &#xD;
+else {&#xD;
+	arg.result = { state:&quot;error&quot;, text: &quot;新增数据的密级超过自己对应密级&quot;};	&#xD;
+}</ClientEvent>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="bytes">
       <Property name="dataType">Integer</Property>

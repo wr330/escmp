@@ -1,11 +1,14 @@
 package com.buaa.fly.tasklist.manager;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
+import com.bstek.bdf2.core.business.IUser;
+import com.bstek.bdf2.core.context.ContextHolder;
 import com.bstek.dorado.annotation.Expose;
 import com.bstek.dorado.data.entity.EntityState;
 import com.bstek.dorado.data.entity.EntityUtils;
@@ -18,6 +21,7 @@ import com.buaa.fly.domain.Tasklist;
 import com.buaa.fly.sfstatistic.dao.SfstatisticDao;
 import com.buaa.fly.sfstatistic.manager.SfstatisticManager;
 import com.buaa.fly.tasklist.dao.TasklistDao;
+import com.buaa.sys.userOperationLog.manager.UserOperationLogManager;
 import com.common.FileHelper;
 
 @Component("tasklistManager")
@@ -29,6 +33,8 @@ public class TasklistManager {
 	private SfstatisticManager sfstatisticManager;
 	@Resource
 	private SfstatisticDao sfstatisticDao;
+	@Resource	
+	private UserOperationLogManager userOperationLogManager;
 
 	/**
 	 * 分页查询信息，带有criteria 将criteria转换为一个Map
@@ -77,17 +83,27 @@ public class TasklistManager {
 		if (null != details && details.size() > 0) {
 			for (Tasklist item : details) {
 				EntityState state = EntityUtils.getState(item);
+				IUser loginUser = ContextHolder.getLoginUser();
+				String ucn = loginUser.getCname();
+				String un = loginUser.getUsername();
+				Date myDate = new Date();
 				if (state.equals(EntityState.NEW)) {
 					fileManager(item);
 					tasklistDao.saveData(item);
+					//对用户新增操作进行记录，在用户操作日志表中新增一条记录。
+					userOperationLogManager.recordUserOperationLog(0, myDate, un, ucn,"对试飞任务单新增一条记录");
 				} else if (state.equals(EntityState.MODIFIED)) {
 					fileManager(item);
 					tasklistDao.updateData(item);
+					//对用户修改操作进行记录，在用户操作日志表中新增一条记录。
+					userOperationLogManager.recordUserOperationLog(1, myDate, un, ucn,"对试飞任务单修改选定记录");
 				} else if (state.equals(EntityState.DELETED)) {
 					if (sfstatisticDao.statisticIsExists(item.getTasknumber())
 							.equals("该任务管理单关联飞行统计数据，不能删除！"))
 						throw new Exception("该任务管理单关联飞行统计数据，不能删除！");
 					tasklistDao.deleteData(item);
+					//对用户删除操作进行记录，在用户操作日志表中新增一条记录。
+					userOperationLogManager.recordUserOperationLog(2, myDate, un, ucn,"对试飞任务单删除选定记录");
 					FileHelper.deleteFile("/Fly_Tasklist/" + item.getOid());// 删除相关文件
 				} else if (state.equals(EntityState.NONE)) {
 					EntityState subjectState = EntityUtils.getState(item

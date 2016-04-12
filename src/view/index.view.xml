@@ -754,7 +754,64 @@ else if(current.value == &quot;文件上传&quot;){&#xD;
           <Property name="height">630</Property>
           <Property name="closeable">false</Property>
           <Property name="icon">url(>skin>common/icons.gif) -140px -280px</Property>
-          <Children/>
+          <Children>
+            <DataSet id="dsResourcedownload">
+              <Property name="dataType">[Resourcedownload]</Property>
+              <Property name="dataProvider">resourcedownloadPR#queryResourcedownload</Property>
+              <Property name="pageSize">20</Property>
+            </DataSet>
+            <DataGrid id="dgResourcedownload">
+              <Property name="readOnly">true</Property>
+              <Property name="dataSet">dsResourcedownload</Property>
+              <Property name="dataPath"></Property>
+              <Property name="filterMode">clientSide</Property>
+              <Property name="showFilterBar">false</Property>
+              <Property name="rowHeight">22</Property>
+              <RowNumColumn/>
+              <DataColumn>
+                <Property name="width">80</Property>
+                <Property name="property">uploadPerson</Property>
+                <Property name="name">uploadPerson</Property>
+                <Editor/>
+              </DataColumn>
+              <DataColumn name="filename">
+                <Property name="property">filename</Property>
+                <Property name="width">150</Property>
+              </DataColumn>
+              <DataColumn name="efile">
+                <ClientEvent name="onRenderCell">jQuery(arg.dom).empty();&#xD;
+var file = arg.data.get(&quot;efile&quot;);&#xD;
+var oid = arg.data.get(&quot;oid&quot;);&#xD;
+var href = &quot;/escmp/upload/Comm_Resourcedownload/&quot; + oid + &quot;/&quot; + file;&#xD;
+&#xD;
+jQuery(arg.dom).xCreate({&#xD;
+	tagName:&quot;A&quot;,&#xD;
+	href:href,&#xD;
+	content:arg.data.get(&quot;efile&quot;),&#xD;
+ 	onclick: function(){ &#xD;
+	var dsResourcedownload = view.id('dsResourcedownload').getData(&quot;#&quot;);&#xD;
+ 	var cur = dsResourcedownload.get(&quot;downloadAmount&quot;);&#xD;
+	cur++;	&#xD;
+	dsResourcedownload.set(&quot;downloadAmount&quot;,cur);&#xD;
+    view.id('uaResourcedownload').execute();&#xD;
+	&#xD;
+	}&#xD;
+});&#xD;
+&#xD;
+</ClientEvent>
+                <Property name="property">efile</Property>
+                <Property name="width">130</Property>
+                <Property name="userData"></Property>
+              </DataColumn>
+              <DataColumn>
+                <Property name="width">60</Property>
+                <Property name="property">downloadAmount</Property>
+                <Property name="name">downloadAmount</Property>
+                <Property name="align">left</Property>
+                <Editor/>
+              </DataColumn>
+            </DataGrid>
+          </Children>
         </Portlet>
       </Portlets>
     </Portal>

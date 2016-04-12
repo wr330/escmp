@@ -131,6 +131,11 @@ dsAuditLog.flushAsync();&#xD;
       <Property name="dataSet">dsAuditLog</Property>
       <Property name="readOnly">true</Property>
       <Property name="rowHeight">22</Property>
+      <DataColumn name="operationType">
+        <Property name="property">operationType</Property>
+        <Property name="align">left</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
       <ColumnGroup>
         <Property name="caption">操作人</Property>
         <DataColumn>
@@ -147,14 +152,12 @@ dsAuditLog.flushAsync();&#xD;
       <DataColumn name="operationTime">
         <Property name="property">operationTime</Property>
         <Property name="align">left</Property>
+        <Property name="width">150</Property>
       </DataColumn>
       <DataColumn name="operationContent">
         <Property name="property">operationContent</Property>
         <Property name="align">left</Property>
-      </DataColumn>
-      <DataColumn name="operationType">
-        <Property name="property">operationType</Property>
-        <Property name="align">left</Property>
+        <Property name="width">300</Property>
       </DataColumn>
     </DataGrid>
     <Dialog id="diaAuditLog">

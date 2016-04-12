@@ -1,12 +1,15 @@
 package com.buaa.fly.outlineexecution.manager;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
+import com.bstek.bdf2.core.business.IUser;
+import com.bstek.bdf2.core.context.ContextHolder;
 import com.bstek.dorado.annotation.Expose;
 import com.bstek.dorado.data.entity.EntityState;
 import com.bstek.dorado.data.entity.EntityUtils;
@@ -20,6 +23,7 @@ import com.buaa.fly.domain.Outlineexecution;
 
 import com.buaa.fly.outlineexecution.dao.OutlineexecutionDao;
 import com.buaa.fly.outlineexecution.dao.OutlineexecutionDaoforJDBC;
+import com.buaa.sys.userOperationLog.manager.UserOperationLogManager;
 
 @Component("outlineexecutionManager")
 public class OutlineexecutionManager {
@@ -34,6 +38,8 @@ public class OutlineexecutionManager {
 	private CombineVehicleDao combineVehicleDao;
 	@Resource
 	private ExportOutline exportOutline;
+	@Resource	
+	private UserOperationLogManager userOperationLogManager;
 
 	/**
 	 * 大纲查询方法
@@ -148,14 +154,24 @@ public class OutlineexecutionManager {
 		if (null != details && details.size() > 0) {
 			for (Outlineexecution item : details) {
 				EntityState state = EntityUtils.getState(item);
+				IUser loginUser = ContextHolder.getLoginUser();
+				String ucn = loginUser.getCname();
+				String un = loginUser.getUsername();
+				Date myDate = new Date();
 				if (state.equals(EntityState.NEW)) {
 					outlineexecutionDao.saveData(item);
+					//对用户新增操作进行记录，在用户操作日志表中新增一条记录。
+					userOperationLogManager.recordUserOperationLog(0, myDate, un, ucn,"对飞机试飞大纲表新增一条记录");
 				} else if (state.equals(EntityState.MODIFIED)) {
 					outlineexecutionDao.updateData(item);
+					//对用户修改操作进行记录，在用户操作日志表中新增一条记录。
+					userOperationLogManager.recordUserOperationLog(1, myDate, un, ucn,"对飞机试飞大纲表修改选定记录");
 				} else if (state.equals(EntityState.DELETED)) {
 					Collection<CombineVehicle> cv = combineVehicleDao.queryCVbyOutline(item.getOid());
 					this.deleteCombineVehicle(cv);
 					outlineexecutionDao.deleteData(item);
+					//对用户删除操作进行记录，在用户操作日志表中新增一条记录。
+					userOperationLogManager.recordUserOperationLog(2, myDate, un, ucn,"对飞机试飞大纲表删除选定记录");
 				} else if (state.equals(EntityState.NONE)) {
 					EntityState subjectState = EntityUtils.getState(item
 							.getSubject());

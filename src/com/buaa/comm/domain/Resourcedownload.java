@@ -2,6 +2,7 @@ package com.buaa.comm.domain;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,6 +34,8 @@ public class  Resourcedownload implements Serializable {
 	private String filename ;
 	private String miji ;
 	private int downloadAmount;
+	private Date uploadTime ;
+	private String uploadPerson ;
 
 	@Id
 		@Column(name = "Oid", unique = true, nullable = false)
@@ -85,6 +88,22 @@ public class  Resourcedownload implements Serializable {
 	}
 	public void setDownloadAmount(int downloadAmount) {
 		this.downloadAmount = downloadAmount;
+	}
+	
+	@Column(name="UploadTime")
+	public Date getUploadTime() {
+		return uploadTime;
+	}
+	public void setUploadTime(Date uploadTime) {
+		this.uploadTime = uploadTime;
+	}
+	
+	@Column(name="UploadPerson")
+	public String getUploadPerson() {
+		return uploadPerson;
+	}
+	public void setUploadPerson(String uploadPerson) {
+		this.uploadPerson = uploadPerson;
 	}
 
 }

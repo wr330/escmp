@@ -142,16 +142,16 @@ dsUserOperationLog.flushAsync();&#xD;
           <Editor/>
         </DataColumn>
       </ColumnGroup>
+      <DataColumn name="operationTime">
+        <Property name="property">operationTime</Property>
+        <Property name="align">left</Property>
+        <Property name="width">150</Property>
+      </DataColumn>
       <DataColumn name="operationContent">
         <Property name="property">operationContent</Property>
         <Property name="editorType">TextEditor</Property>
         <Property name="align">left</Property>
         <Property name="width">300</Property>
-      </DataColumn>
-      <DataColumn name="operationTime">
-        <Property name="property">operationTime</Property>
-        <Property name="align">left</Property>
-        <Property name="width">200</Property>
       </DataColumn>
     </DataGrid>
     <Dialog id="diaUserOperationLog">

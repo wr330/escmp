@@ -81,6 +81,7 @@ public class AuditLogDao extends HibernateBaseDao{
 
         String countHql = "select count(*) " + coreHql.toString();
         String hql = coreHql.toString();
+        hql = hql + "order by operationTime desc ";
         this.pagingQuery(page, hql, countHql, args);
 		
 	}

@@ -128,6 +128,15 @@ arg.parameter = parameter;</ClientEvent>
         </Property>
       </Property>
       <Property name="defaultValue">0</Property>
+      <Validator type="custom">
+        <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
+if (arg.data &lt;= secret) {&#xD;
+	arg.result = { state:&quot;ok&quot;};&#xD;
+} &#xD;
+else {&#xD;
+	arg.result = { state:&quot;error&quot;, text: &quot;新增数据的密级超过自己对应密级&quot;};	&#xD;
+}</ClientEvent>
+      </Validator>
     </PropertyDef>
     <Reference name="sfstatistic">
       <Property name="dataProvider">sfstatisticPR#querySfstatistic</Property>
@@ -431,6 +440,15 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
         </Property>
       </Property>
       <Property name="defaultValue">0</Property>
+      <Validator type="custom">
+        <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
+if (arg.data &lt;= secret) {&#xD;
+	arg.result = { state:&quot;ok&quot;};&#xD;
+} &#xD;
+else {&#xD;
+	arg.result = { state:&quot;error&quot;, text: &quot;新增数据的密级超过自己对应密级&quot;};	&#xD;
+}</ClientEvent>
+      </Validator>
     </PropertyDef>
   </DataType>
   <DataType name="Flightrestrict" meta="x:573;y:10">
@@ -531,6 +549,15 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
         </Property>
       </Property>
       <Property name="defaultValue">0</Property>
+      <Validator type="custom">
+        <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
+if (arg.data &lt;= secret) {&#xD;
+	arg.result = { state:&quot;ok&quot;};&#xD;
+} &#xD;
+else {&#xD;
+	arg.result = { state:&quot;error&quot;, text: &quot;新增数据的密级超过自己对应密级&quot;};	&#xD;
+}</ClientEvent>
+      </Validator>
     </PropertyDef>
     <Reference name="fighterxzh">
       <Property name="dataProvider">fighterxzhPR#queryFighterxzh</Property>
@@ -612,6 +639,15 @@ arg.parameter = parameter;</ClientEvent>
         </Property>
       </Property>
       <Property name="defaultValue">0</Property>
+      <Validator type="custom">
+        <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
+if (arg.data &lt;= secret) {&#xD;
+	arg.result = { state:&quot;ok&quot;};&#xD;
+} &#xD;
+else {&#xD;
+	arg.result = { state:&quot;error&quot;, text: &quot;新增数据的密级超过自己对应密级&quot;};	&#xD;
+}</ClientEvent>
+      </Validator>
     </PropertyDef>
   </DataType>
   <DataType name="Dailyacc" meta="x:996;y:10">
@@ -660,6 +696,15 @@ arg.parameter = parameter;</ClientEvent>
         </Property>
       </Property>
       <Property name="defaultValue">0</Property>
+      <Validator type="custom">
+        <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
+if (arg.data &lt;= secret) {&#xD;
+	arg.result = { state:&quot;ok&quot;};&#xD;
+} &#xD;
+else {&#xD;
+	arg.result = { state:&quot;error&quot;, text: &quot;新增数据的密级超过自己对应密级&quot;};	&#xD;
+}</ClientEvent>
+      </Validator>
     </PropertyDef>
   </DataType>
   <DataType name="Ftypes" meta="x:1114;y:10">
@@ -906,6 +951,15 @@ arg.parameter = parameter;</ClientEvent>
         </Property>
       </Property>
       <Property name="defaultValue">0</Property>
+      <Validator type="custom">
+        <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
+if (arg.data &lt;= secret) {&#xD;
+	arg.result = { state:&quot;ok&quot;};&#xD;
+} &#xD;
+else {&#xD;
+	arg.result = { state:&quot;error&quot;, text: &quot;新增数据的密级超过自己对应密级&quot;};	&#xD;
+}</ClientEvent>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="project">
       <Property name="dataType">Subject</Property>
@@ -1125,6 +1179,15 @@ arg.parameter = parameter;</ClientEvent>
         </Property>
       </Property>
       <Property name="defaultValue">0</Property>
+      <Validator type="custom">
+        <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
+if (arg.data &lt;= secret) {&#xD;
+	arg.result = { state:&quot;ok&quot;};&#xD;
+} &#xD;
+else {&#xD;
+	arg.result = { state:&quot;error&quot;, text: &quot;新增数据的密级超过自己对应密级&quot;};	&#xD;
+}</ClientEvent>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="fdata">
       <Property name="dataType">String</Property>

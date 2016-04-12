@@ -1,11 +1,14 @@
 package com.buaa.fly.sfstatistic.manager;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
+import com.bstek.bdf2.core.business.IUser;
+import com.bstek.bdf2.core.context.ContextHolder;
 import com.bstek.dorado.data.entity.EntityState;
 import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.data.provider.Criteria;
@@ -14,6 +17,7 @@ import com.bstek.dorado.data.provider.Page;
 import com.buaa.fly.domain.Sfstatistic;
 import com.buaa.fly.domain.Tasklist;
 import com.buaa.fly.sfstatistic.dao.SfstatisticDao;
+import com.buaa.sys.userOperationLog.manager.UserOperationLogManager;
 import com.common.FileHelper;
 
 @Component("sfstatisticManager")
@@ -21,6 +25,8 @@ public class SfstatisticManager {
 
 	@Resource
 	private SfstatisticDao sfstatisticDao;
+	@Resource	
+	private UserOperationLogManager userOperationLogManager;
 
 	/**
 	 * 分页查询信息，带有criteria 将criteria转换为一个Map
@@ -59,14 +65,24 @@ public class SfstatisticManager {
 		if (null != details && details.size() > 0) {
 			for (Sfstatistic item : details) {
 				EntityState state = EntityUtils.getState(item);
+				IUser loginUser = ContextHolder.getLoginUser();
+				String ucn = loginUser.getCname();
+				String un = loginUser.getUsername();
+				Date myDate = new Date();
 				if (state.equals(EntityState.NEW)) {
 					fileManager(item);
 					sfstatisticDao.saveData(item);
+					//对用户新增操作进行记录，在用户操作日志表中新增一条记录。
+					userOperationLogManager.recordUserOperationLog(0, myDate, un, ucn,"对飞行统计表新增一条记录");
 				} else if (state.equals(EntityState.MODIFIED)) {
 					fileManager(item);
 					sfstatisticDao.updateData(item);
+					//对用户修改操作进行记录，在用户操作日志表中新增一条记录。
+					userOperationLogManager.recordUserOperationLog(1, myDate, un, ucn,"对飞行统计表修改选定记录");
 				} else if (state.equals(EntityState.DELETED)) {
 					sfstatisticDao.deleteData(item);
+					//对用户删除操作进行记录，在用户操作日志表中新增一条记录。
+					userOperationLogManager.recordUserOperationLog(2, myDate, un, ucn,"对飞行统计表删除选定记录");
 					FileHelper.deleteFile("/Fly_Sfstatistic/" + item.getId());// 删除相关文件
 				} else if (state.equals(EntityState.NONE)) {
 					EntityState tasklistState = EntityUtils.getState(item

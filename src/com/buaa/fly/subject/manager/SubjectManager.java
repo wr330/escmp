@@ -2,6 +2,7 @@ package com.buaa.fly.subject.manager;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,8 @@ import java.util.UUID;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
+import com.bstek.bdf2.core.business.IUser;
+import com.bstek.bdf2.core.context.ContextHolder;
 import com.bstek.dorado.annotation.Expose;
 import com.bstek.dorado.data.entity.EntityState;
 import com.bstek.dorado.data.entity.EntityUtils;
@@ -20,6 +23,7 @@ import com.buaa.fly.domain.Ftypes;
 import com.buaa.fly.domain.Subject;
 import com.buaa.fly.outlineexecution.manager.OutlineexecutionManager;
 import com.buaa.fly.subject.dao.SubjectDao;
+import com.buaa.sys.userOperationLog.manager.UserOperationLogManager;
 
 @Component("subjectManager")
 public class SubjectManager {
@@ -28,6 +32,8 @@ public class SubjectManager {
 	private SubjectDao subjectDao;
 	@Resource
 	private OutlineexecutionManager outlineexecutionManager;
+	@Resource	
+	private UserOperationLogManager userOperationLogManager;
 
 	/**
 	 * 查询方法
@@ -180,18 +186,28 @@ public class SubjectManager {
 		if (null != details && details.size() > 0) {
 			for (Subject item : details) {
 				EntityState state = EntityUtils.getState(item);
+				IUser loginUser = ContextHolder.getLoginUser();
+				String ucn = loginUser.getCname();
+				String un = loginUser.getUsername();
+				Date myDate = new Date();
 				if (state.equals(EntityState.NEW)) {
 					subjectDao.saveData(item);
+					//对用户新增操作进行记录，在用户操作日志表中新增一条记录。
+					userOperationLogManager.recordUserOperationLog(0, myDate, un, ucn,"对试飞科目表新增一条记录");
 				}
 				if (state.equals(EntityState.MODIFIED)
 						|| state.equals(EntityState.MOVED)) {
 
 					subjectDao.updateData(item);
+					//对用户修改操作进行记录，在用户操作日志表中新增一条记录。
+					userOperationLogManager.recordUserOperationLog(1, myDate, un, ucn,"对试飞科目表修改选定记录");
 				}
 				if (state.equals(EntityState.DELETED)) {
 					if (subjectDao.subjectIsOld(item.getOid()) != null)
 						throw new Exception("此科目已存在大纲条目！");
 					subjectDao.deleteData(item);
+					//对用户删除操作进行记录，在用户操作日志表中新增一条记录。
+					userOperationLogManager.recordUserOperationLog(2, myDate, un, ucn,"对试飞科目表删除选定记录");
 				}
 				if (state.equals(EntityState.NONE)) {
 					outlineexecutionManager.saveOutlineexecution(item

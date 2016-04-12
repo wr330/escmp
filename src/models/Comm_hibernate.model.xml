@@ -98,6 +98,15 @@
           </Collection>
         </Property>
       </Property>
+      <Validator type="custom">
+        <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
+if (arg.data &lt;= secret) {&#xD;
+	arg.result = { state:&quot;ok&quot;};&#xD;
+} &#xD;
+else {&#xD;
+	arg.result = { state:&quot;error&quot;, text: &quot;新增数据的密级超过自己对应密级&quot;};	&#xD;
+}</ClientEvent>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="status">
       <Property name="dataType">int</Property>
@@ -182,6 +191,7 @@
     <PropertyDef name="filename">
       <Property name="dataType">String</Property>
       <Property name="label">文件名称</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="oid">
       <Property name="dataType">String</Property>
@@ -209,12 +219,30 @@
           </Collection>
         </Property>
       </Property>
+      <Validator type="custom">
+        <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
+if (arg.data &lt;= secret) {&#xD;
+	arg.result = { state:&quot;ok&quot;};&#xD;
+} &#xD;
+else {&#xD;
+	arg.result = { state:&quot;error&quot;, text: &quot;新增数据的密级超过自己对应密级&quot;};	&#xD;
+}</ClientEvent>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="downloadAmount">
       <Property name="dataType">int</Property>
       <Property name="required">true</Property>
       <Property name="defaultValue">0</Property>
       <Property name="label">下载数量</Property>
+    </PropertyDef>
+    <PropertyDef name="uploadTime">
+      <Property name="dataType">DateTime</Property>
+      <Property name="label">上传时间</Property>
+    </PropertyDef>
+    <PropertyDef name="uploadPerson">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">上传人</Property>
     </PropertyDef>
   </DataType>
   <DataType name="Technicandcontract">
@@ -293,6 +321,15 @@
           </Collection>
         </Property>
       </Property>
+      <Validator type="custom">
+        <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
+if (arg.data &lt;= secret) {&#xD;
+	arg.result = { state:&quot;ok&quot;};&#xD;
+} &#xD;
+else {&#xD;
+	arg.result = { state:&quot;error&quot;, text: &quot;新增数据的密级超过自己对应密级&quot;};	&#xD;
+}</ClientEvent>
+      </Validator>
     </PropertyDef>
   </DataType>
   <DataType name="Addressbook">
@@ -354,6 +391,15 @@
           </Collection>
         </Property>
       </Property>
+      <Validator type="custom">
+        <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
+if (arg.data &lt;= secret) {&#xD;
+	arg.result = { state:&quot;ok&quot;};&#xD;
+} &#xD;
+else {&#xD;
+	arg.result = { state:&quot;error&quot;, text: &quot;新增数据的密级超过自己对应密级&quot;};	&#xD;
+}</ClientEvent>
+      </Validator>
     </PropertyDef>
   </DataType>
   <DataType name="Addressbookdepart">
@@ -471,6 +517,15 @@
           </Collection>
         </Property>
       </Property>
+      <Validator type="custom">
+        <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
+if (arg.data &lt;= secret) {&#xD;
+	arg.result = { state:&quot;ok&quot;};&#xD;
+} &#xD;
+else {&#xD;
+	arg.result = { state:&quot;error&quot;, text: &quot;新增数据的密级超过自己对应密级&quot;};	&#xD;
+}</ClientEvent>
+      </Validator>
     </PropertyDef>
   </DataType>
   <DataType name="Jobstatistics">
@@ -610,6 +665,15 @@
           </Collection>
         </Property>
       </Property>
+      <Validator type="custom">
+        <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
+if (arg.data &lt;= secret) {&#xD;
+	arg.result = { state:&quot;ok&quot;};&#xD;
+} &#xD;
+else {&#xD;
+	arg.result = { state:&quot;error&quot;, text: &quot;新增数据的密级超过自己对应密级&quot;};	&#xD;
+}</ClientEvent>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="workStatus">
       <Property name="dataType">int</Property>
@@ -746,6 +810,15 @@ arg.parameter = parameter;</ClientEvent>
           </Collection>
         </Property>
       </Property>
+      <Validator type="custom">
+        <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
+if (arg.data &lt;= secret) {&#xD;
+	arg.result = { state:&quot;ok&quot;};&#xD;
+} &#xD;
+else {&#xD;
+	arg.result = { state:&quot;error&quot;, text: &quot;新增数据的密级超过自己对应密级&quot;};	&#xD;
+}</ClientEvent>
+      </Validator>
     </PropertyDef>
     <PropertyDef name="workStatus">
       <Property></Property>

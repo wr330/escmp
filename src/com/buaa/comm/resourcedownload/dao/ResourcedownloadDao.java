@@ -50,7 +50,7 @@ public class ResourcedownloadDao extends HibernateBaseDao {
         
         String countHql = "select count(*) " + coreHql.toString();
         String hql = coreHql.toString();
-        hql = userService.checkUser(hql)+ "order by downloadAmount desc ";
+        hql = userService.checkUser(hql)+ "order by downloadAmount desc , uploadTime desc";
 		this.pagingQuery(page, hql, countHql, args);
 	}
 	
