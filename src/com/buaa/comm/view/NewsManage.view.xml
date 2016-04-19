@@ -13,7 +13,7 @@
       <Property name="loadMode">lazy</Property>
       <Property name="dataProvider">newsTreePR#queryNews</Property>
       <Property name="pageSize">20</Property>
-      <Property name="parameter"/>
+      <Property name="parameter"></Property>
     </DataSet>
     <UpdateAction id="uaNews">
       <Property name="successMessage">保存数据成功</Property>
@@ -129,7 +129,7 @@ arg.processDefault = true;</ClientEvent>
 '为了页面展示,请设置图片宽度小于500px;统一字体为宋体,大小为14px'+&#xD;
 '&lt;/p>';&#xD;
 </ClientEvent>
-          <Property name="height">650</Property>
+          <Property name="height">670</Property>
           <Property name="contentOverflow">hidden</Property>
           <AutoForm id="afNews">
             <Property name="dataSet">dataSetNews</Property>
@@ -140,6 +140,13 @@ arg.processDefault = true;</ClientEvent>
               <Property name="name">parentId</Property>
               <Property name="property">parentId</Property>
               <Property name="editable">false</Property>
+              <Editor/>
+            </AutoFormElement>
+            <AutoFormElement>
+              <Property name="name">orderDate</Property>
+              <Property name="property">orderDate</Property>
+              <Property name="name">nodeTitle</Property>
+              <Property name="label">发布时间（排序）</Property>
               <Editor/>
             </AutoFormElement>
             <AutoFormElement>

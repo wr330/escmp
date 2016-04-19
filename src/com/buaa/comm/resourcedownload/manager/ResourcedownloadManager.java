@@ -1,15 +1,23 @@
 
 package com.buaa.comm.resourcedownload.manager;
 
+import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.springframework.stereotype.Component;
 
 import com.bstek.bdf2.core.business.IUser;
 import com.bstek.bdf2.core.context.ContextHolder;
+import com.bstek.dorado.annotation.Expose;
 import com.bstek.dorado.data.entity.EntityState;
 import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.data.provider.Criteria;
@@ -82,6 +90,40 @@ public class ResourcedownloadManager {
 		}
 	 }
 	 
-	 
-	
+	//首页展示常用资源下载
+	@SuppressWarnings({ "unchecked" })
+	@Expose
+	public List<Map<String, Object>> queryResource() throws Exception{
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		Map<String, Object> map = null;
+		String sql = "select top 20 * from Comm_ResourceDownLoad where EFile is not null order by DownloadAmount desc,UploadTime desc";
+		Session session = resourcedownloadDao.getSessionFactory().openSession();
+		try{
+			Query query = session.createSQLQuery(sql).addEntity(Resourcedownload.class);
+			List<Resourcedownload> items = query.list();
+			for(Resourcedownload item:items){
+				map = new HashMap<String, Object>();
+				map.put("name1", item.getFilename());
+				map.put("name2", " 【上传日期："+DateFormat.getDateInstance().format(item.getUploadTime())+" | 下载量："+item.getDownloadAmount()+"】");
+				map.put("oid", item.getOid());
+				map.put("url", "upload/Comm_Resourcedownload/"+item.getOid()+"/"+item.getEfile());
+				list.add(map);
+			}
+		}catch(Exception e){			
+		}finally{
+			session.close();
+		}
+		return list;
+	}
+	@Expose
+	public void downloadCount(String oid){
+		String sql = "update Comm_ResourceDownLoad set DownloadAmount = DownloadAmount+1 where oid='"+oid+"'";
+		Session session = resourcedownloadDao.getSessionFactory().openSession();
+		try{
+			session.createSQLQuery(sql).executeUpdate();
+		}catch(Exception e){			
+		}finally{
+			session.close();
+		}
+	}
 }

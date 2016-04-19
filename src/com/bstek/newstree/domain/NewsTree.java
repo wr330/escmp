@@ -141,6 +141,8 @@ public class NewsTree implements Serializable {
 	}
 	
 	public String getOrderDate2() {
+		if(orderDate==null)
+			return "";
 		String date = orderDate.toString();
 		return date.substring(0, 10);
 	}

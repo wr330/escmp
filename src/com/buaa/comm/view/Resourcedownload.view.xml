@@ -275,6 +275,14 @@ self.set(&quot;multipartParams&quot;, {record: value});</ClientEvent>
       <ClientEvent name="onFileUploaded">var returnValue = arg.file.name;&#xD;
 var cur=view.id('dsResourcedownload').getData('#');&#xD;
 cur.set(&quot;efile&quot;,returnValue);&#xD;
+var filename = cur.get(&quot;filename&quot;);&#xD;
+if(filename==null || filename==&quot;&quot;){&#xD;
+	filename = returnValue;&#xD;
+	var end = returnValue.lastIndexOf('.');&#xD;
+	if(end>0)&#xD;
+	    filename = returnValue.substring(0,end);&#xD;
+    cur.set(&quot;filename&quot;,filename);&#xD;
+}&#xD;
 var link = view.id(&quot;lefile&quot;);&#xD;
 if(returnValue){&#xD;
 	&#xD;
