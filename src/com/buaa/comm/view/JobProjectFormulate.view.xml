@@ -87,8 +87,8 @@ if(cur){
 if (cur) {&#xD;
 	view.id('diaJobSee').show();&#xD;
 }</ClientEvent>
-        <Property name="caption">查看</Property>
-        <Property name="icon">url(>skin>common/icons.gif) -20px -40px</Property>
+        <Property name="caption">浏览</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -40px -100px</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#');&#xD;
@@ -103,6 +103,11 @@ else{&#xD;
 }</ClientEvent>
         <Property name="caption">分配到执行室</Property>
         <Property name="icon">url(>skin>common/icons.gif) -80px -20px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">view.id('dgJobstatistics').set(&quot;showFilterBar&quot;,!view.id('dgJobstatistics').get(&quot;showFilterBar&quot;));</ClientEvent>
+        <Property name="caption">自定义查询</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var dsJobstatistics = view.get(&quot;#dsJobstatistics&quot;);&#xD;

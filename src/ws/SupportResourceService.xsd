@@ -3,7 +3,8 @@
     <element name="SupportResourceRequest">
         <complexType>
             <all>
-                <element name="test" type="string"></element>
+                <element name="sendStatus" type="int"></element>
+                <element name="aircrafttype" type="string"></element>
             </all>
         </complexType>
     </element>

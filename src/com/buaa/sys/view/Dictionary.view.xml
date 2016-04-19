@@ -28,7 +28,11 @@
 var dictype = node.get(&quot;userData&quot;);
 if(dictype){
     view.id('dsDictionary').getData().insert({dictype:dictype});
-    view.id('diaDictionary').show();
+    var cur = view.id('dsDictionary').getData('#');
+	var entityList = view.id('dsDictionary').getData();
+	var count = entityList.entityCount;
+	cur.set(&quot;numericalOrder&quot;,count);
+	view.id('diaDictionary').show();
 }
 else
     dorado.MessageBox.alert(&quot;请先选择一个数据字典类别！&quot;);
@@ -37,11 +41,10 @@ else
               <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
             </ToolBarButton>
             <ToolBarButton>
-              <ClientEvent name="onClick">
-	var cur=view.id('dsDictionary').getData('#');
-	if (cur) {
-		view.id('diaDictionary').show();
-	}
+              <ClientEvent name="onClick">var cur=view.id('dsDictionary').getData('#');
+if (cur) {
+	view.id('diaDictionary').show();
+}
 	</ClientEvent>
               <Property name="caption">修改</Property>
               <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
@@ -59,19 +62,31 @@ else
               <Property name="caption">删除</Property>
               <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
             </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">view.id('dgDictionary').set(&quot;showFilterBar&quot;,!view.id('dgDictionary').get(&quot;showFilterBar&quot;));</ClientEvent>
+              <Property name="caption">自定义查询</Property>
+              <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">var dsBtreport = view.get(&quot;#dsDictionary&quot;);&#xD;
+dsBtreport.flushAsync();</ClientEvent>
+              <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+              <Property name="caption">刷新</Property>
+            </ToolBarButton>
           </ToolBar>
           <DataGrid id="dgDictionary">
-            <Property name="readOnly">true</Property>
             <Property name="dataSet">dsDictionary</Property>
             <Property name="dataPath"></Property>
             <Property name="filterMode">clientSide</Property>
             <Property name="showFilterBar">false</Property>
             <Property name="rowHeight">22</Property>
+            <Property name="readOnly">true</Property>
             <RowNumColumn/>
             <DataColumn>
               <Property name="property">numericalOrder</Property>
               <Property name="width">160</Property>
               <Property name="name">numericalOrder</Property>
+              <Property name="align">left</Property>
               <Editor/>
             </DataColumn>
             <DataColumn name="name">

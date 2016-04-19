@@ -18,7 +18,7 @@
 if (valijs(confirm)) {&#xD;
 	arg.result = { state:&quot;ok&quot;}&#xD;
 } else {&#xD;
-	arg.result = { state:&quot;error&quot;, text: &quot;密码强度不符合,请重新输入&quot;};	&#xD;
+	arg.result = { state:&quot;error&quot;, text: &quot;密码强度不符合,请重新输入(密码至少有一位字母和一位特殊字符，如@c12345678)&quot;};	&#xD;
 }&#xD;
 &#xD;
 function valijs(now){&#xD;
@@ -282,15 +282,6 @@ switch(arg.code){&#xD;
 		userDialog.set(&quot;caption&quot;,&quot;添加用户信息&quot;);&#xD;
 		userDialog.show();&#xD;
 		arg.processDefault = false;&#xD;
-		&#xD;
-		var myDate = new Date();&#xD;
-		view.id('dsAuditLog').getData().insert({&#xD;
-			operationType:&quot;0&quot;,&#xD;
-			operationPerson: &quot;${loginUsername}&quot;,&#xD;
-			operationContent:&quot;新增用户&quot;,&#xD;
-			operationTime:myDate&#xD;
-		});&#xD;
-		view.id('uaAuditLog').execute();&#xD;
 		break;&#xD;
 &#xD;
 	case '-':&#xD;
@@ -305,6 +296,7 @@ switch(arg.code){&#xD;
 				view.id('dsAuditLog').getData().insert({&#xD;
 					operationType:&quot;2&quot;,&#xD;
 					operationPerson: &quot;${loginUsername}&quot;,&#xD;
+					operationPersonName: &quot;${loginUser.getCname()}&quot;,&#xD;
 					operationContent:&quot;删除所选用户&quot;,&#xD;
 					operationTime:myDate&#xD;
 				});&#xD;
@@ -343,14 +335,7 @@ if(user)&#xD;
 	dorado.MessageBox.alert(&quot;请首先选择用户信息！&quot;);&#xD;
 }&#xD;
 &#xD;
-var myDate = new Date();&#xD;
-view.id('dsAuditLog').getData().insert({&#xD;
-	operationType:&quot;1&quot;,&#xD;
-	operationPerson: &quot;${loginUsername}&quot;,&#xD;
-	operationContent:&quot;修改所选用户&quot;,&#xD;
-	operationTime:myDate&#xD;
-});&#xD;
-view.id('uaAuditLog').execute();</ClientEvent>
+</ClientEvent>
         <Property name="caption">修改</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -200px -0px</Property>
       </ToolBarButton>
@@ -420,6 +405,7 @@ var myDate = new Date();&#xD;
 view.id('dsAuditLog').getData().insert({&#xD;
 	operationType:&quot;7&quot;,&#xD;
 	operationPerson: &quot;${loginUsername}&quot;,&#xD;
+	operationPersonName: &quot;${loginUser.getCname()}&quot;,&#xD;
 	operationContent:&quot;设置岗位&quot;,&#xD;
 	operationTime:myDate&#xD;
 });&#xD;
@@ -440,6 +426,7 @@ if(data){&#xD;
 		operationType:&quot;7&quot;,&#xD;
 		operationPerson: &quot;${loginUsername}&quot;,&#xD;
 		operationContent:&quot;清空用户岗位&quot;,&#xD;
+		operationPersonName: &quot;${loginUser.getCname()}&quot;,&#xD;
 		operationTime:myDate&#xD;
 	});&#xD;
 	view.id('uaAuditLog').execute();&#xD;
@@ -457,6 +444,7 @@ importExcelAction.execute(function(arg){&#xD;
 	view.id('dsAuditLog').getData().insert({&#xD;
 		operationType:&quot;4&quot;,&#xD;
 		operationPerson: &quot;${loginUsername}&quot;,&#xD;
+		operationPersonName: &quot;${loginUser.getCname()}&quot;,&#xD;
 		operationContent:&quot;导入用户信息&quot;,&#xD;
 		operationTime:myDate&#xD;
 	});&#xD;
@@ -488,9 +476,10 @@ importExcelAction.execute(function(arg){&#xD;
 			operationType:&quot;6&quot;,&#xD;
 			operationPerson: &quot;${loginUsername}&quot;,&#xD;
 			operationContent:&quot;解锁所选用户&quot;,&#xD;
+			operationPersonName: &quot;${loginUser.getCname()}&quot;,&#xD;
 			operationTime:myDate&#xD;
 		});&#xD;
-view.id('uaAuditLog').execute();&#xD;
+		view.id('uaAuditLog').execute();&#xD;
 	}else{&#xD;
 		dorado.MessageBox.alert(&quot;请首先选择用户信息！&quot;);&#xD;
 	}</ClientEvent>
@@ -624,7 +613,21 @@ self.setUserDept = function(deptId) {&#xD;
 		view.id(&quot;dataSetUser&quot;).getData(&quot;#&quot;).reset(&quot;depts&quot;);&#xD;
 	}&#xD;
 	view.id(&quot;dialogUser&quot;).hide();&#xD;
-});</ClientEvent>
+});&#xD;
+var userDialog=view.id(&quot;dialogUser&quot;);&#xD;
+var number = 0;&#xD;
+if(userDialog.get(&quot;caption&quot;) == &quot;修改用户信息&quot;){&#xD;
+	number = 1&#xD;
+}&#xD;
+var myDate = new Date();&#xD;
+view.id('dsAuditLog').getData().insert({&#xD;
+	operationType: number,&#xD;
+	operationPerson: &quot;${loginUsername}&quot;,&#xD;
+	operationPersonName: &quot;${loginUser.getCname()}&quot;,&#xD;
+	operationContent: userDialog.get(&quot;caption&quot;),&#xD;
+	operationTime:myDate&#xD;
+});&#xD;
+view.id('uaAuditLog').execute();</ClientEvent>
           <Property name="caption">保存</Property>
           <Property name="icon"> url(>skin>common/icons.gif) -140px -20px</Property>
         </Button>
@@ -633,8 +636,6 @@ self.setUserDept = function(deptId) {&#xD;
 	view.id(&quot;dataSetUser&quot;).getData(&quot;#&quot;).cancel();&#xD;
 	view.id(&quot;dialogUser&quot;).setUserDept(null);&#xD;
 	view.id(&quot;dialogUser&quot;).hide();&#xD;
-	view.id('dsAuditLog').getData().remove()&#xD;
-	view.id('uaAuditLog').execute();&#xD;
 });&#xD;
 &#xD;
 </ClientEvent>
@@ -816,7 +817,8 @@ if (node ) {&#xD;
 view.id('dsAuditLog').getData().insert({&#xD;
 	operationType:&quot;5&quot;,&#xD;
 	operationPerson: &quot;${loginUsername}&quot;,&#xD;
-	operationContent:&quot;导出用户信息&quot;,&#xD;
+	operationPersonName: &quot;${loginUser.getCname()}&quot;,&#xD;
+	operationContent:&quot;导出用户信息数据&quot;,&#xD;
 	operationTime:myDate&#xD;
 });&#xD;
 view.id('uaAuditLog').execute();</ClientEvent>

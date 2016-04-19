@@ -50,7 +50,7 @@ public class  Technicaldocument implements Serializable {
 	private byte[] datablock ;
 	private Integer bytes ;
 	private String miji ;
-	private Boolean sendStatus;
+	private int sendStatus;
 	
 
 	
@@ -176,10 +176,10 @@ public class  Technicaldocument implements Serializable {
 		this.miji = miji;
 	}
 	@Column(name="SendStatus")
-	public Boolean getSendStatus() {
+	public int getSendStatus() {
 		return sendStatus;
 	}
-	public void setSendStatus(Boolean sendStatus) {
+	public void setSendStatus(int sendStatus) {
 		this.sendStatus = sendStatus;
 	}
 }

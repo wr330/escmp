@@ -1,5 +1,6 @@
 package com.buaa.out.technicaldocument.dao;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Date;
 import java.util.List;
@@ -52,6 +53,19 @@ public class TechnicaldocumentDao extends HibernateBaseDao {
         String hql = coreHql.toString();
         hql = userService.checkUser(hql);
 		this.pagingQuery(page, hql, countHql, args);
+	}
+	
+	/**                  
+	* 搜索计划开始时间到结束时间涉及本年度的保障计划
+	* @param parameter    
+	* @throws Exception
+	*/
+	public Collection<Technicaldocument> queryDocument(Map<String, Object> parameter) throws Exception {
+		String hql="from "+ Technicaldocument.class.getName() +" u where 1=1";
+		Integer sendStatus = (Integer)parameter.get("status");
+		String aircrafttype = (String)parameter.get("aircrafttype");
+		hql += " and u.sendStatus =" + sendStatus + " and u.aircrafttype = '" + aircrafttype + "'";
+		return this.query(hql);						
 	}
 	
 	/**

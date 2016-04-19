@@ -110,6 +110,19 @@ if (cur) {
         <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
       </ToolBarButton>
       <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsTechnicaldocument').getData('#');
+if (cur) {
+	view.id('diaSeeTechnicaldocument').show();
+}</ClientEvent>
+        <Property name="caption">浏览</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -40px -100px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">view.id('dgTechnicaldocument').set(&quot;showFilterBar&quot;,!view.id('dgTechnicaldocument').get(&quot;showFilterBar&quot;));</ClientEvent>
+        <Property name="caption">自定义查询</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
         <ClientEvent name="onClick">var dsTechnicaldocument = view.get(&quot;#dsTechnicaldocument&quot;);&#xD;
 dsTechnicaldocument.flushAsync();</ClientEvent>
         <Property name="caption">刷新</Property>
@@ -343,6 +356,102 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
                 </Button>
               </Container>
             </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">contentabstract</Property>
+            <Property name="property">contentabstract</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">100</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">contenttype</Property>
+            <Property name="property">contenttype</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">transceivertype</Property>
+            <Property name="property">transceivertype</Property>
+            <Property name="trigger">dataSetDropDownR</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">Major</Property>
+            <Property name="property">major</Property>
+            <Property name="trigger">dataSetDropDownM</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">ResponsiblePerson</Property>
+            <Property name="property">responsibleperson</Property>
+            <Property name="trigger">customDropDown1</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">IssueDate</Property>
+            <Property name="property">issuedate</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">recipient</Property>
+            <Property name="property">recipient</Property>
+            <Property name="trigger">customDropDown1</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">Execution</Property>
+            <Property name="property">execution</Property>
+            <Property name="trigger">dataSetDropDownE</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaSeeTechnicaldocument">
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">500</Property>
+      <Property name="caption">技术文件记录</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('diaSeeTechnicaldocument').hide();      </ClientEvent>
+          <Property name="caption">关闭</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -40px -0px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afSeeTechnicaldocument">
+          <Property name="cols">*</Property>
+          <Property name="dataSet">dsTechnicaldocument</Property>
+          <Property name="dataPath">#</Property>
+          <Property name="labelWidth">90</Property>
+          <Property name="dataType">Technicaldocument</Property>
+          <Property name="readOnly">true</Property>
+          <AutoFormElement>
+            <Property name="name">DocumentType</Property>
+            <Property name="property">documenttype</Property>
+            <Property name="trigger">dataSetDropDownD</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">aircrafttype</Property>
+            <Property name="property">aircrafttype</Property>
+            <Property name="trigger">dataSetDropDownAircraftType</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">Number</Property>
+            <Property name="property">number</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">Title</Property>
+            <Property name="property">title</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">EFile</Property>
+            <Property name="property">efile</Property>
+            <Editor/>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">contentabstract</Property>

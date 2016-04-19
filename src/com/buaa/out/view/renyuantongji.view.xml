@@ -125,7 +125,6 @@ dsRenyuantongji.flushAsync();&#xD;
           <SideControl>
             <Container>
               <ToolBar>
-                <DataPilot/>
                 <ToolBarButton>
                   <ClientEvent name="onClick">var dsRenyuantongji = view.get(&quot;#dsRenyuantongji&quot;);&#xD;
 dsRenyuantongji.flushAsync();</ClientEvent>

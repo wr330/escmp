@@ -95,8 +95,8 @@ if (cur) {
 if (cur) {&#xD;
 	view.id('diaSeeBtreport').show();&#xD;
 }</ClientEvent>
-        <Property name="caption">查看</Property>
-        <Property name="icon">url(>skin>common/icons.gif) -20px -40px</Property>
+        <Property name="caption">浏览</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -40px -100px</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var dsBtreport = view.get(&quot;#dsBtreport&quot;);&#xD;
@@ -129,6 +129,11 @@ if (cur) {&#xD;
 </ClientEvent>
         <Property name="caption">提交到部领导</Property>
         <Property name="icon">url(>skin>common/icons.gif) -140px -180px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">view.id('dgBtreport').set(&quot;showFilterBar&quot;,!view.id('dgBtreport').get(&quot;showFilterBar&quot;));</ClientEvent>
+        <Property name="caption">自定义查询</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var dsBtreport = view.get(&quot;#dsBtreport&quot;);&#xD;
@@ -259,8 +264,13 @@ arg.processDefault = true;</ClientEvent>
 if (cur) {&#xD;
 	view.id('diaSeeSharePerson').show();&#xD;
 }</ClientEvent>
-            <Property name="caption">查看</Property>
-            <Property name="icon">url(>skin>common/icons.gif) -20px -40px</Property>
+            <Property name="caption">浏览</Property>
+            <Property name="icon">url(>skin>common/icons.gif) -40px -100px</Property>
+          </ToolBarButton>
+          <ToolBarButton>
+            <ClientEvent name="onClick">view.id('dgSharePerson').set(&quot;showFilterBar&quot;,!view.id('dgSharePerson').get(&quot;showFilterBar&quot;));</ClientEvent>
+            <Property name="caption">自定义查询</Property>
+            <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
           </ToolBarButton>
           <ToolBarButton>
             <ClientEvent name="onClick">view.id(&quot;dsBtreport&quot;).getData(&quot;#&quot;).reset(&quot;btReportSharePerson&quot;);</ClientEvent>
@@ -268,7 +278,7 @@ if (cur) {&#xD;
             <Property name="caption">刷新</Property>
           </ToolBarButton>
         </ToolBar>
-        <DataGrid>
+        <DataGrid id="dgSharePerson">
           <Property name="dataSet">dsBtreport</Property>
           <Property name="dataPath">#.btReportSharePerson</Property>
           <Property name="rowHeight">22</Property>
@@ -734,9 +744,7 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
       <Property name="caption">出差报告管理</Property>
       <Buttons>
         <Button>
-          <ClientEvent name="onClick">view.id('diaSeeBtreport').hide();
- 
-         </ClientEvent>
+          <ClientEvent name="onClick">view.id('diaSeeBtreport').hide();       </ClientEvent>
           <Property name="caption">关闭</Property>
           <Property name="icon">url(>skin>common/icons.gif) -40px -0px</Property>
         </Button>

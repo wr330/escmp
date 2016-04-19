@@ -114,6 +114,11 @@ if(cur){&#xD;
                   <Property name="caption">删除</Property>
                 </ToolBarButton>
                 <ToolBarButton>
+                  <ClientEvent name="onClick">view.id('GridSupportitem').set(&quot;showFilterBar&quot;,!view.id('GridSupportitem').get(&quot;showFilterBar&quot;));</ClientEvent>
+                  <Property name="caption">自定义查询</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
                   <ClientEvent name="onClick">var dsSupportprogram = view.get(&quot;#dsSupportprogram&quot;);&#xD;
 dsSupportprogram.getData(&quot;#&quot;).reset(&quot;supportitem&quot;);</ClientEvent>
                   <Property name="caption">刷新</Property>
@@ -216,6 +221,11 @@ if(cur){&#xD;
 </ClientEvent>
                   <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
                   <Property name="caption">删除</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">view.id('GridHandover').set(&quot;showFilterBar&quot;,!view.id('GridHandover').get(&quot;showFilterBar&quot;));</ClientEvent>
+                  <Property name="caption">自定义查询</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
                 </ToolBarButton>
                 <ToolBarButton>
                   <ClientEvent name="onClick">var dsSupportprogram = view.get(&quot;#dsSupportprogram&quot;);&#xD;
