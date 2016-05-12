@@ -63,8 +63,12 @@ public class TechnicaldocumentDao extends HibernateBaseDao {
 	public Collection<Technicaldocument> queryDocument(Map<String, Object> parameter) throws Exception {
 		String hql="from "+ Technicaldocument.class.getName() +" u where 1=1";
 		Integer sendStatus = (Integer)parameter.get("status");
-		String aircrafttype = (String)parameter.get("aircrafttype");
-		hql += " and u.sendStatus =" + sendStatus + " and u.aircrafttype = '" + aircrafttype + "'";
+		if(sendStatus >= 2){
+			hql += " and u.sendStatus <= '" + sendStatus + "'";
+		}
+		else{
+			hql += " and u.sendStatus = '" + sendStatus + "'";
+		}
 		return this.query(hql);						
 	}
 	

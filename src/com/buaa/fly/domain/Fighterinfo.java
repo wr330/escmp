@@ -7,17 +7,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
-import java.math.BigDecimal;
 import com.buaa.fly.domain.Fpici;
 
 @Entity
@@ -34,6 +30,7 @@ public class Fighterinfo implements Serializable {
 	private String userno;
 	private Date outDate;
 	private Fpici piciid;
+	private Collection<Fighterout> fighterout;
 
 	@Id
 	@Column(name = "outFactoryNo", unique = true, nullable = false)
@@ -89,5 +86,14 @@ public class Fighterinfo implements Serializable {
 
 	public void setPiciid(Fpici piciid) {
 		this.piciid = piciid;
+	}
+	
+	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "fighterinfo")
+	public Collection<Fighterout> getFighterout() {
+		return fighterout;
+	}
+
+	public void setFighterout(Collection<Fighterout> fighterout) {
+		this.fighterout = fighterout;
 	}
 }

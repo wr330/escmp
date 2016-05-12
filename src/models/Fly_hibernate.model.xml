@@ -450,6 +450,10 @@ else {&#xD;
 }</ClientEvent>
       </Validator>
     </PropertyDef>
+    <PropertyDef name="taskexecution">
+      <Property/>
+      <Property name="label">完成情况</Property>
+    </PropertyDef>
   </DataType>
   <DataType name="Flightrestrict" meta="x:573;y:10">
     <Property name="creationType">com.buaa.fly.domain.Flightrestrict</Property>
@@ -823,10 +827,36 @@ arg.parameter = parameter;</ClientEvent>
       <Property name="dataType">String</Property>
       <Property name="label">用户编号</Property>
     </PropertyDef>
-    <PropertyDef name="outDate">
+    <Reference name="fighterout">
+      <Property name="dataProvider">fighteroutPR#queryFighterout</Property>
+      <Property name="dataType">[Fighterout]</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="outfactoryno">$${this.outfactoryno}</Property>
+        </Entity>
+      </Property>
+      <Property name="pageSize">20</Property>
+    </Reference>
+  </DataType>
+  <DataType name="Fighterout">
+    <Property name="creationType">com.buaa.fly.domain.Fighterout</Property>
+    <PropertyDef name="oid">
+      <Property></Property>
+    </PropertyDef>
+    <PropertyDef name="outdate">
       <Property name="dataType">Date</Property>
       <Property name="label">转场日期</Property>
+      <Property name="readOnly">false</Property>
       <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="outaddress">
+      <Property></Property>
+      <Property name="label">转场地点</Property>
+      <Property name="readOnly">false</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="fighterinfo">
+      <Property name="dataType">Fighterinfo</Property>
     </PropertyDef>
   </DataType>
   <DataType name="CombineVehicle">

@@ -77,10 +77,7 @@ public class  Sfstatistic implements Serializable {
 	private byte[] datablock2 ;
 	private String content ;
 	private Integer miji ;
-
-
-
-
+	private String taskexecution;
 
 	@Column(name="ftype")
 	public String getFtype() {
@@ -443,6 +440,12 @@ public class  Sfstatistic implements Serializable {
     public String getContent() {
     	return content;
 	}
-
+    @Column(name = "TaskExecution")
+	public String getTaskexecution() {
+		return taskexecution;
+	}
+	public void setTaskexecution(String taskexecution) {
+		this.taskexecution = taskexecution;
+	}
 
 }

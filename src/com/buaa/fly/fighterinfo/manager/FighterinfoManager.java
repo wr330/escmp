@@ -17,6 +17,7 @@ import com.bstek.dorado.data.provider.Page;
 
 import com.buaa.fly.domain.Fighterinfo;
 import com.buaa.fly.fighterinfo.dao.FighterinfoDao;
+import com.buaa.fly.fighterout.manager.FighteroutManager;
 import com.buaa.sys.userOperationLog.manager.UserOperationLogManager;
 
 @Component("fighterinfoManager")
@@ -26,6 +27,8 @@ public class FighterinfoManager {
 	private FighterinfoDao fighterinfoDao;
 	@Resource	
 	private UserOperationLogManager userOperationLogManager;
+	@Resource	
+	private FighteroutManager fighteroutManager;
 
 	/**
 	 * 查询信息
@@ -82,12 +85,12 @@ public class FighterinfoManager {
 					//对用户删除操作进行记录，在用户操作日志表中新增一条记录。
 					userOperationLogManager.recordUserOperationLog(2, myDate, un, ucn,"对飞机单机信息表删除选定记录");
 				} else if (state.equals(EntityState.NONE)) {
-					EntityState fpiciState = EntityUtils.getState(item
-							.getPiciid());
+					EntityState fpiciState = EntityUtils.getState(item.getPiciid());
 					if (fpiciState.equals(EntityState.MODIFIED)) {
 						fighterinfoDao.updateData(item);
 					}
 				}
+				fighteroutManager.saveFighterout(item.getFighterout());
 			}
 		}
 	}

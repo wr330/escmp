@@ -15,7 +15,7 @@
 	<bean id="bdf2.jdbcTransactionManager" class="com.bstek.bdf2.core.orm.transaction.JdbcTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	<sws:dynamic-wsdl id="SupportResourceService" portTypeName="Support123Request" locationUri="/dorado/webservice/requestUserWebService">
+    <sws:dynamic-wsdl id="supportResourceService" portTypeName="ResourceWebServiceImpl" locationUri="/dorado/webservice/supportResourceWebService">
     <sws:xsd location="classpath:ws/SupportResourceService.xsd"/>
 	</sws:dynamic-wsdl>
 	<tx:annotation-driven proxy-target-class="true" transaction-manager="bdf2.jdbcTransactionManager" />

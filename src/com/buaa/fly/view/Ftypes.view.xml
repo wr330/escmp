@@ -24,6 +24,18 @@
 });</ClientEvent>
       <Property name="dataType">[Root]</Property>
     </DataSet>
+    <DataSet id="dsDictionary">
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+    </DataSet>
+    <DataSetDropDown id="dataSetDropDownD">
+      <ClientEvent name="onOpen">view.id(&quot;dsDictionary&quot;).set(&quot;parameter&quot;,{dictype:&quot;Dic_Outfield&quot;,status:0}).flushAsync();</ClientEvent>
+      <Property name="autoOpen">true</Property>
+      <Property name="dataSet">dsDictionary</Property>
+      <Property name="property">name</Property>
+      <Property name="displayProperty">name</Property>
+      <Property name="editable">false</Property>
+      <Property name="reloadDataOnOpen">true</Property>
+    </DataSetDropDown>
     <UpdateAction id="uaFtypes">
       <Property name="dataResolver">ftypesPR#saveFtypes</Property>
       <UpdateItem>
@@ -189,9 +201,53 @@ if(cur){
             <Property name="property">firstFDate</Property>
             <Editor/>
           </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaFighterout">
+      <ClientEvent name="onClose">var cur=view.id('dsExamples').getData('!CURRENT_FLIGHT.#fighterout');&#xD;
+if(cur){&#xD;
+	cur.cancel();&#xD;
+	view.id('diaFighterout').hide();&#xD;
+}	</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">400</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaFtypes').execute(function(){
+	view.id('diaFighterout').hide();
+});
+</ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsExamples').getData('!CURRENT_FLIGHT.#fighterout');
+if(cur){
+	cur.cancel();
+	view.id('diaFighterout').hide();
+}	</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afFighterout">
+          <Property name="dataSet">dsExamples</Property>
+          <Property name="dataPath">!CURRENT_FLIGHT.#fighterout</Property>
+          <Property name="dataType">Fighterout</Property>
+          <Property name="cols">*</Property>
           <AutoFormElement>
             <Property name="name">outdate</Property>
-            <Property name="property">outDate</Property>
+            <Property name="property">outdate</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">outaddress</Property>
+            <Property name="property">outaddress</Property>
+            <Property name="trigger">dataSetDropDownD</Property>
             <Editor/>
           </AutoFormElement>
         </AutoForm>
@@ -246,11 +302,6 @@ if(cur){&#xD;
 }</ClientEvent>
                   <Property name="caption">删除</Property>
                   <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
-                </ToolBarButton>
-                <ToolBarButton>
-                  <ClientEvent name="onClick">view.id('dgFtype').set(&quot;showFilterBar&quot;,!view.id('dgFtype').get(&quot;showFilterBar&quot;));</ClientEvent>
-                  <Property name="caption">自定义查询</Property>
-                  <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
                 </ToolBarButton>
                 <ToolBarButton>
                   <ClientEvent name="onClick">view.id(&quot;dsExamples&quot;).getData(&quot;!CURRENT_ROOT&quot;).reset(&quot;categories&quot;);</ClientEvent>
@@ -345,11 +396,6 @@ if(cur){&#xD;
 }</ClientEvent>
                   <Property name="caption">删除</Property>
                   <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
-                </ToolBarButton>
-                <ToolBarButton>
-                  <ClientEvent name="onClick">view.id('dgFpici').set(&quot;showFilterBar&quot;,!view.id('dgFpici').get(&quot;showFilterBar&quot;));</ClientEvent>
-                  <Property name="caption">自定义查询</Property>
-                  <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
                 </ToolBarButton>
                 <ToolBarButton>
                   <ClientEvent name="onClick">view.id(&quot;dsExamples&quot;).getData(&quot;!CURRENT_TYPE&quot;).reset(&quot;fpici&quot;);</ClientEvent>
@@ -448,11 +494,6 @@ if(cur){&#xD;
                   <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
                 </ToolBarButton>
                 <ToolBarButton>
-                  <ClientEvent name="onClick">view.id('dgFighterinfo').set(&quot;showFilterBar&quot;,!view.id('dgFighterinfo').get(&quot;showFilterBar&quot;));</ClientEvent>
-                  <Property name="caption">自定义查询</Property>
-                  <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
-                </ToolBarButton>
-                <ToolBarButton>
                   <ClientEvent name="onClick">view.id(&quot;dsExamples&quot;).getData(&quot;!CURRENT_PICI&quot;).reset(&quot;fighterinfo&quot;);&#xD;
 </ClientEvent>
                   <Property name="caption">刷新</Property>
@@ -482,9 +523,6 @@ if(cur){&#xD;
                 </DataColumn>
                 <DataColumn name="firstfdate">
                   <Property name="property">firstFDate</Property>
-                </DataColumn>
-                <DataColumn name="outdate">
-                  <Property name="property">outDate</Property>
                 </DataColumn>
               </DataGrid>
             </Children>
@@ -525,12 +563,88 @@ if(cur){&#xD;
                   <Property name="property">firstFDate</Property>
                   <Editor/>
                 </AutoFormElement>
-                <AutoFormElement>
-                  <Property name="name">outdate</Property>
-                  <Property name="property">outDate</Property>
-                  <Editor/>
-                </AutoFormElement>
               </AutoForm>
+              <ToolBar>
+                <Separator/>
+                <ToolBarLabel>
+                  <Property name="text">飞机转场信息管理</Property>
+                </ToolBarLabel>
+                <Separator/>
+                <DataPilot>
+                  <Property name="itemCodes">pages</Property>
+                  <Property name="dataPath">!CURRENT_FLIGHT.fighterout</Property>
+                  <Property name="dataSet">dsExamples</Property>
+                </DataPilot>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id('dsExamples').getData(&quot;!CURRENT_FLIGHT&quot;);&#xD;
+view.id('dsExamples').getData(&quot;!CURRENT_FLIGHT.fighterout&quot;).insert({fighterinfo:{&#xD;
+	outfactoryno: cur.get(&quot;outfactoryno&quot;)&#xD;
+}});&#xD;
+view.id(&quot;diaFighterout&quot;).set(&quot;caption&quot;,&quot;新增飞机转场信息&quot;);&#xD;
+view.id('diaFighterout').show();&#xD;
+</ClientEvent>
+                  <Property name="caption">新增</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur=view.id('dsExamples').getData(&quot;!CURRENT_FLIGHT.#fighterout&quot;);&#xD;
+if (cur) {&#xD;
+	view.id(&quot;diaFighterout&quot;).set(&quot;caption&quot;,&quot;修改飞机转场信息&quot;);&#xD;
+	view.id('diaFighterout').show();&#xD;
+}</ClientEvent>
+                  <Property name="caption">修改</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur = view.id('dsExamples').getData('!CURRENT_FLIGHT.#fighterout');&#xD;
+var uaFtypes = view.id('uaFtypes');&#xD;
+if(cur){&#xD;
+	dorado.MessageBox.confirm('您是否确认删除此转场记录?', function(){&#xD;
+	cur.remove();&#xD;
+	uaFtypes.execute();	&#xD;
+	}); &#xD;
+}</ClientEvent>
+                  <Property name="caption">删除</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">view.id(&quot;dsExamples&quot;).getData(&quot;!CURRENT_FLIGHT&quot;).reset(&quot;fighterout&quot;);&#xD;
+</ClientEvent>
+                  <Property name="caption">刷新</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+                  <Property name="width">57</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid id="dgFighterout">
+                <Property name="readOnly">true</Property>
+                <Property name="dataSet">dsExamples</Property>
+                <Property name="dataPath">!CURRENT_FLIGHT.fighterout</Property>
+                <Property name="filterMode">serverSide</Property>
+                <Property name="rowHeight">22</Property>
+                <RowNumColumn/>
+                <DataColumn>
+                  <Property name="property">fighterinfo.piciid.fTypeName.ftypename</Property>
+                  <Property name="name">ftypename</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">fighterinfo.piciid.piciName</Property>
+                  <Property name="name">piciName</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">fighterinfo.outfactoryno</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">outdate</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="property">outaddress</Property>
+                  <Editor/>
+                </DataColumn>
+              </DataGrid>
             </Children>
             <Tools/>
           </Panel>

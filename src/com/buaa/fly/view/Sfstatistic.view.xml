@@ -154,6 +154,15 @@ arg.value = count;</ClientEvent>
         </Entity>
       </Property>
     </DataSet>
+    <DataSet id="dsDictionaryTaskExecution">
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="dictype">Dic_TaskExecution</Property>
+          <Property name="status">0</Property>
+        </Entity>
+      </Property>
+    </DataSet>
     <UpdateAction id="uaSfstatistic">
       <Property name="dataResolver">sfstatisticPR#saveSfstatistic</Property>
       <UpdateItem>
@@ -254,6 +263,14 @@ dsTasklist.flushAsync();&#xD;
       <Property name="property">outfactoryno</Property>
       <Property name="editable">false</Property>
       <Property name="reloadDataOnOpen">true</Property>
+    </DataSetDropDown>
+    <DataSetDropDown id="dataSetDropDownTaskExecution">
+      <Property name="autoOpen">true</Property>
+      <Property name="dataSet">dsDictionaryTaskExecution</Property>
+      <Property name="displayProperty">name</Property>
+      <Property name="editable">false</Property>
+      <Property name="property">name</Property>
+      <Property name="useEmptyItem">true</Property>
     </DataSetDropDown>
     <UploadAction id="uaUpload1">
       <ClientEvent name="onFilesAdded">var cur=view.id('dsSfstatistic').getData('#');&#xD;
@@ -485,10 +502,11 @@ if(cur){
                 <Editor/>
               </AutoFormElement>
               <AutoFormElement>
-                <Property name="name">taskexecution</Property>
-                <Property name="property">taskNo.taskexecution</Property>
+                <Property name="property">taskexecution</Property>
                 <Property name="labelPosition">top</Property>
-                <Property name="readOnly">true</Property>
+                <Property name="name">taskexecution</Property>
+                <Property name="trigger">dataSetDropDownTaskExecution</Property>
+                <Editor/>
               </AutoFormElement>
               <AutoFormElement>
                 <Property name="name">fighterNo</Property>
@@ -1064,7 +1082,9 @@ open(path,&quot;_blank&quot;);</ClientEvent>
       <Buttons>
         <Button>
           <ClientEvent name="onClick">var tasklist = view.id(&quot;dsTasklist&quot;).getData(&quot;#&quot;);
+var taskexecution = tasklist.get(&quot;taskexecution&quot;);
 view.id(&quot;dsSfstatistic&quot;).getData(&quot;#&quot;).set(&quot;taskNo&quot;,tasklist.toJSON());
+view.id(&quot;dsSfstatistic&quot;).getData(&quot;#&quot;).set(&quot;taskexecution&quot;,taskexecution);
 view.id(&quot;dsSfstatistic&quot;).getData(&quot;#&quot;).reset(&quot;taskNo&quot;);
 view.id(&quot;dgChooseTasklist&quot;).hide();</ClientEvent>
           <Property name="caption">确定</Property>
@@ -1613,9 +1633,10 @@ jQuery(arg.dom).xCreate({&#xD;
             <Property name="width">200</Property>
             <Property name="name">taskcontent</Property>
           </DataColumn>
-          <DataColumn name="result">
-            <Property name="property">taskNo.taskexecution</Property>
+          <DataColumn>
+            <Property name="property">taskexecution</Property>
             <Property name="width">80</Property>
+            <Editor/>
           </DataColumn>
           <DataColumn name="action">
             <Property name="property">action</Property>

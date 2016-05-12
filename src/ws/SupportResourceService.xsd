@@ -4,7 +4,6 @@
         <complexType>
             <all>
                 <element name="sendStatus" type="int"></element>
-                <element name="aircrafttype" type="string"></element>
             </all>
         </complexType>
     </element>

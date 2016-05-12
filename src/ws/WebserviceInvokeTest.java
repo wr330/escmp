@@ -3,7 +3,7 @@ import com.bstek.bdf2.webservice.client.WebServiceClient;
 import com.buaa.out.domain.Technicaldocument;
 public class WebserviceInvokeTest {
     public static void main(String[] args) throws Exception{
-        String uri="http://localhost:8083/escmp/dorado/webservice/requestUserWebService";
+        String uri="http://localhost:8083/escmp/dorado/webservice/supportResourceWebService";
          
         //设置Webservice客户端要调用的目标Webservice的地址
         WebServiceClient client=new WebServiceClient(uri);
