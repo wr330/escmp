@@ -22,7 +22,7 @@ import java.util.Date;
 public class  Handover implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Handover(){}
-   public Handover(String oid) {
+    public Handover(String oid) {
       this.oid=oid;
  	}	
 
@@ -34,6 +34,7 @@ public class  Handover implements Serializable {
 	private String filenumber ;
 	private String personfrom ;
 	private Date handovertime ;
+	private String sectionChiefSure ;
 	private byte[] datablock;//因为在model中类型无法确定，所以此字段在model中没有加
 	private Supportprogram supportprogram;
 
@@ -95,6 +96,13 @@ public class  Handover implements Serializable {
 	}
 	public void setHandovertime(Date handovertime) {
 		this.handovertime=handovertime;
+	}
+	@Column(name="SectionChiefSure")
+	public String getSectionChiefSure() {
+		return sectionChiefSure;
+	}
+	public void setSectionChiefSure(String sectionChiefSure) {
+		this.sectionChiefSure = sectionChiefSure;
 	}
 	@Column(name="datablock")
 	public byte[] getDatablock() {

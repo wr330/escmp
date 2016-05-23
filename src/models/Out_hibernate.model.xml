@@ -51,22 +51,34 @@
       <Property name="visible">false</Property>
     </PropertyDef>
     <PropertyDef name="miji">
-      <Property name="dataType">Integer</Property>
+      <Property name="dataType">String</Property>
       <Property name="label">密级</Property>
       <Property name="mapping">
         <Property name="mapValues">
           <Collection>
             <Entity>
-              <Property name="key">2</Property>
+              <Property name="key">5</Property>
               <Property name="value">机密</Property>
             </Entity>
             <Entity>
-              <Property name="key">1</Property>
+              <Property name="key">4</Property>
               <Property name="value">秘密</Property>
             </Entity>
             <Entity>
+              <Property name="key">3</Property>
+              <Property name="value">核心商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">普通商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">内部</Property>
+            </Entity>
+            <Entity>
               <Property name="key">0</Property>
-              <Property name="value">非密</Property>
+              <Property name="value">公开</Property>
             </Entity>
           </Collection>
         </Property>
@@ -90,6 +102,7 @@ else {&#xD;
     <PropertyDef name="endtime">
       <Property name="dataType">Date</Property>
       <Property name="label">终止日期</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <Reference name="supportitem">
       <Property name="dataProvider">supportitemPR#querySupportitem</Property>
@@ -122,6 +135,7 @@ else {&#xD;
     <PropertyDef name="endexecutiontime">
       <Property name="dataType">Date</Property>
       <Property name="label">结束时间</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="registrationexecutor">
       <Property name="dataType">String</Property>
@@ -179,6 +193,12 @@ arg.parameter = parameter;</ClientEvent>
       <Property name="label">交接时间</Property>
       <Property name="required">true</Property>
     </PropertyDef>
+    <PropertyDef name="sectionChiefSure">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">室主任确认</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
     <PropertyDef name="oid">
       <Property name="dataType">String</Property>
       <Property name="label">oid</Property>
@@ -218,6 +238,7 @@ arg.parameter = parameter;</ClientEvent>
     <PropertyDef name="supportEndTime">
       <Property name="dataType">Date</Property>
       <Property name="label">保障结束时间</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="feedbackQuestion">
       <Property></Property>
@@ -235,22 +256,34 @@ arg.parameter = parameter;</ClientEvent>
       <Property name="label">顾客满意度调查表</Property>
     </PropertyDef>
     <PropertyDef name="miji">
-      <Property name="dataType">Integer</Property>
+      <Property name="dataType">String</Property>
       <Property name="label">密级</Property>
       <Property name="mapping">
         <Property name="mapValues">
           <Collection>
             <Entity>
-              <Property name="key">2</Property>
+              <Property name="key">5</Property>
               <Property name="value">机密</Property>
             </Entity>
             <Entity>
-              <Property name="key">1</Property>
+              <Property name="key">4</Property>
               <Property name="value">秘密</Property>
             </Entity>
             <Entity>
+              <Property name="key">3</Property>
+              <Property name="value">核心商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">普通商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">内部</Property>
+            </Entity>
+            <Entity>
               <Property name="key">0</Property>
-              <Property name="value">非密</Property>
+              <Property name="value">公开</Property>
             </Entity>
           </Collection>
         </Property>
@@ -334,6 +367,16 @@ arg.parameter = parameter;</ClientEvent>
       <Property name="readOnly">false</Property>
       <Property name="required">false</Property>
     </PropertyDef>
+    <PropertyDef name="rpersonDepartment">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">所属部门</Property>
+    </PropertyDef>
+    <PropertyDef name="rpersonSection">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">所属科室</Property>
+    </PropertyDef>
     <PropertyDef name="issuedate">
       <Property name="dataType">Date</Property>
       <Property name="label">发放日期</Property>
@@ -347,22 +390,34 @@ arg.parameter = parameter;</ClientEvent>
       <Property name="label">执行/处理情况</Property>
     </PropertyDef>
     <PropertyDef name="miji">
-      <Property name="dataType">Integer</Property>
+      <Property name="dataType">String</Property>
       <Property name="label">密级</Property>
       <Property name="mapping">
         <Property name="mapValues">
           <Collection>
             <Entity>
-              <Property name="key">2</Property>
+              <Property name="key">5</Property>
               <Property name="value">机密</Property>
             </Entity>
             <Entity>
-              <Property name="key">1</Property>
+              <Property name="key">4</Property>
               <Property name="value">秘密</Property>
             </Entity>
             <Entity>
+              <Property name="key">3</Property>
+              <Property name="value">核心商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">普通商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">内部</Property>
+            </Entity>
+            <Entity>
               <Property name="key">0</Property>
-              <Property name="value">非密</Property>
+              <Property name="value">公开</Property>
             </Entity>
           </Collection>
         </Property>
@@ -381,6 +436,33 @@ else {&#xD;
     <PropertyDef name="bytes">
       <Property name="dataType">Integer</Property>
       <Property name="label">bytes</Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Personstatistic">
+    <Property name="matchType">com.buaa.out.domain.Personstatistic</Property>
+    <PropertyDef name="itemoid">
+      <Property/>
+    </PropertyDef>
+    <PropertyDef name="oid">
+      <Property/>
+    </PropertyDef>
+    <PropertyDef name="endexecutiontime">
+      <Property name="dataType">Date</Property>
+    </PropertyDef>
+    <PropertyDef name="workaddress">
+      <Property/>
+    </PropertyDef>
+    <PropertyDef name="troop">
+      <Property/>
+    </PropertyDef>
+    <PropertyDef name="days">
+      <Property name="dataType">Integer</Property>
+    </PropertyDef>
+    <PropertyDef name="startexecutiontime">
+      <Property name="dataType">Date</Property>
+    </PropertyDef>
+    <PropertyDef name="registrationexecutor">
+      <Property/>
     </PropertyDef>
   </DataType>
 </Model>

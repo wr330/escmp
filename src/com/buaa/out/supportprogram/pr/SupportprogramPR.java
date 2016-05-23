@@ -60,11 +60,11 @@ public class SupportprogramPR{
 		);
 	}
 	
-	 /**                  
-	   * 根据地点和时间查询保障计划执行情况表
-	   * @param parameter   
-	   * @throws Exception
-	   */
+	/**                  
+	  * 根据地点和时间查询保障计划执行情况表
+	  * @param parameter   
+	  * @throws Exception
+	  */
 	@DataProvider
 	public Collection<Supportitem> queryRenyuan(Map<String, Object> parameter) throws Exception {
 		   return supportprogramManager.queryRenyuan(parameter);

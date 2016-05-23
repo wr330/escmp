@@ -137,6 +137,14 @@ if(cur){
             <Property name="property">author</Property>
           </AutoFormElement>
           <AutoFormElement>
+            <Property name="name">authorDepartment</Property>
+            <Property name="property">authorDepartment</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">autorSection</Property>
+            <Property name="property">autorSection</Property>
+          </AutoFormElement>
+          <AutoFormElement>
             <Property name="name">date</Property>
             <Property name="property">date</Property>
           </AutoFormElement>
@@ -285,10 +293,6 @@ open(path,&quot;_blank&quot;);</ClientEvent>
         <Property name="property">fileno</Property>
         <Property name="width">120</Property>
       </DataColumn>
-      <DataColumn name="ftype">
-        <Property name="property">ftype</Property>
-        <Property name="width">120</Property>
-      </DataColumn>
       <DataColumn name="date">
         <Property name="property">date</Property>
         <Property name="width">120</Property>
@@ -296,6 +300,16 @@ open(path,&quot;_blank&quot;);</ClientEvent>
       <DataColumn name="author">
         <Property name="property">author</Property>
         <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">authorDepartment</Property>
+        <Property name="width">120</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">autorSection</Property>
+        <Property name="width">120</Property>
+        <Editor/>
       </DataColumn>
       <DataColumn name="type">
         <Property name="property">type</Property>
@@ -315,8 +329,9 @@ jQuery(arg.dom).xCreate({&#xD;
         <Property name="width">200</Property>
       </DataColumn>
       <DataColumn>
-        <Property name="width">120</Property>
+        <Property name="width">80</Property>
         <Property name="property">miji</Property>
+        <Property name="align">left</Property>
         <Editor/>
       </DataColumn>
     </DataGrid>

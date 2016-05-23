@@ -144,27 +144,48 @@ if (confirm ==password) {&#xD;
         </Validator>
       </PropertyDef>
       <PropertyDef name="miji">
-        <Property name="dataType">Integer</Property>
+        <Property name="dataType">String</Property>
         <Property name="label">密级</Property>
         <Property name="mapping">
           <Property name="mapValues">
             <Collection>
               <Entity>
-                <Property name="key">2</Property>
+                <Property name="key">5</Property>
                 <Property name="value">机密</Property>
               </Entity>
               <Entity>
-                <Property name="key">1</Property>
+                <Property name="key">4</Property>
                 <Property name="value">秘密</Property>
               </Entity>
               <Entity>
+                <Property name="key">3</Property>
+                <Property name="value">核心商密</Property>
+              </Entity>
+              <Entity>
+                <Property name="key">2</Property>
+                <Property name="value">普通商密</Property>
+              </Entity>
+              <Entity>
+                <Property name="key">1</Property>
+                <Property name="value">内部</Property>
+              </Entity>
+              <Entity>
                 <Property name="key">0</Property>
-                <Property name="value">非密</Property>
+                <Property name="value">公开</Property>
               </Entity>
             </Collection>
           </Property>
         </Property>
         <Property name="defaultValue">1</Property>
+        <Validator type="custom">
+          <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
+if (arg.data &lt;= secret) {&#xD;
+	arg.result = { state:&quot;ok&quot;};&#xD;
+} &#xD;
+else {&#xD;
+	arg.result = { state:&quot;error&quot;, text: &quot;新增数据的密级超过自己对应密级&quot;};	&#xD;
+}</ClientEvent>
+        </Validator>
       </PropertyDef>
       <PropertyDef name="loginCount">
         <Property name="dataType">int</Property>

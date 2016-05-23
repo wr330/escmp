@@ -10,7 +10,6 @@
     <Property name="styleSheetFile">view/home.css</Property>
     <SplitPanel layoutConstraint="center ">
       <Property name="direction">top</Property>
-      <Property name="width">1920</Property>
       <MainControl>
         <IFrame id="iFrame">
           <Property name="path">view.index.d</Property>

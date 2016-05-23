@@ -110,7 +110,7 @@ public class SupportprogramDao extends HibernateBaseDao {
 	}
 
 	/**                  
-	* 根据地点搜索本年度的保障计划，并根据保障计划和此时的事件查询保障执行条目表
+	* 根据地点搜索本年度的保障计划，并根据保障计划和此时的时间查询保障执行条目表
 	* @param parameter    
 	* @throws Exception
 	*/

@@ -86,8 +86,7 @@ var cur=view.id('dsSupportprogram').getData('#');&#xD;
 cur.set(&quot;maker&quot;,&quot;${loginUsername}&quot;)&#xD;
 var dialog=view.id('diaSupportprogram');&#xD;
 dialog.set(&quot;caption&quot;,&quot;新增保障计划&quot;);&#xD;
-dialog.show();&#xD;
-</ClientEvent>
+dialog.show();</ClientEvent>
         <Property name="caption">新增</Property>
         <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
       </ToolBarButton>
@@ -182,22 +181,14 @@ view.id('diaSupportprogram').hide();&#xD;
           <ClientEvent name="onClick">var formSupport = view.id('afSupport');
 var worktime = formSupport.getElement('worktime').get('value');
 var endtime = formSupport.getElement('endtime').get('value');
-if(endtime != null){
-	if(worktime >= endtime){
+if(worktime >= endtime){
 	dorado.MessageBox.alert('制定日期大于等于终止日期');
-	}
-	else{
-		view.id('uaSupportprogram').execute(function(){
-    	view.id('diaSupportprogram').hide();
-    	});
-	}
 }
 else{
 	view.id('uaSupportprogram').execute(function(){
     view.id('diaSupportprogram').hide();
     });
-}
-         </ClientEvent>
+}     </ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
         </Button>

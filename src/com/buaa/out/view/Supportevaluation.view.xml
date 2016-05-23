@@ -150,10 +150,24 @@ jQuery(arg.dom).xCreate({&#xD;
       <Property name="caption">技术文件记录</Property>
       <Buttons>
         <Button>
-          <ClientEvent name="onClick">view.id('uaSupportevaluation').execute(function(){
-               view.id('diaSupportevaluation').hide();
-           });
-         </ClientEvent>
+          <ClientEvent name="onClick">var afSupportevaluation = view.id('afSupportevaluation');
+var supportStartTime = afSupportevaluation.getElement('supportStartTime').get('value');
+var supportEndTime = afSupportevaluation.getElement('supportEndTime').get('value');
+if(supportEndTime != null){
+	if(supportStartTime > supportEndTime){
+	dorado.MessageBox.alert('开始时间大于等于结束时间');
+	}
+	else{
+		view.id('uaSupportevaluation').execute(function(){
+    		view.id('diaSupportevaluation').hide();
+    	});
+	}
+}
+else{
+	view.id('uaSupportevaluation').execute(function(){
+    	view.id('diaSupportevaluation').hide();
+    });
+}                 </ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
         </Button>

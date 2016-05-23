@@ -91,10 +91,6 @@ public class FlightrestrictManager {
 					//对用户新增操作进行记录，在用户操作日志表中新增一条记录。
 					userOperationLogManager.recordUserOperationLog(0, myDate, un, ucn,"对飞机使用限制表新增一条记录");
 				} else if (state.equals(EntityState.MODIFIED)) {
-					Map<String, Object> parameter = new HashMap<String, Object>();
-					parameter.put("id", item.getId());
-					fighterxzhManager.deleteFighterxzh(parameter);
-					flightrestrictDao.deleteData(item);
 					fileManager(item);
 					flightrestrictDao.updateData(item);
 					//对用户修改操作进行记录，在用户操作日志表中新增一条记录。

@@ -77,27 +77,39 @@
       </Property>
     </Reference>
     <PropertyDef name="miji">
-      <Property name="dataType">Integer</Property>
+      <Property name="dataType">String</Property>
       <Property name="label">密级</Property>
-      <Property name="defaultValue">1</Property>
       <Property name="mapping">
         <Property name="mapValues">
           <Collection>
             <Entity>
-              <Property name="key">2</Property>
+              <Property name="key">5</Property>
               <Property name="value">机密</Property>
             </Entity>
             <Entity>
-              <Property name="key">1</Property>
+              <Property name="key">4</Property>
               <Property name="value">秘密</Property>
             </Entity>
             <Entity>
+              <Property name="key">3</Property>
+              <Property name="value">核心商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">普通商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">内部</Property>
+            </Entity>
+            <Entity>
               <Property name="key">0</Property>
-              <Property name="value">非密</Property>
+              <Property name="value">公开</Property>
             </Entity>
           </Collection>
         </Property>
       </Property>
+      <Property name="defaultValue">0</Property>
       <Validator type="custom">
         <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
 if (arg.data &lt;= secret) {&#xD;
@@ -198,27 +210,39 @@ else {&#xD;
       <Property name="label">oid</Property>
     </PropertyDef>
     <PropertyDef name="miji">
-      <Property name="dataType">Integer</Property>
+      <Property name="dataType">String</Property>
       <Property name="label">密级</Property>
-      <Property name="defaultValue">1</Property>
       <Property name="mapping">
         <Property name="mapValues">
           <Collection>
             <Entity>
-              <Property name="key">2</Property>
+              <Property name="key">5</Property>
               <Property name="value">机密</Property>
             </Entity>
             <Entity>
-              <Property name="key">1</Property>
+              <Property name="key">4</Property>
               <Property name="value">秘密</Property>
             </Entity>
             <Entity>
+              <Property name="key">3</Property>
+              <Property name="value">核心商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">普通商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">内部</Property>
+            </Entity>
+            <Entity>
               <Property name="key">0</Property>
-              <Property name="value">非密</Property>
+              <Property name="value">公开</Property>
             </Entity>
           </Collection>
         </Property>
       </Property>
+      <Property name="defaultValue">0</Property>
       <Validator type="custom">
         <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
 if (arg.data &lt;= secret) {&#xD;
@@ -300,27 +324,39 @@ else {&#xD;
       <Property name="label">oid</Property>
     </PropertyDef>
     <PropertyDef name="miji">
-      <Property name="dataType">Integer</Property>
+      <Property name="dataType">String</Property>
       <Property name="label">密级</Property>
-      <Property name="defaultValue">1</Property>
       <Property name="mapping">
         <Property name="mapValues">
           <Collection>
             <Entity>
-              <Property name="key">2</Property>
+              <Property name="key">5</Property>
               <Property name="value">机密</Property>
             </Entity>
             <Entity>
-              <Property name="key">1</Property>
+              <Property name="key">4</Property>
               <Property name="value">秘密</Property>
             </Entity>
             <Entity>
+              <Property name="key">3</Property>
+              <Property name="value">核心商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">普通商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">内部</Property>
+            </Entity>
+            <Entity>
               <Property name="key">0</Property>
-              <Property name="value">非密</Property>
+              <Property name="value">公开</Property>
             </Entity>
           </Collection>
         </Property>
       </Property>
+      <Property name="defaultValue">1</Property>
       <Validator type="custom">
         <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
 if (arg.data &lt;= secret) {&#xD;
@@ -370,27 +406,39 @@ else {&#xD;
       <Property name="dataType">Addressbookdepart</Property>
     </PropertyDef>
     <PropertyDef name="miji">
-      <Property name="dataType">Integer</Property>
+      <Property name="dataType">String</Property>
       <Property name="label">密级</Property>
-      <Property name="defaultValue">1</Property>
       <Property name="mapping">
         <Property name="mapValues">
           <Collection>
             <Entity>
-              <Property name="key">2</Property>
+              <Property name="key">5</Property>
               <Property name="value">机密</Property>
             </Entity>
             <Entity>
-              <Property name="key">1</Property>
+              <Property name="key">4</Property>
               <Property name="value">秘密</Property>
             </Entity>
             <Entity>
+              <Property name="key">3</Property>
+              <Property name="value">核心商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">普通商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">内部</Property>
+            </Entity>
+            <Entity>
               <Property name="key">0</Property>
-              <Property name="value">非密</Property>
+              <Property name="value">公开</Property>
             </Entity>
           </Collection>
         </Property>
       </Property>
+      <Property name="defaultValue">1</Property>
       <Validator type="custom">
         <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
 if (arg.data &lt;= secret) {&#xD;
@@ -496,27 +544,39 @@ else {&#xD;
       <Property name="label">oid</Property>
     </PropertyDef>
     <PropertyDef name="miji">
-      <Property name="dataType">Integer</Property>
+      <Property name="dataType">String</Property>
       <Property name="label">密级</Property>
-      <Property name="defaultValue">1</Property>
       <Property name="mapping">
         <Property name="mapValues">
           <Collection>
             <Entity>
-              <Property name="key">2</Property>
+              <Property name="key">5</Property>
               <Property name="value">机密</Property>
             </Entity>
             <Entity>
-              <Property name="key">1</Property>
+              <Property name="key">4</Property>
               <Property name="value">秘密</Property>
             </Entity>
             <Entity>
+              <Property name="key">3</Property>
+              <Property name="value">核心商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">普通商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">内部</Property>
+            </Entity>
+            <Entity>
               <Property name="key">0</Property>
-              <Property name="value">非密</Property>
+              <Property name="value">公开</Property>
             </Entity>
           </Collection>
         </Property>
       </Property>
+      <Property name="defaultValue">1</Property>
       <Validator type="custom">
         <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
 if (arg.data &lt;= secret) {&#xD;
@@ -605,16 +665,17 @@ else {&#xD;
         <Property name="mapValues">
           <Collection>
             <Entity>
-              <Property name="key">true</Property>
-              <Property name="value">需添加</Property>
+              <Property name="key">false</Property>
+              <Property name="value">未添加</Property>
             </Entity>
             <Entity>
-              <Property name="key">false</Property>
+              <Property name="key">true</Property>
               <Property name="value">已添加</Property>
             </Entity>
           </Collection>
         </Property>
       </Property>
+      <Property name="defaultValue">false</Property>
     </PropertyDef>
     <PropertyDef name="tag">
       <Property name="dataType">String</Property>
@@ -644,27 +705,39 @@ else {&#xD;
       <Property name="dataType">boolean</Property>
     </PropertyDef>
     <PropertyDef name="miji">
-      <Property name="dataType">Integer</Property>
+      <Property name="dataType">String</Property>
       <Property name="label">密级</Property>
-      <Property name="defaultValue">1</Property>
       <Property name="mapping">
         <Property name="mapValues">
           <Collection>
             <Entity>
-              <Property name="key">2</Property>
+              <Property name="key">5</Property>
               <Property name="value">机密</Property>
             </Entity>
             <Entity>
-              <Property name="key">1</Property>
+              <Property name="key">4</Property>
               <Property name="value">秘密</Property>
             </Entity>
             <Entity>
+              <Property name="key">3</Property>
+              <Property name="value">核心商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">普通商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">内部</Property>
+            </Entity>
+            <Entity>
               <Property name="key">0</Property>
-              <Property name="value">非密</Property>
+              <Property name="value">公开</Property>
             </Entity>
           </Collection>
         </Property>
       </Property>
+      <Property name="defaultValue">1</Property>
       <Validator type="custom">
         <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
 if (arg.data &lt;= secret) {&#xD;
@@ -773,7 +846,7 @@ arg.parameter = parameter;</ClientEvent>
           <Collection>
             <Entity>
               <Property name="key">false</Property>
-              <Property name="value">未完成</Property>
+              <Property name="value">执行中</Property>
             </Entity>
             <Entity>
               <Property name="key">true</Property>
@@ -789,27 +862,39 @@ arg.parameter = parameter;</ClientEvent>
       <Property name="label">完成时间</Property>
     </PropertyDef>
     <PropertyDef name="miji">
-      <Property name="dataType">Integer</Property>
+      <Property name="dataType">String</Property>
       <Property name="label">密级</Property>
-      <Property name="defaultValue">1</Property>
       <Property name="mapping">
         <Property name="mapValues">
           <Collection>
             <Entity>
-              <Property name="key">2</Property>
+              <Property name="key">5</Property>
               <Property name="value">机密</Property>
             </Entity>
             <Entity>
-              <Property name="key">1</Property>
+              <Property name="key">4</Property>
               <Property name="value">秘密</Property>
             </Entity>
             <Entity>
+              <Property name="key">3</Property>
+              <Property name="value">核心商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">普通商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">内部</Property>
+            </Entity>
+            <Entity>
               <Property name="key">0</Property>
-              <Property name="value">非密</Property>
+              <Property name="value">公开</Property>
             </Entity>
           </Collection>
         </Property>
       </Property>
+      <Property name="defaultValue">1</Property>
       <Validator type="custom">
         <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
 if (arg.data &lt;= secret) {&#xD;
@@ -834,7 +919,7 @@ else {&#xD;
             </Entity>
             <Entity>
               <Property name="key">1</Property>
-              <Property name="value">执行中</Property>
+              <Property name="value">未汇报</Property>
             </Entity>
             <Entity>
               <Property name="key">2</Property>

@@ -40,6 +40,8 @@ public class  Technicaldocument implements Serializable {
 	private String documenttype ;
 	private String number ;
 	private String responsibleperson ;
+	private String rpersonDepartment ;
+	private String rpersonSection ;
 	private String title ;
 	private String major ;
 	private String aircrafttype;
@@ -104,6 +106,20 @@ public class  Technicaldocument implements Serializable {
 	}
 	public void setResponsibleperson(String responsibleperson) {
 		this.responsibleperson=responsibleperson;
+	}
+	@Column(name="RPersonDepartment")
+	public String getRpersonDepartment() {
+		return rpersonDepartment;
+	}
+	public void setRpersonDepartment(String rpersonDepartment) {
+		this.rpersonDepartment = rpersonDepartment;
+	}
+	@Column(name="RPersonSection")
+	public String getRpersonSection() {
+		return rpersonSection;
+	}
+	public void setRpersonSection(String rpersonSection) {
+		this.rpersonSection = rpersonSection;
 	}
 	@Column(name="Title")
 	public String getTitle() {

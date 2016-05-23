@@ -60,6 +60,7 @@ public class FlightrestrictDao extends HibernateBaseDao {
 		String countHql = "select count(*) " + coreHql.toString();
 		String hql = coreHql.toString();
 		hql = userService.checkUser(hql);
+		hql += " order by isaffect desc , begindate desc";
 		this.pagingQuery(page, hql, countHql, args);
 	}
 
@@ -93,6 +94,7 @@ public class FlightrestrictDao extends HibernateBaseDao {
 			}
 		}
 		Hql = userService.checkUser(Hql);
+		Hql += " order by isaffect desc , begindate desc";
 		return this.query(Hql);
 	}
 

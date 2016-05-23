@@ -172,12 +172,12 @@ jQuery(arg.dom).xCreate({&#xD;
       </DataColumn>
       <DataColumn>
         <Property name="property">contenttype</Property>
-        <Property name="width">120</Property>
+        <Property name="width">100</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
         <Property name="property">transceivertype</Property>
-        <Property name="width">120</Property>
+        <Property name="width">100</Property>
         <Editor/>
       </DataColumn>
       <DataColumn name="major">
@@ -187,6 +187,16 @@ jQuery(arg.dom).xCreate({&#xD;
       <DataColumn name="responsibleperson">
         <Property name="property">responsibleperson</Property>
         <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">rpersonDepartment</Property>
+        <Property name="width">120</Property>
+        <Property name="name">rpersonDepartment</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">rpersonSection</Property>
+        <Property name="width">120</Property>
+        <Property name="name">rpersonSection</Property>
       </DataColumn>
       <DataColumn name="issuedate">
         <Property name="property">issuedate</Property>
@@ -203,7 +213,7 @@ jQuery(arg.dom).xCreate({&#xD;
         <Property name="width">120</Property>
       </DataColumn>
       <DataColumn>
-        <Property name="width">200</Property>
+        <Property name="width">80</Property>
         <Property name="property">miji</Property>
         <Property name="name">miji</Property>
         <Property name="align">left</Property>
@@ -222,8 +232,7 @@ jQuery(arg.dom).xCreate({&#xD;
         <Button>
           <ClientEvent name="onClick">view.id('uaTechnicaldocument').execute(function(){
                view.id('diaTechnicaldocument').hide();
-           });
-         </ClientEvent>
+           });</ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
         </Button>
@@ -383,7 +392,16 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <AutoFormElement>
             <Property name="name">ResponsiblePerson</Property>
             <Property name="property">responsibleperson</Property>
-            <Property name="trigger">customDropDown1</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">RrpersonDepartment</Property>
+            <Property name="property">rpersonDepartment</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">RpersonSection</Property>
+            <Property name="property">rpersonSection</Property>
+            <Editor/>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">IssueDate</Property>
@@ -480,6 +498,16 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
             <Property name="name">ResponsiblePerson</Property>
             <Property name="property">responsibleperson</Property>
             <Property name="trigger">customDropDown1</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">RpersonDepartment</Property>
+            <Property name="property">rpersonDepartment</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">RpersonSection</Property>
+            <Property name="property">rpersonSection</Property>
+            <Editor/>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">IssueDate</Property>

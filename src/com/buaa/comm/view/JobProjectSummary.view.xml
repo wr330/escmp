@@ -109,10 +109,6 @@ arg.processDefault = true;</ClientEvent>
       <DataColumn name="addp6">
         <Property name="property">addp6</Property>
       </DataColumn>
-      <DataColumn name="isfromp6">
-        <Property name="property">isfromp6</Property>
-        <Property name="width">120</Property>
-      </DataColumn>
       <DataColumn>
         <Property name="property">sectionChief</Property>
         <Property name="name">sectionChief</Property>
@@ -378,10 +374,6 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <AutoFormElement>
             <Property name="name">SourceEvent</Property>
             <Property name="property">sourceevent</Property>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">IsFromP6</Property>
-            <Property name="property">isfromp6</Property>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">AddP6</Property>

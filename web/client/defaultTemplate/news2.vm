@@ -57,7 +57,7 @@ body{font:12px/180% Arial, Helvetica, sans-serif, "新宋体";}
      <ul>
 		#foreach($a in [0..9])
 			#if($!{classicNewsList.size()}>$!{a})
-			    <li style="*float:left;*overflow:hidden;" class="list"><a style="*float:left;" href ="$!{basePath}dynamic/classic_news/$!{classicNewsList.get($!{a}).getNodeCode()}" target="_blank" title="$!{classicNewsList.get($!{a}).getNodeTitle()}">$!{classicNewsList.get($!{a}).getNodeTitle2()}</a><font style="float:right;Color:#46a3ff;" id = "orderDate">$!{classicNewsList.get($!{a}).getOrderDate2()}</font></li>
+			    <li style="*float:left;overflow:hidden;" class="list"><a style="*float:left;" href ="$!{basePath}dynamic/classic_news/$!{classicNewsList.get($!{a}).getNodeCode()}" target="_blank" title="$!{classicNewsList.get($!{a}).getNodeTitle()}">$!{classicNewsList.get($!{a}).getNodeTitle2()}</a><font style="float:right;Color:#46a3ff;" id = "orderDate">$!{classicNewsList.get($!{a}).getOrderDate2()}</font></li>
 				##<li ><a  href="$!{basePath}dynamic/classic_news/$!{classicNewsList.get($!{a}).getNodeCode()}" title="$!{classicNewsList.get($!{a}).getNodeTitle()}">$!{classicNewsList.get($!{a}).getNodeTitle()}</a></li>
 			#else
 			#end

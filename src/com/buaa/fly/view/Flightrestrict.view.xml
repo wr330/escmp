@@ -262,6 +262,7 @@ nodes.each(function(node){
               <AutoFormElement>
                 <Property name="name">maincontent</Property>
                 <Property name="property">maincontent</Property>
+                <Property name="editorType">TextArea</Property>
               </AutoFormElement>
               <AutoFormElement>
                 <Property name="name">major</Property>
@@ -270,10 +271,6 @@ nodes.each(function(node){
               <AutoFormElement>
                 <Property name="name">begindate</Property>
                 <Property name="property">begindate</Property>
-              </AutoFormElement>
-              <AutoFormElement>
-                <Property name="name">affect</Property>
-                <Property name="property">affect</Property>
               </AutoFormElement>
               <AutoFormElement>
                 <Property name="name">modifydate</Property>
@@ -316,7 +313,7 @@ nodes.each(function(node){
             </AutoForm>
           </ControlTab>
           <ControlTab>
-            <Property name="caption">飞机信息</Property>
+            <Property name="caption">有效范围</Property>
             <DataTree id="dTFtypes" layoutConstraint="left">
               <ClientEvent name="onReady">var Root = view.get(&quot;@Root&quot;);&#xD;
 var ProductTree = view.get(&quot;@Ftypes&quot;);&#xD;
@@ -682,6 +679,10 @@ open(path,&quot;_blank&quot;);
         <Property name="property">fno</Property>
         <Property name="width">120</Property>
       </DataColumn>
+      <DataColumn name="isaffect">
+        <Property name="property">isaffect</Property>
+        <Property name="width">80</Property>
+      </DataColumn>
       <DataColumn name="begindate">
         <Property name="property">begindate</Property>
         <Property name="width">120</Property>
@@ -690,16 +691,8 @@ open(path,&quot;_blank&quot;);
         <Property name="property">isnew</Property>
         <Property name="width">120</Property>
       </DataColumn>
-      <DataColumn name="isaffect">
-        <Property name="property">isaffect</Property>
-        <Property name="width">120</Property>
-      </DataColumn>
       <DataColumn name="major">
         <Property name="property">major</Property>
-        <Property name="width">120</Property>
-      </DataColumn>
-      <DataColumn name="affect">
-        <Property name="property">affect</Property>
         <Property name="width">120</Property>
       </DataColumn>
       <DataColumn name="modifydate">
@@ -717,15 +710,15 @@ jQuery(arg.dom).xCreate({&#xD;
 	content:arg.data.get(&quot;filename&quot;)&#xD;
 });</ClientEvent>
         <Property name="property">filename</Property>
-        <Property name="width">120</Property>
+        <Property name="width">150</Property>
       </DataColumn>
       <DataColumn name="maincontent">
         <Property name="property">maincontent</Property>
-        <Property name="width">120</Property>
+        <Property name="width">300</Property>
       </DataColumn>
       <DataColumn>
         <Property name="property">miji</Property>
-        <Property name="width">120</Property>
+        <Property name="width">80</Property>
         <Property name="align">left</Property>
         <Editor/>
       </DataColumn>

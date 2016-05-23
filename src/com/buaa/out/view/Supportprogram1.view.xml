@@ -261,7 +261,7 @@ jQuery(arg.dom).xCreate({&#xD;
                 </DataColumn>
                 <DataColumn name="personto">
                   <Property name="property">personto</Property>
-                  <Property name="width">150</Property>
+                  <Property name="width">120</Property>
                 </DataColumn>
                 <DataColumn name="filenumber">
                   <Property name="property">filenumber</Property>
@@ -269,11 +269,15 @@ jQuery(arg.dom).xCreate({&#xD;
                 </DataColumn>
                 <DataColumn name="personfrom">
                   <Property name="property">personfrom</Property>
-                  <Property name="width">150</Property>
+                  <Property name="width">120</Property>
                 </DataColumn>
                 <DataColumn name="handovertime">
                   <Property name="property">handovertime</Property>
                   <Property name="width">150</Property>
+                </DataColumn>
+                <DataColumn name="sectionChiefSure">
+                  <Property name="property">sectionChiefSure</Property>
+                  <Property name="width">100</Property>
                 </DataColumn>
               </DataGrid>
             </Container>
@@ -521,6 +525,11 @@ view.id('dgHandover').hide();</ClientEvent>
                 </Button>
               </Container>
             </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">sectionChiefSure</Property>
+            <Property name="property">sectionChiefSure</Property>
+            <Editor/>
           </AutoFormElement>
         </AutoForm>
       </Children>

@@ -113,16 +113,28 @@ arg.parameter = parameter;</ClientEvent>
         <Property name="mapValues">
           <Collection>
             <Entity>
-              <Property name="key">2</Property>
+              <Property name="key">5</Property>
               <Property name="value">机密</Property>
             </Entity>
             <Entity>
-              <Property name="key">1</Property>
+              <Property name="key">4</Property>
               <Property name="value">秘密</Property>
             </Entity>
             <Entity>
+              <Property name="key">3</Property>
+              <Property name="value">核心商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">普通商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">内部</Property>
+            </Entity>
+            <Entity>
               <Property name="key">0</Property>
-              <Property name="value">非密</Property>
+              <Property name="value">公开</Property>
             </Entity>
           </Collection>
         </Property>
@@ -425,16 +437,28 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
         <Property name="mapValues">
           <Collection>
             <Entity>
-              <Property name="key">2</Property>
+              <Property name="key">5</Property>
               <Property name="value">机密</Property>
             </Entity>
             <Entity>
-              <Property name="key">1</Property>
+              <Property name="key">4</Property>
               <Property name="value">秘密</Property>
             </Entity>
             <Entity>
+              <Property name="key">3</Property>
+              <Property name="value">核心商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">普通商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">内部</Property>
+            </Entity>
+            <Entity>
               <Property name="key">0</Property>
-              <Property name="value">非密</Property>
+              <Property name="value">公开</Property>
             </Entity>
           </Collection>
         </Property>
@@ -451,7 +475,7 @@ else {&#xD;
       </Validator>
     </PropertyDef>
     <PropertyDef name="taskexecution">
-      <Property/>
+      <Property></Property>
       <Property name="label">完成情况</Property>
     </PropertyDef>
   </DataType>
@@ -506,10 +530,6 @@ else {&#xD;
       <Property name="dataType">String</Property>
       <Property name="label">专业</Property>
     </PropertyDef>
-    <PropertyDef name="affect">
-      <Property name="dataType">String</Property>
-      <Property name="label">有效范围</Property>
-    </PropertyDef>
     <PropertyDef name="filename">
       <Property name="dataType">String</Property>
       <Property name="label">附件</Property>
@@ -538,16 +558,28 @@ else {&#xD;
         <Property name="mapValues">
           <Collection>
             <Entity>
-              <Property name="key">2</Property>
+              <Property name="key">5</Property>
               <Property name="value">机密</Property>
             </Entity>
             <Entity>
-              <Property name="key">1</Property>
+              <Property name="key">4</Property>
               <Property name="value">秘密</Property>
             </Entity>
             <Entity>
+              <Property name="key">3</Property>
+              <Property name="value">核心商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">普通商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">内部</Property>
+            </Entity>
+            <Entity>
               <Property name="key">0</Property>
-              <Property name="value">非密</Property>
+              <Property name="value">公开</Property>
             </Entity>
           </Collection>
         </Property>
@@ -611,6 +643,17 @@ arg.parameter = parameter;</ClientEvent>
     <PropertyDef name="author">
       <Property name="dataType">String</Property>
       <Property name="label">编写人员</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="authorDepartment">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">所属部门</Property>
+    </PropertyDef>
+    <PropertyDef name="autorSection">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">所属科室</Property>
     </PropertyDef>
     <PropertyDef name="type">
       <Property name="dataType">String</Property>
@@ -628,16 +671,28 @@ arg.parameter = parameter;</ClientEvent>
         <Property name="mapValues">
           <Collection>
             <Entity>
-              <Property name="key">2</Property>
+              <Property name="key">5</Property>
               <Property name="value">机密</Property>
             </Entity>
             <Entity>
-              <Property name="key">1</Property>
+              <Property name="key">4</Property>
               <Property name="value">秘密</Property>
             </Entity>
             <Entity>
+              <Property name="key">3</Property>
+              <Property name="value">核心商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">普通商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">内部</Property>
+            </Entity>
+            <Entity>
               <Property name="key">0</Property>
-              <Property name="value">非密</Property>
+              <Property name="value">公开</Property>
             </Entity>
           </Collection>
         </Property>
@@ -685,16 +740,28 @@ else {&#xD;
         <Property name="mapValues">
           <Collection>
             <Entity>
-              <Property name="key">2</Property>
+              <Property name="key">5</Property>
               <Property name="value">机密</Property>
             </Entity>
             <Entity>
-              <Property name="key">1</Property>
+              <Property name="key">4</Property>
               <Property name="value">秘密</Property>
             </Entity>
             <Entity>
+              <Property name="key">3</Property>
+              <Property name="value">核心商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">普通商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">内部</Property>
+            </Entity>
+            <Entity>
               <Property name="key">0</Property>
-              <Property name="value">非密</Property>
+              <Property name="value">公开</Property>
             </Entity>
           </Collection>
         </Property>
@@ -966,16 +1033,28 @@ arg.parameter = parameter;</ClientEvent>
         <Property name="mapValues">
           <Collection>
             <Entity>
-              <Property name="key">2</Property>
+              <Property name="key">5</Property>
               <Property name="value">机密</Property>
             </Entity>
             <Entity>
-              <Property name="key">1</Property>
+              <Property name="key">4</Property>
               <Property name="value">秘密</Property>
             </Entity>
             <Entity>
+              <Property name="key">3</Property>
+              <Property name="value">核心商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">普通商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">内部</Property>
+            </Entity>
+            <Entity>
               <Property name="key">0</Property>
-              <Property name="value">非密</Property>
+              <Property name="value">公开</Property>
             </Entity>
           </Collection>
         </Property>
@@ -1187,23 +1266,34 @@ else {&#xD;
       <Property name="label">jiancanr</Property>
     </PropertyDef>
     <PropertyDef name="miji">
-      <Property></Property>
-      <Property name="dataType">Integer</Property>
+      <Property name="dataType">String</Property>
       <Property name="label">密级</Property>
       <Property name="mapping">
         <Property name="mapValues">
           <Collection>
             <Entity>
-              <Property name="key">2</Property>
+              <Property name="key">5</Property>
               <Property name="value">机密</Property>
             </Entity>
             <Entity>
-              <Property name="key">1</Property>
+              <Property name="key">4</Property>
               <Property name="value">秘密</Property>
             </Entity>
             <Entity>
+              <Property name="key">3</Property>
+              <Property name="value">核心商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">普通商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">内部</Property>
+            </Entity>
+            <Entity>
               <Property name="key">0</Property>
-              <Property name="value">非密</Property>
+              <Property name="value">公开</Property>
             </Entity>
           </Collection>
         </Property>

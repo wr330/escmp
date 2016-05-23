@@ -47,9 +47,11 @@
     </DataType>
   </Model>
   <View>
+    <Property name="contentOverflow">visible</Property>
     <Portal>
       <Property name="portletPadding">5</Property>
       <Property name="height">957</Property>
+      <Property name="width">1920</Property>
       <Columns>
         <Column>
           <Property name="width">25%</Property>
