@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import java.util.Date;
@@ -33,6 +34,7 @@ public class  Personstatistic implements Serializable {
 	public void setItemoid(String itemoid) {
 		this.itemoid=itemoid;
 	}
+	@Id
 	@Column(name="Oid")
 	public String getOid() {
 		return oid;

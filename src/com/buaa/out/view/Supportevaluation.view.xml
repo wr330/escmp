@@ -44,6 +44,8 @@ for(var i=1;i&lt;=32;i++){&#xD;
 		guid += &quot;-&quot;;&#xD;
 }&#xD;
 cur.set(&quot;oid&quot;,guid);&#xD;
+var curDate = new Date();&#xD;
+cur.set(&quot;supportEndTime&quot;,new Date(curDate.getFullYear() + &quot;/12/31&quot;))&#xD;
 var dialog=view.id('diaSupportevaluation');&#xD;
 dialog.set(&quot;caption&quot;,&quot;新增保障效果评估&quot;);&#xD;
 dialog.show();&#xD;
@@ -153,21 +155,14 @@ jQuery(arg.dom).xCreate({&#xD;
           <ClientEvent name="onClick">var afSupportevaluation = view.id('afSupportevaluation');
 var supportStartTime = afSupportevaluation.getElement('supportStartTime').get('value');
 var supportEndTime = afSupportevaluation.getElement('supportEndTime').get('value');
-if(supportEndTime != null){
-	if(supportStartTime > supportEndTime){
+if(supportStartTime > supportEndTime){
 	dorado.MessageBox.alert('开始时间大于等于结束时间');
-	}
-	else{
-		view.id('uaSupportevaluation').execute(function(){
-    		view.id('diaSupportevaluation').hide();
-    	});
-	}
 }
 else{
 	view.id('uaSupportevaluation').execute(function(){
     	view.id('diaSupportevaluation').hide();
     });
-}                 </ClientEvent>
+}             </ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
         </Button>

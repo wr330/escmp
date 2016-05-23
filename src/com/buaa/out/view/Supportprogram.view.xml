@@ -84,6 +84,8 @@ dsStatisticSupport.set(&quot;parameter&quot;, {&#xD;
         <ClientEvent name="onClick">view.id('dsSupportprogram').getData().insert();&#xD;
 var cur=view.id('dsSupportprogram').getData('#');&#xD;
 cur.set(&quot;maker&quot;,&quot;${loginUsername}&quot;)&#xD;
+var curDate = new Date();&#xD;
+cur.set(&quot;endtime&quot;,new Date(curDate.getFullYear() + &quot;/12/31&quot;))&#xD;
 var dialog=view.id('diaSupportprogram');&#xD;
 dialog.set(&quot;caption&quot;,&quot;新增保障计划&quot;);&#xD;
 dialog.show();</ClientEvent>

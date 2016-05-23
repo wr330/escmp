@@ -136,6 +136,7 @@ else {&#xD;
       <Property name="dataType">Date</Property>
       <Property name="label">结束时间</Property>
       <Property name="required">true</Property>
+      <Property name="readOnly">false</Property>
     </PropertyDef>
     <PropertyDef name="registrationexecutor">
       <Property name="dataType">String</Property>

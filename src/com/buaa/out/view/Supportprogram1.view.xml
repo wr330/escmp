@@ -84,6 +84,9 @@ window.open('upload/Out_Handover/'+ cur.get(&quot;oid&quot;) + '/' + arg.result)
                 <ToolBarButton>
                   <ClientEvent name="onClick">var cur=view.id('dsSupportprogram').getData(&quot;#&quot;);&#xD;
 view.id('dsSupportprogram').getData(&quot;#.supportitem&quot;).insert({supportprogram:{oid:cur.get(&quot;oid&quot;)}});&#xD;
+var curItem = view.id('dsSupportprogram').getData(&quot;#.#supportitem&quot;)&#xD;
+var curDate = new Date();&#xD;
+curItem.set(&quot;endexecutiontime&quot;,new Date(curDate.getFullYear() + &quot;/12/31&quot;))&#xD;
 dialog=view.id('diaSupportitem');&#xD;
 dialog.set(&quot;caption&quot;,&quot;新增保障条目&quot;);&#xD;
 dialog.show();&#xD;
@@ -401,22 +404,14 @@ view.id('diaSupportitem').hide();</ClientEvent>
           <ClientEvent name="onClick">var afSupportitem = view.id('afSupportitem');&#xD;
 var startexecutiontime = afSupportitem.getElement('startexecutiontime').get('value');&#xD;
 var endexecutiontime = afSupportitem.getElement('endexecutiontime').get('value');&#xD;
-if(endexecutiontime != null){&#xD;
-	if(startexecutiontime > endexecutiontime){&#xD;
+if(startexecutiontime > endexecutiontime){&#xD;
 	dorado.MessageBox.alert('开始时间大于等于结束时间');&#xD;
-	}&#xD;
-	else{&#xD;
-		view.id('uaSupportprogram').execute(function(){&#xD;
-    	view.id('diaSupportitem').hide();&#xD;
-    	});&#xD;
-	}&#xD;
 }&#xD;
 else{&#xD;
 	view.id('uaSupportprogram').execute(function(){&#xD;
-    view.id('diaSupportitem').hide();&#xD;
-    });&#xD;
-}&#xD;
-</ClientEvent>
+    	view.id('diaSupportitem').hide();&#xD;
+   	});&#xD;
+}</ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
         </Button>
