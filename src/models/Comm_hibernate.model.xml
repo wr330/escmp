@@ -817,7 +817,7 @@ else {&#xD;
     </PropertyDef>
     <PropertyDef name="personid">
       <Property name="dataType">String</Property>
-      <Property name="label">职工编号</Property>
+      <Property name="label">用户名</Property>
       <Property name="required">true</Property>
       <Validator type="ajax">
         <ClientEvent name="beforeExecute">var oid = arg.entity.get(&quot;oid&quot;);&#xD;
