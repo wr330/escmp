@@ -4,9 +4,6 @@
   <Context/>
   <Model/>
   <View>
-    <Property name="style">
-      <Property name="background">url(images/home/main.jpg) top repeat-x</Property>
-    </Property>
     <Property name="styleSheetFile">view/home.css</Property>
     <SplitPanel layoutConstraint="center ">
       <Property name="direction">top</Property>

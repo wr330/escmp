@@ -57,7 +57,10 @@ body{font:12px/180% Arial, Helvetica, sans-serif, "新宋体";}
      <ul>
 		#foreach($a in [0..9])
 			#if($!{classicNewsList.size()}>$!{a})
-			    <li style="*float:left;overflow:hidden;" class="list"><a style="*float:left;" href ="$!{basePath}dynamic/classic_news/$!{classicNewsList.get($!{a}).getNodeCode()}" target="_blank" title="$!{classicNewsList.get($!{a}).getNodeTitle()}">$!{classicNewsList.get($!{a}).getNodeTitle2()}</a><font style="float:right;Color:#46a3ff;" id = "orderDate">$!{classicNewsList.get($!{a}).getOrderDate2()}</font></li>
+			    <li style="*float:left;overflow:hidden;" class="list">
+			      <a style="*float:left;" href ="$!{basePath}dynamic/classic_news/$!{classicNewsList.get($!{a}).getNodeCode()}" target="_blank" title="$!{classicNewsList.get($!{a}).getNodeTitle()}">$!{classicNewsList.get($!{a}).getNodeTitle2()}</a>
+			      <font style="float:right;Color:#46a3ff;" id = "orderDate">$!{classicNewsList.get($!{a}).getOrderDate2()}</font>
+			    </li>
 				##<li ><a  href="$!{basePath}dynamic/classic_news/$!{classicNewsList.get($!{a}).getNodeCode()}" title="$!{classicNewsList.get($!{a}).getNodeTitle()}">$!{classicNewsList.get($!{a}).getNodeTitle()}</a></li>
 			#else
 			#end
@@ -78,6 +81,11 @@ body{font:12px/180% Arial, Helvetica, sans-serif, "新宋体";}
         .News ul li a { font: normal 12px 'SimSun-ExtB',Verdana,Arial,Sans-Serif; color:#3a3c3c; text-decoration:none; }
         .News ul li a:hover { color:#2e5a7c; text-decoration:underline; }
     </style>
+    <!--[if IE]>
+      <style type="text/css">
+      .News li { background:url($!{resourcesPath}resource/images/Sub_ul_li.gif) left no-repeat; padding:8px 5px 0px 20px; margin:0; border-bottom:1px solid #eaeaea; }
+      </style>
+    <![endif]-->
 </div>
 
 </body>

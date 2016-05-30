@@ -48,6 +48,9 @@
   </Model>
   <View>
     <Property name="contentOverflow">visible</Property>
+    <Property name="style">
+      <Property name="background">url(images/home/main.jpg) top repeat-x</Property>
+    </Property>
     <Portal>
       <Property name="portletPadding">5</Property>
       <Property name="height">957</Property>
@@ -77,16 +80,17 @@ action.execute(function(result){&#xD;
 	if(result!=''&amp;&amp;result.length>0)&#xD;
 	  result.each(function(item){&#xD;
 		var str = &quot;&lt;li style='*float:left;*overflow:hidden;'>&lt;a style='*float:left;' href='&quot;+item.url+&quot;' target=_blank>&quot;+item.title+&quot;&lt;/a>&lt;/li>&quot;;&#xD;
+		str = &quot;&lt;li '>&lt;a href='#' target=_blank>啊啊啊啊啊&lt;/a>&lt;/li>&quot;;&#xD;
 		$(&quot;#li_list&quot;).append(str);&#xD;
 	  });&#xD;
 });</ClientEvent>
-              <Property name="content">&lt;div class=&quot;News&quot;>&#xD;
+              <Property name="content">&lt;div class=&quot;Resources&quot;>&#xD;
    &lt;ul id=&quot;li_list&quot; style=&quot;margin-left:10px;margin-top:0px&quot;>&lt;/ul>&#xD;
        &lt;style>&#xD;
-        .News ul { list-style:none; margin:0; padding:0; }&#xD;
-        .News li { background:url(images/home/node.png) left no-repeat; padding:5px 5px 5px 30px; margin:0; border-bottom:1px solid #eaeaea; }&#xD;
-        .News ul li a { font: normal 13px 'SimSun-ExtB',Verdana,Arial,Sans-Serif; color:#3a3c3c; text-decoration:none; }&#xD;
-        .News ul li a:hover { color:#2e5a7c; text-decoration:underline; }&#xD;
+        .Resources ul { list-style:none; margin:0; padding:0; }&#xD;
+        .Resources li { background:url(images/home/node.png) left no-repeat; padding:5px 5px 5px 30px; margin:0; border-bottom:1px solid #eaeaea; }&#xD;
+        .Resources ul li a { font: normal 13px 'SimSun-ExtB',Verdana,Arial,Sans-Serif; color:#3a3c3c; text-decoration:none; }&#xD;
+        .Resources ul li a:hover { color:#2e5a7c; text-decoration:underline; }&#xD;
        &lt;/style>&#xD;
 &lt;/div></Property>
             </HtmlContainer>
@@ -669,7 +673,7 @@ if(cur){&#xD;
           </Children>
         </Portlet>
         <Portlet>
-          <Property name="caption">常用工作</Property>
+          <Property name="caption">我的办公桌</Property>
           <Property name="column">2</Property>
           <Property name="height">300</Property>
           <Property name="closeable">false</Property>
@@ -681,54 +685,15 @@ if(cur){&#xD;
 	captionProperty: &quot;value&quot;&#xD;
 }));</ClientEvent>
               <ClientEvent name="onBlockClick">var current = self.getCurrentItem();&#xD;
-var cardBook = this.id(&quot;cardBook1&quot;);&#xD;
-var iFrame = this.id(&quot;iFrame1&quot;);&#xD;
-if(current.value == &quot;工作项目&quot;){&#xD;
-	var managerUrl=&quot;com.buaa.comm.view.Jobstatistics.d&quot;;&#xD;
-	open(managerUrl,&quot;_blank&quot;);&#xD;
-}&#xD;
-else if(current.value == &quot;试飞日报&quot;){&#xD;
-	var managerUrl=&quot;com.buaa.fly.view.Dailyacc.d&quot;;&#xD;
-	open(managerUrl,&quot;_blank&quot;);&#xD;
-    // cardBook.set(&quot;currentIndex&quot;, 1);&#xD;
-	 //iFrame.set(&quot;path&quot;, &quot;com.buaa.fly.view.Dailyacc.d&quot;);&#xD;
-}&#xD;
-else if(current.value == &quot;保障计划&quot;){&#xD;
-	var managerUrl=&quot;com.buaa.out.view.Supportprogram1.d&quot;;&#xD;
-	open(managerUrl,&quot;_blank&quot;);&#xD;
-    &#xD;
-}&#xD;
-else if(current.value == &quot;会议记录&quot;){&#xD;
+if(current.value == &quot;会议记录&quot;){&#xD;
 	var managerUrl=&quot;com.buaa.comm.view.Meetingdocument.d&quot;;&#xD;
-	open(managerUrl,&quot;_blank&quot;);&#xD;
-     //cardBook.set(&quot;currentIndex&quot;, 1);&#xD;
-	 //iFrame.set(&quot;path&quot;, &quot;com.buaa.comm.view.Meetingdocument.d&quot;);&#xD;
-}&#xD;
-else if(current.value == &quot;文件上传&quot;){&#xD;
-	var managerUrl=&quot;bdf2.core.view.frame.main.MainFrame1.d&quot;;&#xD;
 	open(managerUrl,&quot;_blank&quot;);&#xD;
 }</ClientEvent>
               <Property name="items">
                 <Collection>
                   <Entity>
-                    <Property name="value">工作项目</Property>
-                    <Property name="image">images/home/Mangement.png</Property>
-                  </Entity>
-                  <Entity>
-                    <Property name="value">试飞日报</Property>
-                    <Property name="image">images/home/dailyNews1.png</Property>
-                  </Entity>
-                  <Entity>
-                    <Property name="value">保障计划</Property>
-                    <Property name="image">images/home/Out1.png</Property>
-                  </Entity>
-                  <Entity>
                     <Property name="value">会议记录</Property>
                     <Property name="image">images/home/Meeting.png</Property>
-                  </Entity>
-                  <Entity>
-                    <Property name="value">文件上传</Property>
-                    <Property name="image">images/home/upload1.png</Property>
                   </Entity>
                 </Collection>
               </Property>
@@ -747,7 +712,33 @@ else if(current.value == &quot;文件上传&quot;){&#xD;
               <Property name="blockWidth">80</Property>
               <Property name="blockLayout">vertical</Property>
             </BlockView>
+            <Dialog id="diaMyDesk">
+              <Property name="caption">自定义我的办公桌(待完成)</Property>
+              <Property name="width">600</Property>
+              <Property name="height">500</Property>
+              <Buttons>
+                <Button>
+                  <ClientEvent name="onClick">view.id('diaMyDesk').hide();</ClientEvent>
+                  <Property name="caption">确定</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+                </Button>
+                <Button>
+                  <ClientEvent name="onClick">view.id('diaMyDesk').hide(); </ClientEvent>
+                  <Property name="caption">取消</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+                </Button>
+              </Buttons>
+              <Children/>
+              <Tools/>
+            </Dialog>
           </Children>
+          <Tools>
+            <SimpleIconButton layoutConstraint="bottom:0;right:5">
+              <ClientEvent name="onClick">view.id('diaMyDesk').show();</ClientEvent>
+              <Property name="icon">url(>skin>common/icons.gif) -100px -20px</Property>
+              <Property name="tip">自定义我的办公桌</Property>
+            </SimpleIconButton>
+          </Tools>
         </Portlet>
         <Portlet>
           <Property name="caption">常用资源下载</Property>

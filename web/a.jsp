@@ -24,7 +24,7 @@ function addFile(fileURL){
 </head>
 <body leftmargin="0" marginheight="0" marginwidth="0" >
 
-		<object  id="TANGER_OCX" classid="clsid:C9BC4DFF-4248-4a3c-8A49-63A7D317F404" codebase="OfficeControl.cab#Version=5,0,0,2" width="100%" height="800">
+		<object  id="TANGER_OCX" classid="clsid:C9BC4DFF-4248-4a3c-8A49-63A7D317F404" codebase="OfficeControl.cab#Version=5,0,0,2" width="100%" height="1000">
          <param name="BorderStyle" value="1">
          <param name="TitlebarColor" value="42768">
          <param name="TitlebarTextColor" value="0">	 
@@ -33,7 +33,7 @@ function addFile(fileURL){
 		 <param name="ProductKey" value="CC0076043188586D37A970BC2C2385A3DFF8C015">
        </object>
 <script language="javascript" type="text/javascript">
-addFile(<%=new String(request.getParameter("url").getBytes("iso-8859-1"),"utf-8")%>);
+addFile(<%=request.getParameter("url")%>);
 </script>
 </body>
 </html>
