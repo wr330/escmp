@@ -33,7 +33,7 @@ function addFile(fileURL){
 		 <param name="ProductKey" value="CC0076043188586D37A970BC2C2385A3DFF8C015">
        </object>
 <script language="javascript" type="text/javascript">
-addFile(<%=new String(request.getParameter("url").getBytes("iso-8859-1"),"utf-8")%>);
+addFile(<%=request.getParameter("url")%>);
 </script>
 </body>
 </html>

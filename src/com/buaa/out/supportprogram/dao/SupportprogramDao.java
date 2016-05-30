@@ -79,6 +79,10 @@ public class SupportprogramDao extends HibernateBaseDao {
 		this.pagingQuery(page, hql, countHql, args);
 	}
 	
+	/**
+	 * 根据地点查询保障计划表($此方法太繁琐，只在首页用，renyuantongji.view中已经停止使用了，改到SupportitemDao中进行统一查询$)
+	 * 
+	 */
 	public Collection<Supportprogram> queryAddress(String address) throws Exception {
 		String hql="from "+Supportprogram.class.getName()+" u where 1=1";
 		Map<String,Object> map=new HashMap<String,Object>();	
@@ -94,7 +98,7 @@ public class SupportprogramDao extends HibernateBaseDao {
 	}
 	
 	/**
-	 * ($此方法太繁琐，已经停止使用了，改到SupportitemDao中进行统一查询$)
+	 * 根据地点和时间查询保障计划执行情况表($此方法太繁琐，只在首页用，renyuantongji.view中已经停止使用了，改到SupportitemDao中进行统一查询$)
 	 * 
 	 */
 	public Collection<Supportitem> queryTime(String oid) throws Exception {
@@ -115,11 +119,11 @@ public class SupportprogramDao extends HibernateBaseDao {
 	}
 
 	/**                  
-	* 根据地点搜索本年度的保障计划，并根据保障计划和此时的时间查询保障执行条目表($此方法太繁琐，已经停止使用了，改到SupportitemDao中进行统一查询$)
+	* 根据地点搜索本年度的保障计划，并根据保障计划和此时的时间查询保障执行条目表($此方法太繁琐，只在首页用，renyuantongji.view中已经停止使用了，改到SupportitemDao中进行统一查询$)
 	* @param parameter    
 	* @throws Exception
 	*/
-	/*public Collection<Supportitem> queryRenyuan(Map<String, Object> parameter) throws Exception {
+	public Collection<Supportitem> queryRenyuan(Map<String, Object> parameter) throws Exception {
 	    String address = (String)parameter.get("address");
 	    Collection<Supportprogram> details = this.queryAddress(address);
 	    Collection<Supportitem> items = new ArrayList<Supportitem>();
@@ -131,7 +135,7 @@ public class SupportprogramDao extends HibernateBaseDao {
 	    	}
 	    }
 		return items;
-	}*/
+	}
 	
 	/**                  
 	* 搜索计划开始时间到结束时间涉及本年度的保障计划

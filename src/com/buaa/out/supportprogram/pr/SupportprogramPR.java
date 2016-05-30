@@ -61,14 +61,14 @@ public class SupportprogramPR{
 	}
 	
 	/**                  
-	  * 根据地点和时间查询保障计划执行情况表($此方法太繁琐，已经停止使用了，改到SupportitemDao中进行统一查询$)
+	  * 根据地点和时间查询保障计划执行情况表($此方法太繁琐，只在首页用，renyuantongji.view中已经停止使用了，改到SupportitemDao中进行统一查询$)
 	  * @param parameter   
 	  * @throws Exception
 	  */
-	/*@DataProvider
+	@DataProvider
 	public Collection<Supportitem> queryRenyuan(Map<String, Object> parameter) throws Exception {
 		   return supportprogramManager.queryRenyuan(parameter);
-	}*/
+	}
 	
 	/**
 	 * 数据保存，包括增删改

@@ -273,6 +273,21 @@ if (entitylist) {&#xD;
 arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
               <Property name="property">depts</Property>
             </DataColumn>
+            <DataColumn>
+              <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;positions&quot;);&#xD;
+var name = [];&#xD;
+if (entitylist) {&#xD;
+	entitylist.each(function(item){&#xD;
+		name.push(item.get(&quot;name&quot;));&#xD;
+	});&#xD;
+}&#xD;
+arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
+              <Property name="name">positions</Property>
+              <Property name="property">positions</Property>
+              <Property name="width">120</Property>
+              <Property name="filterable">true</Property>
+              <Editor/>
+            </DataColumn>
           </DataGrid>
         </CustomDropDown>
         <AutoForm id="afJobstatistics">
@@ -407,6 +422,21 @@ if (entitylist) {&#xD;
 }&#xD;
 arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
             <Property name="property">depts</Property>
+          </DataColumn>
+          <DataColumn>
+            <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;positions&quot;);&#xD;
+var name = [];&#xD;
+if (entitylist) {&#xD;
+	entitylist.each(function(item){&#xD;
+		name.push(item.get(&quot;name&quot;));&#xD;
+	});&#xD;
+}&#xD;
+arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
+            <Property name="name">positions</Property>
+            <Property name="property">positions</Property>
+            <Property name="width">120</Property>
+            <Property name="filterable">true</Property>
+            <Editor/>
           </DataColumn>
         </DataGrid>
       </Children>
