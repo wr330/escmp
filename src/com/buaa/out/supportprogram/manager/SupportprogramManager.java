@@ -46,15 +46,12 @@ public class SupportprogramManager {
 	}
 	
 	/**                  
-	* 分页查询信息，带有criteria
-	* 将criteria转换为一个Map
-	* @param page    
-	* @param map
+	* 分页查询信息($此方法太繁琐，已经停止使用了，改到SupportitemDao中进行统一查询$)
 	* @throws Exception
 	*/
-	public Collection<Supportitem> queryRenyuan(Map<String, Object> parameter) throws Exception {
+	/*public Collection<Supportitem> queryRenyuan(Map<String, Object> parameter) throws Exception {
 	    return supportprogramDao.queryRenyuan(parameter);
-	}
+	}*/
 	
 	/**                  
 	* 搜索计划开始时间到结束时间涉及本年度的保障计划

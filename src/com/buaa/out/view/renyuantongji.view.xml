@@ -16,6 +16,10 @@
     </DataType>
   </Model>
   <View>
+    <DataSet id="dsUsers">
+      <Property name="dataProvider">bdf2.userMaintain#loadUsers2</Property>
+      <Property name="dataType">[User]</Property>
+    </DataSet>
     <DataSet id="dsDictionaryAdrs">
       <Property name="parameter">
         <Entity>
@@ -26,192 +30,513 @@
       <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
       <Property name="dataType">[Dictionary]</Property>
     </DataSet>
-    <DataSet id="dsRenyuantongji">
-      <ClientEvent name="onReady">var dsRenyuantongji=view.id('dsRenyuantongji');&#xD;
+    <DataSet id="dsSupportitem_add">
+      <ClientEvent name="onReady">var dsSupportitem_add = view.id('dsSupportitem_add');&#xD;
 var cur = view.id('dsDictionaryAdrs').getData(&quot;#&quot;).get(&quot;name&quot;);&#xD;
-dsRenyuantongji.set(&quot;parameter&quot;,{&#xD;
+dsSupportitem_add.set(&quot;parameter&quot;,{&#xD;
 	address:cur&#xD;
 });&#xD;
-dsRenyuantongji.flushAsync();&#xD;
-</ClientEvent>
-      <Property name="dataProvider">supportprogramPR#queryRenyuan</Property>
-      <Property name="parameter">
-        <Entity>
-          <Property name="address"></Property>
-        </Entity>
-      </Property>
+dsSupportitem_add.flushAsync();</ClientEvent>
       <Property name="dataType">[Supportitem]</Property>
+      <Property name="dataProvider">supportitemPR#querySupportitem</Property>
+      <Property name="pageSize">100</Property>
+    </DataSet>
+    <DataSet id="dsSupportitem">
+      <ClientEvent name="onReady">var dsUsers = view.id('dsUsers');&#xD;
+var cur = view.id('dsUsers').getData(&quot;#&quot;).get(&quot;cname&quot;);&#xD;
+var dsSupportitem=view.id('dsSupportitem');&#xD;
+dsSupportitem.set(&quot;parameter&quot;,{&#xD;
+	person:cur&#xD;
+});&#xD;
+dsSupportitem.flushAsync();</ClientEvent>
+      <Property name="dataType">[Supportitem]</Property>
+      <Property name="dataProvider">supportitemPR#querySupportitem</Property>
+      <Property name="pageSize">100</Property>
     </DataSet>
     <DataSet id="dsStatisticPerson">
       <Property name="dataProvider">supportitemPR#statisticPerson</Property>
       <Property name="dataType">dtPerson</Property>
     </DataSet>
-    <SplitPanel>
-      <Property name="position">208</Property>
-      <MainControl>
-        <SplitPanel>
-          <Property name="direction">top</Property>
-          <Property name="position">38.2%</Property>
-          <MainControl>
-            <TabControl>
-              <ControlTab>
-                <Property name="caption">该保障计划个人执行情况统计-柱状图</Property>
-                <Chart>
-                  <Axes>
-                    <CategoryAxis>
-                      <Property name="dataSet">dsStatisticPerson</Property>
-                      <Property name="properties">person</Property>
-                      <Property name="dataPath">#.data</Property>
-                    </CategoryAxis>
-                    <NumbericAxis>
-                      <Property name="min">0</Property>
-                    </NumbericAxis>
-                  </Axes>
-                  <Series>
-                    <Column>
-                      <Property name="dataSet">dsStatisticPerson</Property>
-                      <Property name="bindingConfig">
-                        <Property name="yProperty">num</Property>
-                      </Property>
-                      <Property name="title">执行保障计划的天数</Property>
-                      <Property name="dataPath">#.data</Property>
-                    </Column>
-                  </Series>
-                </Chart>
-              </ControlTab>
-              <ControlTab>
-                <Property name="caption">该保障计划个人执行情况统计-折线图</Property>
-                <Chart>
-                  <Axes>
-                    <CategoryAxis>
-                      <Property name="dataSet">dsStatisticPerson</Property>
-                      <Property name="properties">person</Property>
-                      <Property name="dataPath">#.data</Property>
-                    </CategoryAxis>
-                    <NumbericAxis>
-                      <Property name="min">0</Property>
-                    </NumbericAxis>
-                  </Axes>
-                  <Series>
-                    <Line>
-                      <Property name="dataSet">dsStatisticPerson</Property>
-                      <Property name="bindingConfig">
-                        <Property name="yProperty">num</Property>
-                      </Property>
-                      <Property name="title">执行保障计划的天数</Property>
-                      <Property name="dataPath">#.data</Property>
-                    </Line>
-                  </Series>
-                </Chart>
-              </ControlTab>
-              <ControlTab>
-                <Property name="caption">该保障计划个人执行情况统计-饼图</Property>
-                <Chart>
-                  <Axes/>
-                  <Series>
-                    <Pie>
-                      <Property name="dataSet">dsStatisticPerson</Property>
-                      <Property name="bindingConfig">
-                        <Property name="labelProperty">person</Property>
-                        <Property name="valueProperty">num</Property>
-                      </Property>
-                      <Property name="dataPath">#.data</Property>
-                    </Pie>
-                  </Series>
-                </Chart>
-              </ControlTab>
-            </TabControl>
-          </MainControl>
-          <SideControl>
-            <Container>
-              <ToolBar>
-                <ToolBarButton>
-                  <ClientEvent name="onClick">var dsRenyuantongji = view.get(&quot;#dsRenyuantongji&quot;);&#xD;
-dsRenyuantongji.flushAsync();</ClientEvent>
-                  <Property name="caption">刷新</Property>
-                  <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
-                </ToolBarButton>
-              </ToolBar>
-              <DataGrid id="dgRenyuan">
-                <ClientEvent name="onDataRowClick">var dsRenyuantongji = view.get(&quot;#dsRenyuantongji&quot;);&#xD;
+    <DataSet id="dsPersonstatistic">
+      <ClientEvent name="onReady">var dsPersonstatistic=view.id('dsPersonstatistic');&#xD;
+var date = new Date();&#xD;
+var year = date.getFullYear(); &#xD;
+var cur = view.id('dsDictionaryAdrs').getData(&quot;#&quot;).get(&quot;name&quot;);&#xD;
+dsPersonstatistic.set(&quot;parameter&quot;,{&#xD;
+	address:cur,&#xD;
+	year: year&#xD;
+});&#xD;
+dsPersonstatistic.flushAsync();</ClientEvent>
+      <ClientEvent name="onLoadData">if(self.getData().isEmpty()){&#xD;
+	dorado.MessageBox.alert(&quot;该地点在所选时间内无保障人员执行计划&quot;);&#xD;
+}</ClientEvent>
+      <Property name="dataProvider">personstatisticPR#queryPersonstatistic</Property>
+      <Property name="dataType">[Personstatistic]</Property>
+    </DataSet>
+    <DataSet id="dsPersonstatistic_per">
+      <ClientEvent name="onReady">var dsPersonstatistic_per=view.id('dsPersonstatistic_per');&#xD;
+var user=view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;);&#xD;
+var date = new Date();&#xD;
+var year = date.getFullYear(); &#xD;
+var cur = view.id('dsDictionaryAdrs').getData(&quot;#&quot;).get(&quot;name&quot;);&#xD;
+dsPersonstatistic_per.set(&quot;parameter&quot;,{&#xD;
+	person:user.get(&quot;cname&quot;),&#xD;
+	year: year&#xD;
+});&#xD;
+dsPersonstatistic_per.flushAsync();</ClientEvent>
+      <ClientEvent name="onLoadData">if(self.getData().isEmpty()){&#xD;
+	dorado.MessageBox.alert(&quot;该保障人员在所选时间内没有执行保障计划&quot;);&#xD;
+}</ClientEvent>
+      <Property name="dataProvider">personstatisticPR#queryPersonstatistic</Property>
+      <Property name="dataType">[Personstatistic]</Property>
+    </DataSet>
+    <TabControl>
+      <ControlTab>
+        <Property name="caption">按地点统计保障计划执行情况</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -100px -100px</Property>
+        <Container>
+          <SplitPanel>
+            <Property name="position">208</Property>
+            <MainControl>
+              <TabControl>
+                <Property name="tabPlacement">bottom</Property>
+                <ControlTab>
+                  <Property name="caption">所选外场地点保障人员情况</Property>
+                  <SplitPanel>
+                    <Property name="direction">top</Property>
+                    <Property name="position">38.2%</Property>
+                    <MainControl>
+                      <Container>
+                        <SplitPanel>
+                          <Property name="position">50%</Property>
+                          <MainControl>
+                            <Container>
+                              <ToolBar>
+                                <Separator/>
+                                <Label>
+                                  <Property name="text">该计划所有保障人员执行情况-柱状图统计</Property>
+                                </Label>
+                                <Separator/>
+                              </ToolBar>
+                              <Chart>
+                                <Axes>
+                                  <CategoryAxis>
+                                    <Property name="dataSet">dsStatisticPerson</Property>
+                                    <Property name="properties">person</Property>
+                                    <Property name="dataPath">#.data</Property>
+                                  </CategoryAxis>
+                                  <NumbericAxis>
+                                    <Property name="min">0</Property>
+                                  </NumbericAxis>
+                                </Axes>
+                                <Series>
+                                  <Column>
+                                    <Property name="dataSet">dsStatisticPerson</Property>
+                                    <Property name="bindingConfig">
+                                      <Property name="yProperty">num</Property>
+                                    </Property>
+                                    <Property name="title">执行保障计划的天数</Property>
+                                    <Property name="dataPath">#.data</Property>
+                                  </Column>
+                                </Series>
+                              </Chart>
+                            </Container>
+                          </MainControl>
+                          <SideControl>
+                            <Container>
+                              <ToolBar>
+                                <Separator/>
+                                <Label>
+                                  <Property name="text">该计划所有保障人员执行情况-饼图统计</Property>
+                                </Label>
+                                <Separator/>
+                              </ToolBar>
+                              <Chart>
+                                <Property name="legend">
+                                  <Property name="position">right</Property>
+                                </Property>
+                                <Axes/>
+                                <Series>
+                                  <Pie>
+                                    <Property name="dataSet">dsStatisticPerson</Property>
+                                    <Property name="bindingConfig">
+                                      <Property name="labelProperty">person</Property>
+                                      <Property name="valueProperty">num</Property>
+                                    </Property>
+                                    <Property name="dataPath">#.data</Property>
+                                  </Pie>
+                                </Series>
+                              </Chart>
+                            </Container>
+                          </SideControl>
+                        </SplitPanel>
+                      </Container>
+                    </MainControl>
+                    <SideControl>
+                      <Container>
+                        <ToolBar>
+                          <Separator/>
+                          <ToolBarLabel>
+                            <Property name="text">当前时间在该地点的保障人员</Property>
+                          </ToolBarLabel>
+                          <Separator/>
+                          <ToolBarButton>
+                            <ClientEvent name="onClick">var dsSupportitem_add = view.get(&quot;#dsSupportitem_add&quot;);&#xD;
+dsSupportitem_add.flushAsync();</ClientEvent>
+                            <Property name="caption">刷新</Property>
+                            <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+                          </ToolBarButton>
+                        </ToolBar>
+                        <DataGrid id="dgRenyuan">
+                          <ClientEvent name="onDataRowClick">var dsSupportitem_add = view.get(&quot;#dsSupportitem_add&quot;);&#xD;
 var dsStatisticPerson = view.get(&quot;#dsStatisticPerson&quot;);&#xD;
-//var fatherOid = dsRenyuantongji.get(&quot;data:#.supportprogram.oid&quot;);&#xD;
-var fatherOid = dsRenyuantongji.getData(&quot;#&quot;).get(&quot;supportprogram.oid&quot;);&#xD;
+var fatherOid = dsSupportitem_add.getData(&quot;#&quot;).get(&quot;supportprogram.oid&quot;);&#xD;
 dsStatisticPerson.set(&quot;parameter&quot;, {&#xD;
 	fatherOid: fatherOid&#xD;
 });&#xD;
 dsStatisticPerson.flushAsync();</ClientEvent>
-                <Property name="dataSet">dsRenyuantongji</Property>
-                <Property name="filterMode">serverSide</Property>
-                <Property name="readOnly">true</Property>
-                <Property name="rowHeight">22</Property>
-                <RowNumColumn/>
-                <DataColumn>
-                  <Property name="property">registrationexecutor</Property>
-                  <Property name="width">160</Property>
-                  <Property name="name">registrationexecutor</Property>
-                </DataColumn>
-                <DataColumn>
-                  <Property name="property">startexecutiontime</Property>
-                  <Property name="name">startexecutiontime</Property>
-                </DataColumn>
-                <DataColumn>
-                  <Property name="property">endexecutiontime</Property>
-                  <Property name="name">endexecutiontime</Property>
-                </DataColumn>
-                <DataColumn>
-                  <Property name="property">supportprogram.supporttype</Property>
-                  <Editor/>
-                </DataColumn>
-                <DataColumn>
-                  <Property name="property">supportprogram.troop</Property>
-                  <Editor/>
-                </DataColumn>
-                <DataColumn>
-                  <Property name="property">supportprogram.staffrequirement</Property>
-                  <Property name="align">left</Property>
-                  <Editor/>
-                </DataColumn>
-                <DataColumn>
-                  <Property name="property">supportprogram.changeperiod</Property>
-                  <Property name="align">left</Property>
-                  <Editor/>
-                </DataColumn>
-                <DataColumn>
-                  <Property name="property">supportprogram.worktime</Property>
-                  <Editor/>
-                </DataColumn>
-                <DataColumn>
-                  <Property name="property">supportprogram.endtime</Property>
-                  <Editor/>
-                </DataColumn>
-              </DataGrid>
-            </Container>
-          </SideControl>
-        </SplitPanel>
-      </MainControl>
-      <SideControl>
-        <DataGrid id="dgOutfield">
-          <ClientEvent name="onDataRowClick">var dsRenyuantongji=view.id('dsRenyuantongji');&#xD;
+                          <Property name="dataSet">dsSupportitem_add</Property>
+                          <Property name="readOnly">true</Property>
+                          <Property name="rowHeight">22</Property>
+                          <Property name="filterMode">serverSide</Property>
+                          <RowNumColumn/>
+                          <DataColumn>
+                            <Property name="property">registrationexecutor</Property>
+                            <Property name="width">160</Property>
+                            <Property name="name">registrationexecutor</Property>
+                          </DataColumn>
+                          <DataColumn>
+                            <Property name="property">startexecutiontime</Property>
+                            <Property name="name">startexecutiontime</Property>
+                          </DataColumn>
+                          <DataColumn>
+                            <Property name="property">endexecutiontime</Property>
+                            <Property name="name">endexecutiontime</Property>
+                          </DataColumn>
+                          <DataColumn>
+                            <Property name="property">supportprogram.supporttype</Property>
+                            <Editor/>
+                          </DataColumn>
+                          <DataColumn>
+                            <Property name="property">supportprogram.troop</Property>
+                            <Editor/>
+                          </DataColumn>
+                          <DataColumn>
+                            <Property name="property">supportprogram.staffrequirement</Property>
+                            <Property name="align">left</Property>
+                            <Editor/>
+                          </DataColumn>
+                          <DataColumn>
+                            <Property name="property">supportprogram.changeperiod</Property>
+                            <Property name="align">left</Property>
+                            <Editor/>
+                          </DataColumn>
+                          <DataColumn>
+                            <Property name="property">supportprogram.worktime</Property>
+                            <Editor/>
+                          </DataColumn>
+                          <DataColumn>
+                            <Property name="property">supportprogram.endtime</Property>
+                            <Editor/>
+                          </DataColumn>
+                        </DataGrid>
+                      </Container>
+                    </SideControl>
+                  </SplitPanel>
+                </ControlTab>
+                <ControlTab>
+                  <Property name="caption">所选外场地点保障计划执行情况</Property>
+                  <Container>
+                    <AutoForm>
+                      <FormElement id="yearForm">
+                        <ClientEvent name="onReady">var date = new Date();&#xD;
+var year = date.getFullYear(); &#xD;
+this.get(&quot;#yearForm&quot;).set(&quot;value&quot;,year);</ClientEvent>
+                        <Property name="trigger">yearDropDown1</Property>
+                        <Property name="label">选择年份:</Property>
+                        <Property name="labelWidth">80</Property>
+                        <Property name="width">300</Property>
+                        <Editor/>
+                      </FormElement>
+                    </AutoForm>
+                    <YearDropDown id="yearDropDown1">
+                      <ClientEvent name="onClose">var year = arg.selectedValue;&#xD;
+var dsPersonstatistic = view.get(&quot;#dsPersonstatistic&quot;)&#xD;
 var cur = view.id('dsDictionaryAdrs').getData(&quot;#&quot;).get(&quot;name&quot;);&#xD;
-dsRenyuantongji.set(&quot;parameter&quot;,{&#xD;
+dsPersonstatistic.set(&quot;parameter&quot;, {&#xD;
+	address:cur,&#xD;
+	year: year&#xD;
+});&#xD;
+dsPersonstatistic.flushAsync();</ClientEvent>
+                      <Property name="autoOpen">false</Property>
+                      <Property name="postValueOnSelect">true</Property>
+                    </YearDropDown>
+                    <Chart>
+                      <Axes>
+                        <CategoryAxis>
+                          <Property name="dataSet">dsPersonstatistic</Property>
+                          <Property name="properties">registrationexecutor</Property>
+                        </CategoryAxis>
+                        <NumbericAxis>
+                          <Property name="min">0</Property>
+                        </NumbericAxis>
+                      </Axes>
+                      <Series>
+                        <Column>
+                          <Property name="dataSet">dsPersonstatistic</Property>
+                          <Property name="title">执行保障计划的天数</Property>
+                          <Property name="bindingConfig">
+                            <Property name="yProperty">days</Property>
+                          </Property>
+                        </Column>
+                      </Series>
+                    </Chart>
+                  </Container>
+                </ControlTab>
+              </TabControl>
+            </MainControl>
+            <SideControl>
+              <DataGrid id="dgOutfield">
+                <ClientEvent name="onDataRowClick">var dsSupportitem_add=view.id('dsSupportitem_add');&#xD;
+var dsPersonstatistic = view.id('dsPersonstatistic');&#xD;
+var cur = view.id('dsDictionaryAdrs').getData(&quot;#&quot;).get(&quot;name&quot;);&#xD;
+dsSupportitem_add.set(&quot;parameter&quot;,{&#xD;
 	address:cur&#xD;
 });&#xD;
-dsRenyuantongji.flushAsync();&#xD;
-</ClientEvent>
-          <Property name="dataSet">dsDictionaryAdrs</Property>
-          <Property name="filterMode">serverSide</Property>
-          <Property name="readOnly">true</Property>
-          <Property name="height">300</Property>
-          <Property name="width">200</Property>
-          <Property name="rowHeight">22</Property>
-          <DataColumn name="name">
-            <Property name="property">name</Property>
-            <Property name="width">200</Property>
-            <Property name="caption">地点</Property>
-          </DataColumn>
-        </DataGrid>
-      </SideControl>
-    </SplitPanel>
+dsPersonstatistic.set(&quot;parameter&quot;,{&#xD;
+	address:cur,&#xD;
+	year:year&#xD;
+});&#xD;
+dsSupportitem_add.flushAsync();&#xD;
+dsPersonstatistic.flushAsync();&#xD;
+var date = new Date();&#xD;
+var year = date.getFullYear(); &#xD;
+view.get(&quot;#yearForm&quot;).set(&quot;value&quot;,year);</ClientEvent>
+                <Property name="dataSet">dsDictionaryAdrs</Property>
+                <Property name="filterMode">serverSide</Property>
+                <Property name="readOnly">true</Property>
+                <Property name="width">200</Property>
+                <Property name="rowHeight">22</Property>
+                <DataColumn name="name">
+                  <Property name="property">name</Property>
+                  <Property name="width">200</Property>
+                  <Property name="caption">地点</Property>
+                </DataColumn>
+              </DataGrid>
+            </SideControl>
+          </SplitPanel>
+        </Container>
+      </ControlTab>
+      <ControlTab>
+        <Property name="caption">按人员统计保障计划执行情况</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -140px -40px</Property>
+        <Container>
+          <SplitPanel>
+            <Property name="position">280</Property>
+            <MainControl>
+              <SplitPanel>
+                <Property name="direction">top</Property>
+                <Property name="position">38.2%</Property>
+                <MainControl>
+                  <Container>
+                    <SplitPanel>
+                      <Property name="position">50%</Property>
+                      <MainControl>
+                        <Container>
+                          <ToolBar>
+                            <Separator/>
+                            <Label>
+                              <Property name="text">按年统计所选保障人员在各个外场地点的工作情况-柱状图</Property>
+                            </Label>
+                            <Separator/>
+                          </ToolBar>
+                          <AutoForm>
+                            <FormElement id="yearFormPerson">
+                              <ClientEvent name="onReady">var date = new Date();&#xD;
+var year = date.getFullYear(); &#xD;
+this.get(&quot;#yearFormPerson&quot;).set(&quot;value&quot;,year);</ClientEvent>
+                              <Property name="trigger">yearDropDown2</Property>
+                              <Property name="label">选择年份:</Property>
+                              <Property name="labelWidth">80</Property>
+                              <Property name="width">300</Property>
+                              <Editor/>
+                            </FormElement>
+                          </AutoForm>
+                          <YearDropDown id="yearDropDown2">
+                            <ClientEvent name="onValueSelect">var year = arg.selectedValue;&#xD;
+var dsPersonstatistic_per = view.get(&quot;#dsPersonstatistic_per&quot;)&#xD;
+var cur = view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;).get(&quot;cname&quot;);&#xD;
+dsPersonstatistic_per.set(&quot;parameter&quot;, {&#xD;
+	person:cur,&#xD;
+	year: year&#xD;
+});&#xD;
+dsPersonstatistic_per.flushAsync();</ClientEvent>
+                            <Property name="autoOpen">false</Property>
+                            <Property name="postValueOnSelect">true</Property>
+                          </YearDropDown>
+                          <Chart>
+                            <Axes>
+                              <CategoryAxis>
+                                <Property name="dataSet">dsPersonstatistic_per</Property>
+                                <Property name="properties">workaddress</Property>
+                              </CategoryAxis>
+                              <NumbericAxis>
+                                <Property name="min">0</Property>
+                              </NumbericAxis>
+                            </Axes>
+                            <Series>
+                              <Column>
+                                <Property name="dataSet">dsPersonstatistic_per</Property>
+                                <Property name="title">执行保障计划的天数</Property>
+                                <Property name="bindingConfig">
+                                  <Property name="yProperty">days</Property>
+                                </Property>
+                              </Column>
+                            </Series>
+                          </Chart>
+                        </Container>
+                      </MainControl>
+                      <SideControl>
+                        <Container>
+                          <ToolBar>
+                            <Separator/>
+                            <Label>
+                              <Property name="text">按年统计所选保障人员在各个外场地点的工作情况-饼图</Property>
+                            </Label>
+                            <Separator/>
+                          </ToolBar>
+                          <AutoForm>
+                            <FormElement id="yearFormPerson1">
+                              <ClientEvent name="onReady">var date = new Date();&#xD;
+var year = date.getFullYear(); &#xD;
+this.get(&quot;#yearFormPerson&quot;).set(&quot;value&quot;,year);</ClientEvent>
+                              <Property name="trigger">yearDropDown2</Property>
+                              <Property name="label">选择年份:</Property>
+                              <Property name="labelWidth">80</Property>
+                              <Property name="width">300</Property>
+                              <Editor/>
+                            </FormElement>
+                          </AutoForm>
+                          <Chart>
+                            <Axes/>
+                            <Series>
+                              <Pie>
+                                <Property name="bindingConfig">
+                                  <Property name="valueProperty">days</Property>
+                                  <Property name="labelProperty">workaddress</Property>
+                                </Property>
+                                <Property name="dataSet">dsPersonstatistic_per</Property>
+                              </Pie>
+                            </Series>
+                          </Chart>
+                        </Container>
+                      </SideControl>
+                    </SplitPanel>
+                  </Container>
+                </MainControl>
+                <SideControl>
+                  <Container>
+                    <ToolBar>
+                      <Separator/>
+                      <ToolBarLabel>
+                        <Property name="text">该人员执行的外场保障计划</Property>
+                      </ToolBarLabel>
+                      <Separator/>
+                    </ToolBar>
+                    <DataGrid>
+                      <Property name="dataSet">dsSupportitem</Property>
+                      <Property name="rowHeight">22</Property>
+                      <Property name="readOnly">true</Property>
+                      <RowNumColumn/>
+                      <DataColumn name="startexecutiontime">
+                        <Property name="property">startexecutiontime</Property>
+                      </DataColumn>
+                      <DataColumn name="endexecutiontime">
+                        <Property name="property">endexecutiontime</Property>
+                      </DataColumn>
+                      <DataColumn name="registrationexecutor">
+                        <Property name="property">registrationexecutor</Property>
+                      </DataColumn>
+                      <DataColumn>
+                        <Property name="property">supportprogram.supporttype</Property>
+                        <Editor/>
+                      </DataColumn>
+                      <DataColumn>
+                        <Property name="property">supportprogram.troop</Property>
+                        <Editor/>
+                      </DataColumn>
+                      <DataColumn>
+                        <Property name="property">supportprogram.staffrequirement</Property>
+                        <Property name="align">left</Property>
+                        <Editor/>
+                      </DataColumn>
+                      <DataColumn>
+                        <Property name="property">supportprogram.changeperiod</Property>
+                        <Property name="align">left</Property>
+                        <Editor/>
+                      </DataColumn>
+                      <DataColumn>
+                        <Property name="property">supportprogram.worktime</Property>
+                        <Editor/>
+                      </DataColumn>
+                      <DataColumn>
+                        <Property name="property">supportprogram.endtime</Property>
+                        <Editor/>
+                      </DataColumn>
+                    </DataGrid>
+                  </Container>
+                </SideControl>
+              </SplitPanel>
+            </MainControl>
+            <SideControl>
+              <DataGrid>
+                <ClientEvent name="onDataRowClick">var user=view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;);&#xD;
+var dsPersonstatistic_per = view.id('dsPersonstatistic_per');&#xD;
+var dsSupportitem = view.id('dsSupportitem');&#xD;
+var date = new Date();&#xD;
+var year = date.getFullYear(); &#xD;
+dsPersonstatistic_per.set(&quot;parameter&quot;,{&#xD;
+	person:user.get(&quot;cname&quot;),&#xD;
+	year:year&#xD;
+});&#xD;
+dsSupportitem.set(&quot;parameter&quot;,{&#xD;
+	person:user.get(&quot;cname&quot;)&#xD;
+});&#xD;
+dsSupportitem.flushAsync();&#xD;
+dsPersonstatistic_per.flushAsync();&#xD;
+view.get(&quot;#yearFormPerson&quot;).set(&quot;value&quot;,year);&#xD;
+view.get(&quot;#yearFormPerson1&quot;).set(&quot;value&quot;,year);</ClientEvent>
+                <Property name="showFilterBar">true</Property>
+                <Property name="rowHeight">22</Property>
+                <Property name="dataSet">dsUsers</Property>
+                <Property name="readOnly">true</Property>
+                <Property name="height">300</Property>
+                <Property name="filterMode">serverSide</Property>
+                <RowNumColumn/>
+                <DataColumn>
+                  <Property name="name">username</Property>
+                  <Property name="property">username</Property>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="name">cname</Property>
+                  <Property name="property">cname</Property>
+                </DataColumn>
+                <DataColumn name="depts">
+                  <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;depts&quot;);&#xD;
+var name = [];&#xD;
+if (entitylist) {&#xD;
+	entitylist.each(function(item){&#xD;
+		name.push(item.get(&quot;name&quot;));&#xD;
+	});&#xD;
+}&#xD;
+arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
+                  <Property name="property">depts</Property>
+                </DataColumn>
+              </DataGrid>
+            </SideControl>
+          </SplitPanel>
+        </Container>
+      </ControlTab>
+    </TabControl>
   </View>
 </ViewConfig>

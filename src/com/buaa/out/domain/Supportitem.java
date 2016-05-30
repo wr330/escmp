@@ -35,6 +35,7 @@ public class  Supportitem implements Serializable {
 	private String registrationexecutor ;
 
 	private Supportprogram supportprogram;
+	private Integer days ;
 	
 
 	@Id
@@ -67,7 +68,14 @@ public class  Supportitem implements Serializable {
 	public void setRegistrationexecutor(String registrationexecutor) {
 		this.registrationexecutor=registrationexecutor;
 	}
-
+	@Column(name="Days",insertable=false,updatable=false)
+	public Integer getDays() {
+		return days;
+	}
+	public void setDays(Integer days) {
+		this.days = days;
+	}
+	
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn(name = "SupportProgram")
     public Supportprogram getSupportprogram() {
