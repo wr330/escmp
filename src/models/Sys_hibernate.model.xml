@@ -46,6 +46,12 @@
       <Property name="label">部门</Property>
       <Property name="dataProvider">bdf2.userMaintain#loadUserDepts</Property>
     </Reference>
+    <Reference name="positions">
+      <Property name="dataType">[$dataTypePosition]</Property>
+      <Property name="dataProvider">bdf2.positionMaintain#loadPositionByUsername</Property>
+      <Property name="parameter">$${this.username}</Property>
+      <Property name="label">岗位</Property>
+    </Reference>
   </DataType>
   <DataType name="Dictionary" meta="x:150;y:0">
     <Property name="matchType">com.buaa.sys.domain.Dictionary</Property>

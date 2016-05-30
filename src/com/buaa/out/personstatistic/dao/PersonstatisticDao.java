@@ -1,5 +1,7 @@
 package com.buaa.out.personstatistic.dao;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Date;
 import java.util.List;
@@ -15,82 +17,61 @@ import com.bstek.dorado.data.provider.Page;
 import com.common.HibernateBaseDao;
 
 import com.buaa.out.domain.Personstatistic;
+import com.buaa.out.domain.Supportitem;
+import com.buaa.out.domain.Supportprogram;
 
 @Repository("personstatisticDao")
 public class PersonstatisticDao extends HibernateBaseDao {
 
 	/**
-	 * 同时也支持普通类型查询，在数据类型和日期类型支持区间查询
+	 * 通过SQL语句返回Collection<Object []>
 	 * 
-	 * @param page
 	 * @param parameter
-	 * @param criteria
 	 * @throws Exception
 	 */
-	public void queryPersonstatistic(Page<Personstatistic> page, Map<String, Object> parameter,Criteria criteria) throws Exception {
-        Map<String, Object> args = new HashMap<String,Object>();
-        StringBuffer coreHql = new StringBuffer("from " + Personstatistic.class.getName()+" a where 1=1 ");
-        
+	public Collection<Personstatistic> queryPersonstatistic(Map<String, Object> parameter) throws Exception {
+        StringBuffer coreHql = new StringBuffer("select a.workaddress, b.registrationexecutor, SUM(b.days) AS SumDays from " + Supportprogram.class.getName() + " a," + Supportitem.class.getName() + " b where a.oid = b.supportprogram");
         if(null != parameter && !parameter.isEmpty()){
-        }
-		
-		if (null != criteria) {
-			ParseResult result = this.parseCriteria(criteria, true, "a");
-			if (null != result) {
-				coreHql.append(" and "+ result.getAssemblySql());
-				args.putAll(result.getValueMap());
+        	String address = (String)parameter.get("address");
+        	if(StringUtils.isNotEmpty( address )){
+        		coreHql.append(" and a.workaddress = '" + address +"'");
+        	}
+        	String person = (String)parameter.get("person");
+        	if(StringUtils.isNotEmpty( person )){
+        		coreHql.append(" and b.registrationexecutor = '" + person +"'");	
+        	}
+        	Integer year = (Integer)parameter.get("year");
+			if(year != null){
+				String time = year + "/01/01";
+				String time1 = year + "/12/31";
+				coreHql.append(" and ((b.startexecutiontime  <'" + time + "' and b.endexecutiontime > '" + time +  "') or (b.startexecutiontime >='" + time + "' and b.startexecutiontime < '" + time1 +"'))");
 			}
-		}
-
-        
-        String countHql = "select count(*) " + coreHql.toString();
+			coreHql.append("group by a.workaddress, b.registrationexecutor");
+        }
         String hql = coreHql.toString();
-		this.pagingQuery(page, hql, countHql, args);
+        Collection<Object []> items = this.query(hql);
+        Collection<Personstatistic> details = new ArrayList<Personstatistic>();
+	    if (null != items && items.size() > 0) {
+	    	for(Object[] item : items) {
+	    		Personstatistic detail =new Personstatistic();
+	    		detail = transformPersonStatistic(item);
+	    		details.add(detail);
+	    	}
+	    }
+        return details;
 	}
 	
 	/**
-	 * 数据添加
-	 * @param detail
-	 * @throws Exception
+	 * 数据库搜索出的记录转换为人员统计(Personstatistci)对象
 	 */
-	public void saveData(Personstatistic detail) throws Exception {
-		Session session = this.getSessionFactory().openSession();
-		try {
-			session.save(detail);
-		} finally {
-			session.flush();
-			session.close();
-		}
-	}
-
-	/**
-	 * 数据修改
-	 * @param detail
-	 * @throws Exception
-	 */
-	public void updateData(Personstatistic detail) throws Exception {
-		Session session = this.getSessionFactory().openSession();
-		try {
-			session.update(detail);
-		} finally {
-			session.flush();
-			session.close();
-		}
-	}
-
-	/**
-	 * 数据删除
-	 * @param detail
-	 * @throws Exception
-	 */
-	public void deleteData(Personstatistic detail) throws Exception {
-		Session session = this.getSessionFactory().openSession();
-		try {
-			session.delete(detail);
-		} finally {
-			session.flush();
-			session.close();
-		}
-	}
-        
+    private Personstatistic transformPersonStatistic(Object[] item){
+    	Personstatistic detail =new Personstatistic();
+		String str = (String) item[0];
+		detail.setWorkaddress(str);
+		String str1 = (String) item[1];
+		detail.setRegistrationexecutor(str1);
+		Number str2 = (Number) item[2];
+		detail.setDays(str2.intValue());
+		return detail;
+    }   
 }

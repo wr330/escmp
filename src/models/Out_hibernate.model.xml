@@ -441,29 +441,14 @@ else {&#xD;
   </DataType>
   <DataType name="Personstatistic">
     <Property name="matchType">com.buaa.out.domain.Personstatistic</Property>
-    <PropertyDef name="itemoid">
-      <Property/>
-    </PropertyDef>
-    <PropertyDef name="oid">
-      <Property/>
-    </PropertyDef>
-    <PropertyDef name="endexecutiontime">
-      <Property name="dataType">Date</Property>
-    </PropertyDef>
     <PropertyDef name="workaddress">
-      <Property/>
-    </PropertyDef>
-    <PropertyDef name="troop">
-      <Property/>
+      <Property></Property>
     </PropertyDef>
     <PropertyDef name="days">
       <Property name="dataType">Integer</Property>
     </PropertyDef>
-    <PropertyDef name="startexecutiontime">
-      <Property name="dataType">Date</Property>
-    </PropertyDef>
     <PropertyDef name="registrationexecutor">
-      <Property/>
+      <Property></Property>
     </PropertyDef>
   </DataType>
 </Model>

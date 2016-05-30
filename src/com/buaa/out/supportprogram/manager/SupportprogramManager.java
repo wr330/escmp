@@ -46,10 +46,7 @@ public class SupportprogramManager {
 	}
 	
 	/**                  
-	* 分页查询信息，带有criteria
-	* 将criteria转换为一个Map
-	* @param page    
-	* @param map
+	* 根据地点和时间查询保障计划执行情况表($此方法太繁琐，只在首页用，renyuantongji.view中已经停止使用了，改到SupportitemDao中进行统一查询$)
 	* @throws Exception
 	*/
 	public Collection<Supportitem> queryRenyuan(Map<String, Object> parameter) throws Exception {

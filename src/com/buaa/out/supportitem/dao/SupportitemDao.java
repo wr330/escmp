@@ -1,7 +1,5 @@
 package com.buaa.out.supportitem.dao;
 
-
-
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.HashMap;
@@ -25,8 +23,6 @@ import com.buaa.out.domain.Supportitem;
 import com.buaa.out.domain.Supportprogram;
 import com.common.HibernateBaseDao;
 
-
-
 @Repository("supportitemDao")
 public class SupportitemDao extends HibernateBaseDao {
 	@Resource
@@ -48,6 +44,20 @@ public class SupportitemDao extends HibernateBaseDao {
         	if(StringUtils.isNotEmpty( oid )){
         		coreHql.append(" and a.supportprogram.oid = :oid ");
         		args.put("oid", oid);	
+        	}
+        	String person = (String)parameter.get("person");
+        	if(StringUtils.isNotEmpty( person )){
+        		coreHql.append(" and a.registrationexecutor = :person ");
+        		args.put("person", person);	
+        	}
+        	String address = (String)parameter.get("address");
+        	if(StringUtils.isNotEmpty( address )){
+        		coreHql.append(" and a.supportprogram.workaddress = :address ");
+        		args.put("address", address);
+        		Date now = new Date();
+    			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    			String time = df.format(now);
+    			coreHql.append(" and ((a.startexecutiontime < '"+ time +"' and a.endexecutiontime > '"+ time +"') or (a.startexecutiontime < '"+ time +"' and a.endexecutiontime = null))");	
         	}
         }
 		

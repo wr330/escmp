@@ -82,13 +82,6 @@ dsBtreport.flushAsync();</ClientEvent>
             <Property name="rowHeight">22</Property>
             <Property name="readOnly">true</Property>
             <RowNumColumn/>
-            <DataColumn>
-              <Property name="property">numericalOrder</Property>
-              <Property name="width">160</Property>
-              <Property name="name">numericalOrder</Property>
-              <Property name="align">left</Property>
-              <Editor/>
-            </DataColumn>
             <DataColumn name="name">
               <Property name="property">name</Property>
               <Property name="width">160</Property>
@@ -96,10 +89,6 @@ dsBtreport.flushAsync();</ClientEvent>
             <DataColumn name="description">
               <Property name="property">description</Property>
               <Property name="width">300</Property>
-            </DataColumn>
-            <DataColumn name="dictype">
-              <Property name="property">dictype</Property>
-              <Property name="width">160</Property>
             </DataColumn>
             <DataColumn name="status">
               <Property name="property">status</Property>
@@ -181,11 +170,6 @@ dataset.set(&quot;parameter&quot;,parameter).flushAsync();&#xD;
                 <Node>
                   <Property name="label">试飞大纲剩余状态</Property>
                   <Property name="userData">Dic_RemainState</Property>
-                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
-                </Node>
-                <Node>
-                  <Property name="label">机型代号</Property>
-                  <Property name="userData">Dic_AircraftType</Property>
                   <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
                 </Node>
                 <Node>
@@ -331,10 +315,6 @@ dataset.set(&quot;parameter&quot;,parameter).flushAsync();&#xD;
           <Property name="cols">*</Property>
           <Property name="dataSet">dsDictionary</Property>
           <Property name="dataPath">#</Property>
-          <AutoFormElement>
-            <Property name="name">NumericalOrder</Property>
-            <Property name="property">numericalOrder</Property>
-          </AutoFormElement>
           <AutoFormElement>
             <Property name="name">Name</Property>
             <Property name="property">name</Property>

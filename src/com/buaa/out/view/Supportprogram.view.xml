@@ -310,9 +310,7 @@ var dsStatisticSupport = view.get(&quot;#dsStatisticSupport&quot;)&#xD;
 dsStatisticSupport.set(&quot;parameter&quot;, {&#xD;
 	year: year&#xD;
 });&#xD;
-dsStatisticSupport.flushAsync();&#xD;
-&#xD;
-</ClientEvent>
+dsStatisticSupport.flushAsync();</ClientEvent>
             <Property name="autoOpen">true</Property>
           </YearDropDown>
           <Chart>

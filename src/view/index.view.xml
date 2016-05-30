@@ -3,17 +3,6 @@
   <Arguments/>
   <Context/>
   <Model>
-    <DataType name="dtS">
-      <PropertyDef name="data">
-        <Property name="dataType">[Map]</Property>
-      </PropertyDef>
-      <PropertyDef name="maxMonth">
-        <Property name="dataType">String</Property>
-      </PropertyDef>
-      <PropertyDef name="maxNumber">
-        <Property name="dataType">Integer</Property>
-      </PropertyDef>
-    </DataType>
     <DataType name="Root">
       <Property name="creationType">com.buaa.fly.domain.Root</Property>
       <PropertyDef name="label"/>
@@ -175,18 +164,6 @@ dsRenyuantongji.flushAsync();</ClientEvent>
               <Property name="property">name</Property>
               <Property name="reloadDataOnOpen">true</Property>
             </DataSetDropDown>
-            <DataSet id="dsStatisticSupport">
-              <ClientEvent name="onLoadData">if(self.getData().get(&quot;data&quot;).isEmpty()){&#xD;
-	dorado.MessageBox.alert(&quot;本年度没有制定保障计划&quot;);&#xD;
-}</ClientEvent>
-              <Property name="dataProvider">supportprogramPR#statisticSupport</Property>
-              <Property name="parameter">
-                <Entity>
-                  <Property name="year">2016</Property>
-                </Entity>
-              </Property>
-              <Property name="dataType">dtS</Property>
-            </DataSet>
           </Children>
         </Portlet>
         <Portlet>

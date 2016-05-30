@@ -30,20 +30,8 @@ public class PersonstatisticPR{
 	* @throws Exception
 	*/
 	@DataProvider
-	public void queryPersonstatistic(Page<Personstatistic> page,Map<String, Object> parameter,Criteria criteria) throws Exception {
-	    personstatisticManager.queryPersonstatistic(page,parameter,criteria);
+	public Collection<Personstatistic> queryPersonstatistic(Map<String, Object> parameter) throws Exception {
+	     return personstatisticManager.queryPersonstatistic(parameter);
 	}
-	
-	
-	/**
-	 * 数据保存，包括增删改
-	 * @param dataItems
-	 * @throws Exception
-	 */
-	 @SuppressWarnings("rawtypes")
-	 @DataResolver
-	 public void savePersonstatistic(Map<String, Collection> dataItems) throws Exception {
-	    personstatisticManager.savePersonstatistic(dataItems);
-	 }
 	
 }
