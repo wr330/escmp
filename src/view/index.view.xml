@@ -69,7 +69,6 @@ action.execute(function(result){&#xD;
 	if(result!=''&amp;&amp;result.length>0)&#xD;
 	  result.each(function(item){&#xD;
 		var str = &quot;&lt;li style='*float:left;*overflow:hidden;'>&lt;a style='*float:left;' href='&quot;+item.url+&quot;' target=_blank>&quot;+item.title+&quot;&lt;/a>&lt;/li>&quot;;&#xD;
-		str = &quot;&lt;li '>&lt;a href='#' target=_blank>啊啊啊啊啊&lt;/a>&lt;/li>&quot;;&#xD;
 		$(&quot;#li_list&quot;).append(str);&#xD;
 	  });&#xD;
 });</ClientEvent>
@@ -217,6 +216,7 @@ dsRenyuantongji.flushAsync();</ClientEvent>
               </Property>
               <DataColumn name="projectname">
                 <Property name="property">projectname</Property>
+                <Property name="width">300</Property>
               </DataColumn>
               <DataColumn name="status">
                 <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;status&quot;);&#xD;
@@ -489,21 +489,20 @@ dsFlightrestrict.flushAsync();</ClientEvent>
                     <DataColumn name="fname">
                       <Property name="property">fname</Property>
                     </DataColumn>
-                    <DataColumn name="begindate">
-                      <Property name="property">begindate</Property>
-                    </DataColumn>
-                    <DataColumn name="isaffect">
-                      <Property name="property">isaffect</Property>
-                    </DataColumn>
                     <DataColumn name="maincontent">
                       <Property name="property">maincontent</Property>
                     </DataColumn>
                     <DataColumn name="major">
                       <Property name="property">major</Property>
+                      <Property name="width">80</Property>
                     </DataColumn>
-                    <DataColumn>
-                      <Property name="property">miji</Property>
-                      <Editor/>
+                    <DataColumn name="isaffect">
+                      <Property name="property">isaffect</Property>
+                      <Property name="width">80</Property>
+                    </DataColumn>
+                    <DataColumn name="begindate">
+                      <Property name="property">begindate</Property>
+                      <Property name="width">100</Property>
                     </DataColumn>
                   </DataGrid>
                 </Container>
@@ -657,23 +656,34 @@ if(cur){&#xD;
           <Property name="showCaptionBar">true</Property>
           <Property name="icon">url(>skin>common/icons.gif) -260px -20px</Property>
           <Children>
+            <DataSet id="dataSetUrl">
+              <Property name="dataProvider">menuDao#loadMyMeunUrls</Property>
+              <Property name="dataType">[$dataTypeUrl]</Property>
+              <Property name="loadMode">manual</Property>
+            </DataSet>
+            <AjaxAction id="aaGetMyDesk">
+              <Property name="service">menuDao#getMyDesk</Property>
+            </AjaxAction>
+            <AjaxAction id="aaSetMyDesk">
+              <ClientEvent name="onSuccess">var action=view.id(&quot;aaGetMyDesk&quot;);&#xD;
+action.execute(function(result){&#xD;
+    view.id(&quot;blockView2&quot;).set(&quot;items&quot;,result);&#xD;
+});</ClientEvent>
+              <Property name="service">menuDao#setMyDesk</Property>
+            </AjaxAction>
             <BlockView id="blockView2" layoutConstraint="anchorLeft:container;left:50%">
-              <ClientEvent name="onCreate">self.set(&quot;renderer&quot;, new dorado.widget.blockview.ImageBlockRenderer({&#xD;
-	captionProperty: &quot;value&quot;&#xD;
-}));</ClientEvent>
               <ClientEvent name="onBlockClick">var current = self.getCurrentItem();&#xD;
-if(current.value == &quot;会议记录&quot;){&#xD;
-	var managerUrl=&quot;com.buaa.comm.view.Meetingdocument.d&quot;;&#xD;
-	open(managerUrl,&quot;_blank&quot;);&#xD;
-}</ClientEvent>
-              <Property name="items">
-                <Collection>
-                  <Entity>
-                    <Property name="value">会议记录</Property>
-                    <Property name="image">images/home/Meeting.png</Property>
-                  </Entity>
-                </Collection>
-              </Property>
+open(current.url,&quot;_blank&quot;);&#xD;
+</ClientEvent>
+              <ClientEvent name="onCreate">self.set(&quot;renderer&quot;, new dorado.widget.blockview.ImageBlockRenderer({&#xD;
+    captionProperty:&quot;name&quot;, &#xD;
+    imageProperty: &quot;image&quot;&#xD;
+}));</ClientEvent>
+              <ClientEvent name="onReady">var action=view.id(&quot;aaGetMyDesk&quot;);&#xD;
+action.execute(function(result){&#xD;
+	if(result!=''&amp;&amp;result.length>0)&#xD;
+        self.set(&quot;items&quot;,result);&#xD;
+});</ClientEvent>
               <Property name="horiPadding">20</Property>
               <Property name="horiSpacing">30</Property>
               <Property name="blockHeight">80</Property>
@@ -688,14 +698,18 @@ if(current.value == &quot;会议记录&quot;){&#xD;
               <Property name="lineSize">4</Property>
               <Property name="blockWidth">80</Property>
               <Property name="blockLayout">vertical</Property>
+              <Property name="items"></Property>
             </BlockView>
             <Dialog id="diaMyDesk">
-              <Property name="caption">自定义我的办公桌(待完成)</Property>
-              <Property name="width">600</Property>
+              <Property name="caption">自定义我的办公桌</Property>
+              <Property name="width">400</Property>
               <Property name="height">500</Property>
               <Buttons>
                 <Button>
-                  <ClientEvent name="onClick">view.id('diaMyDesk').hide();</ClientEvent>
+                  <ClientEvent name="onClick">var selections = view.get(&quot;#dgMyMeunUrls.selection&quot;);&#xD;
+var list=selections.slice(0);&#xD;
+view.id(&quot;aaSetMyDesk&quot;).set(&quot;parameter&quot;,list).execute();&#xD;
+view.id('diaMyDesk').hide();</ClientEvent>
                   <Property name="caption">确定</Property>
                   <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
                 </Button>
@@ -705,13 +719,32 @@ if(current.value == &quot;会议记录&quot;){&#xD;
                   <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
                 </Button>
               </Buttons>
-              <Children/>
+              <Children>
+                <DataGrid id="dgMyMeunUrls">
+                  <Property name="readOnly">true</Property>
+                  <Property name="dataSet">dataSetUrl</Property>
+                  <Property name="dataPath"></Property>
+                  <Property name="rowHeight">22</Property>
+                  <Property name="height">400</Property>
+                  <Property name="selectionMode">multiRows</Property>
+                  <Property name="dataType">$dataTypeUrl</Property>
+                  <Property name="rowSelectionProperty">forNavigation</Property>
+                  <RowNumColumn/>
+                  <RowSelectorColumn/>
+                  <DataColumn>
+                    <Property name="property">name</Property>
+                    <Property name="name">name</Property>
+                    <Property name="caption">菜单名称</Property>
+                  </DataColumn>
+                </DataGrid>
+              </Children>
               <Tools/>
             </Dialog>
           </Children>
           <Tools>
             <SimpleIconButton layoutConstraint="bottom:0;right:5">
-              <ClientEvent name="onClick">view.id('diaMyDesk').show();</ClientEvent>
+              <ClientEvent name="onClick">view.id(&quot;dataSetUrl&quot;).flushAsync();&#xD;
+view.id('diaMyDesk').show();</ClientEvent>
               <Property name="icon">url(>skin>common/icons.gif) -100px -20px</Property>
               <Property name="tip">自定义我的办公桌</Property>
             </SimpleIconButton>
