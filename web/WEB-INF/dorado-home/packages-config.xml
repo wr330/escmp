@@ -10,6 +10,8 @@
 	<Packages>
 		<Package name="common" pattern="js">
 		</Package>
-
+		<Package name="echart" pattern="js" baseUri = ">js">
+		/js/echarts
+		</Package>
 	</Packages>
 </config>

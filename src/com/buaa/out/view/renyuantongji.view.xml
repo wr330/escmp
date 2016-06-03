@@ -16,6 +16,7 @@
     </DataType>
   </Model>
   <View>
+    <Property name="packages">echart</Property>
     <DataSet id="dsUsers">
       <Property name="dataProvider">bdf2.userMaintain#loadUsers2</Property>
       <Property name="dataType">[User]</Property>
@@ -89,6 +90,19 @@ dsPersonstatistic_per.flushAsync();</ClientEvent>
 }</ClientEvent>
       <Property name="dataProvider">personstatisticPR#queryPersonstatistic</Property>
       <Property name="dataType">[Personstatistic]</Property>
+      <Property name="loadMode">lazy</Property>
+    </DataSet>
+    <DataSet id="dsStatisticPersonNumber">
+      <ClientEvent name="onReady">var dsStatisticPersonNumber = view.id('dsStatisticPersonNumber');&#xD;
+var date = new Date();&#xD;
+var year = date.getFullYear(); &#xD;
+var cur = view.id('dsDictionaryAdrs').getData(&quot;#&quot;).get(&quot;name&quot;);&#xD;
+dsStatisticPersonNumber.set(&quot;parameter&quot;,{&#xD;
+	address:cur,&#xD;
+	year:year&#xD;
+});&#xD;
+dsStatisticPersonNumber.flushAsync();</ClientEvent>
+      <Property name="dataProvider">supportitemPR#statisticPersonNumber</Property>
     </DataSet>
     <TabControl>
       <ControlTab>
@@ -177,7 +191,7 @@ dsPersonstatistic_per.flushAsync();</ClientEvent>
                         <ToolBar>
                           <Separator/>
                           <ToolBarLabel>
-                            <Property name="text">当前时间在该地点的保障人员</Property>
+                            <Property name="text">当前时间在所选外场地点工作的保障人员</Property>
                           </ToolBarLabel>
                           <Separator/>
                           <ToolBarButton>
@@ -246,21 +260,221 @@ dsStatisticPerson.flushAsync();</ClientEvent>
                 </ControlTab>
                 <ControlTab>
                   <Property name="caption">所选外场地点保障计划执行情况</Property>
-                  <Container>
-                    <AutoForm>
-                      <FormElement id="yearForm">
-                        <ClientEvent name="onReady">var date = new Date();&#xD;
+                  <SplitPanel>
+                    <Property name="direction">top</Property>
+                    <Property name="position">38.2%</Property>
+                    <MainControl>
+                      <Container>
+                        <ToolBar>
+                          <Separator/>
+                          <ToolBarLabel>
+                            <Property name="text">按年统计在所选外场地点各个保障人员的工作情况-柱状图</Property>
+                          </ToolBarLabel>
+                          <Separator/>
+                        </ToolBar>
+                        <AutoForm>
+                          <FormElement id="yearForm2">
+                            <ClientEvent name="onReady">var date = new Date();&#xD;
+var year = date.getFullYear(); &#xD;
+this.get(&quot;#yearForm2&quot;).set(&quot;value&quot;,year);</ClientEvent>
+                            <Property name="trigger">yearDropDown3</Property>
+                            <Property name="label">选择年份:</Property>
+                            <Property name="labelWidth">80</Property>
+                            <Property name="width">300</Property>
+                            <Editor/>
+                          </FormElement>
+                        </AutoForm>
+                        <YearDropDown id="yearDropDown3">
+                          <ClientEvent name="onClose">var year = arg.selectedValue;&#xD;
+var dsStatisticPersonNumber = view.get(&quot;#dsStatisticPersonNumber&quot;)&#xD;
+var cur = view.id('dsDictionaryAdrs').getData(&quot;#&quot;).get(&quot;name&quot;);&#xD;
+dsStatisticPersonNumber.set(&quot;parameter&quot;, {&#xD;
+	address:cur,&#xD;
+	year: year&#xD;
+});&#xD;
+dsStatisticPersonNumber.flush();&#xD;
+&#xD;
+// 基于准备好的dom，初始化echarts实例&#xD;
+var myChart = echarts.init(document.getElementById('main'));&#xD;
+// 指定图表的配置项和数据&#xD;
+var dsStatisticPersonNumberData = view.id('dsStatisticPersonNumber').getData().toJSON();&#xD;
+var time = dsStatisticPersonNumberData.date;&#xD;
+var param = dsStatisticPersonNumberData.data;&#xD;
+&#xD;
+option = {&#xD;
+    tooltip: {&#xD;
+        trigger: 'axis',&#xD;
+        position: function (pt) {&#xD;
+            return [pt[0], '10%'];&#xD;
+        }&#xD;
+    },&#xD;
+    legend: {&#xD;
+        top: 'bottom',&#xD;
+        data:['意向']&#xD;
+    },&#xD;
+    toolbox: {&#xD;
+        show: true,&#xD;
+        feature: {&#xD;
+            dataView: {show: true, readOnly: false},&#xD;
+            magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},&#xD;
+            restore: {show: true},&#xD;
+            saveAsImage: {show: true}&#xD;
+        }&#xD;
+    },&#xD;
+    xAxis: {&#xD;
+        type: 'category',&#xD;
+        boundaryGap: false,&#xD;
+        data: time&#xD;
+    },&#xD;
+    yAxis: {&#xD;
+        type: 'value',&#xD;
+        boundaryGap: [0, '100%']&#xD;
+    },&#xD;
+    dataZoom: [{&#xD;
+        type: 'inside',&#xD;
+        start: 0,&#xD;
+        end: 10&#xD;
+    }, {&#xD;
+        start: 0,&#xD;
+        end: 10&#xD;
+    }],&#xD;
+    series: [&#xD;
+        {&#xD;
+            name:'外场保障人员数量',&#xD;
+            type:'line',&#xD;
+            smooth:true,&#xD;
+            symbol: 'none',&#xD;
+            sampling: 'average',&#xD;
+            itemStyle: {&#xD;
+                normal: {&#xD;
+                    color: 'rgb(255, 70, 131)'&#xD;
+                }&#xD;
+            },&#xD;
+            areaStyle: {&#xD;
+                normal: {&#xD;
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{&#xD;
+                        offset: 0,&#xD;
+                        color: 'rgb(255, 158, 68)'&#xD;
+                    }, {&#xD;
+                        offset: 1,&#xD;
+                        color: 'rgb(255, 70, 131)'&#xD;
+                    }])&#xD;
+                }&#xD;
+            },&#xD;
+            data: param&#xD;
+        }&#xD;
+    ]&#xD;
+};&#xD;
+// 使用刚指定的配置项和数据显示图表。&#xD;
+myChart.setOption(option);</ClientEvent>
+                          <Property name="autoOpen">false</Property>
+                          <Property name="postValueOnSelect">true</Property>
+                        </YearDropDown>
+                        <HtmlContainer>
+                          <ClientEvent name="onReady">// 基于准备好的dom，初始化echarts实例&#xD;
+var myChart = echarts.init(document.getElementById('main'));&#xD;
+// 指定图表的配置项和数据&#xD;
+var dsStatisticPersonNumber = view.id('dsStatisticPersonNumber').getData().toJSON();&#xD;
+var time = dsStatisticPersonNumber.date;&#xD;
+var param = dsStatisticPersonNumber.data;&#xD;
+&#xD;
+option = {&#xD;
+    tooltip: {&#xD;
+        trigger: 'axis',&#xD;
+        position: function (pt) {&#xD;
+            return [pt[0], '10%'];&#xD;
+        }&#xD;
+    },&#xD;
+    legend: {&#xD;
+        top: 'bottom',&#xD;
+        data:['意向']&#xD;
+    },&#xD;
+    toolbox: {&#xD;
+        show: true,&#xD;
+        feature: {&#xD;
+            dataView: {show: true, readOnly: false},&#xD;
+            magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},&#xD;
+            restore: {show: true},&#xD;
+            saveAsImage: {show: true}&#xD;
+        }&#xD;
+    },&#xD;
+    xAxis: {&#xD;
+        type: 'category',&#xD;
+        boundaryGap: false,&#xD;
+        data: time&#xD;
+    },&#xD;
+    yAxis: {&#xD;
+        type: 'value',&#xD;
+        boundaryGap: [0, '100%']&#xD;
+    },&#xD;
+    dataZoom: [{&#xD;
+        type: 'inside',&#xD;
+        start: 0,&#xD;
+        end: 10&#xD;
+    }, {&#xD;
+        start: 0,&#xD;
+        end: 10&#xD;
+    }],&#xD;
+    series: [&#xD;
+        {&#xD;
+            name:'外场保障人员数量',&#xD;
+            type:'line',&#xD;
+            smooth:true,&#xD;
+            symbol: 'none',&#xD;
+            sampling: 'average',&#xD;
+            itemStyle: {&#xD;
+                normal: {&#xD;
+                    color: 'rgb(255, 70, 131)'&#xD;
+                }&#xD;
+            },&#xD;
+            areaStyle: {&#xD;
+                normal: {&#xD;
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{&#xD;
+                        offset: 0,&#xD;
+                        color: 'rgb(255, 158, 68)'&#xD;
+                    }, {&#xD;
+                        offset: 1,&#xD;
+                        color: 'rgb(255, 70, 131)'&#xD;
+                    }])&#xD;
+                }&#xD;
+            },&#xD;
+            data: param&#xD;
+        }&#xD;
+    ]&#xD;
+};&#xD;
+// 使用刚指定的配置项和数据显示图表。&#xD;
+myChart.setOption(option);</ClientEvent>
+                          <Property name="content">    &lt;!-- 为 ECharts 准备一个具备大小（宽高）的Dom -->&#xD;
+    &lt;div id=&quot;main&quot; style=&quot;width:1450px;height:370px;&quot;>&lt;/div></Property>
+                        </HtmlContainer>
+                      </Container>
+                    </MainControl>
+                    <SideControl>
+                      <SplitPanel>
+                        <Property name="position">50%</Property>
+                        <MainControl>
+                          <Container>
+                            <ToolBar>
+                              <Separator/>
+                              <ToolBarLabel>
+                                <Property name="text">按年统计在所选外场地点各个保障人员的工作情况-柱状图</Property>
+                              </ToolBarLabel>
+                              <Separator/>
+                            </ToolBar>
+                            <AutoForm>
+                              <FormElement id="yearForm">
+                                <ClientEvent name="onReady">var date = new Date();&#xD;
 var year = date.getFullYear(); &#xD;
 this.get(&quot;#yearForm&quot;).set(&quot;value&quot;,year);</ClientEvent>
-                        <Property name="trigger">yearDropDown1</Property>
-                        <Property name="label">选择年份:</Property>
-                        <Property name="labelWidth">80</Property>
-                        <Property name="width">300</Property>
-                        <Editor/>
-                      </FormElement>
-                    </AutoForm>
-                    <YearDropDown id="yearDropDown1">
-                      <ClientEvent name="onClose">var year = arg.selectedValue;&#xD;
+                                <Property name="trigger">yearDropDown1</Property>
+                                <Property name="label">选择年份:</Property>
+                                <Property name="labelWidth">80</Property>
+                                <Property name="width">300</Property>
+                                <Editor/>
+                              </FormElement>
+                            </AutoForm>
+                            <YearDropDown id="yearDropDown1">
+                              <ClientEvent name="onClose">var year = arg.selectedValue;&#xD;
 var dsPersonstatistic = view.get(&quot;#dsPersonstatistic&quot;)&#xD;
 var cur = view.id('dsDictionaryAdrs').getData(&quot;#&quot;).get(&quot;name&quot;);&#xD;
 dsPersonstatistic.set(&quot;parameter&quot;, {&#xD;
@@ -268,30 +482,69 @@ dsPersonstatistic.set(&quot;parameter&quot;, {&#xD;
 	year: year&#xD;
 });&#xD;
 dsPersonstatistic.flushAsync();</ClientEvent>
-                      <Property name="autoOpen">false</Property>
-                      <Property name="postValueOnSelect">true</Property>
-                    </YearDropDown>
-                    <Chart>
-                      <Axes>
-                        <CategoryAxis>
-                          <Property name="dataSet">dsPersonstatistic</Property>
-                          <Property name="properties">registrationexecutor</Property>
-                        </CategoryAxis>
-                        <NumbericAxis>
-                          <Property name="min">0</Property>
-                        </NumbericAxis>
-                      </Axes>
-                      <Series>
-                        <Column>
-                          <Property name="dataSet">dsPersonstatistic</Property>
-                          <Property name="title">执行保障计划的天数</Property>
-                          <Property name="bindingConfig">
-                            <Property name="yProperty">days</Property>
-                          </Property>
-                        </Column>
-                      </Series>
-                    </Chart>
-                  </Container>
+                              <Property name="autoOpen">false</Property>
+                              <Property name="postValueOnSelect">true</Property>
+                            </YearDropDown>
+                            <Chart>
+                              <Axes>
+                                <CategoryAxis>
+                                  <Property name="dataSet">dsPersonstatistic</Property>
+                                  <Property name="properties">registrationexecutor</Property>
+                                </CategoryAxis>
+                                <NumbericAxis>
+                                  <Property name="min">0</Property>
+                                </NumbericAxis>
+                              </Axes>
+                              <Series>
+                                <Column>
+                                  <Property name="dataSet">dsPersonstatistic</Property>
+                                  <Property name="title">执行保障计划的天数</Property>
+                                  <Property name="bindingConfig">
+                                    <Property name="yProperty">days</Property>
+                                  </Property>
+                                </Column>
+                              </Series>
+                            </Chart>
+                          </Container>
+                        </MainControl>
+                        <SideControl>
+                          <Container>
+                            <ToolBar>
+                              <Separator/>
+                              <ToolBarLabel>
+                                <Property name="text">按年统计在所选外场地点各个保障人员的工作情况-饼图</Property>
+                              </ToolBarLabel>
+                              <Separator/>
+                            </ToolBar>
+                            <AutoForm>
+                              <FormElement id="yearForm1">
+                                <ClientEvent name="onReady">var date = new Date();&#xD;
+var year = date.getFullYear(); &#xD;
+this.get(&quot;#yearForm1&quot;).set(&quot;value&quot;,year);</ClientEvent>
+                                <Property name="trigger">yearDropDown1</Property>
+                                <Property name="label">选择年份:</Property>
+                                <Property name="labelWidth">80</Property>
+                                <Property name="width">300</Property>
+                                <Editor/>
+                              </FormElement>
+                            </AutoForm>
+                            <Chart>
+                              <Axes/>
+                              <Series>
+                                <Pie>
+                                  <Property name="dataSet">dsPersonstatistic</Property>
+                                  <Property name="bindingConfig">
+                                    <Property name="valueProperty">days</Property>
+                                    <Property name="labelProperty">registrationexecutor</Property>
+                                  </Property>
+                                </Pie>
+                              </Series>
+                            </Chart>
+                          </Container>
+                        </SideControl>
+                      </SplitPanel>
+                    </SideControl>
+                  </SplitPanel>
                 </ControlTab>
               </TabControl>
             </MainControl>
@@ -299,6 +552,9 @@ dsPersonstatistic.flushAsync();</ClientEvent>
               <DataGrid id="dgOutfield">
                 <ClientEvent name="onDataRowClick">var dsSupportitem_add=view.id('dsSupportitem_add');&#xD;
 var dsPersonstatistic = view.id('dsPersonstatistic');&#xD;
+var dsStatisticPersonNumber = view.id('dsStatisticPersonNumber');&#xD;
+var date = new Date();&#xD;
+var year = date.getFullYear(); &#xD;
 var cur = view.id('dsDictionaryAdrs').getData(&quot;#&quot;).get(&quot;name&quot;);&#xD;
 dsSupportitem_add.set(&quot;parameter&quot;,{&#xD;
 	address:cur&#xD;
@@ -307,11 +563,89 @@ dsPersonstatistic.set(&quot;parameter&quot;,{&#xD;
 	address:cur,&#xD;
 	year:year&#xD;
 });&#xD;
+dsStatisticPersonNumber.set(&quot;parameter&quot;,{&#xD;
+	address:cur,&#xD;
+	year:year&#xD;
+});&#xD;
 dsSupportitem_add.flushAsync();&#xD;
 dsPersonstatistic.flushAsync();&#xD;
-var date = new Date();&#xD;
-var year = date.getFullYear(); &#xD;
-view.get(&quot;#yearForm&quot;).set(&quot;value&quot;,year);</ClientEvent>
+dsStatisticPersonNumber.flush();&#xD;
+view.get(&quot;#yearForm&quot;).set(&quot;value&quot;,year);&#xD;
+view.get(&quot;#yearForm1&quot;).set(&quot;value&quot;,year);&#xD;
+&#xD;
+// 基于准备好的dom，初始化echarts实例&#xD;
+var myChart = echarts.init(document.getElementById('main'));&#xD;
+// 指定图表的配置项和数据&#xD;
+var dsStatisticPersonNumberData = view.id('dsStatisticPersonNumber').getData().toJSON();&#xD;
+var time = dsStatisticPersonNumberData.date;&#xD;
+var param = dsStatisticPersonNumberData.data;&#xD;
+&#xD;
+option = {&#xD;
+    tooltip: {&#xD;
+        trigger: 'axis',&#xD;
+        position: function (pt) {&#xD;
+            return [pt[0], '10%'];&#xD;
+        }&#xD;
+    },&#xD;
+    legend: {&#xD;
+        top: 'bottom',&#xD;
+        data:['意向']&#xD;
+    },&#xD;
+    toolbox: {&#xD;
+        show: true,&#xD;
+        feature: {&#xD;
+            dataView: {show: true, readOnly: false},&#xD;
+            magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},&#xD;
+            restore: {show: true},&#xD;
+            saveAsImage: {show: true}&#xD;
+        }&#xD;
+    },&#xD;
+    xAxis: {&#xD;
+        type: 'category',&#xD;
+        boundaryGap: false,&#xD;
+        data: time&#xD;
+    },&#xD;
+    yAxis: {&#xD;
+        type: 'value',&#xD;
+        boundaryGap: [0, '100%']&#xD;
+    },&#xD;
+    dataZoom: [{&#xD;
+        type: 'inside',&#xD;
+        start: 0,&#xD;
+        end: 10&#xD;
+    }, {&#xD;
+        start: 0,&#xD;
+        end: 10&#xD;
+    }],&#xD;
+    series: [&#xD;
+        {&#xD;
+            name:'外场保障人员数量',&#xD;
+            type:'line',&#xD;
+            smooth:true,&#xD;
+            symbol: 'none',&#xD;
+            sampling: 'average',&#xD;
+            itemStyle: {&#xD;
+                normal: {&#xD;
+                    color: 'rgb(255, 70, 131)'&#xD;
+                }&#xD;
+            },&#xD;
+            areaStyle: {&#xD;
+                normal: {&#xD;
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{&#xD;
+                        offset: 0,&#xD;
+                        color: 'rgb(255, 158, 68)'&#xD;
+                    }, {&#xD;
+                        offset: 1,&#xD;
+                        color: 'rgb(255, 70, 131)'&#xD;
+                    }])&#xD;
+                }&#xD;
+            },&#xD;
+            data: param&#xD;
+        }&#xD;
+    ]&#xD;
+};&#xD;
+// 使用刚指定的配置项和数据显示图表。&#xD;
+myChart.setOption(option);</ClientEvent>
                 <Property name="dataSet">dsDictionaryAdrs</Property>
                 <Property name="filterMode">serverSide</Property>
                 <Property name="readOnly">true</Property>
@@ -439,9 +773,15 @@ this.get(&quot;#yearFormPerson&quot;).set(&quot;value&quot;,year);</ClientEvent>
                     <ToolBar>
                       <Separator/>
                       <ToolBarLabel>
-                        <Property name="text">该人员执行的外场保障计划</Property>
+                        <Property name="text">所选保障人员执行的外场保障计划</Property>
                       </ToolBarLabel>
                       <Separator/>
+                      <ToolBarButton>
+                        <ClientEvent name="onClick">var dsSupportitem = view.get(&quot;#dsSupportitem&quot;);&#xD;
+dsSupportitem.flushAsync();</ClientEvent>
+                        <Property name="caption">刷新</Property>
+                        <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+                      </ToolBarButton>
                     </ToolBar>
                     <DataGrid>
                       <Property name="dataSet">dsSupportitem</Property>

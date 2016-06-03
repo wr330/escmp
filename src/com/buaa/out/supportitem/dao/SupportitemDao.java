@@ -94,6 +94,10 @@ public class SupportitemDao extends HibernateBaseDao {
 				String time1 = year + "/12/31";
 				hql += " and ((u.startexecutiontime <'" + time + "' and u.endexecutiontime > '" + time +  "') or (u.startexecutiontime >='" + time + "' and u.startexecutiontime < '" + time1 +"'))";
 			}
+			String address = (String)parameter.get("address");
+        	if(StringUtils.isNotEmpty( address )){
+        		hql += " and (u.supportprogram.workaddress = '" + address + "')";
+        	}
 		}
 		return this.query(hql,map);						
 	}

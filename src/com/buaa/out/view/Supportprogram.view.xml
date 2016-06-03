@@ -123,8 +123,7 @@ dsSupportprogram.flushAsync();</ClientEvent>
       <ToolBarButton>
         <ClientEvent name="onClick">var dsStatisticSupport = view.get(&quot;#dsStatisticSupport&quot;);&#xD;
 dsStatisticSupport.flushAsync();&#xD;
-view.id(&quot;SupportGraph&quot;).show();&#xD;
-</ClientEvent>
+view.id(&quot;SupportGraph&quot;).show();</ClientEvent>
         <Property name="icon">url(>skin>common/icons.gif) -280px -40px</Property>
         <Property name="caption">统计查看</Property>
       </ToolBarButton>
@@ -280,8 +279,7 @@ else{
             <AutoFormElement id="yearForm">
               <ClientEvent name="onReady">var date = new Date();&#xD;
 var year = date.getFullYear(); &#xD;
-this.get(&quot;#yearForm&quot;).set(&quot;value&quot;,year);&#xD;
-</ClientEvent>
+this.get(&quot;#yearForm&quot;).set(&quot;value&quot;,year);</ClientEvent>
               <Property name="trigger">yearDropDown1</Property>
               <Property name="label">选择年份:</Property>
               <Property name="labelWidth">80</Property>
@@ -306,7 +304,7 @@ this.get(&quot;#yearForm&quot;).set(&quot;value&quot;,year);&#xD;
           </AutoForm>
           <YearDropDown id="yearDropDown1">
             <ClientEvent name="onValueSelect">var year = arg.selectedValue;&#xD;
-var dsStatisticSupport = view.get(&quot;#dsStatisticSupport&quot;)&#xD;
+var dsStatisticSupport = view.get(&quot;#dsStatisticSupport&quot;);&#xD;
 dsStatisticSupport.set(&quot;parameter&quot;, {&#xD;
 	year: year&#xD;
 });&#xD;
