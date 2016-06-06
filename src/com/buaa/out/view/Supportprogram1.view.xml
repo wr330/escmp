@@ -41,7 +41,7 @@
 </ClientEvent>
       <ClientEvent name="onReady">var date = new Date();&#xD;
 var year = date.getFullYear(); &#xD;
-var dsStatisticSupportitem = view.get(&quot;#dsStatisticSupportitem&quot;)&#xD;
+var dsStatisticSupportitem = view.get(&quot;#dsStatisticSupportitem&quot;);&#xD;
 dsStatisticSupportitem.set(&quot;parameter&quot;, {&#xD;
 	year: year&#xD;
 });</ClientEvent>
@@ -667,29 +667,31 @@ dsStatisticSupportitem.flushAsync();&#xD;
 </ClientEvent>
             <Property name="autoOpen">true</Property>
           </YearDropDown>
-          <Chart>
-            <Axes>
-              <CategoryAxis>
-                <Property name="dataSet">dsStatisticSupportitem</Property>
-                <Property name="properties">troop</Property>
-                <Property name="dataPath">#.data</Property>
-              </CategoryAxis>
-              <NumbericAxis>
-                <Property name="min">0</Property>
-                <Property name="title">保障计划执行的人天</Property>
-              </NumbericAxis>
-            </Axes>
-            <Series>
-              <Column>
-                <Property name="dataSet">dsStatisticSupportitem</Property>
-                <Property name="dataPath">#.data</Property>
-                <Property name="bindingConfig">
-                  <Property name="yProperty">num</Property>
-                </Property>
-                <Property name="title">此计划执行人天数</Property>
-              </Column>
-            </Series>
-          </Chart>
+          <Container>
+            <Chart>
+              <Axes>
+                <CategoryAxis>
+                  <Property name="dataSet">dsStatisticSupportitem</Property>
+                  <Property name="properties">troop</Property>
+                  <Property name="dataPath">#.data</Property>
+                </CategoryAxis>
+                <NumbericAxis>
+                  <Property name="min">0</Property>
+                  <Property name="title">保障计划执行的人天</Property>
+                </NumbericAxis>
+              </Axes>
+              <Series>
+                <Column>
+                  <Property name="dataSet">dsStatisticSupportitem</Property>
+                  <Property name="dataPath">#.data</Property>
+                  <Property name="bindingConfig">
+                    <Property name="yProperty">num</Property>
+                  </Property>
+                  <Property name="title">此计划执行人天数</Property>
+                </Column>
+              </Series>
+            </Chart>
+          </Container>
         </Container>
       </Children>
       <Tools/>

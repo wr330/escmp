@@ -34,10 +34,11 @@
 </ClientEvent>
       <ClientEvent name="onReady">var date = new Date();&#xD;
 var year = date.getFullYear(); &#xD;
-var dsStatisticSupport = view.get(&quot;#dsStatisticSupport&quot;)&#xD;
+var dsStatisticSupport = view.get(&quot;#dsStatisticSupport&quot;);&#xD;
 dsStatisticSupport.set(&quot;parameter&quot;, {&#xD;
 	year: year&#xD;
-});</ClientEvent>
+});&#xD;
+</ClientEvent>
       <Property name="dataProvider">supportprogramPR#statisticSupport</Property>
       <Property name="dataType">dtS</Property>
     </DataSet>
@@ -121,8 +122,8 @@ dsSupportprogram.flushAsync();</ClientEvent>
         <Property name="caption">刷新</Property>
       </ToolBarButton>
       <ToolBarButton>
-        <ClientEvent name="onClick">var dsStatisticSupport = view.get(&quot;#dsStatisticSupport&quot;);&#xD;
-dsStatisticSupport.flushAsync();&#xD;
+        <ClientEvent name="onClick">//var dsStatisticSupport = view.get(&quot;#dsStatisticSupport&quot;);&#xD;
+//dsStatisticSupport.flushAsync();&#xD;
 view.id(&quot;SupportGraph&quot;).show();</ClientEvent>
         <Property name="icon">url(>skin>common/icons.gif) -280px -40px</Property>
         <Property name="caption">统计查看</Property>
@@ -311,29 +312,31 @@ dsStatisticSupport.set(&quot;parameter&quot;, {&#xD;
 dsStatisticSupport.flushAsync();</ClientEvent>
             <Property name="autoOpen">true</Property>
           </YearDropDown>
-          <Chart>
-            <Axes>
-              <CategoryAxis>
-                <Property name="dataSet">dsStatisticSupport</Property>
-                <Property name="properties">month</Property>
-                <Property name="dataPath">#.data</Property>
-              </CategoryAxis>
-              <NumbericAxis>
-                <Property name="min">0</Property>
-                <Property name="title">保障人数</Property>
-              </NumbericAxis>
-            </Axes>
-            <Series>
-              <Line>
-                <Property name="title">保障人数</Property>
-                <Property name="dataSet">dsStatisticSupport</Property>
-                <Property name="bindingConfig">
-                  <Property name="yProperty">num</Property>
-                </Property>
-                <Property name="dataPath">#.data</Property>
-              </Line>
-            </Series>
-          </Chart>
+          <Container>
+            <Chart>
+              <Axes>
+                <CategoryAxis>
+                  <Property name="dataSet">dsStatisticSupport</Property>
+                  <Property name="properties">month</Property>
+                  <Property name="dataPath">#.data</Property>
+                </CategoryAxis>
+                <NumbericAxis>
+                  <Property name="min">0</Property>
+                  <Property name="title">保障人数</Property>
+                </NumbericAxis>
+              </Axes>
+              <Series>
+                <Line>
+                  <Property name="title">保障人数</Property>
+                  <Property name="dataSet">dsStatisticSupport</Property>
+                  <Property name="bindingConfig">
+                    <Property name="yProperty">num</Property>
+                  </Property>
+                  <Property name="dataPath">#.data</Property>
+                </Line>
+              </Series>
+            </Chart>
+          </Container>
         </Container>
       </Children>
       <Tools/>

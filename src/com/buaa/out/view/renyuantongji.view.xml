@@ -132,28 +132,30 @@ dsStatisticPersonNumber.flushAsync();</ClientEvent>
                                 </Label>
                                 <Separator/>
                               </ToolBar>
-                              <Chart>
-                                <Axes>
-                                  <CategoryAxis>
-                                    <Property name="dataSet">dsStatisticPerson</Property>
-                                    <Property name="properties">person</Property>
-                                    <Property name="dataPath">#.data</Property>
-                                  </CategoryAxis>
-                                  <NumbericAxis>
-                                    <Property name="min">0</Property>
-                                  </NumbericAxis>
-                                </Axes>
-                                <Series>
-                                  <Column>
-                                    <Property name="dataSet">dsStatisticPerson</Property>
-                                    <Property name="bindingConfig">
-                                      <Property name="yProperty">num</Property>
-                                    </Property>
-                                    <Property name="title">执行保障计划的天数</Property>
-                                    <Property name="dataPath">#.data</Property>
-                                  </Column>
-                                </Series>
-                              </Chart>
+                              <Container>
+                                <Chart>
+                                  <Axes>
+                                    <CategoryAxis>
+                                      <Property name="dataSet">dsStatisticPerson</Property>
+                                      <Property name="properties">person</Property>
+                                      <Property name="dataPath">#.data</Property>
+                                    </CategoryAxis>
+                                    <NumbericAxis>
+                                      <Property name="min">0</Property>
+                                    </NumbericAxis>
+                                  </Axes>
+                                  <Series>
+                                    <Column>
+                                      <Property name="dataSet">dsStatisticPerson</Property>
+                                      <Property name="bindingConfig">
+                                        <Property name="yProperty">num</Property>
+                                      </Property>
+                                      <Property name="title">执行保障计划的天数</Property>
+                                      <Property name="dataPath">#.data</Property>
+                                    </Column>
+                                  </Series>
+                                </Chart>
+                              </Container>
                             </Container>
                           </MainControl>
                           <SideControl>
@@ -165,22 +167,24 @@ dsStatisticPersonNumber.flushAsync();</ClientEvent>
                                 </Label>
                                 <Separator/>
                               </ToolBar>
-                              <Chart>
-                                <Property name="legend">
-                                  <Property name="position">right</Property>
-                                </Property>
-                                <Axes/>
-                                <Series>
-                                  <Pie>
-                                    <Property name="dataSet">dsStatisticPerson</Property>
-                                    <Property name="bindingConfig">
-                                      <Property name="labelProperty">person</Property>
-                                      <Property name="valueProperty">num</Property>
-                                    </Property>
-                                    <Property name="dataPath">#.data</Property>
-                                  </Pie>
-                                </Series>
-                              </Chart>
+                              <Container>
+                                <Chart>
+                                  <Property name="legend">
+                                    <Property name="position">right</Property>
+                                  </Property>
+                                  <Axes/>
+                                  <Series>
+                                    <Pie>
+                                      <Property name="dataSet">dsStatisticPerson</Property>
+                                      <Property name="bindingConfig">
+                                        <Property name="labelProperty">person</Property>
+                                        <Property name="valueProperty">num</Property>
+                                      </Property>
+                                      <Property name="dataPath">#.data</Property>
+                                    </Pie>
+                                  </Series>
+                                </Chart>
+                              </Container>
                             </Container>
                           </SideControl>
                         </SplitPanel>
@@ -485,26 +489,28 @@ dsPersonstatistic.flushAsync();</ClientEvent>
                               <Property name="autoOpen">false</Property>
                               <Property name="postValueOnSelect">true</Property>
                             </YearDropDown>
-                            <Chart>
-                              <Axes>
-                                <CategoryAxis>
-                                  <Property name="dataSet">dsPersonstatistic</Property>
-                                  <Property name="properties">registrationexecutor</Property>
-                                </CategoryAxis>
-                                <NumbericAxis>
-                                  <Property name="min">0</Property>
-                                </NumbericAxis>
-                              </Axes>
-                              <Series>
-                                <Column>
-                                  <Property name="dataSet">dsPersonstatistic</Property>
-                                  <Property name="title">执行保障计划的天数</Property>
-                                  <Property name="bindingConfig">
-                                    <Property name="yProperty">days</Property>
-                                  </Property>
-                                </Column>
-                              </Series>
-                            </Chart>
+                            <Container>
+                              <Chart>
+                                <Axes>
+                                  <CategoryAxis>
+                                    <Property name="dataSet">dsPersonstatistic</Property>
+                                    <Property name="properties">registrationexecutor</Property>
+                                  </CategoryAxis>
+                                  <NumbericAxis>
+                                    <Property name="min">0</Property>
+                                  </NumbericAxis>
+                                </Axes>
+                                <Series>
+                                  <Column>
+                                    <Property name="dataSet">dsPersonstatistic</Property>
+                                    <Property name="title">执行保障计划的天数</Property>
+                                    <Property name="bindingConfig">
+                                      <Property name="yProperty">days</Property>
+                                    </Property>
+                                  </Column>
+                                </Series>
+                              </Chart>
+                            </Container>
                           </Container>
                         </MainControl>
                         <SideControl>
@@ -528,18 +534,20 @@ this.get(&quot;#yearForm1&quot;).set(&quot;value&quot;,year);</ClientEvent>
                                 <Editor/>
                               </FormElement>
                             </AutoForm>
-                            <Chart>
-                              <Axes/>
-                              <Series>
-                                <Pie>
-                                  <Property name="dataSet">dsPersonstatistic</Property>
-                                  <Property name="bindingConfig">
-                                    <Property name="valueProperty">days</Property>
-                                    <Property name="labelProperty">registrationexecutor</Property>
-                                  </Property>
-                                </Pie>
-                              </Series>
-                            </Chart>
+                            <Container>
+                              <Chart>
+                                <Axes/>
+                                <Series>
+                                  <Pie>
+                                    <Property name="dataSet">dsPersonstatistic</Property>
+                                    <Property name="bindingConfig">
+                                      <Property name="valueProperty">days</Property>
+                                      <Property name="labelProperty">registrationexecutor</Property>
+                                    </Property>
+                                  </Pie>
+                                </Series>
+                              </Chart>
+                            </Container>
                           </Container>
                         </SideControl>
                       </SplitPanel>
@@ -708,26 +716,28 @@ dsPersonstatistic_per.flushAsync();</ClientEvent>
                             <Property name="autoOpen">false</Property>
                             <Property name="postValueOnSelect">true</Property>
                           </YearDropDown>
-                          <Chart>
-                            <Axes>
-                              <CategoryAxis>
-                                <Property name="dataSet">dsPersonstatistic_per</Property>
-                                <Property name="properties">workaddress</Property>
-                              </CategoryAxis>
-                              <NumbericAxis>
-                                <Property name="min">0</Property>
-                              </NumbericAxis>
-                            </Axes>
-                            <Series>
-                              <Column>
-                                <Property name="dataSet">dsPersonstatistic_per</Property>
-                                <Property name="title">执行保障计划的天数</Property>
-                                <Property name="bindingConfig">
-                                  <Property name="yProperty">days</Property>
-                                </Property>
-                              </Column>
-                            </Series>
-                          </Chart>
+                          <Container>
+                            <Chart>
+                              <Axes>
+                                <CategoryAxis>
+                                  <Property name="dataSet">dsPersonstatistic_per</Property>
+                                  <Property name="properties">workaddress</Property>
+                                </CategoryAxis>
+                                <NumbericAxis>
+                                  <Property name="min">0</Property>
+                                </NumbericAxis>
+                              </Axes>
+                              <Series>
+                                <Column>
+                                  <Property name="dataSet">dsPersonstatistic_per</Property>
+                                  <Property name="title">执行保障计划的天数</Property>
+                                  <Property name="bindingConfig">
+                                    <Property name="yProperty">days</Property>
+                                  </Property>
+                                </Column>
+                              </Series>
+                            </Chart>
+                          </Container>
                         </Container>
                       </MainControl>
                       <SideControl>
@@ -751,18 +761,20 @@ this.get(&quot;#yearFormPerson&quot;).set(&quot;value&quot;,year);</ClientEvent>
                               <Editor/>
                             </FormElement>
                           </AutoForm>
-                          <Chart>
-                            <Axes/>
-                            <Series>
-                              <Pie>
-                                <Property name="bindingConfig">
-                                  <Property name="valueProperty">days</Property>
-                                  <Property name="labelProperty">workaddress</Property>
-                                </Property>
-                                <Property name="dataSet">dsPersonstatistic_per</Property>
-                              </Pie>
-                            </Series>
-                          </Chart>
+                          <Container>
+                            <Chart>
+                              <Axes/>
+                              <Series>
+                                <Pie>
+                                  <Property name="bindingConfig">
+                                    <Property name="valueProperty">days</Property>
+                                    <Property name="labelProperty">workaddress</Property>
+                                  </Property>
+                                  <Property name="dataSet">dsPersonstatistic_per</Property>
+                                </Pie>
+                              </Series>
+                            </Chart>
+                          </Container>
                         </Container>
                       </SideControl>
                     </SplitPanel>
