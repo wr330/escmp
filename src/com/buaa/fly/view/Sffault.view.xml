@@ -511,22 +511,16 @@ if(cur){
                 <Property name="name">adrs</Property>
                 <Property name="property">adrs</Property>
                 <Property name="trigger">dataSetDropDownAdrs</Property>
-                <Property name="labelPosition">top</Property>
                 <Property name="hintPosition">right</Property>
-                <Property name="editorWidth">200</Property>
               </AutoFormElement>
               <AutoFormElement layoutConstraint="colSpan:1;rowSpan:1">
-                <Property name="editorWidth">200</Property>
                 <Property name="name">miji</Property>
                 <Property name="property">miji</Property>
-                <Property name="labelPosition">top</Property>
                 <Editor/>
               </AutoFormElement>
-              <AutoFormElement layoutConstraint="colSpan:2">
+              <AutoFormElement>
                 <Property name="name">name</Property>
                 <Property name="property">name</Property>
-                <Property name="labelPosition">top</Property>
-                <Property name="editorWidth">300</Property>
               </AutoFormElement>
               <AutoFormElement>
                 <Property name="name">partname</Property>
@@ -545,11 +539,9 @@ if(cur){
                 <Property name="property">bumen</Property>
                 <Property name="trigger">dataSetDropDownDepartment</Property>
               </AutoFormElement>
-              <AutoFormElement layoutConstraint="colSpan:2">
+              <AutoFormElement>
                 <Property name="name">fileNo</Property>
                 <Property name="property">fileno</Property>
-                <Property name="labelPosition">top</Property>
-                <Property name="editorWidth">200</Property>
               </AutoFormElement>
               <AutoFormElement>
                 <Property name="name">repeat</Property>
@@ -585,48 +577,40 @@ if(cur){
                 <Property name="property">fighterno</Property>
                 <Property name="label">飞机编号</Property>
               </AutoFormElement>
-              <AutoFormElement layoutConstraint="colSpan:2">
+              <AutoFormElement>
                 <Property name="name">date</Property>
                 <Property name="property">date</Property>
-                <Property name="editorWidth">200</Property>
-                <Property name="labelPosition">top</Property>
               </AutoFormElement>
-              <AutoFormElement layoutConstraint="colSpan:2">
+              <AutoFormElement>
                 <Property name="name">system</Property>
                 <Property name="property">system</Property>
-                <Property name="labelPosition">top</Property>
-                <Property name="editorWidth">150</Property>
               </AutoFormElement>
-              <AutoFormElement layoutConstraint="rowSpan:2">
+              <AutoFormElement>
                 <Property name="name">relateBuMen</Property>
                 <Property name="property">relatebumen</Property>
                 <Property name="trigger">dataSetDropDownDepartment</Property>
               </AutoFormElement>
-              <AutoFormElement layoutConstraint="rowSpan:2">
+              <AutoFormElement>
                 <Property name="name">relatemajor</Property>
                 <Property name="property">relatemajor</Property>
                 <Property name="trigger">dataSetDropDownMajorSystem</Property>
               </AutoFormElement>
-              <AutoFormElement layoutConstraint="rowSpan:2">
+              <AutoFormElement>
                 <Property name="name">pici</Property>
                 <Property name="property">pici</Property>
               </AutoFormElement>
-              <AutoFormElement layoutConstraint="rowSpan:2">
+              <AutoFormElement>
                 <Property name="name">status</Property>
                 <Property name="property">status</Property>
                 <Property name="trigger">dataSetDropDownStatus</Property>
               </AutoFormElement>
-              <AutoFormElement layoutConstraint="colSpan:2;rowSpan:1">
+              <AutoFormElement>
                 <Property name="name">GuiLing</Property>
                 <Property name="property">guiling</Property>
-                <Property name="labelPosition">top</Property>
-                <Property name="editorWidth">100</Property>
               </AutoFormElement>
-              <AutoFormElement layoutConstraint="rowSpan:1;colSpan:2">
+              <AutoFormElement>
                 <Property name="name">XCcharger</Property>
                 <Property name="property">xccharger</Property>
-                <Property name="labelPosition">top</Property>
-                <Property name="editorWidth">200</Property>
               </AutoFormElement>
             </AutoForm>
           </ControlTab>

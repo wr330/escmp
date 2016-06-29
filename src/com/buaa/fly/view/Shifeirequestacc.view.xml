@@ -277,7 +277,7 @@ var fileURL=&quot;upload/Fly_Shifeirequestacc/&quot;+view.id('dsShifeirequestacc
 var url = encodeURI(fileURL);
 var path=&quot;a.jsp?url='&quot;+ url +&quot;'&quot;;	
 open(path,&quot;_blank&quot;);</ClientEvent>
-        <Property name="caption">在线查看</Property>
+        <Property name="caption">查看文档</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -120px -140px</Property>
       </ToolBarButton>
     </ToolBar>

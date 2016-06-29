@@ -97,7 +97,7 @@ action.execute(function(result){&#xD;
           <Children>
             <ToolBar>
               <ToolBarLabel>
-                <Property name="text">根据地点查询在外工作人员</Property>
+                <Property name="text">根据地点查询外场保障人员</Property>
               </ToolBarLabel>
               <Fill/>
               <FormElement>
@@ -576,6 +576,12 @@ statisticjiaci.flushAsync();</ClientEvent>
                             </Property>
                             <Property name="dataSet">statisticjiaci</Property>
                             <Property name="title">百分比</Property>
+                            <Property name="dataLabels">
+                              <Property name="color">black</Property>
+                              <Property name="enabled">true</Property>
+                              <Property name="hideOnOverflow">false</Property>
+                              <Property name="labelPadding">-20</Property>
+                            </Property>
                           </Column>
                         </Series>
                       </Chart>

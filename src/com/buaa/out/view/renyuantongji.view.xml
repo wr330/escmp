@@ -272,7 +272,7 @@ dsStatisticPerson.flushAsync();</ClientEvent>
                         <ToolBar>
                           <Separator/>
                           <ToolBarLabel>
-                            <Property name="text">按年统计在所选外场地点各个保障人员的工作情况-柱状图</Property>
+                            <Property name="text">按天统计在所选外场地点保障人员人数</Property>
                           </ToolBarLabel>
                           <Separator/>
                         </ToolBar>

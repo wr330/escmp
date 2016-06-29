@@ -148,7 +148,7 @@ dsAddressbook.flushAsync();</ClientEvent>
       <SideControl>
         <Container>
           <FieldSet layoutConstraint="top">
-            <Property name="caption">通讯录</Property>
+            <Property name="caption">部门结构树</Property>
             <Buttons/>
             <Children>
               <ToolBar>

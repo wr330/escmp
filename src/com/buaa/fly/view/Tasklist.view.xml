@@ -676,6 +676,7 @@ jQuery(arg.dom).xCreate({&#xD;
       <DataColumn>
         <Property name="width">120</Property>
         <Property name="property">miji</Property>
+        <Property name="align">left</Property>
       </DataColumn>
     </DataGrid>
   </View>

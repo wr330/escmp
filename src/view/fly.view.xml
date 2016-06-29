@@ -188,9 +188,161 @@ function buildTree(topNode,url){&#xD;
                 <Property name="caption">试飞模块流程图</Property>
                 <Property name="closeable">true</Property>
                 <Container>
-                  <Property name="style">
-                    <Property name="background">url(images/fly/fly.jpg) top no-repeat </Property>
-                  </Property>
+                  <BlockView id="blockView1" layoutConstraint="anchorLeft:container;left:50%">
+                    <ClientEvent name="onCreate">self.set(&quot;renderer&quot;, new dorado.widget.blockview.ImageBlockRenderer({&#xD;
+	captionProperty: &quot;value&quot;,&#xD;
+	labelHeight: 0,&#xD;
+	tipProperty: &quot;tip&quot;&#xD;
+}));</ClientEvent>
+                    <ClientEvent name="onBlockClick">var current = self.getCurrentItem();&#xD;
+if(current.url){&#xD;
+	window.openUrlInFrameTab(current.url,current.name,current.icon);&#xD;
+}</ClientEvent>
+                    <Property name="items">
+                      <Collection>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/1.png</Property>
+                          <Property name="tip">试飞技术管理模块的流程</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/0.png</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/2.png</Property>
+                          <Property name="url">com.buaa.fly.view.Ftypes.d</Property>
+                          <Property name="name">飞机信息</Property>
+                          <Property name="icon">url(>skin>common/icons.gif) -80px -140px</Property>
+                          <Property name="tip">录入飞机机型、批次和单机信息</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/0.png</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/3.png</Property>
+                          <Property name="url">com.buaa.fly.view.Subject.d</Property>
+                          <Property name="name">试飞科目维护</Property>
+                          <Property name="icon">url(>skin>common/icons.gif) -180px -140px</Property>
+                          <Property name="tip">根据机型信息录入试飞科目树信息</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/0.png</Property>
+                          <Property name="path">view.index.d</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/4.png</Property>
+                          <Property name="url">com.buaa.fly.view.ShifeiOutline.d</Property>
+                          <Property name="name">试飞大纲管理</Property>
+                          <Property name="icon">url(>skin>common/icons.gif) -160px -40px</Property>
+                          <Property name="tip">根据机型和试飞科目信息录入试飞大纲信息</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/0.png</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/9.png</Property>
+                          <Property name="url">com.buaa.fly.view.Flightrestrict.d</Property>
+                          <Property name="name">使用限制</Property>
+                          <Property name="icon">url(>skin>common/icons.gif) -20px -20px</Property>
+                          <Property name="tip">根据飞机机型、批次和单机信息制定使用限制</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/0.png</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/5.png</Property>
+                          <Property name="url">com.buaa.fly.view.Tasklist.d</Property>
+                          <Property name="name">试飞任务单管理</Property>
+                          <Property name="icon">url(>skin>common/icons.gif) -280px -120px</Property>
+                          <Property name="tip">根据试飞大纲信息制定试飞任务单</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/0.png</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/6.png</Property>
+                          <Property name="url">com.buaa.fly.view.Sfstatistic.d</Property>
+                          <Property name="name">飞行统计</Property>
+                          <Property name="icon">url(>skin>common/icons.gif) -160px -140px</Property>
+                          <Property name="tip">根据试飞任务单对飞行信息进行记录</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/0.png</Property>
+                          <Property name="path">view.index.d</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/7.png</Property>
+                          <Property name="url">com.buaa.fly.view.Dailyacc.d</Property>
+                          <Property name="name">现场汇报</Property>
+                          <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                          <Property name="tip">根据飞行信息进行现场汇报管理</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/0.png</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/8.png</Property>
+                          <Property name="url">com.buaa.fly.view.Sffault.d</Property>
+                          <Property name="name">问题跟踪</Property>
+                          <Property name="icon">url(>skin>common/icons.gif) -260px -80px</Property>
+                          <Property name="tip">对试飞过程中产生的问题进行追踪记录</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/0.png</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/10.png</Property>
+                          <Property name="url">com.buaa.fly.view.Shifeirequestacc.d</Property>
+                          <Property name="name">试飞文件</Property>
+                          <Property name="icon">url(>skin>common/icons.gif) -60px -160px</Property>
+                          <Property name="tip">最后对试飞过程中产生的试飞文件进行记录</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/0.png</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/11.png</Property>
+                          <Property name="tip">试飞技术管理模块的流程</Property>
+                        </Entity>
+                      </Collection>
+                    </Property>
+                    <Property name="horiPadding">10</Property>
+                    <Property name="horiSpacing">0</Property>
+                    <Property name="blockHeight">150</Property>
+                    <Property name="vertPadding">300</Property>
+                    <Property name="vertSpacing">8</Property>
+                    <Property name="exClassName">d-block-view</Property>
+                    <Property name="style">
+                      <Property name="font-size">16px</Property>
+                      <Property name="font-weight">bold</Property>
+                      <Property name="background">url(images/fly/12.png) top no-repeat </Property>
+                    </Property>
+                    <Property name="width">1600</Property>
+                    <Property name="blockWidth">30</Property>
+                    <Property name="fillLine">true</Property>
+                    <Property name="lineSize">30</Property>
+                    <Property name="allowNoCurrent">true</Property>
+                  </BlockView>
                 </Container>
               </ControlTab>
             </TabControl>

@@ -431,7 +431,7 @@ view.id('dsAuditLog').getData().insert({&#xD;
 	operationTime:myDate&#xD;
 });&#xD;
 view.id('uaAuditLog').execute();</ClientEvent>
-        <Property name="caption">岗位</Property>
+        <Property name="caption">设置岗位</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -0px -100px</Property>
       </ToolBarButton>
       <ToolBarButton>
@@ -597,14 +597,14 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
         <Property name="width">60</Property>
       </DataColumn>
       <DataColumn>
-        <Property name="caption">密级</Property>
-        <Property name="name">miji</Property>
-        <Property name="property">miji</Property>
+        <Property name="property">lock</Property>
+        <Property name="name">lock</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
-        <Property name="property">lock</Property>
-        <Property name="name">lock</Property>
+        <Property name="caption">密级</Property>
+        <Property name="name">miji</Property>
+        <Property name="property">miji</Property>
         <Editor/>
       </DataColumn>
     </DataGrid>
@@ -735,10 +735,9 @@ view.id('uaAuditLog').execute();</ClientEvent>
             <Property name="trigger">listDropDown1</Property>
             <Editor/>
           </AutoFormElement>
-          <AutoFormElement>
+          <AutoFormElement layoutConstraint="colSpan:2">
             <Property name="name">miji</Property>
             <Property name="property">miji</Property>
-            <Property name="label">密级</Property>
             <Editor/>
           </AutoFormElement>
         </AutoForm>
