@@ -265,7 +265,7 @@ else{
     <Dialog id="SupportGraph">
       <Property name="width">61.8%</Property>
       <Property name="height">80%</Property>
-      <Property name="caption">年度最大保障人数</Property>
+      <Property name="caption">年度计划最大保障人数</Property>
       <Buttons>
         <Button>
           <ClientEvent name="onClick">view.id(&quot;SupportGraph&quot;).hide();</ClientEvent>

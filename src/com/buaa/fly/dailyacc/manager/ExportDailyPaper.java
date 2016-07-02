@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -38,9 +39,9 @@ public class ExportDailyPaper {
 	 *
 	 * @param sfstatistic
 	 */
-	public void wordTemplate(Collection<Sfstatistic> sfstatistic) {
+	public void wordTemplate(Collection<Sfstatistic> sfstatistic,String dateStr) {
 		WriteDocument wd = new WriteDocument();
-		wd.setVisible(true);
+		wd.setVisible(false);
 		wd.createNewDocument();
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		String str = format.format(new Date());
@@ -53,13 +54,22 @@ public class ExportDailyPaper {
 			}
 		}
 		if(miji == 0){
-			wd.insertText("密级：非密");
+			wd.insertText("密级：公开");
 		}
 		if(miji == 1){
-			wd.insertText("密级：秘密");
+			wd.insertText("密级：内部");
 		}
 		if(miji == 2){
-			wd.insertText("密级：绝密");
+			wd.insertText("密级：普通商密");
+		}
+		if(miji == 3){
+			wd.insertText("密级：核心商密");
+		}
+		if(miji == 4){
+			wd.insertText("密级：秘密");
+		}
+		if(miji == 5){
+			wd.insertText("密级：机密");
 		}
 		wd.setAlignment(2);
 		wd.inserTitle("一、飞行情况（注：红色为当日最新内容）", "标题 2");
@@ -107,6 +117,18 @@ public class ExportDailyPaper {
 		wd.insertText("现场报告：          " + "整理：          "
 				+ "审核：                  " + "审定：             "
 				+ "主管副总师：       ");
+		String path = "\\Fly_DailyAcc\\" + dateStr;
+		String filePath = ContextHolder.getRequest().getRealPath("/")
+				+ "upload"+path;
+		String fileName = "日报";
+		File folder=new File(filePath);
+		if(!folder.exists()){
+			folder.mkdirs();
+		}
+		/*wd.saveAs(filePath + "//" + fileName);
+		wd.closeWord();*/
+		System.out.println("生成的日报路径在：" + filePath);
+		wd.saveWordFile(filePath + "//" + fileName);
 		//用户手动保存
 /*		String path = "/DailyAcc/" + str + "日报.doc";
 		String filePath = ContextHolder.getRequest().getRealPath("/")

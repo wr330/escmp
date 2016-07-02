@@ -625,7 +625,7 @@ link.set(&quot;visible&quot;,false);&#xD;
     <Dialog id="SupportitemGraph">
       <Property name="width">61.8%</Property>
       <Property name="height">80%</Property>
-      <Property name="caption">年度最大保障人数</Property>
+      <Property name="caption">年度保障计划执行情况统计</Property>
       <Buttons>
         <Button>
           <ClientEvent name="onClick">view.id(&quot;SupportitemGraph&quot;).hide();</ClientEvent>
@@ -647,7 +647,7 @@ this.get(&quot;#yearForm&quot;).set(&quot;value&quot;,year);&#xD;
               <Property name="labelWidth">80</Property>
               <Editor/>
             </AutoFormElement>
-            <AutoFormElement id="PersonDay">
+            <AutoFormElement id="PersonDay" layoutConstraint="colSpan:2">
               <Property name="label">本年度保障计划执行总人天:</Property>
               <Property name="labelWidth">180</Property>
               <Property name="readOnly">true</Property>

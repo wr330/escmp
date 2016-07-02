@@ -86,6 +86,7 @@ if(!result){&#xD;
     </AjaxAction>
     <AjaxAction id="ajaxActionDownloadFile">
       <Property name="service">outlineexecutionManager#downloadFile</Property>
+      <Property name="async">false</Property>
     </AjaxAction>
     <DataSetDropDown id="dataSetDropDownAircraftType">
       <ClientEvent name="onValueSelect">var dsSubject = this.get(&quot;#dsSubject&quot;);&#xD;
@@ -495,16 +496,22 @@ dsSubject.getData('!CURRENT_ROOT').reset(&quot;outlineexecution&quot;);&#xD;
 if(cur){&#xD;
 	var dataTree = this.get(&quot;#dataTreeSubject&quot;);&#xD;
     var NodeType = dataTree.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
-	if(NodeType==&quot;FType&quot;)&#xD;
+	var curOutline = view.id('dsSubject').getData(&quot;!CURRENT_ROOT.#outlineexecution&quot;);&#xD;
+	alert(curOutline.get(&quot;oid&quot;));&#xD;
+	if(NodeType==&quot;FType&quot;){&#xD;
       view.id(&quot;ajaxActionDownloadFile&quot;).set(&quot;parameter&quot;,{&#xD;
 		id: null,&#xD;
 		fname:cur.get(&quot;ftypename&quot;)&#xD;
 	  }).execute();&#xD;
-	else&#xD;
+	  window.location.href=&quot;ServletDownload?filename=Fly_Outlineexecution/&quot; + curOutline.get(&quot;oid&quot;) + &quot;/试飞大纲.docx&quot;;&#xD;
+	}&#xD;
+	else{&#xD;
      view.id(&quot;ajaxActionDownloadFile&quot;).set(&quot;parameter&quot;,{&#xD;
 		id: cur.get(&quot;oid&quot;),&#xD;
 		fname:cur.get(&quot;ftype&quot;)&#xD;
 	 }).execute();&#xD;
+	  window.location.href=&quot;ServletDownload?filename=Fly_Outlineexecution/&quot; + curOutline.get(&quot;oid&quot;) + &quot;/试飞大纲.docx&quot;;&#xD;
+	 }&#xD;
 }else{&#xD;
 	dorado.MessageBox.alert(&quot;请先选择机型&quot;);&#xD;
 }&#xD;

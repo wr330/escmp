@@ -449,7 +449,7 @@ option = {&#xD;
 // 使用刚指定的配置项和数据显示图表。&#xD;
 myChart.setOption(option);</ClientEvent>
                           <Property name="content">    &lt;!-- 为 ECharts 准备一个具备大小（宽高）的Dom -->&#xD;
-    &lt;div id=&quot;main&quot; style=&quot;width:1450px;height:370px;&quot;>&lt;/div></Property>
+    &lt;div id=&quot;main&quot; style=&quot;width:1000px;height:370px;&quot;>&lt;/div></Property>
                         </HtmlContainer>
                       </Container>
                     </MainControl>
@@ -753,7 +753,7 @@ dsPersonstatistic_per.flushAsync();</ClientEvent>
                             <FormElement id="yearFormPerson1">
                               <ClientEvent name="onReady">var date = new Date();&#xD;
 var year = date.getFullYear(); &#xD;
-this.get(&quot;#yearFormPerson&quot;).set(&quot;value&quot;,year);</ClientEvent>
+this.get(&quot;#yearFormPerson1&quot;).set(&quot;value&quot;,year);</ClientEvent>
                               <Property name="trigger">yearDropDown2</Property>
                               <Property name="label">选择年份:</Property>
                               <Property name="labelWidth">80</Property>

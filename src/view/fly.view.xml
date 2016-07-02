@@ -203,7 +203,7 @@ if(current.url){&#xD;
                         <Entity>
                           <Property name="value"></Property>
                           <Property name="image">images/fly/1.png</Property>
-                          <Property name="tip">试飞技术管理模块的流程</Property>
+                          <Property name="tip">负责飞机保障性试验与评价，是在飞机交付使用之前，对飞机进行飞行测试，采集飞机飞行数据，用来检查飞机的设备和验证飞机的性能等，使飞机在交付之前处于最稳定的飞行状态。</Property>
                         </Entity>
                         <Entity>
                           <Property name="value"></Property>
@@ -215,7 +215,7 @@ if(current.url){&#xD;
                           <Property name="url">com.buaa.fly.view.Ftypes.d</Property>
                           <Property name="name">飞机信息</Property>
                           <Property name="icon">url(>skin>common/icons.gif) -80px -140px</Property>
-                          <Property name="tip">录入飞机机型、批次和单机信息</Property>
+                          <Property name="tip">录入飞机机型、批次、单机和转场信息</Property>
                         </Entity>
                         <Entity>
                           <Property name="value"></Property>
@@ -227,7 +227,7 @@ if(current.url){&#xD;
                           <Property name="url">com.buaa.fly.view.Subject.d</Property>
                           <Property name="name">试飞科目维护</Property>
                           <Property name="icon">url(>skin>common/icons.gif) -180px -140px</Property>
-                          <Property name="tip">根据机型信息录入试飞科目树信息</Property>
+                          <Property name="tip">把试飞内容按飞机结构、性质详细划分的类别，根据机型信息录入试飞科目树信息</Property>
                         </Entity>
                         <Entity>
                           <Property name="value"></Property>
@@ -240,7 +240,7 @@ if(current.url){&#xD;
                           <Property name="url">com.buaa.fly.view.ShifeiOutline.d</Property>
                           <Property name="name">试飞大纲管理</Property>
                           <Property name="icon">url(>skin>common/icons.gif) -160px -40px</Property>
-                          <Property name="tip">根据机型和试飞科目信息录入试飞大纲信息</Property>
+                          <Property name="tip">系统排列了试飞时的内容要点，根据机型和试飞科目信息录入试飞大纲信息</Property>
                         </Entity>
                         <Entity>
                           <Property name="value"></Property>
@@ -329,7 +329,7 @@ if(current.url){&#xD;
                     <Property name="horiPadding">10</Property>
                     <Property name="horiSpacing">0</Property>
                     <Property name="blockHeight">150</Property>
-                    <Property name="vertPadding">300</Property>
+                    <Property name="vertPadding">400</Property>
                     <Property name="vertSpacing">8</Property>
                     <Property name="exClassName">d-block-view</Property>
                     <Property name="style">
@@ -337,7 +337,7 @@ if(current.url){&#xD;
                       <Property name="font-weight">bold</Property>
                       <Property name="background">url(images/fly/12.png) top no-repeat </Property>
                     </Property>
-                    <Property name="width">1600</Property>
+                    <Property name="width">1712</Property>
                     <Property name="blockWidth">30</Property>
                     <Property name="fillLine">true</Property>
                     <Property name="lineSize">30</Property>

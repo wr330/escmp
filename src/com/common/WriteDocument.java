@@ -99,12 +99,30 @@ public class WriteDocument {
 	public void save() {
 		Dispatch.call(document, "Save");
 	}
+	public void save(String savePath) {	
+		Dispatch.call(Dispatch.call(MsWord, "WordBasic").getDispatch(),"FileSaveAs", savePath);//另存为 
+	}
 	/**
 	 *  保存文档
 	 * @param docpath
 	 */
-	public void saveAs(String docpath) {
+	/*public void saveAs(String docpath) {
 		Dispatch.call(document, "SaveAs",new Variant(docpath));
+	}*/
+	 public void saveAs(String docpath) {
+			Dispatch.call(document, "SaveAs",new Variant(docpath));
+	}
+	 
+	/**
+	  * 保存Word文档到指定的目录(包括文件名)
+	  * @param filePath
+	  */
+	public void saveWordFile(final String filePath) {
+	    //保存文件
+	       Dispatch.invoke(document, "SaveAs", Dispatch.Method, new Object[] {filePath, new Variant(12)}, new int[1]);
+	       //作为word格式保存到目标文件
+	       Variant f = new Variant(false);
+	       Dispatch.call(document, "Close", f);
 	}
 	//关闭文档
 	public void closeDocument() {

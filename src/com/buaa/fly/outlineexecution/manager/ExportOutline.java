@@ -24,7 +24,7 @@ public class ExportOutline {
 	private CombineVehicleDao combineVehicleDao;
 	public void generateTable(Outlineexecution outlineexecution ,List<Tasklist> tasklist){
 		WriteDocument wd = new WriteDocument();
-		wd.setVisible(true);
+		wd.setVisible(false);
 		wd.createNewDocument();
 		wd.insertDirectory("试飞大纲执行情况");
 		wd.setAlignment(1);
@@ -95,7 +95,7 @@ public class ExportOutline {
 public void generateOutlineexecution(Collection<Outlineexecution> Outlineexecution) throws Exception{
 	List<Outlineexecution> tasklist = (List<Outlineexecution>)Outlineexecution;
 	WriteDocument wd = new WriteDocument();
-	wd.setVisible(true);
+	wd.setVisible(false);
 	wd.createNewDocument();
 	wd.insertDirectory("试飞大纲执行情况");
 	wd.setAlignment(1);
@@ -178,14 +178,17 @@ public void generateOutlineexecution(Collection<Outlineexecution> Outlineexecuti
 		}
 		
 	}
-	String path = "/Fly_Outlineexecution/"+tasklist.get(0).getSubject()+"大纲.doc";
+	String path = "\\Fly_Outlineexecution\\"+tasklist.get(0).getOid();
 	String filePath = ContextHolder.getRequest().getRealPath("/")
 			+ "upload"+path;
-
+	String fileName = "试飞大纲";
 	File folder=new File(filePath);
 	if(!folder.exists()){
 		folder.mkdirs();
 	}
-
+	/*wd.saveAs(filePath + "//" + fileName);
+	wd.closeWord();*/
+	System.out.println("生成的试飞大纲路径在：" + filePath);
+	wd.saveWordFile(filePath + "//" + fileName);
 }
 }

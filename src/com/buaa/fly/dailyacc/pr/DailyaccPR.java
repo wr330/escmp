@@ -1,6 +1,8 @@
 package com.buaa.fly.dailyacc.pr;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -61,10 +63,13 @@ public class DailyaccPR {
 	 */
 	@SuppressWarnings("rawtypes")
 	@DataResolver
-	public void save(Map<String, Collection> dataItems) throws Exception {
-		Collection<Sfstatistic> details1 = (Collection<Sfstatistic>) dataItems
-				.get("sta");
-		exportDailyPaper.wordTemplate(details1);
+	public String save(Map<String, Collection> dataItems,Map<String, Object> parameter) throws Exception {
+		Collection<Sfstatistic> details1 = (Collection<Sfstatistic>) dataItems.get("sta");
+		Date time = (Date) parameter.get("time");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+		String dateStr = sdf.format(time);
+		exportDailyPaper.wordTemplate(details1,dateStr);
+		return dateStr;
 	}
 
 }
