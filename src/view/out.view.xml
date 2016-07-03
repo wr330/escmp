@@ -184,6 +184,118 @@ function buildTree(topNode,url){&#xD;
 });&#xD;
 </ClientEvent>
               <Property name="showMenuButton">true</Property>
+              <ControlTab>
+                <Property name="caption">外场模块流程图</Property>
+                <Property name="closeable">true</Property>
+                <Container>
+                  <BlockView id="blockView1" layoutConstraint="anchorLeft:container;left:50%">
+                    <ClientEvent name="onCreate">self.set(&quot;renderer&quot;, new dorado.widget.blockview.ImageBlockRenderer({&#xD;
+	captionProperty: &quot;value&quot;,&#xD;
+	labelHeight: 0,&#xD;
+	tipProperty: &quot;tip&quot;&#xD;
+}));</ClientEvent>
+                    <ClientEvent name="onBlockClick">var current = self.getCurrentItem();&#xD;
+if(current.url){&#xD;
+	window.openUrlInFrameTab(current.url,current.name,current.icon);&#xD;
+}</ClientEvent>
+                    <Property name="items">
+                      <Collection>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/out/1.png</Property>
+                          <Property name="tip">负责飞机保障方案制定、执行与评估</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/0.png</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/out/2.png</Property>
+                          <Property name="url">com.buaa.out.view.Supportprogram.d</Property>
+                          <Property name="name">年度保障计划制定</Property>
+                          <Property name="icon">url(>skin>common/icons.gif) -300px -20px</Property>
+                          <Property name="tip">制定年度保障计划</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/0.png</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/out/3.png</Property>
+                          <Property name="url">com.buaa.out.view.Supportprogram1.d</Property>
+                          <Property name="name">保障计划变更与执行管理</Property>
+                          <Property name="icon">url(>skin>common/icons.gif) -260px -20px</Property>
+                          <Property name="tip">进行保障计划执行与变更</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/0.png</Property>
+                          <Property name="path">view.index.d</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/out/4.png</Property>
+                          <Property name="url">com.buaa.out.view.Supportevaluation.d</Property>
+                          <Property name="name">保障效果评估</Property>
+                          <Property name="icon">url(>skin>common/icons.gif) -280px -20px</Property>
+                          <Property name="tip">开展保障效果评估</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/0.png</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/out/5.png</Property>
+                          <Property name="url">com.buaa.out.view.renyuantongji.d</Property>
+                          <Property name="name">外场人员统计</Property>
+                          <Property name="icon">url(>skin>common/icons.gif) -140px -100px</Property>
+                          <Property name="tip">外场人员工作情况统计展示</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/0.png</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/out/6.png</Property>
+                          <Property name="url">com.buaa.out.view.Technicaldocument.d</Property>
+                          <Property name="name">技术文件状态管理</Property>
+                          <Property name="icon">url(>skin>common/icons.gif) -0px -120px</Property>
+                          <Property name="tip">进行技术文件状态管理</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/0.png</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/out/7.png</Property>
+                          <Property name="tip">外场服务工作的流程</Property>
+                        </Entity>
+                      </Collection>
+                    </Property>
+                    <Property name="horiPadding">10</Property>
+                    <Property name="horiSpacing">0</Property>
+                    <Property name="blockHeight">150</Property>
+                    <Property name="vertPadding">400</Property>
+                    <Property name="vertSpacing">8</Property>
+                    <Property name="exClassName">d-block-view</Property>
+                    <Property name="style">
+                      <Property name="font-size">16px</Property>
+                      <Property name="font-weight">bold</Property>
+                      <Property name="background">url(images/out/11.jpg) top no-repeat </Property>
+                    </Property>
+                    <Property name="width">1712</Property>
+                    <Property name="blockWidth">30</Property>
+                    <Property name="fillLine">true</Property>
+                    <Property name="lineSize">30</Property>
+                    <Property name="allowNoCurrent">true</Property>
+                  </BlockView>
+                </Container>
+              </ControlTab>
             </TabControl>
           </Children>
           <Tools/>

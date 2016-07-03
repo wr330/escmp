@@ -184,6 +184,131 @@ function buildTree(topNode,url){&#xD;
 });&#xD;
 </ClientEvent>
               <Property name="showMenuButton">true</Property>
+              <ControlTab>
+                <Property name="caption">部门常用模块流程图</Property>
+                <Property name="closeable">true</Property>
+                <Container>
+                  <BlockView id="blockView1" layoutConstraint="anchorLeft:container;left:50%">
+                    <ClientEvent name="onCreate">self.set(&quot;renderer&quot;, new dorado.widget.blockview.ImageBlockRenderer({&#xD;
+	captionProperty: &quot;value&quot;,&#xD;
+	labelHeight: 0,&#xD;
+	tipProperty: &quot;tip&quot;&#xD;
+}));</ClientEvent>
+                    <ClientEvent name="onBlockClick">var current = self.getCurrentItem();&#xD;
+if(current.url){&#xD;
+	window.openUrlInFrameTab(current.url,current.name,current.icon);&#xD;
+}</ClientEvent>
+                    <Property name="items">
+                      <Collection>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/comm/1.png</Property>
+                          <Property name="tip">负责部门常用工作的管理</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/0.png</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/comm/2.png</Property>
+                          <Property name="url">com.buaa.comm.view.JobProjectSummary.d</Property>
+                          <Property name="name">工作项目管理</Property>
+                          <Property name="icon">url(>skin>common/icons.gif) -80px -60px</Property>
+                          <Property name="tip">部内重要工作项目或临时性工作项目的分配和进展情况统计</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/0.png</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/comm/3.png</Property>
+                          <Property name="url">com.buaa.comm.view.BusinessTripReportShare.d</Property>
+                          <Property name="name">出差报告</Property>
+                          <Property name="icon">url(>skin>common/icons.gif) -20px -60px</Property>
+                          <Property name="tip">出差报告录入、审阅与共享</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/0.png</Property>
+                          <Property name="path">view.index.d</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/comm/4.png</Property>
+                          <Property name="url">com.buaa.comm.view.NewsManage.d</Property>
+                          <Property name="name">新闻管理</Property>
+                          <Property name="icon">url(>skin>common/icons.gif) -0px -160px</Property>
+                          <Property name="tip">部门信息录入、审阅与发布</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/0.png</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/comm/5.png</Property>
+                          <Property name="url">com.buaa.comm.view.Addressbookdepart.d</Property>
+                          <Property name="name">部门通讯录资源管理</Property>
+                          <Property name="icon">url(>skin>common/icons.gif) -260px -140px</Property>
+                          <Property name="tip">对部门工作常用的合作单位的人员信息和联系方式的管理和共享</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/0.png</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/comm/6.png</Property>
+                          <Property name="url">com.buaa.comm.view.Resourcedownload.d</Property>
+                          <Property name="name">常用资源下载</Property>
+                          <Property name="icon">url(>skin>common/icons.gif) -140px -280px</Property>
+                          <Property name="tip">用于需共享的知识文档或软件工具的下载和管理</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/0.png</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/comm/7.png</Property>
+                          <Property name="url">com.buaa.comm.view.Meetingdocument.d</Property>
+                          <Property name="name">会议材料管理</Property>
+                          <Property name="icon">url(>skin>common/icons.gif) -300px -120px</Property>
+                          <Property name="tip">用于对各类会议的材料记录文件进行归档、下载共享</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/fly/0.png</Property>
+                          <Property name="path">view.index.d</Property>
+                        </Entity>
+                        <Entity>
+                          <Property name="value"></Property>
+                          <Property name="image">images/comm/8.png</Property>
+                          <Property name="tip">部门常用管理</Property>
+                        </Entity>
+                      </Collection>
+                    </Property>
+                    <Property name="horiPadding">10</Property>
+                    <Property name="horiSpacing">0</Property>
+                    <Property name="blockHeight">150</Property>
+                    <Property name="vertPadding">400</Property>
+                    <Property name="vertSpacing">8</Property>
+                    <Property name="exClassName">d-block-view</Property>
+                    <Property name="style">
+                      <Property name="font-size">16px</Property>
+                      <Property name="font-weight">bold</Property>
+                      <Property name="background">url(images/comm/10.jpg) top no-repeat </Property>
+                    </Property>
+                    <Property name="width">1712</Property>
+                    <Property name="blockWidth">30</Property>
+                    <Property name="fillLine">true</Property>
+                    <Property name="lineSize">30</Property>
+                    <Property name="allowNoCurrent">true</Property>
+                  </BlockView>
+                </Container>
+              </ControlTab>
             </TabControl>
           </Children>
           <Tools/>

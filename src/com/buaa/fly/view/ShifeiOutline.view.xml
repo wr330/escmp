@@ -156,9 +156,7 @@ if(cur){&#xD;
       <Property name="height">500</Property>
       <Buttons>
         <Button>
-          <ClientEvent name="onClick">var result=view.id('ajaxActionCheck').get(&quot;returnValue&quot;);
-if(!result){
-    var cur=view.id('dsSubject').getData('!CURRENT_ROOT.#outlineexecution');
+          <ClientEvent name="onClick">var cur=view.id('dsSubject').getData('!CURRENT_ROOT.#outlineexecution');
 	var state = cur.state;
 	view.id('uaSubject').execute(function(){
 		view.id('diaOutlineexecution').hide();
@@ -166,10 +164,7 @@ if(!result){
 		    var dsSubject = view.id(&quot;dsSubject&quot;);
             dsSubject.getData('!CURRENT_ROOT').reset(&quot;outlineexecution&quot;);
 		}
-	});
-}else{
-	dorado.MessageBox.alert(result);
-}</ClientEvent>
+	});</ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
         </Button>
