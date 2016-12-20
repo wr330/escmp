@@ -78,6 +78,12 @@ public class JobconcernManager {
 		}
 	 }
 	 
+	 /**
+	   * 设置用户关注的工作项目
+	   * 
+	   * @param details
+	   * @throws Exception
+	   */
 	 public void setJobConcern(Collection<Jobstatistics> details) throws Exception{
 		 String username = ContextHolder.getLoginUserName();
 		 jobconcernDao.deleteDataByUser(username);

@@ -388,7 +388,7 @@ view.id('uaAddressbookdepart').execute(function(){&#xD;
                view.id('dialogDepart').hide();&#xD;
            });&#xD;
          </ClientEvent>
-          <Property name="icon">url(skin>common/icons.gif) -140px -20px</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -140px -20px</Property>
           <Property name="style">
             <Property name="margin-right">30</Property>
           </Property>
@@ -401,6 +401,7 @@ view.id('dialogDepart').hide();&#xD;
 	         &#xD;
 	         </ClientEvent>
           <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
         </Button>
       </Buttons>
       <Children>
@@ -447,12 +448,14 @@ view.id('uaAddressbook').execute(function(){&#xD;
                view.id('dialogPhone').hide();&#xD;
            });</ClientEvent>
           <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -140px -20px</Property>
         </Button>
         <Button>
           <ClientEvent name="onClick">var cur=view.id('dsAddressbook').getData('#');&#xD;
 				cur.cancel();&#xD;
 				view.id('dialogPhone').hide();</ClientEvent>
           <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
         </Button>
       </Buttons>
       <Children>

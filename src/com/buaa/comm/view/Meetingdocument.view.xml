@@ -64,6 +64,14 @@ view.id('dsFtypes').insert({ftypename:&quot;其他机型&quot;});</ClientEvent>
 	view.id('dsMeetingdocument').getData().insert();
 	var cur=view.id('dsMeetingdocument').getData('#');
 	var dateNow = new Date();
+	var guid = &quot;&quot;;
+	for(var i=1;i&lt;=32;i++){
+		var n = Math.floor(Math.random()*16.0).toString(16);
+		guid += n;
+		if((i==8)||(i==12)||(i==16)||(i==20))
+		   guid += &quot;-&quot;;
+	}
+	cur.set(&quot;oid&quot;,guid);
 	cur.set(&quot;filingdate&quot;,dateNow);
     cur.set(&quot;filingperson&quot;,&quot;${loginUser.getCname()}&quot;);
 	var loginUsername=&quot;${loginUser.getUsername()}&quot;;

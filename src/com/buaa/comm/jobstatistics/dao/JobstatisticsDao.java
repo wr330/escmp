@@ -75,7 +75,7 @@ public class JobstatisticsDao extends HibernateBaseDao {
 	}
 	
 	/**                  
-	* 根据用户名，按室主任是此用户名且工作状态是分配中的条件，搜索工作计划表
+	* 根据用户名，按“室主任是此用户名”与“工作状态是分配中”的条件，搜索工作计划表
 	* @param username    
 	* @throws Exception
 	*/

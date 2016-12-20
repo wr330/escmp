@@ -15,12 +15,12 @@
 	<bean id="bdf2.jdbcTransactionManager" class="com.bstek.bdf2.core.orm.transaction.JdbcTransactionManager">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-    <sws:dynamic-wsdl id="supportResourceService" portTypeName="ResourceWebServiceImpl" locationUri="/dorado/webservice/supportResourceWebService">
+    <sws:dynamic-wsdl id="supportResourceService" portTypeName="ResourceWebServiceImpl" locationUri="/dorado/webservice/supportResourceService">
     <sws:xsd location="classpath:ws/SupportResourceService.xsd"/>
 	</sws:dynamic-wsdl>
 	<tx:annotation-driven proxy-target-class="true" transaction-manager="bdf2.jdbcTransactionManager" />
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="url" value="jdbc:sqlserver://localhost:1433;databaseName=escmp" />
+		<property name="url" value="jdbc:sqlserver://192.168.0.55:1433;databaseName=escmp" />
 		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
 		<property name="username" value="sa" />
 		<property name="password" value="sql2008" />
@@ -43,7 +43,7 @@
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
 				<prop key="hibernate.show_sql">false</prop>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.hbm2ddl.auto">none</prop>
 			</props>
 		</property>
 		<property name="mappingResources">

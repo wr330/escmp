@@ -492,7 +492,6 @@ if(cur){&#xD;
 	var dataTree = this.get(&quot;#dataTreeSubject&quot;);&#xD;
     var NodeType = dataTree.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
 	var curOutline = view.id('dsSubject').getData(&quot;!CURRENT_ROOT.#outlineexecution&quot;);&#xD;
-	alert(curOutline.get(&quot;oid&quot;));&#xD;
 	if(NodeType==&quot;FType&quot;){&#xD;
       view.id(&quot;ajaxActionDownloadFile&quot;).set(&quot;parameter&quot;,{&#xD;
 		id: null,&#xD;

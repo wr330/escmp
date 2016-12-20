@@ -62,7 +62,8 @@ public class MeetingdocumentDao extends HibernateBaseDao {
 	public void saveData(Meetingdocument detail) throws Exception {
 		Session session = this.getSessionFactory().openSession();
 		try {
-			detail.setOid(UUID.randomUUID().toString());
+			//为方便文件的上传吗，前台已生成主键。
+			//detail.setOid(UUID.randomUUID().toString());
 			session.save(detail);
 		} finally {
 			session.flush();
