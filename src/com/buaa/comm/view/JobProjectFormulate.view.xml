@@ -4,7 +4,13 @@
   <Context/>
   <Model/>
   <View>
+    <ClientEvent name="onCreate">self.checkButton = function(cur,tagName,status){	&#xD;
+    this.set(&quot;^&quot; + tagName +&quot;.disabled&quot;, cur &amp;&amp; cur.get(&quot;workStatus&quot;) != status);&#xD;
+}</ClientEvent>
     <DataSet id="dsJobstatistics">
+      <ClientEvent name="onLoadData">var cur = view.id('dsJobstatistics').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'jobAllot','0');&#xD;
+});</ClientEvent>
       <Property name="dataType">[Jobstatistics]</Property>
       <Property name="dataProvider">jobstatisticsPR#queryJobstatistics</Property>
       <Property name="pageSize">20</Property>
@@ -41,9 +47,7 @@ var dateNow = new Date();
 cur.set(&quot;arrangementdate&quot;,dateNow);
 cur.set(&quot;writingperson&quot;,&quot;${loginUser.getUsername()}&quot;);
 cur.set(&quot;status&quot;,&quot;0/0&quot;);
-view.id('diaJobstatistics').show();
-
-</ClientEvent>
+view.id('diaJobstatistics').show();</ClientEvent>
         <Property name="caption">新增</Property>
         <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
       </ToolBarButton>
@@ -59,28 +63,24 @@ if (cur) {
 }</ClientEvent>
         <Property name="caption">修改</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+        <Property name="tags">jobAllot</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#');
 var ua=view.id('uaJobstatistics');
 if(cur){
-	if(cur.get(&quot;workStatus&quot;) == 0){
-		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
-			var entitylist=view.id('dsJobstatistics').getData('#.joballot');
-			entitylist.each(function(entity){
-				entity.remove();
-			})
-	    	cur.remove();
-	    	ua.execute();
+	dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+		var entitylist=view.id('dsJobstatistics').getData('#.joballot');
+		entitylist.each(function(entity){
+			entity.remove();
+		})
+	    cur.remove();
+	    ua.execute();
     	}); 
-	}
-	else{
-		dorado.MessageBox.alert(&quot;工作项目已经下发不能删除&quot;);
-	}
-} 
-</ClientEvent>
+} </ClientEvent>
         <Property name="caption">删除</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+        <Property name="tags">jobAllot</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#');&#xD;
@@ -94,15 +94,11 @@ if (cur) {&#xD;
         <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#');&#xD;
 view.id(&quot;dsUsers&quot;).set(&quot;parameter&quot;,cur.get(&quot;departid&quot;)).flushAsync();&#xD;
 if (cur) {&#xD;
-	if(cur.get(&quot;workStatus&quot;) == 0){&#xD;
-		view.id('diaJobFormulate').show();&#xD;
-	}&#xD;
-else{&#xD;
-	dorado.MessageBox.alert(&quot;本项目已经下发到室主任&quot;);  &#xD;
-	}	&#xD;
+	view.id('diaJobFormulate').show();	&#xD;
 }</ClientEvent>
         <Property name="caption">分配到执行室</Property>
         <Property name="icon">url(>skin>common/icons.gif) -80px -20px</Property>
+        <Property name="tags">jobAllot</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">view.id('dgJobstatistics').set(&quot;showFilterBar&quot;,!view.id('dgJobstatistics').get(&quot;showFilterBar&quot;));</ClientEvent>
@@ -117,20 +113,9 @@ dsJobstatistics.flushAsync();</ClientEvent>
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgJobstatistics">
-      <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;workStatus&quot;);&#xD;
-if(status == 0){&#xD;
-	arg.dom.style.color = &quot;red&quot;;&#xD;
-}&#xD;
-else if(status == 1){&#xD;
-	arg.dom.style.color = &quot;blue&quot;;&#xD;
-}&#xD;
-else if(status == 2){&#xD;
-	arg.dom.style.color = &quot;green&quot;;&#xD;
-}&#xD;
-else{&#xD;
-	arg.dom.style.color = &quot;&quot;;&#xD;
-}&#xD;
-arg.processDefault = true;</ClientEvent>
+      <ClientEvent name="onCurrentChange">var cur = view.id('dsJobstatistics').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'jobAllot','0');&#xD;
+});</ClientEvent>
       <Property name="readOnly">true</Property>
       <Property name="dataSet">dsJobstatistics</Property>
       <Property name="dataPath"></Property>
@@ -157,14 +142,37 @@ arg.processDefault = true;</ClientEvent>
       <DataColumn name="plancompletedate">
         <Property name="property">plancompletedate</Property>
       </DataColumn>
+      <DataColumn name="realcompletedate">
+        <ClientEvent name="onRenderCell">var planDate = arg.data.get(&quot;plancompletedate&quot;);&#xD;
+var realDate = arg.data.get(&quot;realcompletedate&quot;);&#xD;
+if(realDate || planDate &lt; realDate){&#xD;
+	arg.dom.style.color = &quot;red&quot;;&#xD;
+}&#xD;
+else{&#xD;
+	arg.dom.style.color = &quot;&quot;;&#xD;
+}&#xD;
+arg.processDefault = true;</ClientEvent>
+        <Property name="property">realcompletedate</Property>
+      </DataColumn>
       <DataColumn>
+        <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;workStatus&quot;);&#xD;
+if(status == 0){&#xD;
+	arg.dom.style.color = &quot;red&quot;;&#xD;
+}&#xD;
+else if(status == 1){&#xD;
+	arg.dom.style.color = &quot;blue&quot;;&#xD;
+}&#xD;
+else if(status == 2){&#xD;
+	arg.dom.style.color = &quot;green&quot;;&#xD;
+}&#xD;
+else{&#xD;
+	arg.dom.style.color = &quot;&quot;;&#xD;
+}&#xD;
+arg.processDefault = true;</ClientEvent>
         <Property name="property">workStatus</Property>
         <Property name="name">WorkStatus</Property>
         <Property name="align">left</Property>
         <Editor/>
-      </DataColumn>
-      <DataColumn name="realcompletedate">
-        <Property name="property">realcompletedate</Property>
       </DataColumn>
       <DataColumn name="writingperson">
         <Property name="property">writingperson</Property>
@@ -184,6 +192,11 @@ arg.processDefault = true;</ClientEvent>
         <Editor/>
       </DataColumn>
       <DataColumn>
+        <Property name="property">sectionChiefName</Property>
+        <Property name="name">sectionChiefName</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
         <Property name="property">miji</Property>
         <Property name="name">miji</Property>
         <Property name="align">left</Property>
@@ -197,11 +210,26 @@ arg.processDefault = true;</ClientEvent>
       <Property name="caption">工作项目管理</Property>
       <Buttons>
         <Button>
-          <ClientEvent name="onClick">view.id('uaJobstatistics').execute(function(){
-               view.id('diaJobstatistics').hide();
-           });</ClientEvent>
+          <ClientEvent name="onClick">var dsJobstatistics = view.get(&quot;#dsJobstatistics&quot;);
+view.id('uaJobstatistics').execute(function(){
+	view.id('diaJobstatistics').hide();	
+	dsJobstatistics.flushAsync();
+});
+		   </ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var dsJobstatistics = view.get(&quot;#dsJobstatistics&quot;);&#xD;
+var cur=view.id('dsJobstatistics').getData('#');&#xD;
+view.id('uaJobstatistics').execute(function(){&#xD;
+	view.id(&quot;dsUsers&quot;).set(&quot;parameter&quot;,cur.get(&quot;departid&quot;)).flushAsync();&#xD;
+	view.id('diaJobFormulate').show();&#xD;
+	view.id('diaJobstatistics').hide();	&#xD;
+	dsJobstatistics.flushAsync();&#xD;
+});</ClientEvent>
+          <Property name="caption">确定并下发</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -140px -240px</Property>
         </Button>
         <Button>
           <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#');
@@ -341,6 +369,7 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
             <Property name="property">content</Property>
             <Property name="editorType">TextArea</Property>
             <Property name="height">150</Property>
+            <Property name="readOnly">false</Property>
           </AutoFormElement>
           <AutoFormElement layoutConstraint="colSpan:2">
             <Property name="name">Tag</Property>
@@ -372,6 +401,7 @@ dorado.MessageBox.confirm('您是否确认向室主任下发本项工作项目�
 	view.id('uaJobstatistics').execute(function(){
     	view.id('diaJobFormulate').hide();
     });
+	view.id('dsJobstatistics').flushAsync();
 });
 </ClientEvent>
           <Property name="caption">确定</Property>
@@ -393,11 +423,11 @@ var user=view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;);&#xD;
 dorado.MessageBox.confirm('您是否确认向室主任下发本项工作项目计划?', function(){&#xD;
 	cur.set(&quot;workStatus&quot;,1);&#xD;
 	cur.set(&quot;sectionChief&quot;,user.get(&quot;username&quot;));&#xD;
+	cur.set(&quot;sectionChiefName&quot;,user.get(&quot;cname&quot;));&#xD;
 	view.id('uaJobstatistics').execute(function(){&#xD;
     	view.id('diaJobFormulate').hide();&#xD;
     });&#xD;
-});&#xD;
-</ClientEvent>
+});</ClientEvent>
           <Property name="showFilterBar">true</Property>
           <Property name="rowHeight">22</Property>
           <Property name="dataSet">dsUsers</Property>
@@ -502,11 +532,22 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
             <Property name="name">AddP6</Property>
             <Property name="property">addp6</Property>
           </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+          </AutoFormElement>
           <AutoFormElement layoutConstraint="colSpan:2">
             <Property name="name">Content</Property>
             <Property name="property">content</Property>
             <Property name="editorType">TextArea</Property>
             <Property name="height">150</Property>
+          </AutoFormElement>
+          <AutoFormElement layoutConstraint="colSpan:2">
+            <Property name="name">workReport</Property>
+            <Property name="property">workReport</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">100</Property>
+            <Property name="readOnly">true</Property>
           </AutoFormElement>
           <AutoFormElement layoutConstraint="colSpan:2">
             <Property name="name">Tag</Property>
@@ -515,12 +556,13 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
             <Property name="height">50</Property>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="name">miji</Property>
-            <Property name="property">miji</Property>
-          </AutoFormElement>
-          <AutoFormElement>
             <Property name="name">SectionChief</Property>
             <Property name="property">sectionChief</Property>
+            <Property name="trigger">customDropDownUser2</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">SectionChiefName</Property>
+            <Property name="property">sectionChiefName</Property>
             <Property name="trigger">customDropDownUser2</Property>
           </AutoFormElement>
         </AutoForm>

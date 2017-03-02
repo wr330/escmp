@@ -4,13 +4,20 @@
   <Context/>
   <Model/>
   <View>
+    <ClientEvent name="onCreate">self.checkButton = function(cur,tagName,status){	&#xD;
+    this.set(&quot;^&quot; + tagName +&quot;.disabled&quot;, cur &amp;&amp; cur.get(&quot;workStatus&quot;) != status);&#xD;
+}</ClientEvent>
     <DataSet id="dsJoballot">
+      <ClientEvent name="onLoadData">var cur = view.id('dsJoballot').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'jobAllot','1');&#xD;
+});</ClientEvent>
       <Property name="dataType">[Joballot]</Property>
       <Property name="dataProvider">joballotPR#queryJoballot</Property>
       <Property name="pageSize">20</Property>
       <Property name="parameter">
         <Entity>
           <Property name="user">${loginUser.getUsername()}</Property>
+          <Property name="status">1</Property>
         </Entity>
       </Property>
     </DataSet>
@@ -40,6 +47,7 @@ if (cur) {
 }</ClientEvent>
         <Property name="caption">执行情况汇报</Property>
         <Property name="icon">url(>skin>common/icons.gif) -160px -100px</Property>
+        <Property name="tags">jobAllot</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsJoballot').getData('#');&#xD;
@@ -62,14 +70,9 @@ dsJoballot.flushAsync();</ClientEvent>
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgJoballot">
-      <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;workStatus&quot;);&#xD;
-if(status == 1){&#xD;
-	arg.dom.style.color = &quot;red&quot;;&#xD;
-}&#xD;
-else{&#xD;
-	arg.dom.style.color = &quot;&quot;;&#xD;
-}&#xD;
-arg.processDefault = true;</ClientEvent>
+      <ClientEvent name="onCurrentChange">var cur = view.id('dsJoballot').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'jobAllot','1');&#xD;
+});</ClientEvent>
       <Property name="readOnly">true</Property>
       <Property name="dataSet">dsJoballot</Property>
       <Property name="filterMode">clientSide</Property>
@@ -78,17 +81,12 @@ arg.processDefault = true;</ClientEvent>
       <RowNumColumn/>
       <DataColumn>
         <Property name="property">jobstatistics.projectname</Property>
-        <Property name="width">120</Property>
+        <Property name="width">170</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
         <Property name="property">jobstatistics.departname</Property>
         <Property name="width">120</Property>
-        <Editor/>
-      </DataColumn>
-      <DataColumn>
-        <Property name="property">jobstatistics.content</Property>
-        <Property name="width">350</Property>
         <Editor/>
       </DataColumn>
       <DataColumn name="personid">
@@ -104,11 +102,23 @@ arg.processDefault = true;</ClientEvent>
         <Property name="width">350</Property>
       </DataColumn>
       <DataColumn>
+        <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;workStatus&quot;);&#xD;
+if(status == 1){&#xD;
+	arg.dom.style.color = &quot;red&quot;;&#xD;
+}&#xD;
+else{&#xD;
+	arg.dom.style.color = &quot;&quot;;&#xD;
+}&#xD;
+arg.processDefault = true;</ClientEvent>
         <Property name="property">workStatus</Property>
         <Property name="name">WorkStatus</Property>
         <Property name="align">left</Property>
         <Property name="width">120</Property>
         <Editor/>
+      </DataColumn>
+      <DataColumn name="workSummary">
+        <Property name="property">workSummary</Property>
+        <Property name="width">300</Property>
       </DataColumn>
       <DataColumn name="status">
         <Property name="property">status</Property>
@@ -129,27 +139,31 @@ arg.processDefault = true;</ClientEvent>
       <ClientEvent name="onClose">view.id(&quot;dsJobstatistics&quot;).getData('#.#joballot').cancel();</ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
-      <Property name="width">500</Property>
+      <Property name="width">800</Property>
       <Property name="caption">工作项目作业分配</Property>
       <Buttons>
         <Button>
-          <ClientEvent name="onClick">var cur=view.id('dsJoballot').getData('#');
-dorado.MessageBox.confirm('您是否确认已完成所分配的工作?', function(){	
-	cur.set(&quot;workStatus&quot;,2);
-	view.id('uaJoballot').execute(function(){
-    view.id('diaJoballot').hide();
-	});
-});  
-        </ClientEvent>
+          <ClientEvent name="onClick">var dsJoballot = view.get(&quot;#dsJoballot&quot;);
+var cur=view.id('dsJoballot').getData('#');
+if(cur.get(&quot;workSummary&quot;) != null){
+	dorado.MessageBox.confirm('您是否确认已完成所分配的工作?', function(){	
+		cur.set(&quot;workStatus&quot;,2);
+		view.id('uaJoballot').execute(function(){
+   			view.id('diaJoballot').hide();
+		});
+		dsJoballot.flushAsync();
+	});	  
+}
+else{
+	dorado.MessageBox.alert(&quot;需要填写工作总结&quot;);
+}          </ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
         </Button>
         <Button>
-          <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#.#joballot');
-				cur.cancel();
-				view.id('diaJoballot').hide();
-	     
-	         </ClientEvent>
+          <ClientEvent name="onClick">var cur=view.id('dsJoballot').getData('#');
+cur.cancel();
+view.id('diaJoballot').hide();	     	         </ClientEvent>
           <Property name="caption">取消</Property>
           <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
         </Button>
@@ -157,7 +171,7 @@ dorado.MessageBox.confirm('您是否确认已完成所分配的工作?', functio
       <Children>
         <AutoForm id="afJoballot">
           <Property name="dataSet">dsJoballot</Property>
-          <Property name="cols">*</Property>
+          <Property name="cols">*,*</Property>
           <AutoFormElement>
             <Property name="name">personname</Property>
             <Property name="property">personname</Property>
@@ -171,7 +185,7 @@ dorado.MessageBox.confirm('您是否确认已完成所分配的工作?', functio
             <Property name="readOnly">true</Property>
             <Editor/>
           </AutoFormElement>
-          <AutoFormElement>
+          <AutoFormElement layoutConstraint="colSpan:2">
             <Property name="name">content</Property>
             <Property name="property">content</Property>
             <Property name="editorType">TextArea</Property>
@@ -187,6 +201,13 @@ dorado.MessageBox.confirm('您是否确认已完成所分配的工作?', functio
           <AutoFormElement>
             <Property name="name">finishtime</Property>
             <Property name="property">finishtime</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement layoutConstraint="colSpan:2">
+            <Property name="name">workSummary</Property>
+            <Property name="property">workSummary</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">200</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
@@ -202,7 +223,7 @@ dorado.MessageBox.confirm('您是否确认已完成所分配的工作?', functio
     <Dialog id="diaJoballotSee">
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
-      <Property name="width">700</Property>
+      <Property name="width">800</Property>
       <Property name="caption">工作项目作业分配管理</Property>
       <Buttons>
         <Button>
@@ -214,7 +235,7 @@ dorado.MessageBox.confirm('您是否确认已完成所分配的工作?', functio
       <Children>
         <AutoForm id="afJoballotSee">
           <Property name="dataSet">dsJoballot</Property>
-          <Property name="cols">*</Property>
+          <Property name="cols">*,*</Property>
           <Property name="readOnly">true</Property>
           <AutoFormElement>
             <Property name="property">jobstatistics.projectname</Property>
@@ -226,11 +247,11 @@ dorado.MessageBox.confirm('您是否确认已完成所分配的工作?', functio
             <Property name="readOnly">true</Property>
             <Editor/>
           </AutoFormElement>
-          <AutoFormElement>
+          <AutoFormElement layoutConstraint="colSpan:2">
             <Property name="property">jobstatistics.content</Property>
             <Property name="readOnly">true</Property>
             <Property name="editorType">TextArea</Property>
-            <Property name="height">250</Property>
+            <Property name="height">200</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
@@ -245,11 +266,12 @@ dorado.MessageBox.confirm('您是否确认已完成所分配的工作?', functio
             <Property name="readOnly">true</Property>
             <Editor/>
           </AutoFormElement>
-          <AutoFormElement>
+          <AutoFormElement layoutConstraint="colSpan:2">
             <Property name="name">content</Property>
             <Property name="property">content</Property>
             <Property name="editorType">TextArea</Property>
-            <Property name="height">250</Property>
+            <Property name="height">150</Property>
+            <Property name="readOnly">true</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
@@ -262,6 +284,13 @@ dorado.MessageBox.confirm('您是否确认已完成所分配的工作?', functio
             <Property name="name">finishtime</Property>
             <Property name="property">finishtime</Property>
             <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement layoutConstraint="colSpan:2">
+            <Property name="name">workSummary</Property>
+            <Property name="property">workSummary</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">150</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>

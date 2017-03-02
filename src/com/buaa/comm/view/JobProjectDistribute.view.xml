@@ -5,7 +5,349 @@
   </Property>
   <Arguments/>
   <Context/>
-  <Model/>
+  <Model>
+    <DataType name="Jobstatistics">
+      <Property name="creationType">com.buaa.comm.domain.Jobstatistics</Property>
+      <PropertyDef name="oid">
+        <Property name="dataType">String</Property>
+        <Property name="label">oid</Property>
+      </PropertyDef>
+      <PropertyDef name="writingperson">
+        <Property name="dataType">String</Property>
+        <Property name="label">填写人员</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="departname">
+        <Property name="dataType">String</Property>
+        <Property name="label">所属专业室</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="departid">
+        <Property name="dataType">String</Property>
+        <Property name="label">departid</Property>
+      </PropertyDef>
+      <PropertyDef name="projectname">
+        <Property name="dataType">String</Property>
+        <Property name="label">项目名称</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="content">
+        <Property name="dataType">String</Property>
+        <Property name="label">工作内容</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="status">
+        <Property name="dataType">String</Property>
+        <Property name="label">作业状态</Property>
+      </PropertyDef>
+      <PropertyDef name="arrangementdate">
+        <Property name="dataType">Date</Property>
+        <Property name="label">布置时间</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="plancompletedate">
+        <Property name="dataType">Date</Property>
+        <Property name="label">计划完成时间</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="realcompletedate">
+        <Property name="dataType">Date</Property>
+        <Property name="label">实际完成时间</Property>
+      </PropertyDef>
+      <PropertyDef name="sourcepersonname">
+        <Property name="dataType">String</Property>
+        <Property name="label">任务来源人</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="sourcepersonid">
+        <Property name="dataType">String</Property>
+        <Property name="label">sourcepersonid</Property>
+      </PropertyDef>
+      <PropertyDef name="sourceevent">
+        <Property name="dataType">String</Property>
+        <Property name="label">任务来源事件</Property>
+      </PropertyDef>
+      <PropertyDef name="refreshtime">
+        <Property name="dataType">DateTime</Property>
+        <Property name="label">更新时间</Property>
+      </PropertyDef>
+      <PropertyDef name="isfromp6">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">是否来源于P6</Property>
+        <Property name="defaultValue">fasle</Property>
+      </PropertyDef>
+      <PropertyDef name="addp6">
+        <Property name="dataType">Boolean</Property>
+        <Property name="label">加入P6</Property>
+        <Property name="mapping">
+          <Property name="mapValues">
+            <Collection>
+              <Entity>
+                <Property name="key">false</Property>
+                <Property name="value">未添加</Property>
+              </Entity>
+              <Entity>
+                <Property name="key">true</Property>
+                <Property name="value">已添加</Property>
+              </Entity>
+            </Collection>
+          </Property>
+        </Property>
+        <Property name="defaultValue">false</Property>
+      </PropertyDef>
+      <PropertyDef name="tag">
+        <Property name="dataType">String</Property>
+        <Property name="label">备注</Property>
+      </PropertyDef>
+      <Reference name="joballot">
+        <ClientEvent name="onLoadData">var cur = view.id('dsJobstatistics').getDataAsync('#.#joballot',function(cur){&#xD;
+	view.checkButton(cur,'jobDist','0');&#xD;
+});</ClientEvent>
+        <Property name="dataProvider">joballotPR#queryJoballot</Property>
+        <Property name="dataType">[Joballot]</Property>
+        <Property name="pageSize">20</Property>
+        <Property name="parameter">
+          <Entity>
+            <Property name="jobstatistics">$${this.oid}</Property>
+          </Entity>
+        </Property>
+      </Reference>
+      <Reference name="jobconcern">
+        <Property name="dataProvider">jobconcernPR#queryJobconcern</Property>
+        <Property name="dataType">[Jobconcern]</Property>
+        <Property name="pageSize">20</Property>
+        <Property name="parameter">
+          <Entity>
+            <Property name="jobstatistics">$${this.oid}</Property>
+          </Entity>
+        </Property>
+      </Reference>
+      <PropertyDef name="isfocus">
+        <Property name="dataType">boolean</Property>
+      </PropertyDef>
+      <PropertyDef name="miji">
+        <Property name="dataType">String</Property>
+        <Property name="label">密级</Property>
+        <Property name="mapping">
+          <Property name="mapValues">
+            <Collection>
+              <Entity>
+                <Property name="key">5</Property>
+                <Property name="value">机密</Property>
+              </Entity>
+              <Entity>
+                <Property name="key">4</Property>
+                <Property name="value">秘密</Property>
+              </Entity>
+              <Entity>
+                <Property name="key">3</Property>
+                <Property name="value">核心商密</Property>
+              </Entity>
+              <Entity>
+                <Property name="key">2</Property>
+                <Property name="value">普通商密</Property>
+              </Entity>
+              <Entity>
+                <Property name="key">1</Property>
+                <Property name="value">内部</Property>
+              </Entity>
+              <Entity>
+                <Property name="key">0</Property>
+                <Property name="value">公开</Property>
+              </Entity>
+            </Collection>
+          </Property>
+        </Property>
+        <Property name="defaultValue">1</Property>
+        <Validator type="custom">
+          <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
+if (arg.data &lt;= secret) {&#xD;
+	arg.result = { state:&quot;ok&quot;};&#xD;
+} &#xD;
+else {&#xD;
+	arg.result = { state:&quot;error&quot;, text: &quot;新增数据的密级超过自己对应密级&quot;};	&#xD;
+}</ClientEvent>
+        </Validator>
+      </PropertyDef>
+      <PropertyDef name="workStatus">
+        <Property name="dataType">int</Property>
+        <Property name="defaultValue">0</Property>
+        <Property name="label">工作状态</Property>
+        <Property name="mapping">
+          <Property name="mapValues">
+            <Collection>
+              <Entity>
+                <Property name="key">0</Property>
+                <Property name="value">编辑中</Property>
+              </Entity>
+              <Entity>
+                <Property name="key">1</Property>
+                <Property name="value">分配中</Property>
+              </Entity>
+              <Entity>
+                <Property name="key">2</Property>
+                <Property name="value">执行中</Property>
+              </Entity>
+              <Entity>
+                <Property name="key">3</Property>
+                <Property name="value">已完成</Property>
+              </Entity>
+            </Collection>
+          </Property>
+        </Property>
+      </PropertyDef>
+      <PropertyDef name="sectionChief">
+        <Property></Property>
+        <Property name="dataType">String</Property>
+        <Property name="label">分配到室主任</Property>
+      </PropertyDef>
+      <PropertyDef name="sectionChiefName">
+        <Property/>
+        <Property name="dataType">String</Property>
+        <Property name="label">室主任姓名</Property>
+      </PropertyDef>
+      <PropertyDef name="workReport">
+        <Property/>
+        <Property name="dataType">String</Property>
+        <Property name="label">工作情况汇报</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="Joballot">
+      <Property name="creationType">com.buaa.comm.domain.Joballot</Property>
+      <PropertyDef name="oid">
+        <Property name="dataType">String</Property>
+        <Property name="label">oid</Property>
+      </PropertyDef>
+      <PropertyDef name="jobstatistics">
+        <Property name="dataType">Jobstatistics</Property>
+        <Property name="label">工作项目</Property>
+      </PropertyDef>
+      <PropertyDef name="personname">
+        <Property name="dataType">String</Property>
+        <Property name="label">负责人</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="personid">
+        <Property name="dataType">String</Property>
+        <Property name="label">用户名</Property>
+        <Property name="required">true</Property>
+        <Validator type="ajax">
+          <ClientEvent name="beforeExecute">var oid = arg.entity.get(&quot;oid&quot;);&#xD;
+var job = arg.entity.get(&quot;jobstatistics.oid&quot;);&#xD;
+if(!oid)&#xD;
+    oid = null;&#xD;
+var parameter = {&#xD;
+		oid:oid,&#xD;
+		jobstatistics:job,&#xD;
+		person:arg.data&#xD;
+	};&#xD;
+arg.parameter = parameter;</ClientEvent>
+          <Property name="service">joballotManager#personIsExists</Property>
+        </Validator>
+      </PropertyDef>
+      <PropertyDef name="content">
+        <Property name="dataType">String</Property>
+        <Property name="label">分配内容</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="workSummary">
+        <Property></Property>
+        <Property name="dataType">String</Property>
+        <Property name="label">工作总结</Property>
+      </PropertyDef>
+      <PropertyDef name="status">
+        <Property name="dataType">boolean</Property>
+        <Property name="label">完成状态</Property>
+        <Property name="mapping">
+          <Property name="mapValues">
+            <Collection>
+              <Entity>
+                <Property name="key">false</Property>
+                <Property name="value">执行中</Property>
+              </Entity>
+              <Entity>
+                <Property name="key">true</Property>
+                <Property name="value">已完成</Property>
+              </Entity>
+            </Collection>
+          </Property>
+        </Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="finishtime">
+        <Property name="dataType">DateTime</Property>
+        <Property name="label">完成时间</Property>
+      </PropertyDef>
+      <PropertyDef name="miji">
+        <Property name="dataType">String</Property>
+        <Property name="label">密级</Property>
+        <Property name="mapping">
+          <Property name="mapValues">
+            <Collection>
+              <Entity>
+                <Property name="key">5</Property>
+                <Property name="value">机密</Property>
+              </Entity>
+              <Entity>
+                <Property name="key">4</Property>
+                <Property name="value">秘密</Property>
+              </Entity>
+              <Entity>
+                <Property name="key">3</Property>
+                <Property name="value">核心商密</Property>
+              </Entity>
+              <Entity>
+                <Property name="key">2</Property>
+                <Property name="value">普通商密</Property>
+              </Entity>
+              <Entity>
+                <Property name="key">1</Property>
+                <Property name="value">内部</Property>
+              </Entity>
+              <Entity>
+                <Property name="key">0</Property>
+                <Property name="value">公开</Property>
+              </Entity>
+            </Collection>
+          </Property>
+        </Property>
+        <Property name="defaultValue">1</Property>
+        <Validator type="custom">
+          <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
+if (arg.data &lt;= secret) {&#xD;
+	arg.result = { state:&quot;ok&quot;};&#xD;
+} &#xD;
+else {&#xD;
+	arg.result = { state:&quot;error&quot;, text: &quot;新增数据的密级超过自己对应密级&quot;};	&#xD;
+}</ClientEvent>
+        </Validator>
+      </PropertyDef>
+      <PropertyDef name="workStatus">
+        <Property></Property>
+        <Property name="dataType">int</Property>
+        <Property name="defaultValue">0</Property>
+        <Property name="label">工作状态</Property>
+        <Property name="mapping">
+          <Property name="mapValues">
+            <Collection>
+              <Entity>
+                <Property name="key">0</Property>
+                <Property name="value">编辑中</Property>
+              </Entity>
+              <Entity>
+                <Property name="key">1</Property>
+                <Property name="value">未汇报</Property>
+              </Entity>
+              <Entity>
+                <Property name="key">2</Property>
+                <Property name="value">已汇报</Property>
+              </Entity>
+            </Collection>
+          </Property>
+        </Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
   <View>
     <ClientEvent name="onReady">view.refreshStatus = function(){//刷新作业状态&#xD;
 	var cur=view.id('dsJobstatistics').getData('#');&#xD;
@@ -23,7 +365,25 @@
     }&#xD;
 }&#xD;
 </ClientEvent>
+    <ClientEvent name="onCreate">self.checkButton = function(cur,tagName,status){&#xD;
+	if(status >= 0){&#xD;
+		 this.set(&quot;^&quot; + tagName +&quot;.disabled&quot;, cur &amp;&amp; cur.get(&quot;workStatus&quot;) != status);&#xD;
+	}	&#xD;
+	else{&#xD;
+		this.set(&quot;^&quot; + tagName +&quot;.disabled&quot;, cur &amp;&amp; cur.get(&quot;workStatus&quot;) == -status);&#xD;
+	}   &#xD;
+}</ClientEvent>
     <DataSet id="dsJobstatistics">
+      <ClientEvent name="onLoadData">var cur = view.id('dsJobstatistics').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'jobReport','2');&#xD;
+	view.checkButton(cur,'jobCom','-3');&#xD;
+});</ClientEvent>
+      <ClientEvent name="onReady">/*var dsJobstatistics = view.get(&quot;#dsJobstatistics&quot;);&#xD;
+dsJobstatistics.flush();&#xD;
+var cur1 = view.id('dsJobstatistics').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'jobReport','2');	&#xD;
+	view.checkButton(cur.get(&quot;joballot&quot;).getFirst(),'jobDist','0');&#xD;
+});*/</ClientEvent>
       <Property name="dataType">[Jobstatistics]</Property>
       <Property name="dataProvider">jobstatisticsPR#queryJobstatistics</Property>
       <Property name="pageSize">20</Property>
@@ -33,6 +393,7 @@
           <Property name="status">1</Property>
         </Entity>
       </Property>
+      <Property name="loadMode">lazy</Property>
     </DataSet>
     <DataSet id="dsDept">
       <Property name="dataProvider">bdf2.deptSelect#loadDepts</Property>
@@ -64,46 +425,12 @@ if (cur) {&#xD;
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var cur = view.id('dsJobstatistics').getData('#');
-var currentJoballot = view.id('dsJobstatistics').getData('#.#joballot');
-var allJoballot = view.id('dsJobstatistics').getData('#.joballot');
-if(currentJoballot){
-	dorado.MessageBox.confirm('您是否确认向专业室成员进行具体作业分配?', function(){
-		allJoballot = allJoballot.toArray();
-		allJoballot.each(function(joballot){
-			if(joballot.get(&quot;workStatus&quot;) == 0){
-				joballot.set(&quot;workStatus&quot;,1);
-			}	
-		})
-		cur.set(&quot;workStatus&quot;,2);
-		view.id('uaJobstatistics').execute();
-	}); 
-}
-else{
-	dorado.MessageBox.alert(&quot;没有进行具体作业分配&quot;);
-}
-	
-	</ClientEvent>
-        <Property name="caption">分配到科员</Property>
-        <Property name="icon">url(>skin>common/icons.gif) -240px -0px</Property>
-      </ToolBarButton>
-      <ToolBarButton>
-        <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#');
 if (cur) {
-	if(cur.get(&quot;workStatus&quot;) == 2){
-		view.id('diaJobstatistics').show();
-	}
-	else if(cur.get(&quot;workStatus&quot;) == 1){
-		dorado.MessageBox.alert(&quot;本项目正在分配中，不能向领导汇报&quot;);
-	}
-	else{
-		dorado.MessageBox.alert(&quot;本项目已完成，不能向领导再次汇报&quot;);
-	}
-}
-
-
-</ClientEvent>
+	view.id('diaJobstatistics').show();	
+}</ClientEvent>
         <Property name="caption">执行情况汇报</Property>
         <Property name="icon">url(>skin>common/icons.gif) -220px -0px</Property>
+        <Property name="tags">jobReport</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">view.id('dgJobstatistics').set(&quot;showFilterBar&quot;,!view.id('dgJobstatistics').get(&quot;showFilterBar&quot;));</ClientEvent>
@@ -118,17 +445,11 @@ dsJobstatistics.flushAsync();</ClientEvent>
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgJobstatistics">
-      <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;workStatus&quot;);&#xD;
-if(status == 1){&#xD;
-	arg.dom.style.color = &quot;red&quot;;&#xD;
-}&#xD;
-else if(status == 2){&#xD;
-	arg.dom.style.color = &quot;green&quot;;&#xD;
-}&#xD;
-else{&#xD;
-	arg.dom.style.color = &quot;&quot;;&#xD;
-}&#xD;
-arg.processDefault = true;</ClientEvent>
+      <ClientEvent name="onCurrentChange">var cur = view.id('dsJobstatistics').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'jobReport','2');&#xD;
+	view.checkButton(cur,'jobCom','-3');&#xD;
+	cur.reset(&quot;joballot&quot;);&#xD;
+});</ClientEvent>
       <Property name="readOnly">true</Property>
       <Property name="dataSet">dsJobstatistics</Property>
       <Property name="dataPath"></Property>
@@ -156,14 +477,34 @@ arg.processDefault = true;</ClientEvent>
       <DataColumn name="plancompletedate">
         <Property name="property">plancompletedate</Property>
       </DataColumn>
+      <DataColumn name="realcompletedate">
+        <ClientEvent name="onRenderCell">var planDate = arg.data.get(&quot;plancompletedate&quot;);&#xD;
+var realDate = arg.data.get(&quot;realcompletedate&quot;);&#xD;
+if(realDate || planDate &lt; realDate){&#xD;
+	arg.dom.style.color = &quot;red&quot;;&#xD;
+}&#xD;
+else{&#xD;
+	arg.dom.style.color = &quot;&quot;;&#xD;
+}&#xD;
+arg.processDefault = true;</ClientEvent>
+        <Property name="property">realcompletedate</Property>
+      </DataColumn>
       <DataColumn>
+        <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;workStatus&quot;);&#xD;
+if(status == 1){&#xD;
+	arg.dom.style.color = &quot;red&quot;;&#xD;
+}&#xD;
+else if(status == 2){&#xD;
+	arg.dom.style.color = &quot;green&quot;;&#xD;
+}&#xD;
+else{&#xD;
+	arg.dom.style.color = &quot;&quot;;&#xD;
+}&#xD;
+arg.processDefault = true;</ClientEvent>
         <Property name="property">workStatus</Property>
         <Property name="name">WorkStatus</Property>
         <Property name="align">left</Property>
         <Editor/>
-      </DataColumn>
-      <DataColumn name="realcompletedate">
-        <Property name="property">realcompletedate</Property>
       </DataColumn>
       <DataColumn name="writingperson">
         <Property name="property">writingperson</Property>
@@ -180,6 +521,11 @@ arg.processDefault = true;</ClientEvent>
       <DataColumn>
         <Property name="property">sectionChief</Property>
         <Property name="name">sectionChief</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">sectionChiefName</Property>
+        <Property name="name">sectionChiefName</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
@@ -212,39 +558,33 @@ if(cur){
 }</ClientEvent>
             <Property name="caption">新增</Property>
             <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+            <Property name="tags">jobCom</Property>
           </ToolBarButton>
           <ToolBarButton>
-            <ClientEvent name="onClick">var cur = view.id('dsJobstatistics').getData('#');
-var curJoballot = view.id('dsJobstatistics').getData('#.#joballot');
+            <ClientEvent name="onClick">var curJoballot = view.id('dsJobstatistics').getData('#.#joballot');
 if(curJoballot){
-	if(cur.get(&quot;workStatus&quot;) == 3){
-		dorado.MessageBox.alert(&quot;工作项目已完成，不能修改具体作业分配情况&quot;);
-	}
-	else{
-		view.id('diaJoballot').show();
-	}
+	view.id('diaJoballot').show();
 }</ClientEvent>
             <Property name="caption">修改</Property>
             <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+            <Property name="tags">jobDist</Property>
+            <Property name="disabled">false</Property>
           </ToolBarButton>
           <ToolBarButton>
             <ClientEvent name="onClick">var cur = view.id('dsJobstatistics').getData('#');
 var curJoballot = view.id('dsJobstatistics').getData('#.#joballot');
 var ua=view.id('uaJobstatistics');
 if(curJoballot){
-	if(cur.get(&quot;workStatus&quot;) == 3){
-		dorado.MessageBox.alert(&quot;工作项目已完成，不能删除具体作业分配情况&quot;);
-	}
-	else{
-		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
-			view.refreshStatus();
-			cur.remove();
-			ua.execute();
-		}); 
-	}	
+	dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+		view.refreshStatus();
+		curJoballot.remove();
+		ua.execute();
+	}); 
 } </ClientEvent>
             <Property name="caption">删除</Property>
             <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+            <Property name="tags">jobDist</Property>
+            <Property name="disabled">false</Property>
           </ToolBarButton>
           <ToolBarButton>
             <ClientEvent name="onClick">var cur = view.id('dsJobstatistics').getData('#.#joballot');&#xD;
@@ -255,33 +595,50 @@ if (cur) {&#xD;
             <Property name="icon">url(>skin>common/icons.gif) -40px -100px</Property>
           </ToolBarButton>
           <ToolBarButton>
+            <ClientEvent name="onClick">var cur = view.id('dsJobstatistics').getData('#');
+var currentJoballot = view.id('dsJobstatistics').getData('#.#joballot');
+var allJoballot = view.id('dsJobstatistics').getData('#.joballot');
+if(currentJoballot){
+	dorado.MessageBox.confirm('您是否确认向专业室成员进行具体作业分配?', function(){
+		allJoballot = allJoballot.toArray();
+		allJoballot.each(function(joballot){
+			if(joballot.get(&quot;workStatus&quot;) == 0){
+				joballot.set(&quot;workStatus&quot;,1);
+			}	
+		})
+		cur.set(&quot;workStatus&quot;,2);
+		view.id('uaJobstatistics').execute();
+	}); 
+}
+else{
+	dorado.MessageBox.alert(&quot;没有进行具体作业分配&quot;);
+}
+	
+	</ClientEvent>
+            <Property name="caption">分配到科员</Property>
+            <Property name="icon">url(>skin>common/icons.gif) -240px -0px</Property>
+            <Property name="disabled">false</Property>
+            <Property name="tags">jobDist</Property>
+          </ToolBarButton>
+          <ToolBarButton>
             <ClientEvent name="onClick">view.id('dgJoballot').set(&quot;showFilterBar&quot;,!view.id('dgJoballot').get(&quot;showFilterBar&quot;));</ClientEvent>
             <Property name="caption">自定义查询</Property>
             <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
           </ToolBarButton>
           <ToolBarButton>
-            <ClientEvent name="onClick">view.id(&quot;dsJobstatistics&quot;).getData(&quot;#&quot;).reset(&quot;joballot&quot;)&#xD;
-</ClientEvent>
+            <ClientEvent name="onClick">view.id(&quot;dsJobstatistics&quot;).getData(&quot;#&quot;).reset(&quot;joballot&quot;)</ClientEvent>
             <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
             <Property name="caption">刷新</Property>
           </ToolBarButton>
         </ToolBar>
         <DataGrid id="dgJoballot">
-          <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;workStatus&quot;);&#xD;
-if(status == 0){&#xD;
-	arg.dom.style.color = &quot;red&quot;;&#xD;
-}&#xD;
-else if(status == 1){&#xD;
-	arg.dom.style.color = &quot;green&quot;;&#xD;
-}&#xD;
-else{&#xD;
-	arg.dom.style.color = &quot;&quot;;&#xD;
-}&#xD;
-arg.processDefault = true;</ClientEvent>
+          <ClientEvent name="onCurrentChange">var curAllot = view.id('dsJobstatistics').getDataAsync('#.#joballot',function(curAllot){&#xD;
+		view.checkButton(curAllot,'jobDist','0');&#xD;
+});</ClientEvent>
           <Property name="readOnly">true</Property>
           <Property name="dataSet">dsJobstatistics</Property>
           <Property name="dataPath">#.joballot</Property>
-          <Property name="filterMode">clientSide</Property>
+          <Property name="filterMode">serverSide</Property>
           <Property name="showFilterBar">false</Property>
           <Property name="rowHeight">22</Property>
           <Property name="selectionMode">none</Property>
@@ -299,11 +656,27 @@ arg.processDefault = true;</ClientEvent>
             <Property name="width">600</Property>
           </DataColumn>
           <DataColumn>
+            <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;workStatus&quot;);&#xD;
+if(status == 0){&#xD;
+	arg.dom.style.color = &quot;red&quot;;&#xD;
+}&#xD;
+else if(status == 1){&#xD;
+	arg.dom.style.color = &quot;green&quot;;&#xD;
+}&#xD;
+else{&#xD;
+	arg.dom.style.color = &quot;&quot;;&#xD;
+}&#xD;
+arg.processDefault = true;</ClientEvent>
             <Property name="property">workStatus</Property>
             <Property name="name">WorkStatus</Property>
             <Property name="align">left</Property>
             <Property name="width">120</Property>
             <Editor/>
+          </DataColumn>
+          <DataColumn>
+            <Property name="property">workSummary</Property>
+            <Property name="name">workSummary</Property>
+            <Property name="width">320</Property>
           </DataColumn>
           <DataColumn name="status">
             <Property name="property">status</Property>
@@ -331,7 +704,7 @@ arg.processDefault = true;</ClientEvent>
       <Buttons>
         <Button>
           <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#');
-if(cur.get(&quot;realcompletedate&quot;) != null){
+if(cur.get(&quot;realcompletedate&quot;) != null &amp;&amp; cur.get(&quot;workReport&quot;) != null){
 	dorado.MessageBox.confirm('您是否确认已完成本工作项目?', function(){	
 		cur.set(&quot;workStatus&quot;,3);
 		view.id('uaJobstatistics').execute(function(){
@@ -340,10 +713,8 @@ if(cur.get(&quot;realcompletedate&quot;) != null){
 	});	  
 }
 else{
-	dorado.MessageBox.alert(&quot;需要填写实际完成时间&quot;);
-}
-
-        </ClientEvent>
+	dorado.MessageBox.alert(&quot;需要填写“实际完成时间”与“工作情况汇报”&quot;);
+}        </ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
         </Button>
@@ -417,6 +788,13 @@ else{
             <Property name="readOnly">true</Property>
           </AutoFormElement>
           <AutoFormElement layoutConstraint="colSpan:2">
+            <Property name="name">workReport</Property>
+            <Property name="property">workReport</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">100</Property>
+            <Property name="readOnly">false</Property>
+          </AutoFormElement>
+          <AutoFormElement layoutConstraint="colSpan:2">
             <Property name="name">Tag</Property>
             <Property name="property">tag</Property>
             <Property name="editorType">TextArea</Property>
@@ -446,12 +824,32 @@ else{
       <Buttons>
         <Button>
           <ClientEvent name="onClick">view.refreshStatus();
+var cur = view.id('dsJobstatistics').getData('#');
 view.id('uaJobstatistics').execute(function(){
-    view.id('diaJoballot').hide();
+    	view.id('diaJoballot').hide();
 });
-         </ClientEvent>
+cur.reset(&quot;joballot&quot;);         </ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">view.refreshStatus();&#xD;
+var cur = view.id('dsJobstatistics').getData('#');&#xD;
+var currentJoballot = view.id('dsJobstatistics').getData('#.#joballot');&#xD;
+var allJoballot = view.id('dsJobstatistics').getData('#.joballot');&#xD;
+if(currentJoballot){	&#xD;
+	currentJoballot.set(&quot;workStatus&quot;,1);	&#xD;
+	cur.set(&quot;workStatus&quot;,2);&#xD;
+	view.id('uaJobstatistics').execute(function(){&#xD;
+    	view.id('diaJoballot').hide();&#xD;
+	});&#xD;
+}&#xD;
+else{&#xD;
+	dorado.MessageBox.alert(&quot;没有进行具体作业分配&quot;);&#xD;
+}&#xD;
+cur.reset(&quot;joballot&quot;);</ClientEvent>
+          <Property name="caption">确定并下发</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -140px -240px</Property>
         </Button>
         <Button>
           <ClientEvent name="onClick">var cur=view.id('dsJobstatistics').getData('#.#joballot');
@@ -623,11 +1021,22 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
             <Property name="name">AddP6</Property>
             <Property name="property">addp6</Property>
           </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+          </AutoFormElement>
           <AutoFormElement layoutConstraint="colSpan:2">
             <Property name="name">Content</Property>
             <Property name="property">content</Property>
             <Property name="editorType">TextArea</Property>
             <Property name="height">150</Property>
+          </AutoFormElement>
+          <AutoFormElement layoutConstraint="colSpan:2">
+            <Property name="name">workReport</Property>
+            <Property name="property">workReport</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">100</Property>
+            <Property name="readOnly">false</Property>
           </AutoFormElement>
           <AutoFormElement layoutConstraint="colSpan:2">
             <Property name="name">Tag</Property>
@@ -636,12 +1045,13 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
             <Property name="height">50</Property>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="name">miji</Property>
-            <Property name="property">miji</Property>
-          </AutoFormElement>
-          <AutoFormElement>
             <Property name="name">SectionChief</Property>
             <Property name="property">sectionChief</Property>
+            <Property name="trigger">customDropDownUser2</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">SectionChiefName</Property>
+            <Property name="property">sectionChiefName</Property>
             <Property name="trigger">customDropDownUser2</Property>
           </AutoFormElement>
         </AutoForm>
@@ -651,7 +1061,7 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
     <Dialog id="diaJoballotSee">
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
-      <Property name="width">500</Property>
+      <Property name="width">800</Property>
       <Property name="caption">工作项目作业分配管理</Property>
       <Buttons>
         <Button>
@@ -664,7 +1074,7 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
         <AutoForm id="afJoballotSee">
           <Property name="dataSet">dsJobstatistics</Property>
           <Property name="dataPath">#.#joballot</Property>
-          <Property name="cols">*</Property>
+          <Property name="cols">*,*</Property>
           <Property name="readOnly">true</Property>
           <AutoFormElement>
             <Property name="name">personname</Property>
@@ -678,7 +1088,7 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
             <Property name="readOnly">true</Property>
             <Editor/>
           </AutoFormElement>
-          <AutoFormElement>
+          <AutoFormElement layoutConstraint="colSpan:2">
             <Property name="name">content</Property>
             <Property name="property">content</Property>
             <Property name="editorType">TextArea</Property>
@@ -695,6 +1105,13 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
             <Property name="name">finishtime</Property>
             <Property name="property">finishtime</Property>
             <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement layoutConstraint="colSpan:2">
+            <Property name="name">workSummary</Property>
+            <Property name="property">workSummary</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">200</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>

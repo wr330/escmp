@@ -200,7 +200,8 @@ if(cur){&#xD;
           <ClientEvent name="onClick">var date = new Date();&#xD;
 view.id('uaFighterinfo').set(&quot;parameter&quot;,{&#xD;
 		time:date&#xD;
-}).execute();</ClientEvent>
+}).execute();&#xD;
+view.id('diaTemplate').hide();</ClientEvent>
           <Property name="caption">生成模板</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
         </Button>

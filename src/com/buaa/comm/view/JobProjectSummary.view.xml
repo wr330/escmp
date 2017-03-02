@@ -47,20 +47,6 @@ dsJobstatistics.flushAsync();</ClientEvent>
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgJobstatistics">
-      <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;workStatus&quot;);&#xD;
-if(status == 0){&#xD;
-	arg.dom.style.color = &quot;red&quot;;&#xD;
-}&#xD;
-else if(status == 1){&#xD;
-	arg.dom.style.color = &quot;blue&quot;;&#xD;
-}&#xD;
-else if(status == 2){&#xD;
-	arg.dom.style.color = &quot;green&quot;;&#xD;
-}&#xD;
-else{&#xD;
-	arg.dom.style.color = &quot;&quot;;&#xD;
-}&#xD;
-arg.processDefault = true;</ClientEvent>
       <Property name="readOnly">true</Property>
       <Property name="dataSet">dsJobstatistics</Property>
       <Property name="dataPath"></Property>
@@ -88,14 +74,37 @@ arg.processDefault = true;</ClientEvent>
       <DataColumn name="plancompletedate">
         <Property name="property">plancompletedate</Property>
       </DataColumn>
+      <DataColumn name="realcompletedate">
+        <ClientEvent name="onRenderCell">var planDate = arg.data.get(&quot;plancompletedate&quot;);&#xD;
+var realDate = arg.data.get(&quot;realcompletedate&quot;);&#xD;
+if(realDate || planDate &lt; realDate){&#xD;
+	arg.dom.style.color = &quot;red&quot;;&#xD;
+}&#xD;
+else{&#xD;
+	arg.dom.style.color = &quot;&quot;;&#xD;
+}&#xD;
+arg.processDefault = true;</ClientEvent>
+        <Property name="property">realcompletedate</Property>
+      </DataColumn>
       <DataColumn>
+        <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;workStatus&quot;);&#xD;
+if(status == 0){&#xD;
+	arg.dom.style.color = &quot;red&quot;;&#xD;
+}&#xD;
+else if(status == 1){&#xD;
+	arg.dom.style.color = &quot;blue&quot;;&#xD;
+}&#xD;
+else if(status == 2){&#xD;
+	arg.dom.style.color = &quot;green&quot;;&#xD;
+}&#xD;
+else{&#xD;
+	arg.dom.style.color = &quot;&quot;;&#xD;
+}&#xD;
+arg.processDefault = true;</ClientEvent>
         <Property name="property">workStatus</Property>
         <Property name="name">WorkStatus</Property>
         <Property name="align">left</Property>
         <Editor/>
-      </DataColumn>
-      <DataColumn name="realcompletedate">
-        <Property name="property">realcompletedate</Property>
       </DataColumn>
       <DataColumn name="writingperson">
         <Property name="property">writingperson</Property>
@@ -152,17 +161,6 @@ if (cur) {&#xD;
           </ToolBarButton>
         </ToolBar>
         <DataGrid id="dgJoballot">
-          <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;workStatus&quot;);&#xD;
-if(status == 0){&#xD;
-	arg.dom.style.color = &quot;red&quot;;&#xD;
-}&#xD;
-else if(status == 1){&#xD;
-	arg.dom.style.color = &quot;green&quot;;&#xD;
-}&#xD;
-else{&#xD;
-	arg.dom.style.color = &quot;&quot;;&#xD;
-}&#xD;
-arg.processDefault = true;</ClientEvent>
           <Property name="readOnly">true</Property>
           <Property name="dataSet">dsJobstatistics</Property>
           <Property name="dataPath">#.joballot</Property>
@@ -184,6 +182,17 @@ arg.processDefault = true;</ClientEvent>
             <Property name="width">600</Property>
           </DataColumn>
           <DataColumn>
+            <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;workStatus&quot;);&#xD;
+if(status == 0){&#xD;
+	arg.dom.style.color = &quot;red&quot;;&#xD;
+}&#xD;
+else if(status == 1){&#xD;
+	arg.dom.style.color = &quot;green&quot;;&#xD;
+}&#xD;
+else{&#xD;
+	arg.dom.style.color = &quot;&quot;;&#xD;
+}&#xD;
+arg.processDefault = true;</ClientEvent>
             <Property name="property">workStatus</Property>
             <Property name="name">WorkStatus</Property>
             <Property name="align">left</Property>
@@ -210,7 +219,7 @@ arg.processDefault = true;</ClientEvent>
     <Dialog id="diaJoballotSee">
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
-      <Property name="width">500</Property>
+      <Property name="width">800</Property>
       <Property name="caption">工作项目作业分配</Property>
       <Buttons>
         <Button>
@@ -287,7 +296,7 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
         <AutoForm id="afJoballot">
           <Property name="dataSet">dsJobstatistics</Property>
           <Property name="dataPath">#.#joballot</Property>
-          <Property name="cols">*</Property>
+          <Property name="cols">*,*</Property>
           <Property name="readOnly">true</Property>
           <AutoFormElement>
             <Property name="name">personname</Property>
@@ -301,11 +310,11 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
             <Property name="readOnly">true</Property>
             <Editor/>
           </AutoFormElement>
-          <AutoFormElement>
+          <AutoFormElement layoutConstraint="colSpan:2">
             <Property name="name">content</Property>
             <Property name="property">content</Property>
             <Property name="editorType">TextArea</Property>
-            <Property name="height">250</Property>
+            <Property name="height">200</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
@@ -328,6 +337,13 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <AutoFormElement>
             <Property name="name">miji</Property>
             <Property name="property">miji</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement layoutConstraint="colSpan:2">
+            <Property name="name">workSummary</Property>
+            <Property name="property">workSummary</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">200</Property>
             <Editor/>
           </AutoFormElement>
         </AutoForm>
@@ -399,6 +415,13 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
             <Property name="property">content</Property>
             <Property name="editorType">TextArea</Property>
             <Property name="height">150</Property>
+          </AutoFormElement>
+          <AutoFormElement layoutConstraint="colSpan:2">
+            <Property name="name">workReport</Property>
+            <Property name="property">workReport</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">100</Property>
+            <Property name="readOnly">false</Property>
           </AutoFormElement>
           <AutoFormElement layoutConstraint="colSpan:2">
             <Property name="name">Tag</Property>

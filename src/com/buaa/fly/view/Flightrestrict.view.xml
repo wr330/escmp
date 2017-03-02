@@ -462,10 +462,6 @@ view.id('diaShowFlightrestrict').hide();</ClientEvent>
                 <Property name="property">begindate</Property>
               </AutoFormElement>
               <AutoFormElement>
-                <Property name="name">affect</Property>
-                <Property name="property">affect</Property>
-              </AutoFormElement>
-              <AutoFormElement>
                 <Property name="name">modifydate</Property>
                 <Property name="property">modifydate</Property>
               </AutoFormElement>
@@ -486,7 +482,7 @@ view.id('diaShowFlightrestrict').hide();</ClientEvent>
             </AutoForm>
           </ControlTab>
           <ControlTab>
-            <Property name="caption">飞机信息</Property>
+            <Property name="caption">有效范围</Property>
             <DataTree id="dTFtypes2" layoutConstraint="left">
               <ClientEvent name="onGetBindingData">var fighterxzh = view.id('dsFlightrestrict').getData('#.fighterxzh');&#xD;
 function select(nodes) {&#xD;

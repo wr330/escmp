@@ -32,6 +32,7 @@ public class  Joballot implements Serializable {
 	private String personid ;
 	private Boolean status ;
 	private String content ;
+	private String workSummary ;
 	private String personname ;
 	private Date finishtime ;
 	private String miji;
@@ -69,6 +70,13 @@ public class  Joballot implements Serializable {
 	}
 	public void setContent(String content) {
 		this.content=content;
+	}
+	@Column(name="WorkSummary")
+	public String getWorkSummary() {
+		return workSummary;
+	}
+	public void setWorkSummary(String workSummary) {
+		this.workSummary = workSummary;
 	}
 	@Column(name="PersonName")
 	public String getPersonname() {

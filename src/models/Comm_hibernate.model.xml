@@ -780,6 +780,16 @@ else {&#xD;
       <Property name="dataType">String</Property>
       <Property name="label">分配到室主任</Property>
     </PropertyDef>
+    <PropertyDef name="sectionChiefName">
+      <Property/>
+      <Property name="dataType">String</Property>
+      <Property name="label">室主任姓名</Property>
+    </PropertyDef>
+    <PropertyDef name="workReport">
+      <Property/>
+      <Property name="dataType">String</Property>
+      <Property name="label">工作情况汇报</Property>
+    </PropertyDef>
   </DataType>
   <DataType name="Jobconcern">
     <Property name="creationType">com.buaa.comm.domain.Jobconcern</Property>
@@ -837,6 +847,11 @@ arg.parameter = parameter;</ClientEvent>
       <Property name="dataType">String</Property>
       <Property name="label">分配内容</Property>
       <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="workSummary">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">工作总结</Property>
     </PropertyDef>
     <PropertyDef name="status">
       <Property name="dataType">boolean</Property>
