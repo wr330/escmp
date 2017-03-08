@@ -224,7 +224,8 @@ dsJiaci.set(&quot;parameter&quot;, {&#xD;
 	ftype: arg.selectedValue,&#xD;
 });&#xD;
 dsJiaci.flushAsync();&#xD;
-view.id(&quot;imageBaoXian&quot;).set(&quot;image&quot;,&quot;>images/baoxian/baoxian&quot;+arg.selectedValue+&quot;.png&quot;);</ClientEvent>
+//view.id(&quot;imageBaoXian&quot;).set(&quot;image&quot;,&quot;>images/baoxian/baoxian&quot;+arg.selectedValue+&quot;.png&quot;);&#xD;
+view.id(&quot;imageBaoXian&quot;).set(&quot;image&quot;,&quot;>images/baoxian/baoxianJ20.png&quot;);</ClientEvent>
       <Property name="autoOpen">true</Property>
       <Property name="dataSet">dsFtypes</Property>
       <Property name="displayProperty">ftypename</Property>
@@ -1515,33 +1516,32 @@ view.id(&quot;imageBaoXian&quot;).set(&quot;image&quot;,&quot;>images/baoxian/ba
                   <Property name="exClassName">d-grid1</Property>
                   <DataColumn name="fdate">
                     <Property name="property">fdate</Property>
-                    <Property name="width">90</Property>
+                    <Property name="width">100</Property>
                   </DataColumn>
                   <DataColumn name="fighterno">
                     <Property name="property">fighterno</Property>
-                    <Property name="width">80</Property>
+                    <Property name="width">90</Property>
                   </DataColumn>
                   <DataColumn>
                     <Property name="property">timefly</Property>
                     <Property name="name">timefly</Property>
-                    <Property name="width">80</Property>
+                    <Property name="width">90</Property>
                   </DataColumn>
                   <DataColumn>
                     <Property name="property">pilot</Property>
                     <Property name="name">pilot</Property>
-                    <Property name="width">60</Property>
+                    <Property name="width">65</Property>
                   </DataColumn>
                   <DataColumn name="mainsubject">
                     <Property name="property">taskNo.subject</Property>
-                    <Property name="width">120</Property>
+                    <Property name="width">100</Property>
                   </DataColumn>
                   <DataColumn name="action">
                     <Property name="property">action</Property>
-                    <Property name="width">150</Property>
+                    <Property name="width">110</Property>
                   </DataColumn>
                   <DataColumn name="result">
                     <Property name="property">taskNo.taskexecution</Property>
-                    <Property name="width">110</Property>
                   </DataColumn>
                 </DataGrid>
               </Children>

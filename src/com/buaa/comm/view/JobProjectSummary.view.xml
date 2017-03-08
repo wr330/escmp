@@ -107,7 +107,7 @@ arg.processDefault = true;</ClientEvent>
         <Editor/>
       </DataColumn>
       <DataColumn name="writingperson">
-        <Property name="property">writingperson</Property>
+        <Property name="property">writingpersonName</Property>
       </DataColumn>
       <DataColumn name="sourcepersonname">
         <Property name="property">sourcepersonname</Property>
@@ -119,8 +119,8 @@ arg.processDefault = true;</ClientEvent>
         <Property name="property">addp6</Property>
       </DataColumn>
       <DataColumn>
-        <Property name="property">sectionChief</Property>
-        <Property name="name">sectionChief</Property>
+        <Property name="property">sectionChiefName</Property>
+        <Property name="name">sectionChiefName</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
@@ -223,76 +223,12 @@ arg.processDefault = true;</ClientEvent>
       <Property name="caption">工作项目作业分配</Property>
       <Buttons>
         <Button>
-          <ClientEvent name="onClick">view.id('diaJoballotSee').hide();
-
-         </ClientEvent>
-          <Property name="caption">确定</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
-        </Button>
-        <Button>
-          <ClientEvent name="onClick">view.id('diaJoballotSee').hide();
-	     
-	         </ClientEvent>
-          <Property name="caption">取消</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+          <ClientEvent name="onClick">view.id('diaJoballotSee').hide();        </ClientEvent>
+          <Property name="caption">关闭</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -40px -0px</Property>
         </Button>
       </Buttons>
       <Children>
-        <CustomDropDown id="customDropDownUser2">
-          <ClientEvent name="beforeExecute">var cur=view.id('dsJobstatistics').getData('#');&#xD;
-view.id(&quot;dsUsers&quot;).set(&quot;parameter&quot;,cur.get(&quot;departid&quot;)).flushAsync();</ClientEvent>
-          <Property name="editable">false</Property>
-          <Property name="autoOpen">true</Property>
-          <DataGrid>
-            <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
-var user=view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;);&#xD;
-if (user) {&#xD;
-	dropDown.close(user.get(&quot;cname&quot;));&#xD;
-	var cur=view.id('dsJobstatistics').getData('#.#joballot');&#xD;
-    cur.set(&quot;personid&quot;,user.get(&quot;username&quot;));&#xD;
-}</ClientEvent>
-            <Property name="showFilterBar">true</Property>
-            <Property name="rowHeight">22</Property>
-            <Property name="dataSet">dsUsers</Property>
-            <Property name="readOnly">true</Property>
-            <Property name="height">300</Property>
-            <RowNumColumn/>
-            <DataColumn>
-              <Property name="name">username</Property>
-              <Property name="property">username</Property>
-            </DataColumn>
-            <DataColumn>
-              <Property name="name">cname</Property>
-              <Property name="property">cname</Property>
-            </DataColumn>
-            <DataColumn name="depts">
-              <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;depts&quot;);&#xD;
-var name = [];&#xD;
-if (entitylist) {&#xD;
-	entitylist.each(function(item){&#xD;
-		name.push(item.get(&quot;name&quot;));&#xD;
-	});&#xD;
-}&#xD;
-arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
-              <Property name="property">depts</Property>
-            </DataColumn>
-            <DataColumn>
-              <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;positions&quot;);&#xD;
-var name = [];&#xD;
-if (entitylist) {&#xD;
-	entitylist.each(function(item){&#xD;
-		name.push(item.get(&quot;name&quot;));&#xD;
-	});&#xD;
-}&#xD;
-arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
-              <Property name="name">positions</Property>
-              <Property name="property">positions</Property>
-              <Property name="width">120</Property>
-              <Property name="filterable">true</Property>
-              <Editor/>
-            </DataColumn>
-          </DataGrid>
-        </CustomDropDown>
         <AutoForm id="afJoballot">
           <Property name="dataSet">dsJobstatistics</Property>
           <Property name="dataPath">#.#joballot</Property>
@@ -301,7 +237,6 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <AutoFormElement>
             <Property name="name">personname</Property>
             <Property name="property">personname</Property>
-            <Property name="trigger">customDropDownUser2</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
@@ -379,8 +314,8 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
             <Property name="trigger">customDropDownDept</Property>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="name">WritingPerson</Property>
-            <Property name="property">writingperson</Property>
+            <Property name="name">WritingPersonName</Property>
+            <Property name="property">writingpersonName</Property>
             <Property name="readOnly">true</Property>
           </AutoFormElement>
           <AutoFormElement>
@@ -434,9 +369,8 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
             <Property name="property">miji</Property>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="name">SectionChief</Property>
-            <Property name="property">sectionChief</Property>
-            <Property name="trigger">customDropDownUser2</Property>
+            <Property name="name">SectionChiefName</Property>
+            <Property name="property">sectionChiefName</Property>
           </AutoFormElement>
         </AutoForm>
       </Children>

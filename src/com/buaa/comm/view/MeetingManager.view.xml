@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <DataSet id="dsMeetingmanager">
+      <ClientEvent name="onReady">var cur = view.id('dsDictionaryMeetingRoom').getData(&quot;#&quot;).get(&quot;name&quot;)&#xD;
+self.set(&quot;parameter&quot;,{&#xD;
+	address:cur&#xD;
+});&#xD;
+self.flushAsync();</ClientEvent>
+      <Property name="dataType">[Meetingmanager]</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="dataProvider">meetingmanagerPR#queryMeetingmanager</Property>
+    </DataSet>
+    <DataSet id="dsDictionaryMeetingRoom">
+      <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="dictype">Dic_MeetingRoom</Property>
+          <Property name="status">0</Property>
+        </Entity>
+      </Property>
+      <Property name="dataType">[Dictionary]</Property>
+    </DataSet>
+    <UpdateAction id="uaMeetingmanager">
+      <Property name="dataResolver">meetingmanagerPR#saveMeetingmanager</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsMeetingmanager</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <Dialog id="diaMeetingmanager">
+      <ClientEvent name="onClose">var cur=view.id('dsMeetingmanager').getData('#');&#xD;
+cur.cancel();&#xD;
+view.id('diaMeetingmanager').hide();	</ClientEvent>
+      <Property name="width">420</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">var cur = view.id('dsMeetingmanager').getData('#');&#xD;
+var sTime = cur.get('meetingstime');&#xD;
+var eTime = cur.get('meetingetime');&#xD;
+if(sTime &lt; eTime){&#xD;
+	view.id('uaMeetingmanager').execute(function(){&#xD;
+		view.id('diaMeetingmanager').hide();&#xD;
+	});&#xD;
+}&#xD;
+else{&#xD;
+	dorado.MessageBox.alert('开始时间大于等于结束时间');&#xD;
+}&#xD;
+   </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsMeetingmanager').getData('#');&#xD;
+cur.cancel();&#xD;
+view.id('diaMeetingmanager').hide();</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afMeetingmanager">
+          <Property name="dataSet">dsMeetingmanager</Property>
+          <Property name="dataPath">#</Property>
+          <Property name="width">400</Property>
+          <Property name="cols">*</Property>
+          <Property name="labelWidth">90</Property>
+          <AutoFormElement>
+            <Property name="property">meetingaddress</Property>
+            <Property name="name">meetingaddress</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">meetingstime</Property>
+            <Property name="name">meetingstime</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">meetingetime</Property>
+            <Property name="name">meetingetime</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">applypersonname</Property>
+            <Property name="name">applypersonname</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">ifusing</Property>
+            <Property name="name">ifusing</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">miji</Property>
+            <Property name="name">miji</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <SplitPanel>
+      <Property name="position">208</Property>
+      <MainControl>
+        <Container>
+          <ToolBar>
+            <DataPilot>
+              <Property name="itemCodes">pages</Property>
+            </DataPilot>
+            <ToolBarButton>
+              <ClientEvent name="onClick">view.id('dsMeetingmanager').getData().insert();&#xD;
+var cur=view.id('dsMeetingmanager').getData('#');&#xD;
+var curAddress=view.id('dsDictionaryMeetingRoom').getData('#');&#xD;
+cur.set(&quot;applyperson&quot;,&quot;${loginUser.getUsername()}&quot;);&#xD;
+cur.set(&quot;applypersonname&quot;,&quot;${loginUser.getCname()}&quot;);&#xD;
+cur.set(&quot;meetingaddress&quot;,curAddress.get('name'));&#xD;
+var dialog=view.id('diaMeetingmanager');&#xD;
+dialog.set(&quot;caption&quot;,&quot;新增会议室管理记录&quot;);&#xD;
+dialog.show();</ClientEvent>
+              <Property name="caption">新增</Property>
+              <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">var cur=view.id('dsMeetingmanager').getData('#');&#xD;
+if (cur) {&#xD;
+	var dialog=view.id('diaMeetingmanager');&#xD;
+	dialog.set(&quot;caption&quot;,&quot;修改会议室管理记录&quot;);&#xD;
+	dialog.show();&#xD;
+}</ClientEvent>
+              <Property name="caption">修改</Property>
+              <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">var cur=view.id('dsMeetingmanager').getData('#');&#xD;
+var ua=view.id('uaMeetingmanager');&#xD;
+if(cur){&#xD;
+	dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){&#xD;
+		cur.remove();&#xD;
+		ua.execute();&#xD;
+	}); &#xD;
+} &#xD;
+	</ClientEvent>
+              <Property name="caption">删除</Property>
+              <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">view.id('dgMeetingmanager').set(&quot;showFilterBar&quot;,!view.id('dgMeetingmanager').get(&quot;showFilterBar&quot;));</ClientEvent>
+              <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
+              <Property name="caption">自定义查询</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">var dsMeetingmanager = view.get(&quot;#dsMeetingmanager&quot;);&#xD;
+dsMeetingmanager.flushAsync();</ClientEvent>
+              <Property name="caption">刷新</Property>
+              <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+            </ToolBarButton>
+          </ToolBar>
+          <DataGrid id="dgMeetingmanager">
+            <Property name="dataSet">dsMeetingmanager</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="showFilterBar">false</Property>
+            <Property name="filterMode">serverSide</Property>
+            <Property name="rowHeight">22</Property>
+            <DataColumn name="meetingstime">
+              <Property name="property">meetingstime</Property>
+              <Property name="width">130</Property>
+            </DataColumn>
+            <DataColumn name="meetingetime">
+              <Property name="property">meetingetime</Property>
+              <Property name="width">130</Property>
+            </DataColumn>
+            <DataColumn name="ifusing">
+              <ClientEvent name="onRenderCell">var ifusing = arg.data.get(&quot;ifusing&quot;);&#xD;
+if(ifusing){	&#xD;
+	arg.dom.style.color = &quot;red&quot;;&#xD;
+}&#xD;
+else{&#xD;
+	arg.dom.style.color = &quot;green&quot;;&#xD;
+}&#xD;
+arg.processDefault = true;</ClientEvent>
+              <Property name="property">ifusing</Property>
+              <Property name="align">left</Property>
+              <Property name="width">100</Property>
+            </DataColumn>
+            <DataColumn name="applypersonname">
+              <Property name="property">applypersonname</Property>
+              <Property name="width">100</Property>
+            </DataColumn>
+            <DataColumn>
+              <Property name="property">miji</Property>
+              <Property name="width">100</Property>
+              <Editor/>
+            </DataColumn>
+          </DataGrid>
+        </Container>
+      </MainControl>
+      <SideControl>
+        <DataGrid>
+          <ClientEvent name="onCurrentChange">var dsMeetingmanager = view.id('dsMeetingmanager');&#xD;
+var cur = view.id('dsDictionaryMeetingRoom').getData(&quot;#&quot;).get(&quot;name&quot;)&#xD;
+dsMeetingmanager.set(&quot;parameter&quot;,{&#xD;
+	address:cur&#xD;
+});&#xD;
+dsMeetingmanager.flushAsync();</ClientEvent>
+          <Property name="dataSet">dsDictionaryMeetingRoom</Property>
+          <Property name="readOnly">true</Property>
+          <Property name="filterMode">serverSide</Property>
+          <Property name="width">200</Property>
+          <Property name="rowHeight">22</Property>
+          <Property name="showFilterBar">true</Property>
+          <DataColumn name="name">
+            <Property name="property">name</Property>
+            <Property name="width">200</Property>
+            <Property name="caption">会议室</Property>
+          </DataColumn>
+        </DataGrid>
+      </SideControl>
+    </SplitPanel>
+  </View>
+</ViewConfig>

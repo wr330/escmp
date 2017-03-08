@@ -99,7 +99,13 @@ dsBtReportSharePerson.flushAsync();</ClientEvent>
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgBtReportSharePerson">
-      <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;readStatus&quot;);&#xD;
+      <Property name="dataSet">dsBtReportSharePerson</Property>
+      <Property name="fixedColumnCount">9</Property>
+      <Property name="readOnly">true</Property>
+      <Property name="rowHeight">22</Property>
+      <RowNumColumn/>
+      <DataColumn name="readStatus">
+        <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;readStatus&quot;);&#xD;
 if(status == 0){&#xD;
 	arg.dom.style.color = &quot;red&quot;;&#xD;
 }&#xD;
@@ -107,12 +113,6 @@ else{&#xD;
 	arg.dom.style.color = &quot;&quot;;&#xD;
 }&#xD;
 arg.processDefault = true;</ClientEvent>
-      <Property name="dataSet">dsBtReportSharePerson</Property>
-      <Property name="fixedColumnCount">9</Property>
-      <Property name="readOnly">true</Property>
-      <Property name="rowHeight">22</Property>
-      <RowNumColumn/>
-      <DataColumn name="readStatus">
         <Property name="property">readStatus</Property>
         <Property name="width">120</Property>
         <Property name="align">left</Property>
@@ -126,79 +126,100 @@ arg.processDefault = true;</ClientEvent>
         <Property name="width">150</Property>
       </DataColumn>
       <DataColumn>
-        <Property name="property">btreport.writingPerson</Property>
+        <Property name="property">btreport.writingPersonName</Property>
         <Property name="width">120</Property>
+        <Property name="name">writingPersonName</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
-        <Property name="property">btreport.btperson</Property>
+        <Property name="property">btreport.btpersonName</Property>
         <Property name="width">120</Property>
+        <Property name="name">btpersonName</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
         <Property name="property">btreport.bttime</Property>
         <Property name="width">120</Property>
+        <Property name="name">bttime</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
         <Property name="property">btreport.bttask</Property>
         <Property name="width">120</Property>
+        <Property name="name">bttask</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
         <Property name="property">btreport.btplace</Property>
         <Property name="width">120</Property>
+        <Property name="name">btplace</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
         <Property name="property">btreport.keyword</Property>
         <Property name="width">120</Property>
+        <Property name="name">keyword</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
         <Property name="property">btreport.jobcontent</Property>
         <Property name="width">150</Property>
+        <Property name="name">jobcontent</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
         <Property name="property">btreport.status</Property>
         <Property name="width">120</Property>
         <Property name="align">left</Property>
+        <Property name="name">status</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
         <Property name="property">btreport.technicalquestion</Property>
         <Property name="width">120</Property>
+        <Property name="name">technicalquestion</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
         <Property name="property">btreport.remainedproblem</Property>
         <Property name="width">150</Property>
+        <Property name="name">remainedproblem</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
         <Property name="property">btreport.conclusion</Property>
         <Property name="width">120</Property>
+        <Property name="name">conclusion</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
         <Property name="property">btreport.gainandadvice</Property>
         <Property name="width">120</Property>
+        <Property name="name">gainandadvice</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
-        <Property name="property">btreport.sectionChief</Property>
+        <Property name="property">btreport.sectionChiefName</Property>
         <Property name="width">120</Property>
+        <Property name="name">sectionChiefName</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
         <Property name="property">btreport.sectionChiefDate</Property>
         <Property name="width">120</Property>
+        <Property name="name">sectionChiefDate</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
-        <Property name="property">btreport.departmentHead</Property>
+        <Property name="property">btreport.sectionChiefComment</Property>
+        <Property name="name">sectionChiefComment</Property>
         <Property name="width">120</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">btreport.departmentHeadName</Property>
+        <Property name="width">120</Property>
+        <Property name="name">departmentHeadName</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
@@ -207,9 +228,17 @@ arg.processDefault = true;</ClientEvent>
         <Editor/>
       </DataColumn>
       <DataColumn>
+        <Property name="property">btreport.departmentHeadComment</Property>
+        <Property name="name">departmentHeadComment</Property>
+        <Property name="width">120</Property>
+        <Property name="resizeable">true</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
         <Property name="property">btreport.miji</Property>
         <Property name="width">120</Property>
         <Property name="align">left</Property>
+        <Property name="name">miji</Property>
         <Editor/>
       </DataColumn>
     </DataGrid>
@@ -321,8 +350,8 @@ arg.processDefault = true;</ClientEvent>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="property">btreport.sectionChief</Property>
-            <Property name="name">SectionChief</Property>
+            <Property name="property">btreport.sectionChiefName</Property>
+            <Property name="name">SectionChiefName</Property>
             <Property name="readOnly">true</Property>
             <Editor/>
           </AutoFormElement>
@@ -333,8 +362,8 @@ arg.processDefault = true;</ClientEvent>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="property">btreport.departmentHead</Property>
-            <Property name="name">DepartmentHead</Property>
+            <Property name="property">btreport.departmentHeadName</Property>
+            <Property name="name">DepartmentHeadName</Property>
             <Property name="readOnly">true</Property>
             <Editor/>
           </AutoFormElement>
@@ -343,6 +372,18 @@ arg.processDefault = true;</ClientEvent>
             <Property name="name">DepartmentHeadDate</Property>
             <Property name="readOnly">true</Property>
             <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">SectionChiefComment</Property>
+            <Property name="property">btreport.sectionChiefComment</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">80</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">DepartmentHeadComment</Property>
+            <Property name="property">btreport.departmentHeadComment</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">80</Property>
           </AutoFormElement>
         </AutoForm>
         <GroupBox>

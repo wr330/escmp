@@ -27,7 +27,7 @@ public class DictionaryDao extends HibernateBaseDao {
 	 * @throws Exception
 	 */
 	public Collection<Dictionary> queryDictionary(Map<String, Object> parameter,Criteria criteria) throws Exception {
-       // Map<String, Object> args = new HashMap<String,Object>();
+        Map<String, Object> args = new HashMap<String,Object>();
         StringBuffer coreHql = new StringBuffer("from " + Dictionary.class.getName()+" a where 1=1 ");
         
         if(null != parameter && !parameter.isEmpty()){
@@ -37,9 +37,7 @@ public class DictionaryDao extends HibernateBaseDao {
         	}
 			if (parameter.containsKey("status")) {
 				Object status =  parameter.get("status");// 添加筛选：状态=有效
-				if (status.toString() == "0") {
-					coreHql.append(" and a.status =" + status);
-				}
+				coreHql.append(" and a.status =" + status);
 			}
         }
 		
@@ -47,12 +45,12 @@ public class DictionaryDao extends HibernateBaseDao {
 			ParseResult result = this.parseCriteria(criteria, true, "a");
 			if (null != result) {
 				coreHql.append(" and "+ result.getAssemblySql());
-				//args.putAll(result.getValueMap());
+				args.putAll(result.getValueMap());
 			}
 		}
         //String countHql = "select count(*) " + coreHql.toString();//取消分页
-        String hql = coreHql.toString() + "order by name";
-        return this.query(hql);
+        String hql = coreHql.toString() + " order by name";
+        return this.query(hql,args);
 		//this.pagingQuery(page, hql, countHql, args);
 	}
 	

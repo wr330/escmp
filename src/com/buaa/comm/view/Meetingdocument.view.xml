@@ -77,9 +77,7 @@ view.id('dsFtypes').insert({ftypename:&quot;其他机型&quot;});</ClientEvent>
 	var loginUsername=&quot;${loginUser.getUsername()}&quot;;
 	var dialog=view.id('diaMeetingdocument');
     dialog.set(&quot;caption&quot;,&quot;新增会议材料&quot;);
-    dialog.show();
-
-</ClientEvent>
+    dialog.show();</ClientEvent>
         <Property name="caption">新增</Property>
         <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
       </ToolBarButton>
@@ -89,8 +87,7 @@ if (cur) {
 	var dialog=view.id('diaMeetingdocument');
 	dialog.set(&quot;caption&quot;,&quot;修改会议材料&quot;);
 	dialog.show();
-}
-	</ClientEvent>
+}	</ClientEvent>
         <Property name="caption">修改</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
       </ToolBarButton>
@@ -102,8 +99,7 @@ if(cur){
 		cur.remove();
 		ua.execute();
 	}); 
-} 
-	</ClientEvent>
+} 	</ClientEvent>
         <Property name="caption">删除</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
       </ToolBarButton>
@@ -189,9 +185,8 @@ jQuery(arg.dom).xCreate({&#xD;
     </DataGrid>
     <Dialog id="diaMeetingdocument">
       <ClientEvent name="onClose">var cur=view.id('dsMeetingdocument').getData('#');&#xD;
-				cur.cancel();&#xD;
-				view.id('diaMeetingdocument').hide();&#xD;
-				</ClientEvent>
+cur.cancel();&#xD;
+view.id('diaMeetingdocument').hide();				</ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
       <Property name="width">800</Property>
@@ -199,18 +194,15 @@ jQuery(arg.dom).xCreate({&#xD;
       <Buttons>
         <Button>
           <ClientEvent name="onClick">view.id('uaMeetingdocument').execute(function(){
-               view.id('diaMeetingdocument').hide();
-           });
-         </ClientEvent>
+	view.id('diaMeetingdocument').hide();
+});        </ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
         </Button>
         <Button>
           <ClientEvent name="onClick">var cur=view.id('dsMeetingdocument').getData('#');
-				cur.cancel();
-				view.id('diaMeetingdocument').hide();
-				
-	         </ClientEvent>
+cur.cancel();
+view.id('diaMeetingdocument').hide();	         </ClientEvent>
           <Property name="caption">取消</Property>
           <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
         </Button>

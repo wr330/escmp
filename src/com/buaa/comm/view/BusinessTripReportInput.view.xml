@@ -78,8 +78,20 @@
 				}&#xD;
 			}&#xD;
 			return result;&#xD;
-		}</ClientEvent>
+		}&#xD;
+		&#xD;
+self.checkButton = function(cur,tagName,status){&#xD;
+	if(status >= 0){&#xD;
+		 this.set(&quot;^&quot; + tagName +&quot;.disabled&quot;, cur &amp;&amp; cur.get(&quot;status&quot;) != status);&#xD;
+	}	&#xD;
+	else{&#xD;
+		this.set(&quot;^&quot; + tagName +&quot;.disabled&quot;, cur &amp;&amp; cur.get(&quot;status&quot;) == -status);&#xD;
+	}   &#xD;
+}</ClientEvent>
     <DataSet id="dsBtreport">
+      <ClientEvent name="onLoadData">var cur = view.id('dsBtreport').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'reportCheck','0');&#xD;
+});</ClientEvent>
       <Property name="dataType">[Btreport]</Property>
       <Property name="dataProvider">btreportPR#queryBtreport</Property>
       <Property name="pageSize">20</Property>
@@ -90,9 +102,8 @@
       </Property>
     </DataSet>
     <DataSet id="dsUsers">
-      <Property name="dataProvider">bdf2.userMaintain#loadUsers</Property>
+      <Property name="dataProvider">bdf2.userMaintain#loadUsers2</Property>
       <Property name="dataType">[User]</Property>
-      <Property name="pageSize">200</Property>
     </DataSet>
     <DataSet id="dsDictionary">
       <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
@@ -127,65 +138,51 @@ for(var i=1;i&lt;=32;i++){
 }
 cur.set(&quot;oid&quot;,guid);
 cur.set(&quot;writingPerson&quot;,&quot;${loginUser.getUsername()}&quot;);
+cur.set(&quot;writingPersonName&quot;,&quot;${loginUser.getCname()}&quot;);
 var dialog=view.id('diaBtreport');
 dialog.set(&quot;caption&quot;,&quot;新增出差报告&quot;);
-dialog.show();
-
-	</ClientEvent>
+dialog.show();	</ClientEvent>
         <Property name="caption">新增</Property>
         <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsBtreport').getData('#');
 if (cur) {
-	if(cur.get(&quot;status&quot;) == 0){
-		var dialog=view.id('diaBtreport');
-		dialog.set(&quot;caption&quot;,&quot;修改出差报告&quot;);
-		dialog.show();
-	}
-	else if(cur.get(&quot;status&quot;) == 3){
-		dorado.MessageBox.alert(&quot;出差报告已共享不能修改&quot;);
-	}
-	else{
-		dorado.MessageBox.alert(&quot;出差报告已提交领导审阅不能修改&quot;);
-	}
+	var dialog=view.id('diaBtreport');
+	dialog.set(&quot;caption&quot;,&quot;修改出差报告&quot;);
+	dialog.show();
 }</ClientEvent>
         <Property name="caption">修改</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+        <Property name="tags">reportCheck</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsBtreport').getData('#');
 var ua=view.id('uaBtreport');
 if(cur){
-	if(cur.get(&quot;status&quot;) == 0){
-		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
-			var file;
-            var value = &quot;/Comm_Btreport/&quot; + cur.get(&quot;oid&quot;) + &quot;/&quot;;
-            var files = view.id('dsBtreport').getData('#.appendixdocument'); 
-		    files=files.toArray();
-         	files.each(function(file){
-	        	file=file.get(&quot;efile&quot;);
-            	view.id(&quot;deleteFileAction&quot;).set(&quot;parameter&quot;,{
-	       	 		record: value,
-	        		filename: file
-            	});
-				view.id(&quot;deleteFileAction&quot;).execute();
-          	});
-			cur.remove();
-			ua.execute();
-				
-		}); 
-	}
-	else if(cur.get(&quot;status&quot;) == 3){
-		dorado.MessageBox.alert(&quot;出差报告已共享不能修改&quot;);
-	}
-	else{
-		dorado.MessageBox.alert(&quot;此出差报告已交领导审阅不能删除&quot;);
-	}	
-}
-		</ClientEvent>
+	dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
+		var file;
+        var value = &quot;/Comm_Btreport/&quot; + cur.get(&quot;oid&quot;) + &quot;/&quot;;
+        var files = view.id('dsBtreport').getData('#.appendixdocument'); 
+		files=files.toArray();
+        files.each(function(file){
+	        file=file.get(&quot;efile&quot;);
+            view.id(&quot;deleteFileAction&quot;).set(&quot;parameter&quot;,{
+	       	 	record: value,
+	        	filename: file
+            });
+			view.id(&quot;deleteFileAction&quot;).execute();
+        });
+		cur.remove();
+		ua.execute();
+		view.id('dsBtreport').getDataAsync('#',function(cur){
+			view.checkButton(cur,'reportCheck','0');
+		});
+	});
+}</ClientEvent>
         <Property name="caption">删除</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+        <Property name="tags">reportCheck</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsBtreport').getData('#');&#xD;
@@ -198,20 +195,12 @@ if (cur) {&#xD;
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsBtreport').getData('#');&#xD;
 if (cur) {&#xD;
-	if(cur.get(&quot;status&quot;) == 0){&#xD;
-		var dialog=view.id('diaSubmitBtreport');&#xD;
-		dialog.set(&quot;caption&quot;,&quot;提交出差报告&quot;);&#xD;
-		dialog.show();&#xD;
-	}&#xD;
-	else if(cur.get(&quot;status&quot;) == 3){&#xD;
-		dorado.MessageBox.alert(&quot;出差报告已共享不能再次提交&quot;);&#xD;
-	}&#xD;
-	else{&#xD;
-		dorado.MessageBox.alert(&quot;出差报告已提交领导审阅不能再次提交&quot;);&#xD;
-	}&#xD;
+	var dialog=view.id('diaSubmitBtreport');&#xD;
+	dialog.show();&#xD;
 }</ClientEvent>
         <Property name="caption">提交到室主任</Property>
         <Property name="icon">url(>skin>common/icons.gif) -140px -180px</Property>
+        <Property name="tags">reportCheck</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">view.id('dgBtreport').set(&quot;showFilterBar&quot;,!view.id('dgBtreport').get(&quot;showFilterBar&quot;));</ClientEvent>
@@ -226,20 +215,9 @@ dsBtreport.flushAsync();</ClientEvent>
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgBtreport">
-      <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;status&quot;);&#xD;
-if(status == 0){&#xD;
-	arg.dom.style.color = &quot;red&quot;;&#xD;
-}&#xD;
-else if(status == 1){&#xD;
-	arg.dom.style.color = &quot;blue&quot;;&#xD;
-}&#xD;
-else if(status == 2){&#xD;
-	arg.dom.style.color = &quot;green&quot;;&#xD;
-}&#xD;
-else{&#xD;
-	arg.dom.style.color = &quot;&quot;;&#xD;
-}&#xD;
-arg.processDefault = true;</ClientEvent>
+      <ClientEvent name="onCurrentChange">var cur = view.id('dsBtreport').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'reportCheck','0');&#xD;
+});</ClientEvent>
       <Property name="readOnly">true</Property>
       <Property name="dataSet">dsBtreport</Property>
       <Property name="dataPath"></Property>
@@ -250,14 +228,15 @@ arg.processDefault = true;</ClientEvent>
       <Property name="fixedColumnCount">9</Property>
       <RowNumColumn/>
       <DataColumn>
-        <Property name="property">writingPerson</Property>
-        <Property name="name">WritingPerson</Property>
+        <Property name="property">writingPersonName</Property>
+        <Property name="name">WritingPersonName</Property>
         <Property name="width">120</Property>
         <Editor/>
       </DataColumn>
-      <DataColumn name="btperson">
-        <Property name="property">btperson</Property>
+      <DataColumn>
+        <Property name="property">btpersonName</Property>
         <Property name="width">120</Property>
+        <Property name="name">btpersonName</Property>
       </DataColumn>
       <DataColumn name="bttime">
         <Property name="property">bttime</Property>
@@ -280,6 +259,20 @@ arg.processDefault = true;</ClientEvent>
         <Property name="width">200</Property>
       </DataColumn>
       <DataColumn>
+        <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;status&quot;);&#xD;
+if(status == 0){&#xD;
+	arg.dom.style.color = &quot;red&quot;;&#xD;
+}&#xD;
+else if(status == 1){&#xD;
+	arg.dom.style.color = &quot;blue&quot;;&#xD;
+}&#xD;
+else if(status == 2){&#xD;
+	arg.dom.style.color = &quot;green&quot;;&#xD;
+}&#xD;
+else{&#xD;
+	arg.dom.style.color = &quot;&quot;;&#xD;
+}&#xD;
+arg.processDefault = true;</ClientEvent>
         <Property name="property">status</Property>
         <Property name="name">Status</Property>
         <Property name="align">left</Property>
@@ -303,8 +296,8 @@ arg.processDefault = true;</ClientEvent>
         <Property name="width">120</Property>
       </DataColumn>
       <DataColumn>
-        <Property name="property">sectionChief</Property>
-        <Property name="name">SectionChief</Property>
+        <Property name="property">sectionChiefName</Property>
+        <Property name="name">SectionChiefName</Property>
         <Property name="width">120</Property>
         <Editor/>
       </DataColumn>
@@ -315,8 +308,14 @@ arg.processDefault = true;</ClientEvent>
         <Editor/>
       </DataColumn>
       <DataColumn>
-        <Property name="property">departmentHead</Property>
-        <Property name="name">DepartmentHead</Property>
+        <Property name="property">sectionChiefComment</Property>
+        <Property name="name">SectionChiefComment</Property>
+        <Property name="width">120</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">departmentHeadName</Property>
+        <Property name="name">DepartmentHeadName</Property>
         <Property name="width">120</Property>
         <Property name="resizeable">true</Property>
         <Editor/>
@@ -325,6 +324,13 @@ arg.processDefault = true;</ClientEvent>
         <Property name="name">DepartmentHeadDate</Property>
         <Property name="property">departmentHeadDate</Property>
         <Property name="width">120</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">departmentHeadComment</Property>
+        <Property name="name">DepartmentHeadComment</Property>
+        <Property name="width">120</Property>
+        <Property name="resizeable">true</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
@@ -401,55 +407,124 @@ if (cur) {&#xD;
 				&#xD;
 	&#xD;
 	         </ClientEvent>
+      <ClientEvent name="onHide">var cur = view.id('dsBtreport').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'reportCheck','0');&#xD;
+});</ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
       <Property name="width">800</Property>
       <Buttons>
         <Button>
-          <ClientEvent name="onClick">view.id('uaBtreport').execute(function(){
-               view.id('diaBtreport').hide();
-           });
+          <ClientEvent name="onClick">var dsBtreport = view.get(&quot;#dsBtreport&quot;);
+view.id('uaBtreport').execute(function(){
+	view.id('diaBtreport').hide();
+});
          </ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
         </Button>
         <Button>
           <ClientEvent name="onClick">var cur=view.id('dsBtreport').getData('#');
-				cur.cancel();
-				view.id('diaBtreport').hide();
-				
-	
-	         </ClientEvent>
+var dsBtreport = view.get(&quot;#dsBtreport&quot;);
+cur.cancel();
+view.id('diaBtreport').hide();
+dsBtreport.flushAsync();				         </ClientEvent>
           <Property name="caption">取消</Property>
           <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
         </Button>
       </Buttons>
       <Children>
         <CustomDropDown id="customDropDown1">
+          <ClientEvent name="onOpen" signature="self,dgUsers">var cur = view.id('dsBtreport').getData('#');&#xD;
+dgUsers.set(&quot;selection&quot;,null);&#xD;
+//var selection = dgUsers.get(&quot;selection&quot;);&#xD;
+//alert(dgUsers.get(&quot;selection&quot;));&#xD;
+//dgUsers.set(&quot;selection&quot;,null);&#xD;
+//alert(dgUsers.get(&quot;selection&quot;));&#xD;
+//var selection = dgUsers.get(&quot;selection&quot;);&#xD;
+&#xD;
+//var cur = view.id('dsBtreport').getData('#');&#xD;
+/*var btpersonName = ''; &#xD;
+var btperson = ''; &#xD;
+if(cur){&#xD;
+	if (selection &amp;&amp; selection.length){&#xD;
+		selection.each(function(data){&#xD;
+			btpersonName = btpersonName + &quot;,&quot; + data.get(&quot;cname&quot;);&#xD;
+			btperson = btperson + &quot;,&quot; + data.get(&quot;username&quot;);&#xD;
+		});&#xD;
+		btpersonName = btpersonName.substring(1,btpersonName.length);&#xD;
+		btperson = btperson.substring(1,btperson.length);&#xD;
+		cur.set(&quot;btpersonName&quot;,btpersonName);&#xD;
+		cur.set(&quot;btperson&quot;,btperson);&#xD;
+	}&#xD;
+	else{&#xD;
+		dorado.MessageBox.alert(&quot;没有选中任何共享人员&quot;);&#xD;
+	}&#xD;
+	view.get(&quot;#customDropDown1&quot;).close();&#xD;
+}*/</ClientEvent>
           <Property name="editable">false</Property>
           <Property name="autoOpen">true</Property>
-          <DataGrid>
-            <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
+          <Property name="height">200</Property>
+          <Container>
+            <Property name="height">200</Property>
+            <ToolBar>
+              <DataPilot>
+                <Property name="itemCodes">pages</Property>
+                <Property name="dataSet">dsUsers</Property>
+                <Property name="dataPath"></Property>
+              </DataPilot>
+              <ToolBarButton>
+                <ClientEvent name="onClick" signature="self,dgUsers">var selection = dgUsers.get(&quot;selection&quot;);&#xD;
+var cur = view.id('dsBtreport').getData('#');&#xD;
+var btpersonName = ''; &#xD;
+var btperson = ''; &#xD;
+if(cur){&#xD;
+	if (selection &amp;&amp; selection.length){&#xD;
+		selection.each(function(data){&#xD;
+			btpersonName = btpersonName + &quot;,&quot; + data.get(&quot;cname&quot;);&#xD;
+			btperson = btperson + &quot;,&quot; + data.get(&quot;username&quot;);&#xD;
+		});&#xD;
+		btpersonName = btpersonName.substring(1,btpersonName.length);&#xD;
+		btperson = btperson.substring(1,btperson.length);&#xD;
+		cur.set(&quot;btpersonName&quot;,btpersonName);&#xD;
+		cur.set(&quot;btperson&quot;,btperson);&#xD;
+	}&#xD;
+	else{&#xD;
+		dorado.MessageBox.alert(&quot;没有选中任何共享人员&quot;);&#xD;
+	}&#xD;
+	view.get(&quot;#customDropDown1&quot;).close();&#xD;
+}</ClientEvent>
+                <Property name="caption">确定</Property>
+              </ToolBarButton>
+              <ToolBarButton>
+                <ClientEvent name="onClick">view.get(&quot;#customDropDown1&quot;).close();</ClientEvent>
+                <Property name="caption">取消</Property>
+              </ToolBarButton>
+            </ToolBar>
+            <DataGrid id="dgUsers">
+              <ClientEvent name="onDataRowClick">/*var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
 var user=view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;);&#xD;
 if (user) {&#xD;
 	dropDown.close(user.get(&quot;cname&quot;));&#xD;
-}</ClientEvent>
-            <Property name="showFilterBar">true</Property>
-            <Property name="rowHeight">22</Property>
-            <Property name="dataSet">dsUsers</Property>
-            <Property name="readOnly">true</Property>
-            <Property name="height">300</Property>
-            <RowNumColumn/>
-            <DataColumn>
-              <Property name="name">username</Property>
-              <Property name="property">username</Property>
-            </DataColumn>
-            <DataColumn>
-              <Property name="name">cname</Property>
-              <Property name="property">cname</Property>
-            </DataColumn>
-            <DataColumn name="depts">
-              <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;depts&quot;);&#xD;
+}*/</ClientEvent>
+              <Property name="showFilterBar">true</Property>
+              <Property name="rowHeight">22</Property>
+              <Property name="dataSet">dsUsers</Property>
+              <Property name="readOnly">true</Property>
+              <Property name="height">300</Property>
+              <Property name="selectionMode">multiRows</Property>
+              <RowNumColumn/>
+              <RowSelectorColumn/>
+              <DataColumn>
+                <Property name="name">username</Property>
+                <Property name="property">username</Property>
+              </DataColumn>
+              <DataColumn>
+                <Property name="name">cname</Property>
+                <Property name="property">cname</Property>
+              </DataColumn>
+              <DataColumn name="depts">
+                <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;depts&quot;);&#xD;
 var name = [];&#xD;
 if (entitylist) {&#xD;
 	entitylist.each(function(item){&#xD;
@@ -457,10 +532,10 @@ if (entitylist) {&#xD;
 	});&#xD;
 }&#xD;
 arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
-              <Property name="property">depts</Property>
-            </DataColumn>
-            <DataColumn>
-              <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;positions&quot;);&#xD;
+                <Property name="property">depts</Property>
+              </DataColumn>
+              <DataColumn>
+                <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;positions&quot;);&#xD;
 var name = [];&#xD;
 if (entitylist) {&#xD;
 	entitylist.each(function(item){&#xD;
@@ -468,13 +543,14 @@ if (entitylist) {&#xD;
 	});&#xD;
 }&#xD;
 arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
-              <Property name="name">positions</Property>
-              <Property name="property">positions</Property>
-              <Property name="width">120</Property>
-              <Property name="filterable">true</Property>
-              <Editor/>
-            </DataColumn>
-          </DataGrid>
+                <Property name="name">positions</Property>
+                <Property name="property">positions</Property>
+                <Property name="width">120</Property>
+                <Property name="filterable">true</Property>
+                <Editor/>
+              </DataColumn>
+            </DataGrid>
+          </Container>
         </CustomDropDown>
         <DataSetDropDown id="dataSetDropDown1">
           <Property name="autoOpen">true</Property>
@@ -483,6 +559,7 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <Property name="displayProperty">name</Property>
           <Property name="editable">false</Property>
           <Property name="reloadDataOnOpen">true</Property>
+          <Property name="height">300</Property>
         </DataSetDropDown>
         <AutoForm id="afBtreport">
           <Property name="cols">*,*</Property>
@@ -490,9 +567,8 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <Property name="dataPath">#</Property>
           <Property name="labelWidth">100</Property>
           <AutoFormElement>
-            <Property name="name">BtPerson</Property>
-            <Property name="property">btperson</Property>
-            <Property name="trigger">customDropDown1,triggerClear</Property>
+            <Property name="name">BtPersonName</Property>
+            <Property name="property">btpersonName</Property>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">BtPlace</Property>
@@ -548,14 +624,14 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
             <Property name="property">miji</Property>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="property">writingPerson</Property>
-            <Property name="name">WritingPerson</Property>
+            <Property name="property">writingPersonName</Property>
+            <Property name="name">WritingPersonName</Property>
             <Property name="readOnly">true</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="property">sectionChief</Property>
-            <Property name="name">SectionChief</Property>
+            <Property name="property">sectionChiefName</Property>
+            <Property name="name">SectionChiefName</Property>
             <Property name="readOnly">true</Property>
             <Editor/>
           </AutoFormElement>
@@ -566,8 +642,8 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="property">departmentHead</Property>
-            <Property name="name">DepartmentHead</Property>
+            <Property name="property">departmentHeadName</Property>
+            <Property name="name">DepartmentHeadName</Property>
             <Property name="readOnly">true</Property>
             <Editor/>
           </AutoFormElement>
@@ -670,7 +746,7 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
 	default:&#xD;
 		arg.processDefault = true;*/&#xD;
 }</ClientEvent>
-                <Property name="itemCodes">+,-</Property>
+                <Property name="itemCodes">pages,+,-</Property>
                 <Property name="dataSet">dsBtreport</Property>
                 <Property name="dataPath">#.appendixdocument</Property>
               </DataPilot>
@@ -714,14 +790,18 @@ jQuery(arg.dom).xCreate({&#xD;
 cur.cancel();&#xD;
 	&#xD;
 	         </ClientEvent>
+      <ClientEvent name="onHide">var cur = view.id('dsBtreport').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'reportCheck','0');&#xD;
+});</ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
       <Property name="width">450</Property>
+      <Property name="caption">出差报告提交</Property>
       <Buttons>
         <Button>
           <ClientEvent name="onClick">var dsBtreport = view.get(&quot;#dsBtreport&quot;);
 var cur=view.id('dsBtreport').getData('#');
-if(cur.get(&quot;sectionChief&quot;) == null){
+if(cur.get(&quot;sectionChiefName&quot;) == null){
 	dorado.MessageBox.alert(&quot;请先选择审阅的室主任&quot;);
 }
 else{
@@ -730,7 +810,6 @@ else{
 		view.id('uaBtreport').execute(function(){
               	 view.id('diaSubmitBtreport').hide();
     	});
-		dsBtreport.flushAsync();
 	});    
 }        </ClientEvent>
           <Property name="caption">确定</Property>
@@ -754,8 +833,10 @@ else{
           <DataGrid>
             <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
 var user=view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;);&#xD;
-if (user) {&#xD;
-	dropDown.close(user.get(&quot;username&quot;));&#xD;
+if (user) {	&#xD;
+	var cur = view.id('dsBtreport').getData('#');&#xD;
+	cur.set(&quot;sectionChief&quot;,user.get(&quot;username&quot;));	&#xD;
+	dropDown.close(user.get(&quot;cname&quot;));&#xD;
 }</ClientEvent>
             <Property name="showFilterBar">true</Property>
             <Property name="rowHeight">22</Property>
@@ -805,8 +886,8 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <Property name="dataPath">#</Property>
           <Property name="labelWidth">100</Property>
           <AutoFormElement>
-            <Property name="name">BtPerson</Property>
-            <Property name="property">btperson</Property>
+            <Property name="name">BtPersonName</Property>
+            <Property name="property">btpersonName</Property>
             <Property name="trigger">customDropDown1,triggerClear</Property>
             <Property name="readOnly">true</Property>
           </AutoFormElement>
@@ -827,15 +908,15 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
             <Property name="readOnly">true</Property>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="property">writingPerson</Property>
-            <Property name="name">WritingPerson</Property>
+            <Property name="property">writingPersonName</Property>
+            <Property name="name">WritingPersonName</Property>
             <Property name="readOnly">true</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="property">sectionChief</Property>
-            <Property name="name">SectionChief</Property>
-            <Property name="trigger">customDropDown2</Property>
+            <Property name="property">sectionChiefName</Property>
+            <Property name="name">SectionChiefName</Property>
+            <Property name="trigger">customDropDown2,triggerClear</Property>
             <Editor/>
           </AutoFormElement>
         </AutoForm>
@@ -862,8 +943,8 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <Property name="labelWidth">100</Property>
           <Property name="readOnly">true</Property>
           <AutoFormElement>
-            <Property name="name">BtPerson</Property>
-            <Property name="property">btperson</Property>
+            <Property name="name">BtPersonName</Property>
+            <Property name="property">btpersonName</Property>
             <Property name="trigger">customDropDown1,triggerClear</Property>
           </AutoFormElement>
           <AutoFormElement>
@@ -920,14 +1001,14 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
             <Property name="property">miji</Property>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="property">writingPerson</Property>
-            <Property name="name">WritingPerson</Property>
+            <Property name="property">writingPersonName</Property>
+            <Property name="name">WritingPersonName</Property>
             <Property name="readOnly">true</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="property">sectionChief</Property>
-            <Property name="name">SectionChief</Property>
+            <Property name="property">sectionChiefName</Property>
+            <Property name="name">SectionChiefName</Property>
             <Property name="readOnly">true</Property>
             <Editor/>
           </AutoFormElement>
@@ -938,8 +1019,8 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="property">departmentHead</Property>
-            <Property name="name">DepartmentHead</Property>
+            <Property name="property">departmentHeadName</Property>
+            <Property name="name">DepartmentHeadName</Property>
             <Property name="readOnly">true</Property>
             <Editor/>
           </AutoFormElement>
@@ -947,6 +1028,22 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
             <Property name="property">departmentHeadDate</Property>
             <Property name="name">DepartmentHeadDate</Property>
             <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">sectionChiefComment</Property>
+            <Property name="name">SectionChiefComment</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">80</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">departmentHeadComment</Property>
+            <Property name="name">DepartmentHeadComment</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">80</Property>
             <Editor/>
           </AutoFormElement>
         </AutoForm>

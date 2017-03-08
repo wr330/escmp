@@ -137,25 +137,26 @@ arg.processDefault = true;</ClientEvent>
     </DataGrid>
     <Dialog id="diaJoballot">
       <ClientEvent name="onClose">view.id(&quot;dsJobstatistics&quot;).getData('#.#joballot').cancel();</ClientEvent>
+      <ClientEvent name="onHide">var cur = view.id('dsJoballot').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'jobAllot','1');&#xD;
+});</ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
       <Property name="width">800</Property>
       <Property name="caption">工作项目作业分配</Property>
       <Buttons>
         <Button>
-          <ClientEvent name="onClick">var dsJoballot = view.get(&quot;#dsJoballot&quot;);
-var cur=view.id('dsJoballot').getData('#');
-if(cur.get(&quot;workSummary&quot;) != null){
+          <ClientEvent name="onClick">var cur=view.id('dsJoballot').getData('#');
+if(cur.get(&quot;workSummary&quot;) != null &amp;&amp; cur.get(&quot;finishtime&quot;) != null){
 	dorado.MessageBox.confirm('您是否确认已完成所分配的工作?', function(){	
 		cur.set(&quot;workStatus&quot;,2);
 		view.id('uaJoballot').execute(function(){
    			view.id('diaJoballot').hide();
 		});
-		dsJoballot.flushAsync();
 	});	  
 }
 else{
-	dorado.MessageBox.alert(&quot;需要填写工作总结&quot;);
+	dorado.MessageBox.alert(&quot;需要填写“工作总结”与“完成时间”&quot;);
 }          </ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
@@ -175,7 +176,6 @@ view.id('diaJoballot').hide();	     	         </ClientEvent>
           <AutoFormElement>
             <Property name="name">personname</Property>
             <Property name="property">personname</Property>
-            <Property name="trigger">customDropDownUser2</Property>
             <Property name="readOnly">true</Property>
             <Editor/>
           </AutoFormElement>
@@ -257,7 +257,6 @@ view.id('diaJoballot').hide();	     	         </ClientEvent>
           <AutoFormElement>
             <Property name="name">personname</Property>
             <Property name="property">personname</Property>
-            <Property name="trigger">customDropDownUser2</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>

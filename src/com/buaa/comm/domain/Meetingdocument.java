@@ -21,8 +21,8 @@ import java.util.Date;
 @Table(name="Comm_MeetingDocument")
 public class  Meetingdocument implements Serializable {
 	private static final long serialVersionUID = 1L;
-    public Meetingdocument(){}
-   public Meetingdocument(String oid) {
+	public Meetingdocument(){}
+	public Meetingdocument(String oid) {
       this.oid=oid;
  	}	
 

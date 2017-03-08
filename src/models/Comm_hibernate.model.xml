@@ -18,7 +18,13 @@
     <Property name="matchType">com.buaa.comm.domain.Btreport</Property>
     <PropertyDef name="btperson">
       <Property name="dataType">String</Property>
+      <Property name="label">出差人用户名</Property>
+      <Property name="required">false</Property>
+    </PropertyDef>
+    <PropertyDef name="btpersonName">
+      <Property></Property>
       <Property name="label">出差人</Property>
+      <Property name="dataType">String</Property>
       <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="remainedproblem">
@@ -150,30 +156,50 @@ else {&#xD;
     <PropertyDef name="sectionChief">
       <Property></Property>
       <Property name="dataType">String</Property>
-      <Property name="label">审阅的室主任</Property>
+      <Property name="label">室主任用户名</Property>
+    </PropertyDef>
+    <PropertyDef name="sectionChiefName">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">审阅室主任</Property>
     </PropertyDef>
     <PropertyDef name="sectionChiefDate">
       <Property name="dataType">DateTime</Property>
       <Property name="label">室主任审阅时间</Property>
     </PropertyDef>
+    <PropertyDef name="sectionChiefComment">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">室主任评语</Property>
+    </PropertyDef>
     <PropertyDef name="departmentHead">
       <Property></Property>
-      <Property name="label">审阅的部领导</Property>
+      <Property name="label">部领导用户名</Property>
       <Property name="dataType">String</Property>
+    </PropertyDef>
+    <PropertyDef name="departmentHeadName">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">审阅部领导</Property>
     </PropertyDef>
     <PropertyDef name="departmentHeadDate">
       <Property name="dataType">DateTime</Property>
       <Property name="label">部领导审阅时间</Property>
     </PropertyDef>
+    <PropertyDef name="departmentHeadComment">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">部领导评语</Property>
+    </PropertyDef>
     <PropertyDef name="writingPerson">
       <Property></Property>
       <Property name="dataType">String</Property>
-      <Property name="label">编写人</Property>
+      <Property name="label">编写人用户名</Property>
     </PropertyDef>
-    <PropertyDef name="sharePerson">
+    <PropertyDef name="writingPersonName">
       <Property></Property>
       <Property name="dataType">String</Property>
-      <Property name="label">分享人群</Property>
+      <Property name="label">编写人</Property>
     </PropertyDef>
     <Reference name="btReportSharePerson">
       <Property name="pageSize">20</Property>
@@ -588,6 +614,109 @@ else {&#xD;
       </Validator>
     </PropertyDef>
   </DataType>
+  <DataType name="Meetingmanager">
+    <Property name="matchType">com.buaa.comm.domain.Meetingmanager</Property>
+    <PropertyDef name="oid">
+      <Property name="dataType">String</Property>
+      <Property name="label">oid</Property>
+    </PropertyDef>
+    <PropertyDef name="miji">
+      <Property name="dataType">String</Property>
+      <Property name="label">密级</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">5</Property>
+              <Property name="value">机密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">4</Property>
+              <Property name="value">秘密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">3</Property>
+              <Property name="value">核心商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">普通商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">内部</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">公开</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+      <Property name="defaultValue">1</Property>
+      <Validator type="custom">
+        <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
+if (arg.data &lt;= secret) {&#xD;
+	arg.result = { state:&quot;ok&quot;};&#xD;
+} &#xD;
+else {&#xD;
+	arg.result = { state:&quot;error&quot;, text: &quot;新增数据的密级超过自己对应密级&quot;};	&#xD;
+}</ClientEvent>
+      </Validator>
+    </PropertyDef>
+    <PropertyDef name="meetingstime">
+      <Property name="dataType">DateTime</Property>
+      <Property name="label">会议开始时间</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="meetingetime">
+      <Property name="dataType">DateTime</Property>
+      <Property name="label">会议结束时间</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="applypersonname">
+      <Property name="dataType">String</Property>
+      <Property name="label">申请人</Property>
+    </PropertyDef>
+    <PropertyDef name="applyperson">
+      <Property name="dataType">String</Property>
+      <Property name="label">申请人用户名</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="ifusing">
+      <ClientEvent name="onGet">var meetingstime = arg.entity.get(&quot;meetingstime&quot;);&#xD;
+var meetingetime = arg.entity.get(&quot;meetingetime&quot;);&#xD;
+var dateNow = new Date();&#xD;
+if(meetingstime &lt; dateNow &amp;&amp; meetingetime > dateNow){&#xD;
+    arg.value = 1;&#xD;
+}&#xD;
+else{&#xD;
+	arg.value = 0;&#xD;
+}</ClientEvent>
+      <Property name="dataType">Integer</Property>
+      <Property name="label">会议室状态</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">正在进行</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">没有使用</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+      <Property name="defaultValue">0</Property>
+    </PropertyDef>
+    <PropertyDef name="meetingaddress">
+      <Property name="dataType">String</Property>
+      <Property name="label">会议地址</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+  </DataType>
   <DataType name="Jobstatistics">
     <Property name="creationType">com.buaa.comm.domain.Jobstatistics</Property>
     <PropertyDef name="oid">
@@ -596,8 +725,13 @@ else {&#xD;
     </PropertyDef>
     <PropertyDef name="writingperson">
       <Property name="dataType">String</Property>
-      <Property name="label">填写人员</Property>
+      <Property name="label">填写人员用户名</Property>
       <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="writingpersonName">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">填写人员</Property>
     </PropertyDef>
     <PropertyDef name="departname">
       <Property name="dataType">String</Property>
@@ -778,15 +912,15 @@ else {&#xD;
     <PropertyDef name="sectionChief">
       <Property></Property>
       <Property name="dataType">String</Property>
-      <Property name="label">分配到室主任</Property>
+      <Property name="label">室主任用户名</Property>
     </PropertyDef>
     <PropertyDef name="sectionChiefName">
-      <Property/>
+      <Property></Property>
       <Property name="dataType">String</Property>
-      <Property name="label">室主任姓名</Property>
+      <Property name="label">分配到室主任</Property>
     </PropertyDef>
     <PropertyDef name="workReport">
-      <Property/>
+      <Property></Property>
       <Property name="dataType">String</Property>
       <Property name="label">工作情况汇报</Property>
     </PropertyDef>

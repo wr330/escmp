@@ -30,6 +30,7 @@ public class  Btreport implements Serializable {
 	private String oid ;
 
 	private String btperson ;
+	private String btpersonName ;
 	private String remainedproblem ;
 	private String conclusion ;
 	private String btplace ;
@@ -42,11 +43,15 @@ public class  Btreport implements Serializable {
 	private String miji ;
 	private int status ;
 	private String sectionChief ;
+	private String sectionChiefName ;
 	private Date sectionChiefDate ;
+	private String sectionChiefComment ;	
 	private String departmentHead ;
-	private Date departmentHeadDate ;
+	private String departmentHeadName ;
+	private Date departmentHeadDate ;	
+	private String departmentHeadComment ;
 	private String writingPerson ;
-	private String sharePerson ;
+	private String writingPersonName ;
 	
 
 	private Collection<BtReportSharePerson> btReportSharePerson;
@@ -68,6 +73,15 @@ public class  Btreport implements Serializable {
 	public void setBtperson(String btperson) {
 		this.btperson=btperson;
 	}
+	
+	@Column(name="BtPersonName")
+	public String getBtpersonName() {
+		return btpersonName;
+	}
+	public void setBtpersonName(String btpersonName) {
+		this.btpersonName = btpersonName;
+	}
+	
 	@Column(name="RemainedProblem")
 	public String getRemainedproblem() {
 		return remainedproblem;
@@ -155,12 +169,27 @@ public class  Btreport implements Serializable {
 		this.sectionChief = sectionChief;
 	}
 	
+	@Column(name="SectionChiefName")
+	public String getSectionChiefName() {
+		return sectionChiefName;
+	}
+	public void setSectionChiefName(String sectionChiefName) {
+		this.sectionChiefName = sectionChiefName;
+	}
 	@Column(name="SectionChiefDate")
 	public Date getSectionChiefDate() {
 		return sectionChiefDate;
 	}
 	public void setSectionChiefDate(Date sectionChiefDate) {
 		this.sectionChiefDate = sectionChiefDate;
+	}
+	
+	@Column(name="SectionChiefComment")
+	public String getSectionChiefComment() {
+		return sectionChiefComment;
+	}
+	public void setSectionChiefComment(String sectionChiefComment) {
+		this.sectionChiefComment = sectionChiefComment;
 	}
 	
 	@Column(name="DepartmentHead")
@@ -171,12 +200,28 @@ public class  Btreport implements Serializable {
 		this.departmentHead = departmentHead;
 	}
 	
+	@Column(name="DepartmentHeadName")
+	public String getDepartmentHeadName() {
+		return departmentHeadName;
+	}
+	public void setDepartmentHeadName(String departmentHeadName) {
+		this.departmentHeadName = departmentHeadName;
+	}
+	
 	@Column(name="DepartmentHeadDate")
 	public Date getDepartmentHeadDate() {
 		return departmentHeadDate;
 	}
 	public void setDepartmentHeadDate(Date departmentHeadDate) {
 		this.departmentHeadDate = departmentHeadDate;
+	}
+	
+	@Column(name="DepartmentHeadComment")
+	public String getDepartmentHeadComment() {
+		return departmentHeadComment;
+	}
+	public void setDepartmentHeadComment(String departmentHeadComment) {
+		this.departmentHeadComment = departmentHeadComment;
 	}
 	
 	@Column(name="WritingPerson")
@@ -186,13 +231,15 @@ public class  Btreport implements Serializable {
 	public void setWritingPerson(String writingPerson) {
 		this.writingPerson = writingPerson;
 	}
-	@Column(name="SharePerson")
-	public String getSharePerson() {
-		return sharePerson;
+	
+	@Column(name="WritingPersonName")
+	public String getWritingPersonName() {
+		return writingPersonName;
 	}
-	public void setSharePerson(String sharePerson) {
-		this.sharePerson = sharePerson;
+	public void setWritingPersonName(String writingPersonName) {
+		this.writingPersonName = writingPersonName;
 	}
+	
 	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY,mappedBy = "btreport")
     public Collection<Appendixdocument> getAppendixdocument() {
 		return appendixdocument;
@@ -200,6 +247,7 @@ public class  Btreport implements Serializable {
 	public void setAppendixdocument(Collection<Appendixdocument> appendixdocument) {
 		this.appendixdocument=appendixdocument;
 	}
+	
 	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY,mappedBy = "btreport")
 	public Collection<BtReportSharePerson> getBtReportSharePerson() {
 		return btReportSharePerson;

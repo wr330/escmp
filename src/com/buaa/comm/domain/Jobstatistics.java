@@ -35,6 +35,7 @@ public class  Jobstatistics implements Serializable {
 	private Date realcompletedate ;
 	private String sourcepersonid ;
 	private String writingperson ;
+	private String writingpersonName ;
 	private String sourceevent ;
 	private Date arrangementdate ;
 	private String sourcepersonname ;
@@ -95,6 +96,13 @@ public class  Jobstatistics implements Serializable {
 	}
 	public void setWritingperson(String writingperson) {
 		this.writingperson=writingperson;
+	}
+	@Column(name="WritingPersonName")
+	public String getWritingpersonName() {
+		return writingpersonName;
+	}
+	public void setWritingpersonName(String writingpersonName) {
+		this.writingpersonName = writingpersonName;
 	}
 	@Column(name="SourceEvent")
 	public String getSourceevent() {

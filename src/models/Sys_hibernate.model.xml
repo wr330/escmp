@@ -149,10 +149,6 @@ arg.parameter = parameter;</ClientEvent>
               <Property name="value">Dic_MeetDocumentType</Property>
             </Entity>
             <Entity>
-              <Property name="label">会议室</Property>
-              <Property name="value">Dic_MeetRoom</Property>
-            </Entity>
-            <Entity>
               <Property name="label">试飞地点</Property>
               <Property name="value">Dic_ShiFeiAdrs</Property>
             </Entity>
@@ -231,6 +227,10 @@ arg.parameter = parameter;</ClientEvent>
             <Entity>
               <Property name="label">部队</Property>
               <Property name="value">Dic_Troop</Property>
+            </Entity>
+            <Entity>
+              <Property name="label">会议室</Property>
+              <Property name="value">Dic_MeetingRoom</Property>
             </Entity>
           </Collection>
         </Property>

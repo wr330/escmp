@@ -277,6 +277,11 @@ dataset.set(&quot;parameter&quot;,parameter).flushAsync();&#xD;
                   <Property name="label">会议文件类型</Property>
                   <Property name="userData">Dic_MeetDocumentType</Property>
                 </Node>
+                <Node>
+                  <Property name="icon">url(>skin>common/icons.gif) -220px -60px</Property>
+                  <Property name="userData">Dic_MeetingRoom</Property>
+                  <Property name="label">会议室</Property>
+                </Node>
               </Node>
             </Tree>
           </Children>
