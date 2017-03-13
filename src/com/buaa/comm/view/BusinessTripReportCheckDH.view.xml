@@ -61,9 +61,12 @@
       </Property>
     </DataSet>
     <DataSet id="dsUsers">
-      <Property name="dataProvider">bdf2.userMaintain#loadUsers</Property>
+      <Property name="dataProvider">bdf2.userMaintain#loadUsers2</Property>
       <Property name="dataType">[User]</Property>
-      <Property name="pageSize">200</Property>
+    </DataSet>
+    <DataSet id="dataSetDeptForSelect">
+      <Property name="dataType">[$dataTypeDept]</Property>
+      <Property name="dataProvider">bdf2.deptSelect#loadDepts</Property>
     </DataSet>
     <UpdateAction id="uaBtreport">
       <Property name="dataResolver">btreportPR#saveBtreport</Property>
@@ -80,14 +83,11 @@
       </DataPilot>
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsBtreport').getData('#');
+var dateNow = new Date();
 if (cur) {
-	if(cur.get(&quot;status&quot;) == 2){
-		var dialog=view.id('diaBtreport');
-		dialog.show();    
-	}
-	else{
-		dorado.MessageBox.alert(&quot;此出差报告已共享不能修改&quot;);
-	}  
+	cur.set('departmentHeadDate',dateNow);	
+	var dialog=view.id('diaBtreport');
+	dialog.show();    	  
 }</ClientEvent>
         <Property name="caption">审阅</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
@@ -104,27 +104,27 @@ if (cur) {&#xD;
       <ToolBarButton>
         <ClientEvent name="onClick">var dsBtreport = view.get(&quot;#dsBtreport&quot;);&#xD;
 var cur=view.id('dsBtreport').getData('#');&#xD;
-if(cur.get(&quot;status&quot;) == 2){&#xD;
-	dorado.MessageBox.confirm('您是否确认驳回此出差报告?', function(){&#xD;
-		cur.set(&quot;status&quot;,0);&#xD;
-		view.id('uaBtreport').execute();&#xD;
-		dsBtreport.flushAsync();    &#xD;
-	});&#xD;
-}&#xD;
-else{&#xD;
-	dorado.MessageBox.alert(&quot;此出差报告已共享不能驳回&quot;);&#xD;
-}&#xD;
-&#xD;
-       </ClientEvent>
+var dateNow = new Date();&#xD;
+if(cur){&#xD;
+	cur.set('departmentHeadDate',dateNow);	&#xD;
+	var dialog=view.id('diaRejectBtreport');&#xD;
+	dialog.show(); &#xD;
+}	      </ClientEvent>
         <Property name="caption">驳回</Property>
         <Property name="icon">url(>skin>common/icons.gif) -100px -0px</Property>
         <Property name="tags">reportCheck</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsBtreport').getData('#');&#xD;
-if (cur) {	&#xD;
-	var dialog=view.id('diaShareBtreport');&#xD;
-	dialog.show();     &#xD;
+if (cur) {&#xD;
+	if(cur.get('departmentHeadComment')){&#xD;
+		var dialog=view.id('diaShareBtreport');&#xD;
+		dialog.show(); &#xD;
+	}&#xD;
+	else{&#xD;
+		dorado.MessageBox.alert(&quot;请领导先审阅出差报告并填写评语&quot;);&#xD;
+	}	&#xD;
+	    &#xD;
 }</ClientEvent>
         <Property name="caption">共享</Property>
         <Property name="icon">url(>skin>common/icons.gif) -240px -100px</Property>
@@ -158,7 +158,15 @@ dsBtreport.flushAsync();</ClientEvent>
       <DataColumn>
         <Property name="property">writingPersonName</Property>
         <Property name="name">WritingPersonName</Property>
-        <Property name="width">120</Property>
+        <Property name="width">70</Property>
+        <Property name="align">center</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">wPerDepartment</Property>
+        <Property name="name">WPerDepartment</Property>
+        <Property name="width">80</Property>
+        <Property name="align">center</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
@@ -168,15 +176,15 @@ dsBtreport.flushAsync();</ClientEvent>
       </DataColumn>
       <DataColumn name="bttime">
         <Property name="property">bttime</Property>
-        <Property name="width">120</Property>
+        <Property name="width">90</Property>
       </DataColumn>
       <DataColumn name="bttask">
         <Property name="property">bttask</Property>
-        <Property name="width">120</Property>
+        <Property name="width">150</Property>
       </DataColumn>
       <DataColumn name="btplace">
         <Property name="property">btplace</Property>
-        <Property name="width">120</Property>
+        <Property name="width">90</Property>
       </DataColumn>
       <DataColumn name="keyword">
         <Property name="property">keyword</Property>
@@ -305,6 +313,10 @@ if (cur) {&#xD;
             <Property name="property">personName</Property>
             <Property name="width">120</Property>
           </DataColumn>
+          <DataColumn name="PersonDepartment">
+            <Property name="property">personDepartment</Property>
+            <Property name="width">120</Property>
+          </DataColumn>
           <DataColumn name="readStatus">
             <Property name="property">readStatus</Property>
             <Property name="width">120</Property>
@@ -389,57 +401,6 @@ else{
         </Button>
       </Buttons>
       <Children>
-        <CustomDropDown id="customDropDown1">
-          <Property name="editable">false</Property>
-          <Property name="autoOpen">true</Property>
-          <DataGrid>
-            <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
-var user=view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;);&#xD;
-if (user) {&#xD;
-	dropDown.close(user.get(&quot;cname&quot;));&#xD;
-}</ClientEvent>
-            <Property name="showFilterBar">true</Property>
-            <Property name="rowHeight">22</Property>
-            <Property name="dataSet">dsUsers</Property>
-            <Property name="readOnly">true</Property>
-            <Property name="height">300</Property>
-            <RowNumColumn/>
-            <DataColumn>
-              <Property name="name">username</Property>
-              <Property name="property">username</Property>
-            </DataColumn>
-            <DataColumn>
-              <Property name="name">cname</Property>
-              <Property name="property">cname</Property>
-            </DataColumn>
-            <DataColumn name="depts">
-              <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;depts&quot;);&#xD;
-var name = [];&#xD;
-if (entitylist) {&#xD;
-	entitylist.each(function(item){&#xD;
-		name.push(item.get(&quot;name&quot;));&#xD;
-	});&#xD;
-}&#xD;
-arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
-              <Property name="property">depts</Property>
-            </DataColumn>
-            <DataColumn>
-              <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;positions&quot;);&#xD;
-var name = [];&#xD;
-if (entitylist) {&#xD;
-	entitylist.each(function(item){&#xD;
-		name.push(item.get(&quot;name&quot;));&#xD;
-	});&#xD;
-}&#xD;
-arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
-              <Property name="name">positions</Property>
-              <Property name="property">positions</Property>
-              <Property name="width">120</Property>
-              <Property name="filterable">true</Property>
-              <Editor/>
-            </DataColumn>
-          </DataGrid>
-        </CustomDropDown>
         <AutoForm id="afBtreport">
           <Property name="cols">*,*</Property>
           <Property name="dataSet">dsBtreport</Property>
@@ -448,7 +409,6 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <AutoFormElement>
             <Property name="name">BtPersonName</Property>
             <Property name="property">btpersonName</Property>
-            <Property name="trigger">customDropDown1,triggerClear</Property>
             <Property name="readOnly">true</Property>
           </AutoFormElement>
           <AutoFormElement>
@@ -549,7 +509,7 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <AutoFormElement>
             <Property name="property">departmentHeadDate</Property>
             <Property name="name">DepartmentHeadDate</Property>
-            <Property name="readOnly">true</Property>
+            <Property name="readOnly">false</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement layoutConstraint="colSpan:2">
@@ -607,20 +567,165 @@ jQuery(arg.dom).xCreate({&#xD;
       </Children>
       <Tools/>
     </Dialog>
+    <Dialog id="diaRejectBtreport">
+      <ClientEvent name="onClose">var cur=view.id('dsBtreport').getData('#');&#xD;
+cur.cancel();&#xD;
+view.id('diaRejectBtreport').hide();	         </ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">800</Property>
+      <Property name="caption">出差报告审阅</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">var dsBtreport = view.get(&quot;#dsBtreport&quot;);
+var cur=view.id('dsBtreport').getData('#');
+if(cur.get('departmentHeadComment') != null){
+	dorado.MessageBox.confirm('您是否确认驳回此出差报告?', function(){
+		cur.set(&quot;status&quot;,0);
+		view.id('uaBtreport').execute(function(){
+             view.id('diaRejectBtreport').hide();
+    	});
+		view.id('dsBtreport').flushAsync();	
+	}); 
+	
+}
+else{
+	dorado.MessageBox.alert(&quot;请填写“部领导评语”&quot;);   
+}      </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsBtreport').getData('#');
+cur.cancel();
+view.id('diaRejectBtreport').hide();					         </ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afRejectBtreport">
+          <Property name="cols">*,*</Property>
+          <Property name="dataSet">dsBtreport</Property>
+          <Property name="dataPath">#</Property>
+          <Property name="labelWidth">100</Property>
+          <AutoFormElement>
+            <Property name="name">BtPersonName</Property>
+            <Property name="property">btpersonName</Property>
+            <Property name="readOnly">true</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">BtPlace</Property>
+            <Property name="property">btplace</Property>
+            <Property name="trigger">dataSetDropDown1</Property>
+            <Property name="readOnly">true</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">BtTime</Property>
+            <Property name="property">bttime</Property>
+            <Property name="readOnly">true</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">KeyWord</Property>
+            <Property name="property">keyword</Property>
+            <Property name="readOnly">true</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">writingPersonName</Property>
+            <Property name="name">WritingPersonName</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">sectionChiefName</Property>
+            <Property name="name">SectionChiefName</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">sectionChiefDate</Property>
+            <Property name="name">SectionChiefDate</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement layoutConstraint="colSpan:2">
+            <Property name="property">sectionChiefComment</Property>
+            <Property name="name">sectionChiefComment</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">80</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">departmentHeadName</Property>
+            <Property name="name">DepartmentHeadName</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">departmentHeadDate</Property>
+            <Property name="name">DepartmentHeadDate</Property>
+            <Property name="readOnly">false</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement layoutConstraint="colSpan:2">
+            <Property name="property">departmentHeadComment</Property>
+            <Property name="name">departmentHeadComment</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">80</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
     <Dialog id="diaShareBtreport">
       <ClientEvent name="onClose">var cur=view.id('dsBtreport').getData('#');&#xD;
 cur.cancel();	         </ClientEvent>
       <ClientEvent name="onHide">var cur = view.id('dsBtreport').getDataAsync('#',function(cur){&#xD;
 	view.checkButton(cur,'reportCheck','2');&#xD;
+	cur.reset('btReportSharePerson');&#xD;
 });</ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
-      <Property name="width">440</Property>
-      <Property name="height">400</Property>
-      <Property name="caption">出差报告共享人员选择</Property>
+      <Property name="width">500</Property>
+      <Property name="caption">出差报告共享</Property>
+      <Property name="height">500</Property>
       <Buttons>
         <Button>
-          <ClientEvent name="onClick" signature="self,dgShareUser">var selection = dgShareUser.get(&quot;selection&quot;);
+          <ClientEvent name="onClick" signature="self,dgShareUser">var dsBtreport = view.get(&quot;#dsBtreport&quot;);
+var selectPerson = dgShareUser.get(&quot;selection&quot;);
+var cur = dsBtreport.getData('#');
+var ajaxShare = view.id('ajaxActionShareBtreport');
+var selectDepart = view.get(&quot;#dtShareDepart&quot;).getCheckedNodes();
+var persons = new Array();
+var departments = new Array();
+var i = 0;
+if(selectPerson &amp;&amp; selectPerson.length){
+	
+	selectPerson.each(function(per){
+		persons[i] = per.get(&quot;username&quot;);
+		i++;
+	});	
+}
+if(selectDepart &amp;&amp; selectDepart.length){
+	i = 0;
+	selectDepart.each(function(dep){
+		departments[i] = dep.get('data.name');
+		i++;
+	});	
+}
+ajaxShare.set('parameter',{
+	'btreport':cur,
+	'selectPerson':	persons,
+	'selectDepart': departments
+});
+ajaxShare.execute();
+cur.set(&quot;status&quot;,3);
+view.id('uaBtreport').execute();
+view.id('diaShareBtreport').hide();
+
+/*var selection = dgShareUser.get(&quot;selection&quot;);
 var cur = view.id('dsBtreport').getData('#');
 var SharePerson = view.id('dsBtreport').getData('#.btReportSharePerson'); 
 if(cur){
@@ -640,7 +745,7 @@ if(cur){
 			dorado.MessageBox.alert(&quot;没有选中任何共享人员&quot;);
 		}
 	});
-}       </ClientEvent>
+}*/       </ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
         </Button>
@@ -656,26 +761,57 @@ if(cur){
         </Button>
       </Buttons>
       <Children>
-        <DataGrid id="dgShareUser">
-          <Property name="showFilterBar">true</Property>
-          <Property name="rowHeight">22</Property>
-          <Property name="dataSet">dsUsers</Property>
-          <Property name="readOnly">true</Property>
-          <Property name="selectionMode">multiRows</Property>
-          <RowNumColumn/>
-          <RowSelectorColumn/>
-          <DataColumn>
-            <Property name="name">username</Property>
-            <Property name="property">username</Property>
-            <Property name="width">120</Property>
-          </DataColumn>
-          <DataColumn>
-            <Property name="name">cname</Property>
-            <Property name="property">cname</Property>
-            <Property name="width">120</Property>
-          </DataColumn>
-          <DataColumn name="depts">
-            <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;depts&quot;);&#xD;
+        <TabControl id="tab">
+          <ControlTab>
+            <Property name="caption">科室选择</Property>
+            <DataTree id="dtShareDepart">
+              <ClientEvent name="onDataRowClick">/*var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
+var node = self.get(&quot;currentNode&quot;);&#xD;
+var dsUser = view.id(&quot;dataSetUser&quot;)&#xD;
+if (node ) {&#xD;
+	dropDown.close(node.get(&quot;data.name&quot;));&#xD;
+	var entity=this.id(&quot;dataSetUser&quot;).getData(&quot;#&quot;);&#xD;
+	if(entity.state == 0)&#xD;
+	    entity.setState(2);//修改状态，使可以提交&#xD;
+	view.id(&quot;dialogUser&quot;).setUserDept(node.get(&quot;data.id&quot;));//记录选择的部门ID&#xD;
+	dsUser.getData('#').set('department',node.get(&quot;data.name&quot;));&#xD;
+}*/</ClientEvent>
+              <Property name="dataSet">dataSetDeptForSelect</Property>
+              <Property name="selectionMode">multiRows</Property>
+              <BindingConfigs>
+                <BindingConfig>
+                  <Property name="childrenProperty">children</Property>
+                  <Property name="expandLevel">2</Property>
+                  <Property name="labelProperty">name</Property>
+                  <Property name="recursive">true</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -260px -40px</Property>
+                  <Property name="checkable">true</Property>
+                </BindingConfig>
+              </BindingConfigs>
+            </DataTree>
+          </ControlTab>
+          <ControlTab>
+            <Property name="caption">人员选择</Property>
+            <DataGrid id="dgShareUser">
+              <Property name="showFilterBar">true</Property>
+              <Property name="rowHeight">22</Property>
+              <Property name="dataSet">dsUsers</Property>
+              <Property name="readOnly">true</Property>
+              <Property name="selectionMode">multiRows</Property>
+              <RowNumColumn/>
+              <RowSelectorColumn/>
+              <DataColumn>
+                <Property name="name">username</Property>
+                <Property name="property">username</Property>
+                <Property name="width">120</Property>
+              </DataColumn>
+              <DataColumn>
+                <Property name="name">cname</Property>
+                <Property name="property">cname</Property>
+                <Property name="width">120</Property>
+              </DataColumn>
+              <DataColumn name="depts">
+                <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;depts&quot;);&#xD;
 var name = [];&#xD;
 if (entitylist) {&#xD;
 	entitylist.each(function(item){&#xD;
@@ -683,11 +819,12 @@ if (entitylist) {&#xD;
 	});&#xD;
 }&#xD;
 arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
-            <Property name="property">depts</Property>
-            <Property name="width">120</Property>
-          </DataColumn>
-          <DataColumn>
-            <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;positions&quot;);&#xD;
+                <Property name="property">depts</Property>
+                <Property name="width">120</Property>
+                <Property name="visible">false</Property>
+              </DataColumn>
+              <DataColumn>
+                <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;positions&quot;);&#xD;
 var name = [];&#xD;
 if (entitylist) {&#xD;
 	entitylist.each(function(item){&#xD;
@@ -695,13 +832,24 @@ if (entitylist) {&#xD;
 	});&#xD;
 }&#xD;
 arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
-            <Property name="name">positions</Property>
-            <Property name="property">positions</Property>
-            <Property name="width">120</Property>
-            <Property name="filterable">true</Property>
-            <Editor/>
-          </DataColumn>
-        </DataGrid>
+                <Property name="name">positions</Property>
+                <Property name="property">positions</Property>
+                <Property name="width">120</Property>
+                <Property name="filterable">true</Property>
+                <Property name="visible">false</Property>
+                <Editor/>
+              </DataColumn>
+              <DataColumn name="department">
+                <Property name="property">department</Property>
+                <Property name="width">70</Property>
+              </DataColumn>
+              <DataColumn name="position">
+                <Property name="property">position</Property>
+                <Property name="width">100</Property>
+              </DataColumn>
+            </DataGrid>
+          </ControlTab>
+        </TabControl>
       </Children>
       <Tools/>
     </Dialog>
@@ -1153,5 +1301,8 @@ link.set(&quot;visible&quot;,false);*/&#xD;
       </Children>
       <Tools/>
     </Dialog>
+    <AjaxAction id="ajaxActionShareBtreport">
+      <Property name="service">btReportSharePersonManager#BtReportShare</Property>
+    </AjaxAction>
   </View>
 </ViewConfig>

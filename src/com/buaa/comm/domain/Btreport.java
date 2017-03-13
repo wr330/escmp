@@ -52,7 +52,7 @@ public class  Btreport implements Serializable {
 	private String departmentHeadComment ;
 	private String writingPerson ;
 	private String writingPersonName ;
-	
+	private String wPerDepartment;
 
 	private Collection<BtReportSharePerson> btReportSharePerson;
 	private Collection<Appendixdocument> appendixdocument;
@@ -238,6 +238,14 @@ public class  Btreport implements Serializable {
 	}
 	public void setWritingPersonName(String writingPersonName) {
 		this.writingPersonName = writingPersonName;
+	}
+	
+	@Column(name="WPerDepartment")
+	public String getwPerDepartment() {
+		return wPerDepartment;
+	}
+	public void setwPerDepartment(String wPerDepartment) {
+		this.wPerDepartment = wPerDepartment;
 	}
 	
 	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY,mappedBy = "btreport")

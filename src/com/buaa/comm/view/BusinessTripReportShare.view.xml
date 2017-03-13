@@ -114,21 +114,29 @@ else{&#xD;
 }&#xD;
 arg.processDefault = true;</ClientEvent>
         <Property name="property">readStatus</Property>
-        <Property name="width">120</Property>
-        <Property name="align">left</Property>
+        <Property name="width">80</Property>
+        <Property name="align">center</Property>
       </DataColumn>
       <DataColumn name="firstReadTime">
         <Property name="property">firstReadTime</Property>
-        <Property name="width">150</Property>
+        <Property name="width">130</Property>
       </DataColumn>
       <DataColumn name="latelyReadTime">
         <Property name="property">latelyReadTime</Property>
-        <Property name="width">150</Property>
+        <Property name="width">130</Property>
       </DataColumn>
       <DataColumn>
         <Property name="property">btreport.writingPersonName</Property>
-        <Property name="width">120</Property>
+        <Property name="width">70</Property>
         <Property name="name">writingPersonName</Property>
+        <Property name="align">center</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">btreport.wPerDepartment</Property>
+        <Property name="name">WPerDepartment</Property>
+        <Property name="width">80</Property>
+        <Property name="align">center</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
@@ -139,19 +147,19 @@ arg.processDefault = true;</ClientEvent>
       </DataColumn>
       <DataColumn>
         <Property name="property">btreport.bttime</Property>
-        <Property name="width">120</Property>
+        <Property name="width">90</Property>
         <Property name="name">bttime</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
         <Property name="property">btreport.bttask</Property>
-        <Property name="width">120</Property>
+        <Property name="width">150</Property>
         <Property name="name">bttask</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
         <Property name="property">btreport.btplace</Property>
-        <Property name="width">120</Property>
+        <Property name="width">90</Property>
         <Property name="name">btplace</Property>
         <Editor/>
       </DataColumn>

@@ -28,6 +28,7 @@ public class BtReportSharePerson implements Serializable {
     
     private String oid ;
 	private String personName ;
+	private String personDepartment;
 	private String userName ;
 	private int readStatus ;
 	private Btreport btreport ;
@@ -51,6 +52,14 @@ public class BtReportSharePerson implements Serializable {
 		this.personName = personName;
 	}
 	
+	@Column(name="PersonDepartment")
+	public String getPersonDepartment() {
+		return personDepartment;
+	}
+	public void setPersonDepartment(String personDepartment) {
+		this.personDepartment = personDepartment;
+	}
+	
 	@Column(name="UserName")
 	public String getUserName() {
 		return userName;
@@ -58,7 +67,7 @@ public class BtReportSharePerson implements Serializable {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	
+		
 	@Column(name="ReadStatus")
 	public int getReadStatus() {
 		return readStatus;
@@ -84,7 +93,7 @@ public class BtReportSharePerson implements Serializable {
 	}
 	
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "Jobstatistic")
+	@JoinColumn(name = "Btreport")
 	public Btreport getBtreport() {
 		return btreport;
 	}

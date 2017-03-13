@@ -139,6 +139,7 @@ for(var i=1;i&lt;=32;i++){
 cur.set(&quot;oid&quot;,guid);
 cur.set(&quot;writingPerson&quot;,&quot;${loginUser.getUsername()}&quot;);
 cur.set(&quot;writingPersonName&quot;,&quot;${loginUser.getCname()}&quot;);
+cur.set(&quot;wPerDepartment&quot;,&quot;${loginUser.getDepartment()}&quot;);
 var dialog=view.id('diaBtreport');
 dialog.set(&quot;caption&quot;,&quot;新增出差报告&quot;);
 dialog.show();	</ClientEvent>
@@ -230,7 +231,15 @@ dsBtreport.flushAsync();</ClientEvent>
       <DataColumn>
         <Property name="property">writingPersonName</Property>
         <Property name="name">WritingPersonName</Property>
-        <Property name="width">120</Property>
+        <Property name="width">70</Property>
+        <Property name="align">center</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">wPerDepartment</Property>
+        <Property name="name">WPerDepartment</Property>
+        <Property name="width">80</Property>
+        <Property name="align">center</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
@@ -240,15 +249,15 @@ dsBtreport.flushAsync();</ClientEvent>
       </DataColumn>
       <DataColumn name="bttime">
         <Property name="property">bttime</Property>
-        <Property name="width">120</Property>
+        <Property name="width">90</Property>
       </DataColumn>
       <DataColumn name="bttask">
         <Property name="property">bttask</Property>
-        <Property name="width">120</Property>
+        <Property name="width">150</Property>
       </DataColumn>
       <DataColumn name="btplace">
         <Property name="property">btplace</Property>
-        <Property name="width">120</Property>
+        <Property name="width">90</Property>
       </DataColumn>
       <DataColumn name="keyword">
         <Property name="property">keyword</Property>
@@ -381,6 +390,10 @@ if (cur) {&#xD;
           </DataColumn>
           <DataColumn name="personName">
             <Property name="property">personName</Property>
+            <Property name="width">120</Property>
+          </DataColumn>
+          <DataColumn name="PersonDepartment">
+            <Property name="property">personDepartment</Property>
             <Property name="width">120</Property>
           </DataColumn>
           <DataColumn name="readStatus">
@@ -862,6 +875,7 @@ if (entitylist) {&#xD;
 }&#xD;
 arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
               <Property name="property">depts</Property>
+              <Property name="visible">false</Property>
             </DataColumn>
             <DataColumn>
               <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;positions&quot;);&#xD;
@@ -876,7 +890,16 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
               <Property name="property">positions</Property>
               <Property name="width">120</Property>
               <Property name="filterable">true</Property>
+              <Property name="visible">false</Property>
               <Editor/>
+            </DataColumn>
+            <DataColumn name="department">
+              <Property name="property">department</Property>
+              <Property name="width">70</Property>
+            </DataColumn>
+            <DataColumn name="position">
+              <Property name="property">position</Property>
+              <Property name="width">100</Property>
             </DataColumn>
           </DataGrid>
         </CustomDropDown>

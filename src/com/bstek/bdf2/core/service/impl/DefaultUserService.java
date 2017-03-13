@@ -1,7 +1,5 @@
 package com.bstek.bdf2.core.service.impl;
 
-
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
@@ -119,7 +117,8 @@ public class DefaultUserService extends JdbcDao implements IUserService {
     		user.setIp(rs.getString("IP"));
     		user.setMiji(rs.getString("miji"));
     		user.setLoginCount(rs.getInt("loginCount"));
-    		user.setLock(rs.getBoolean("Lock"));
+    		user.setPosition(rs.getString("Position"));
+    		user.setDepartment(rs.getString("Department"));
             return user;
         }
     }

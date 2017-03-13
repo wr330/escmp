@@ -31,15 +31,6 @@
     <PropertyDef name="salt">
       <Property name="dataType">String</Property>
     </PropertyDef>
-    <PropertyDef name="leagueMember">
-      <Property name="dataType">boolean</Property>
-    </PropertyDef>
-    <PropertyDef name="partyMember">
-      <Property name="dataType">boolean</Property>
-    </PropertyDef>
-    <PropertyDef name="technicalLevel">
-      <Property name="dataType">String</Property>
-    </PropertyDef>
     <Reference name="depts">
       <Property name="dataType">[$dataTypeDept]</Property>
       <Property name="parameter">$${this.username}</Property>
@@ -52,6 +43,91 @@
       <Property name="parameter">$${this.username}</Property>
       <Property name="label">岗位</Property>
     </Reference>
+    <PropertyDef name="leagueMember">
+      <Property name="dataType">boolean</Property>
+      <Property name="label">是否团员</Property>
+    </PropertyDef>
+    <PropertyDef name="partyMember">
+      <Property name="dataType">boolean</Property>
+      <Property name="label">是否党员</Property>
+    </PropertyDef>
+    <PropertyDef name="technicalLevel">
+      <Property name="dataType">String</Property>
+      <Property name="label">职称</Property>
+    </PropertyDef>
+    <PropertyDef name="ip">
+      <Property name="dataType">String</Property>
+      <Property name="label">绑定IP</Property>
+      <Validator type="regExp">
+        <Property name="resultMessage">IP地址格式输入错误</Property>
+        <Property name="whiteRegExp">^((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.){3}(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)$</Property>
+        <Property name="validateMode">whiteBlack</Property>
+      </Validator>
+    </PropertyDef>
+    <PropertyDef name="miji">
+      <Property name="dataType">String</Property>
+      <Property name="label">密级</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">5</Property>
+              <Property name="value">机密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">4</Property>
+              <Property name="value">秘密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">3</Property>
+              <Property name="value">核心商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">普通商密</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">内部</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">公开</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+      <Property name="defaultValue">1</Property>
+      <Validator type="custom">
+        <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
+if (arg.data &lt;= secret) {&#xD;
+	arg.result = { state:&quot;ok&quot;};&#xD;
+} &#xD;
+else {&#xD;
+	arg.result = { state:&quot;error&quot;, text: &quot;新增数据的密级超过自己对应密级&quot;};	&#xD;
+}</ClientEvent>
+      </Validator>
+    </PropertyDef>
+    <PropertyDef name="loginCount">
+      <Property name="dataType">int</Property>
+      <Property name="label">登录计数</Property>
+      <Property name="defaultValue">0</Property>
+    </PropertyDef>
+    <PropertyDef name="lock">
+      <Property name="dataType">boolean</Property>
+      <Property name="label">账户锁定</Property>
+      <Property name="defaultValue">false</Property>
+    </PropertyDef>
+    <PropertyDef name="department">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">部门</Property>
+    </PropertyDef>
+    <PropertyDef name="position">
+      <Property></Property>
+      <Property name="label">岗位</Property>
+      <Property name="dataType">String</Property>
+    </PropertyDef>
   </DataType>
   <DataType name="Dictionary" meta="x:150;y:0">
     <Property name="matchType">com.buaa.sys.domain.Dictionary</Property>

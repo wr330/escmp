@@ -197,6 +197,16 @@ else {&#xD;
         <Property name="label">账户锁定</Property>
         <Property name="defaultValue">false</Property>
       </PropertyDef>
+      <PropertyDef name="department">
+        <Property></Property>
+        <Property name="dataType">String</Property>
+        <Property name="label">部门</Property>
+      </PropertyDef>
+      <PropertyDef name="position">
+        <Property></Property>
+        <Property name="label">岗位</Property>
+        <Property name="dataType">String</Property>
+      </PropertyDef>
     </DataType>
     <DataType name="dataTypeResetPassword">
       <PropertyDef name="oldPassword">
@@ -442,6 +452,10 @@ if(data){&#xD;
 	action.execute(function(){&#xD;
 		data.reset(&quot;positions&quot;);&#xD;
 	});&#xD;
+	data.set(&quot;confirmPassword&quot;, data.get(&quot;password&quot;));&#xD;
+	var position = null; &#xD;
+	data.set('position',position);&#xD;
+	view.id(&quot;updateActionUser&quot;).execute();&#xD;
 	var myDate = new Date();&#xD;
 	view.id('dsAuditLog').getData().insert({&#xD;
 		operationType:&quot;7&quot;,&#xD;
@@ -507,6 +521,11 @@ importExcelAction.execute(function(arg){&#xD;
         <Property name="icon">url(>skin>common/icons.gif) -60px -20px</Property>
         <Property name="caption">解锁用户</Property>
       </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">view.id('dgUser').set(&quot;showFilterBar&quot;,!view.id('dgUser').get(&quot;showFilterBar&quot;));</ClientEvent>
+        <Property name="caption">自定义查询</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -20px -40px</Property>
+      </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgUser" layoutConstraint="center">
       <Property name="dataSet">dataSetUser</Property>
@@ -546,6 +565,7 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
         <Property name="property">positions</Property>
         <Property name="width">120</Property>
         <Property name="filterable">true</Property>
+        <Property name="visible">false</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
@@ -561,12 +581,21 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
         <Property name="property">depts</Property>
         <Property name="width">120</Property>
         <Property name="filterable">true</Property>
+        <Property name="visible">false</Property>
         <Editor/>
+      </DataColumn>
+      <DataColumn name="position">
+        <Property name="property">position</Property>
+        <Property name="width">150</Property>
+      </DataColumn>
+      <DataColumn name="department">
+        <Property name="property">department</Property>
+        <Property name="width">120</Property>
       </DataColumn>
       <DataColumn>
         <Property name="property">ip</Property>
         <Property name="filterable">true</Property>
-        <Property name="width">100</Property>
+        <Property name="width">120</Property>
         <Property name="name">ip</Property>
       </DataColumn>
       <DataColumn name="birthday">
@@ -580,11 +609,11 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
       </DataColumn>
       <DataColumn name="leagueMember">
         <Property name="property">leagueMember</Property>
-        <Property name="width">60</Property>
+        <Property name="width">90</Property>
       </DataColumn>
       <DataColumn name="partyMember">
         <Property name="property">partyMember</Property>
-        <Property name="width">60</Property>
+        <Property name="width">90</Property>
       </DataColumn>
       <DataColumn name="administrator">
         <Property name="property">administrator</Property>
@@ -594,17 +623,19 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
       <DataColumn name="enabled">
         <Property name="property">enabled</Property>
         <Property name="filterable">true</Property>
-        <Property name="width">60</Property>
+        <Property name="width">90</Property>
       </DataColumn>
       <DataColumn>
         <Property name="property">lock</Property>
         <Property name="name">lock</Property>
+        <Property name="width">90</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
         <Property name="caption">密级</Property>
         <Property name="name">miji</Property>
         <Property name="property">miji</Property>
+        <Property name="width">120</Property>
         <Editor/>
       </DataColumn>
     </DataGrid>
@@ -657,9 +688,7 @@ view.id('uaAuditLog').execute();</ClientEvent>
 	view.id(&quot;dataSetUser&quot;).getData(&quot;#&quot;).cancel();&#xD;
 	view.id(&quot;dialogUser&quot;).setUserDept(null);&#xD;
 	view.id(&quot;dialogUser&quot;).hide();&#xD;
-});&#xD;
-&#xD;
-</ClientEvent>
+});</ClientEvent>
           <Property name="caption">取消</Property>
           <Property name="icon"> url(>skin>common/icons.gif) -40px -0px</Property>
         </Button>
@@ -784,13 +813,14 @@ view.id('uaAuditLog').execute();</ClientEvent>
           <DataTree>
             <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
 var node = self.get(&quot;currentNode&quot;);&#xD;
-&#xD;
+var dsUser = view.id(&quot;dataSetUser&quot;)&#xD;
 if (node ) {&#xD;
 	dropDown.close(node.get(&quot;data.name&quot;));&#xD;
 	var entity=this.id(&quot;dataSetUser&quot;).getData(&quot;#&quot;);&#xD;
 	if(entity.state == 0)&#xD;
 	    entity.setState(2);//修改状态，使可以提交&#xD;
 	view.id(&quot;dialogUser&quot;).setUserDept(node.get(&quot;data.id&quot;));//记录选择的部门ID&#xD;
+	dsUser.getData('#').set('department',node.get(&quot;data.name&quot;));&#xD;
 }</ClientEvent>
             <Property name="dataSet">dataSetDeptForSelect</Property>
             <BindingConfigs>
@@ -820,7 +850,6 @@ if (node ) {&#xD;
     <AjaxAction id="ajaxActionCheckUserIsExists">
       <Property name="service">bdf2.userMaintain#userIsExists</Property>
     </AjaxAction>
-    <Import id="positionSelect" src="bdf2.core.view.global.PositionSelect#$dialogPositionSelect"/>
     <AjaxAction id="ajaxActionInsertUserPosition">
       <Property name="service">bdf2.userMaintain#insertUserPosition</Property>
     </AjaxAction>
@@ -850,5 +879,181 @@ view.id('uaAuditLog').execute();</ClientEvent>
     <AjaxAction id="ajaxActionR">
       <Property name="service">userService#checkUser</Property>
     </AjaxAction>
+    <Dialog id="$dialogPositionSelect">
+      <ClientEvent name="onCreate">self.$show=function(config){&#xD;
+	if(!config.callback){&#xD;
+		dorado.MessageBox.alert(&quot;请先为当前dialog添加一个名为callback的函数&quot;);&#xD;
+		return;&#xD;
+	}&#xD;
+	self.callback=config.callback;&#xD;
+	if(config.width){&#xD;
+		self.set(&quot;width&quot;,config.width);&#xD;
+	}&#xD;
+	&#xD;
+	if(config.maxSelect){&#xD;
+		self.maxSelect=config.maxSelect;&#xD;
+	}&#xD;
+	&#xD;
+	if(config.height){&#xD;
+		self.set(&quot;height&quot;,config.height);&#xD;
+	}&#xD;
+	if(config.caption){&#xD;
+		self.set(&quot;caption&quot;,config.caption);&#xD;
+	}&#xD;
+	if(config.selected){&#xD;
+		self.selected=config.selected;&#xD;
+	}&#xD;
+	self.show();&#xD;
+}&#xD;
+</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="width">630</Property>
+      <Property name="height">460</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">var curUser = view.id(&quot;dataSetUser&quot;).getData('#');&#xD;
+var data=view.id(&quot;$dataSetPositionSelected&quot;).getData();&#xD;
+if(data.isEmpty()){&#xD;
+	dorado.MessageBox.alert(&quot;请选择一个岗位后再进行此操作&quot;);&#xD;
+	return;&#xD;
+}&#xD;
+view.id(&quot;$dialogPositionSelect&quot;).callback(data.toJSON());&#xD;
+if(curUser){&#xD;
+	curUser.set(&quot;confirmPassword&quot;, curUser.get(&quot;password&quot;));&#xD;
+	var position = ''; &#xD;
+	data.each(function(curEntity){&#xD;
+		position = position + &quot;,&quot; + curEntity.get(&quot;name&quot;);&#xD;
+	});&#xD;
+	position = position.substring(1,position.length);&#xD;
+	curUser.set('position',position);&#xD;
+	view.id(&quot;updateActionUser&quot;).execute();&#xD;
+}</ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(skin>common/icons.gif) -140px -20px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">view.id(&quot;$dialogPositionSelect&quot;).hide();&#xD;
+</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(skin>common/icons.gif) -40px 0px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <DataSet id="$dataSetPositionForSelect">
+          <ClientEvent name="onReady">self.move=function(){&#xD;
+	var ds=view.id(&quot;$dataSetPositionForSelect&quot;);&#xD;
+	var data=ds.getData(&quot;#&quot;);&#xD;
+	if(data){&#xD;
+		var targetData=view.id(&quot;$dataSetPositionSelected&quot;).getData();&#xD;
+		var insertAble=true;&#xD;
+		targetData.each(function(user){&#xD;
+			if(user.get(&quot;id&quot;)==data.get(&quot;id&quot;)){&#xD;
+				insertAble=false;&#xD;
+				return false;&#xD;
+			}&#xD;
+		});&#xD;
+		if(insertAble){&#xD;
+			var max=view.id(&quot;$dialogPositionSelect&quot;).maxSelect;&#xD;
+			if(max &amp;&amp; targetData.toArray().length>=max){&#xD;
+				dorado.MessageBox.alert(&quot;当前最多只允许选择[&quot;+max+&quot;]个岗位！&quot;);&#xD;
+				return;&#xD;
+			}&#xD;
+			targetData.insert(data.toJSON());&#xD;
+			data.remove();&#xD;
+		}else{&#xD;
+			dorado.MessageBox.alert(&quot;当前岗位已存在！&quot;)&#xD;
+		}&#xD;
+	}else{&#xD;
+		dorado.MessageBox.alert(&quot;当前没有选中的岗位信息！&quot;)&#xD;
+	}	&#xD;
+}</ClientEvent>
+          <ClientEvent name="onDataLoad">var movedData=view.id(&quot;$dataSetPositionSelected&quot;).getData();&#xD;
+var data=self.getData();&#xD;
+if(movedData){&#xD;
+	data.each(function(entity){&#xD;
+		movedData.each(function(movedEntity){&#xD;
+			if(entity.get(&quot;id&quot;)==movedEntity.get(&quot;id&quot;)){&#xD;
+				entity.remove();&#xD;
+			}&#xD;
+		});&#xD;
+	});&#xD;
+}&#xD;
+var dialog=view.id(&quot;$dialogPositionSelect&quot;);&#xD;
+var selected=dialog.selected&#xD;
+if(selected){&#xD;
+	data.each(function(entity){&#xD;
+		for(var i=0;i&lt;selected.length;i++){&#xD;
+			if(selected[i]==entity.get(&quot;id&quot;)){&#xD;
+				entity.remove();&#xD;
+				break;&#xD;
+			}&#xD;
+		}&#xD;
+	});&#xD;
+}&#xD;
+</ClientEvent>
+          <Property name="dataType">[$dataTypePosition]</Property>
+          <Property name="dataProvider">bdf2.positionSelect#loadPositions</Property>
+          <Property name="pageSize">15</Property>
+        </DataSet>
+        <DataSet id="$dataSetPositionSelected">
+          <ClientEvent name="onReady">self.remove=function(){&#xD;
+	var data=view.id(&quot;$dataSetPositionSelected&quot;).getData(&quot;#&quot;);&#xD;
+	if(data){&#xD;
+		data.remove();&#xD;
+		view.id(&quot;$dataSetPositionForSelect&quot;).flushAsync();&#xD;
+	}else{&#xD;
+		dorado.MessageBox.alert(&quot;当前没有选中的岗位信息！&quot;)&#xD;
+	}	&#xD;
+}</ClientEvent>
+          <Property name="dataType">[$dataTypePosition]</Property>
+        </DataSet>
+        <ToolBar>
+          <DataPilot>
+            <Property name="dataSet">$dataSetUserForSelect</Property>
+            <Property name="itemCodes">pages</Property>
+          </DataPilot>
+        </ToolBar>
+        <Container>
+          <DataGrid id="$dataGridPositionForSelect" layoutConstraint="left">
+            <ClientEvent name="onDoubleClick">view.id(&quot;$dataSetPositionForSelect&quot;).move();&#xD;
+</ClientEvent>
+            <Property name="dataSet">$dataSetPositionForSelect</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="width">46%</Property>
+            <Property name="filterMode">serverSide</Property>
+            <Property name="showFilterBar">true</Property>
+            <DataColumn>
+              <Property name="property">name</Property>
+              <Property name="name">name</Property>
+            </DataColumn>
+          </DataGrid>
+          <Container layout="vbox padding:5" layoutConstraint="center">
+            <Button layoutConstraint="align:center">
+              <ClientEvent name="onClick">view.id(&quot;$dataSetPositionForSelect&quot;).move();&#xD;
+</ClientEvent>
+              <Property name="caption">添加</Property>
+            </Button>
+            <Button layoutConstraint="align:center">
+              <ClientEvent name="onClick">view.id(&quot;$dataSetPositionSelected&quot;).remove();&#xD;
+</ClientEvent>
+              <Property name="caption">删除</Property>
+            </Button>
+          </Container>
+          <DataGrid id="$dataGridPositionSelected" layoutConstraint="right">
+            <ClientEvent name="onDoubleClick">view.id(&quot;$dataSetPositionSelected&quot;).remove();&#xD;
+</ClientEvent>
+            <Property name="readOnly">true</Property>
+            <Property name="width">46%</Property>
+            <Property name="dataSet">$dataSetPositionSelected</Property>
+            <DataColumn>
+              <Property name="property">name</Property>
+              <Property name="name">name</Property>
+            </DataColumn>
+          </DataGrid>
+        </Container>
+      </Children>
+      <Tools/>
+    </Dialog>
   </View>
 </ViewConfig>

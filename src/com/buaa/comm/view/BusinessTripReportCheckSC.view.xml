@@ -61,9 +61,8 @@
       </Property>
     </DataSet>
     <DataSet id="dsUsers">
-      <Property name="dataProvider">bdf2.userMaintain#loadUsers</Property>
+      <Property name="dataProvider">bdf2.userMaintain#loadUsers2</Property>
       <Property name="dataType">[User]</Property>
-      <Property name="pageSize">200</Property>
     </DataSet>
     <UpdateAction id="uaBtreport">
       <Property name="dataResolver">btreportPR#saveBtreport</Property>
@@ -79,17 +78,11 @@
       </DataPilot>
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsBtreport').getData('#');
-if (cur) {
-	if(cur.get(&quot;status&quot;) == 1){
-		var dialog=view.id('diaBtreport');
-		dialog.show();
-	}
-	else if(cur.get(&quot;status&quot;) == 3){
-		dorado.MessageBox.alert(&quot;出差报告已共享不能修改&quot;);
-	}
-	else{
-		dorado.MessageBox.alert(&quot;出差报告已提交领导审阅不能修改&quot;);
-	}
+var dateNow = new Date();
+if (cur) {	
+	cur.set(&quot;sectionChiefDate&quot;,dateNow);
+	var dialog=view.id('diaBtreport');
+	dialog.show();	
 }
 </ClientEvent>
         <Property name="caption">审阅</Property>
@@ -107,8 +100,12 @@ if (cur) {&#xD;
       <ToolBarButton>
         <ClientEvent name="onClick">var dsBtreport = view.get(&quot;#dsBtreport&quot;);&#xD;
 var cur=view.id('dsBtreport').getData('#');&#xD;
-var dialog=view.id('diaRejectBtreport');&#xD;
-dialog.show();  </ClientEvent>
+if (cur) {	&#xD;
+	var dateNow = new Date();&#xD;
+	cur.set(&quot;sectionChiefDate&quot;,dateNow);&#xD;
+	var dialog=view.id('diaRejectBtreport');&#xD;
+	dialog.show();&#xD;
+}  </ClientEvent>
         <Property name="caption">驳回</Property>
         <Property name="icon">url(>skin>common/icons.gif) -100px -0px</Property>
         <Property name="tags">reportCheck</Property>
@@ -117,11 +114,10 @@ dialog.show();  </ClientEvent>
         <ClientEvent name="onClick">var cur=view.id('dsBtreport').getData('#');&#xD;
 var dateNow = new Date();&#xD;
 if (cur) {&#xD;
-	cur.set(&quot;sectionChiefDate&quot;,dateNow)&#xD;
+	cur.set(&quot;sectionChiefDate&quot;,dateNow);&#xD;
 	var dialog=view.id('diaSubmitBtreport');&#xD;
 	dialog.show();&#xD;
-}&#xD;
-</ClientEvent>
+}</ClientEvent>
         <Property name="caption">提交到部领导</Property>
         <Property name="icon">url(>skin>common/icons.gif) -140px -180px</Property>
         <Property name="tags">reportCheck</Property>
@@ -154,7 +150,15 @@ dsBtreport.flushAsync();</ClientEvent>
       <DataColumn>
         <Property name="property">writingPersonName</Property>
         <Property name="name">WritingPersonName</Property>
-        <Property name="width">120</Property>
+        <Property name="width">70</Property>
+        <Property name="align">center</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">wPerDepartment</Property>
+        <Property name="name">WPerDepartment</Property>
+        <Property name="width">80</Property>
+        <Property name="align">center</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
@@ -164,15 +168,15 @@ dsBtreport.flushAsync();</ClientEvent>
       </DataColumn>
       <DataColumn name="bttime">
         <Property name="property">bttime</Property>
-        <Property name="width">120</Property>
+        <Property name="width">90</Property>
       </DataColumn>
       <DataColumn name="bttask">
         <Property name="property">bttask</Property>
-        <Property name="width">120</Property>
+        <Property name="width">150</Property>
       </DataColumn>
       <DataColumn name="btplace">
         <Property name="property">btplace</Property>
-        <Property name="width">120</Property>
+        <Property name="width">90</Property>
       </DataColumn>
       <DataColumn name="keyword">
         <Property name="property">keyword</Property>
@@ -304,6 +308,10 @@ if (cur) {&#xD;
             <Property name="property">personName</Property>
             <Property name="width">120</Property>
           </DataColumn>
+          <DataColumn name="PersonDepartment">
+            <Property name="property">personDepartment</Property>
+            <Property name="width">120</Property>
+          </DataColumn>
           <DataColumn name="readStatus">
             <Property name="property">readStatus</Property>
             <Property name="width">120</Property>
@@ -338,7 +346,7 @@ if (cur) {&#xD;
       <Buttons>
         <Button>
           <ClientEvent name="onClick">view.id('uaBtreport').execute(function(){
-         view.id('diaBtreport').hide();
+    view.id('diaBtreport').hide();
 });        </ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
@@ -347,7 +355,7 @@ if (cur) {&#xD;
           <ClientEvent name="onClick">var dsBtreport = view.get(&quot;#dsBtreport&quot;);
 var cur=view.id('dsBtreport').getData('#');
 if(cur.get(&quot;departmentHeadName&quot;) != null &amp;&amp; cur.get('sectionChiefComment') != null){
-	dorado.MessageBox.confirm('您是否确认请部领导审阅此出差报告?', function(){
+	dorado.MessageBox.confirm('您是否确认请部领导审阅此出差报告?', function(){		
 		cur.set(&quot;status&quot;,2);
 		view.id('uaBtreport').execute(function(){
             view.id('diaBtreport').hide();
@@ -427,6 +435,7 @@ if (entitylist) {&#xD;
 }&#xD;
 arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
               <Property name="property">depts</Property>
+              <Property name="visible">false</Property>
             </DataColumn>
             <DataColumn>
               <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;positions&quot;);&#xD;
@@ -441,7 +450,16 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
               <Property name="property">positions</Property>
               <Property name="width">120</Property>
               <Property name="filterable">true</Property>
+              <Property name="visible">false</Property>
               <Editor/>
+            </DataColumn>
+            <DataColumn name="department">
+              <Property name="property">department</Property>
+              <Property name="width">70</Property>
+            </DataColumn>
+            <DataColumn name="position">
+              <Property name="property">position</Property>
+              <Property name="width">100</Property>
             </DataColumn>
           </DataGrid>
         </CustomDropDown>
@@ -533,7 +551,7 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <AutoFormElement>
             <Property name="property">sectionChiefDate</Property>
             <Property name="name">SectionChiefDate</Property>
-            <Property name="readOnly">true</Property>
+            <Property name="readOnly">false</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement layoutConstraint="colSpan:2">
@@ -680,6 +698,7 @@ if (entitylist) {&#xD;
 }&#xD;
 arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
               <Property name="property">depts</Property>
+              <Property name="visible">false</Property>
             </DataColumn>
             <DataColumn>
               <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;positions&quot;);&#xD;
@@ -694,7 +713,16 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
               <Property name="property">positions</Property>
               <Property name="width">120</Property>
               <Property name="filterable">true</Property>
+              <Property name="visible">false</Property>
               <Editor/>
+            </DataColumn>
+            <DataColumn name="department">
+              <Property name="property">department</Property>
+              <Property name="width">70</Property>
+            </DataColumn>
+            <DataColumn name="position">
+              <Property name="property">position</Property>
+              <Property name="width">100</Property>
             </DataColumn>
           </DataGrid>
         </CustomDropDown>
@@ -748,7 +776,7 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <AutoFormElement>
             <Property name="property">sectionChiefDate</Property>
             <Property name="name">SectionChiefDate</Property>
-            <Property name="readOnly">true</Property>
+            <Property name="readOnly">false</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
@@ -847,7 +875,7 @@ view.id('diaRejectBtreport').hide();			         </ClientEvent>
           <AutoFormElement>
             <Property name="property">sectionChiefDate</Property>
             <Property name="name">SectionChiefDate</Property>
-            <Property name="readOnly">true</Property>
+            <Property name="readOnly">false</Property>
             <Editor/>
           </AutoFormElement>
         </AutoForm>

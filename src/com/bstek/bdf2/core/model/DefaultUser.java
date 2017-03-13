@@ -53,6 +53,10 @@ public class DefaultUser extends AbstractUser  implements java.io.Serializable{
 	private int loginCount;
     @Column(name="Lock",length=50)
 	private boolean lock;
+    @Column(name="Department",length=50)
+   	private String department;
+    @Column(name="Position",length=50)
+   	private String position;
 	@Transient
     private List<IDept> depts;
 	@Transient
@@ -219,5 +223,17 @@ public class DefaultUser extends AbstractUser  implements java.io.Serializable{
 	}
 	public void setLock(boolean lock) {
 		this.lock = lock;
+	}
+	public String getDepartment() {
+		return department;
+	}
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+	public String getPosition() {
+		return position;
+	}
+	public void setPosition(String position) {
+		this.position = position;
 	}
 }

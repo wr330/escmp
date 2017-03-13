@@ -201,6 +201,11 @@ else {&#xD;
       <Property name="dataType">String</Property>
       <Property name="label">编写人</Property>
     </PropertyDef>
+    <PropertyDef name="wPerDepartment">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">所属科室</Property>
+    </PropertyDef>
     <Reference name="btReportSharePerson">
       <Property name="pageSize">20</Property>
       <Property name="dataType">[BtReportSharePerson]</Property>
@@ -1089,6 +1094,11 @@ else {&#xD;
       <Property></Property>
       <Property name="dataType">String</Property>
       <Property name="label">用户姓名</Property>
+    </PropertyDef>
+    <PropertyDef name="personDepartment">
+      <Property/>
+      <Property name="dataType">String</Property>
+      <Property name="label">部门</Property>
     </PropertyDef>
     <PropertyDef name="userName">
       <Property></Property>

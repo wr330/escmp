@@ -901,6 +901,7 @@ if (entitylist) {&#xD;
 }&#xD;
 arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
               <Property name="property">depts</Property>
+              <Property name="visible">false</Property>
             </DataColumn>
             <DataColumn>
               <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;positions&quot;);&#xD;
@@ -915,7 +916,16 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
               <Property name="property">positions</Property>
               <Property name="width">120</Property>
               <Property name="filterable">true</Property>
+              <Property name="visible">false</Property>
               <Editor/>
+            </DataColumn>
+            <DataColumn name="department">
+              <Property name="property">department</Property>
+              <Property name="width">70</Property>
+            </DataColumn>
+            <DataColumn name="position">
+              <Property name="property">position</Property>
+              <Property name="width">100</Property>
             </DataColumn>
           </DataGrid>
         </CustomDropDown>
