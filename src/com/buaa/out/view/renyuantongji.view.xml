@@ -684,7 +684,7 @@ myChart.setOption(option);</ClientEvent>
         <Property name="icon">url(>skin>common/icons.gif) -140px -40px</Property>
         <Container>
           <SplitPanel>
-            <Property name="position">280</Property>
+            <Property name="position">300</Property>
             <MainControl>
               <SplitPanel>
                 <Property name="direction">top</Property>
@@ -882,6 +882,7 @@ view.get(&quot;#yearFormPerson1&quot;).set(&quot;value&quot;,year);</ClientEvent
                 <DataColumn>
                   <Property name="name">cname</Property>
                   <Property name="property">cname</Property>
+                  <Property name="width">60</Property>
                 </DataColumn>
                 <DataColumn name="depts">
                   <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;depts&quot;);&#xD;
@@ -893,6 +894,15 @@ if (entitylist) {&#xD;
 }&#xD;
 arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
                   <Property name="property">depts</Property>
+                  <Property name="visible">false</Property>
+                </DataColumn>
+                <DataColumn name="department">
+                  <Property name="property">department</Property>
+                  <Property name="width">60</Property>
+                </DataColumn>
+                <DataColumn name="position">
+                  <Property name="property">position</Property>
+                  <Property name="width">60</Property>
                 </DataColumn>
               </DataGrid>
             </SideControl>

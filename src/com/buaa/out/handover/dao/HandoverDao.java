@@ -1,5 +1,6 @@
 package com.buaa.out.handover.dao;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +19,7 @@ import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 import com.common.HibernateBaseDao;
 
+import com.buaa.comm.domain.Btreport;
 import com.buaa.fly.domain.Dailyacc;
 import com.buaa.out.domain.Handover;
 
@@ -43,6 +45,11 @@ public class HandoverDao extends HibernateBaseDao {
         		coreHql.append(" and a.supportprogram.oid = :oid ");
         		args.put("oid", oid);
         	}
+        	String sectionChief = (String)parameter.get("sectionChief");
+        	if(StringUtils.isNotEmpty( sectionChief )){
+        		coreHql.append(" and a.sectionChief = :sc ");
+        		args.put("sc", sectionChief);
+        	}
         }
 		
 		if (null != criteria) {
@@ -58,6 +65,24 @@ public class HandoverDao extends HibernateBaseDao {
         String hql = coreHql.toString();
         hql += "order by handovertime desc ";
 		this.pagingQuery(page, hql, countHql, args);
+	}
+	
+	/**                  
+	* 根据用户名，按审阅室主任是此用户名且工作状态是审阅中的条件，搜索出差报告表
+	* @param username    
+	* @throws Exception
+	*/
+	public Integer queryHandoverMakeSure(String username) throws Exception {
+		Map<String, Object> args = new HashMap<String,Object>();
+		StringBuffer coreHql = new StringBuffer("from " + Handover.class.getName()+" a where 1=1 ");
+		if (StringUtils.isNotEmpty(username)) {
+			coreHql.append(" and a.sectionChief = :sc ");
+			args.put("sc", username);
+		}
+        String hql = coreHql.toString() + "and a.sectionChiefSure = 0";
+        Collection<Btreport> dataItems = this.query(hql,args);
+        Integer MakeSureCount = dataItems.size();
+        return MakeSureCount;
 	}
 	
 	/**

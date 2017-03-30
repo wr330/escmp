@@ -415,11 +415,8 @@ if (cur) {&#xD;
     </GroupBox>
     <Dialog id="diaBtreport">
       <ClientEvent name="onClose">var cur=view.id('dsBtreport').getData('#');&#xD;
-				cur.cancel();&#xD;
-				view.id('diaBtreport').hide();&#xD;
-				&#xD;
-	&#xD;
-	         </ClientEvent>
+cur.cancel();&#xD;
+view.id('diaBtreport').hide();	         </ClientEvent>
       <ClientEvent name="onHide">var cur = view.id('dsBtreport').getDataAsync('#',function(cur){&#xD;
 	view.checkButton(cur,'reportCheck','0');&#xD;
 });</ClientEvent>

@@ -211,6 +211,7 @@ if (cur) {&#xD;
 </ClientEvent>
                   <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
                   <Property name="caption">修改</Property>
+                  <Property name="visible">true</Property>
                 </ToolBarButton>
                 <ToolBarButton>
                   <ClientEvent name="onClick">var cur = view.id('dsSupportprogram').getData('#.#handover');&#xD;
@@ -224,6 +225,7 @@ if(cur){&#xD;
 </ClientEvent>
                   <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
                   <Property name="caption">删除</Property>
+                  <Property name="visible">false</Property>
                 </ToolBarButton>
                 <ToolBarButton>
                   <ClientEvent name="onClick">view.id('GridHandover').set(&quot;showFilterBar&quot;,!view.id('GridHandover').get(&quot;showFilterBar&quot;));</ClientEvent>
@@ -256,11 +258,11 @@ jQuery(arg.dom).xCreate({&#xD;
 	content:arg.data.get(&quot;efile&quot;)&#xD;
 });</ClientEvent>
                   <Property name="property">efile</Property>
-                  <Property name="width">150</Property>
+                  <Property name="width">160</Property>
                 </DataColumn>
                 <DataColumn name="filename">
                   <Property name="property">filename</Property>
-                  <Property name="width">150</Property>
+                  <Property name="width">153</Property>
                 </DataColumn>
                 <DataColumn name="personto">
                   <Property name="property">personto</Property>
@@ -276,11 +278,15 @@ jQuery(arg.dom).xCreate({&#xD;
                 </DataColumn>
                 <DataColumn name="handovertime">
                   <Property name="property">handovertime</Property>
-                  <Property name="width">150</Property>
+                  <Property name="width">100</Property>
+                </DataColumn>
+                <DataColumn name="sectionChiefName">
+                  <Property name="property">sectionChiefName</Property>
+                  <Property name="width">90</Property>
                 </DataColumn>
                 <DataColumn name="sectionChiefSure">
                   <Property name="property">sectionChiefSure</Property>
-                  <Property name="width">100</Property>
+                  <Property name="width">90</Property>
                 </DataColumn>
               </DataGrid>
             </Container>
@@ -459,10 +465,10 @@ view.id('dgHandover').hide();</ClientEvent>
       <Buttons>
         <Button>
           <ClientEvent name="onClick">view.id('uaSupportprogram').execute(function(){&#xD;
-               view.id('dgHandover').hide();&#xD;
-           });</ClientEvent>
-          <Property name="caption">确定</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+	view.id('dgHandover').hide();&#xD;
+});</ClientEvent>
+          <Property name="caption">确定并上报</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -120px -240px</Property>
         </Button>
         <Button>
           <ClientEvent name="onClick">var cur=view.id('dsSupportprogram').getData('#.#handover');&#xD;
@@ -522,27 +528,32 @@ view.id('dgHandover').hide();</ClientEvent>
             </Editor>
           </AutoFormElement>
           <AutoFormElement>
+            <Property name="name">sectionChiefName</Property>
+            <Property name="property">sectionChiefName</Property>
+            <Property name="trigger">customDropDownUser1,triggerClear</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
             <Property name="name">sectionChiefSure</Property>
             <Property name="property">sectionChiefSure</Property>
+            <Property name="readOnly">true</Property>
             <Editor/>
           </AutoFormElement>
         </AutoForm>
       </Children>
       <Tools/>
     </Dialog>
-    <CustomDropDown id="customDropDownUser2">
+    <CustomDropDown id="customDropDownUser1">
       <Property name="editable">false</Property>
       <Property name="autoOpen">true</Property>
-      <DataGrid>
+      <DataGrid id="dsSectionChief">
         <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
 var user=view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;);&#xD;
+var cur = view.id('dsSupportprogram').getData('#.#handover');&#xD;
 if (user) {&#xD;
+	cur.set('sectionChief',user.get(&quot;username&quot;));&#xD;
 	dropDown.close(user.get(&quot;cname&quot;));&#xD;
-	var cur=view.id('dsSupportprogram').getData('#.#supportitem');&#xD;
-    cur.set(&quot;registrationexecutor&quot;,user.get(&quot;cname&quot;));&#xD;
-}&#xD;
-&#xD;
-</ClientEvent>
+}</ClientEvent>
         <Property name="showFilterBar">true</Property>
         <Property name="rowHeight">22</Property>
         <Property name="dataSet">dsUsers</Property>
@@ -567,6 +578,61 @@ if (entitylist) {&#xD;
 }&#xD;
 arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <Property name="property">depts</Property>
+          <Property name="visible">false</Property>
+        </DataColumn>
+        <DataColumn name="department">
+          <Property name="property">department</Property>
+          <Property name="width">70</Property>
+        </DataColumn>
+        <DataColumn name="position">
+          <Property name="property">position</Property>
+          <Property name="width">100</Property>
+        </DataColumn>
+      </DataGrid>
+    </CustomDropDown>
+    <CustomDropDown id="customDropDownUser2">
+      <Property name="editable">false</Property>
+      <Property name="autoOpen">true</Property>
+      <Property name="height">300</Property>
+      <DataGrid id="dsUser">
+        <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
+var user=view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;);&#xD;
+if (user) {&#xD;
+	dropDown.close(user.get(&quot;cname&quot;));&#xD;
+}</ClientEvent>
+        <Property name="showFilterBar">true</Property>
+        <Property name="rowHeight">22</Property>
+        <Property name="dataSet">dsUsers</Property>
+        <Property name="readOnly">true</Property>
+        <Property name="height">300</Property>
+        <RowNumColumn/>
+        <DataColumn>
+          <Property name="name">username</Property>
+          <Property name="property">username</Property>
+        </DataColumn>
+        <DataColumn>
+          <Property name="name">cname</Property>
+          <Property name="property">cname</Property>
+        </DataColumn>
+        <DataColumn name="depts">
+          <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;depts&quot;);&#xD;
+var name = [];&#xD;
+if (entitylist) {&#xD;
+	entitylist.each(function(item){&#xD;
+		name.push(item.get(&quot;name&quot;));&#xD;
+	});&#xD;
+}&#xD;
+arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
+          <Property name="property">depts</Property>
+          <Property name="visible">false</Property>
+        </DataColumn>
+        <DataColumn name="department">
+          <Property name="property">department</Property>
+          <Property name="width">70</Property>
+        </DataColumn>
+        <DataColumn name="position">
+          <Property name="property">position</Property>
+          <Property name="width">100</Property>
         </DataColumn>
       </DataGrid>
     </CustomDropDown>
@@ -588,7 +654,7 @@ cur.set(&quot;efile&quot;,returnValue);&#xD;
 var link = view.id(&quot;lefile&quot;);&#xD;
 if(returnValue){&#xD;
 	var oid = cur.get(&quot;oid&quot;);&#xD;
-    var href = &quot;/escmp/upload/Out_Handover/&quot; + oid + &quot;/&quot; + returnValue;&#xD;
+    var href = &quot;ServletDownload?filename=Out_Handover/&quot; + oid + &quot;/&quot; + returnValue;&#xD;
     link.set({&#xD;
 		href: href,&#xD;
 		visible: true&#xD;
@@ -662,9 +728,7 @@ var dsStatisticSupportitem = view.get(&quot;#dsStatisticSupportitem&quot;)&#xD;
 dsStatisticSupportitem.set(&quot;parameter&quot;, {&#xD;
 	year: year&#xD;
 });&#xD;
-dsStatisticSupportitem.flushAsync();&#xD;
-&#xD;
-</ClientEvent>
+dsStatisticSupportitem.flushAsync();</ClientEvent>
             <Property name="autoOpen">true</Property>
           </YearDropDown>
           <Container>

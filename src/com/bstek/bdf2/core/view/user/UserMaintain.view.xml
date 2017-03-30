@@ -372,21 +372,23 @@ if(user)&#xD;
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var user=view.id(&quot;dataSetUser&quot;).getData(&quot;#&quot;);&#xD;
+var myDate = new Date();&#xD;
 if(user){&#xD;
 	var username = user.get(&quot;username&quot;);&#xD;
 	dorado.MessageBox.confirm(&quot;确认要重置用户&quot; +username + &quot;密码么?&quot;,function(){&#xD;
 		view.id(&quot;ajaxActionResetPassword&quot;).set(&quot;parameter&quot;, username).execute(function(password){&#xD;
 			dorado.MessageBox.alert(username +&quot;密码已重置,新密码为:&quot; + password);&#xD;
+			alert('对' + user.get('username') + '用户重置了用户密码');&#xD;
+			view.id('dsAuditLog').getData().insert({&#xD;
+				operationType:&quot;3&quot;,&#xD;
+				operationPerson: &quot;${loginUsername}&quot;,&#xD;
+				operationPersonName: &quot;${loginUser.getCname()}&quot;,&#xD;
+				operationContent:'对' + user.get('username') + '用户重置用户密码',&#xD;
+				operationTime:myDate&#xD;
+			});&#xD;
+			view.id('uaAuditLog').execute();&#xD;
 		});&#xD;
-	});&#xD;
-	var myDate = new Date();&#xD;
-	view.id('dsAuditLog').getData().insert({&#xD;
-		operationType:&quot;3&quot;,&#xD;
-		operationPerson: &quot;${loginUsername}&quot;,&#xD;
-		operationContent:&quot;重置所选用户密码&quot;,&#xD;
-		operationTime:myDate&#xD;
-	});&#xD;
-	view.id('uaAuditLog').execute();&#xD;
+	});	&#xD;
 }else{&#xD;
 	dorado.MessageBox.alert(&quot;请首先选择用户信息！&quot;);&#xD;
 }&#xD;
@@ -653,7 +655,8 @@ self.setUserDept = function(deptId) {&#xD;
       <Property name="caption">用户信息</Property>
       <Buttons>
         <Button>
-          <ClientEvent name="onClick">view.id(&quot;updateActionUser&quot;).execute(function(){&#xD;
+          <ClientEvent name="onClick">var user=view.id(&quot;dataSetUser&quot;).getData(&quot;#&quot;);&#xD;
+view.id(&quot;updateActionUser&quot;).execute(function(){&#xD;
 	var id = view.id(&quot;dialogUser&quot;).deptId;&#xD;
     if(id){//更改部门后保存用户部门信息&#xD;
 		var para = {&#xD;
@@ -676,7 +679,7 @@ view.id('dsAuditLog').getData().insert({&#xD;
 	operationType: number,&#xD;
 	operationPerson: &quot;${loginUsername}&quot;,&#xD;
 	operationPersonName: &quot;${loginUser.getCname()}&quot;,&#xD;
-	operationContent: userDialog.get(&quot;caption&quot;),&#xD;
+	operationContent: '对' + user.get('username') + '用户' + userDialog.get(&quot;caption&quot;),&#xD;
 	operationTime:myDate&#xD;
 });&#xD;
 view.id('uaAuditLog').execute();</ClientEvent>

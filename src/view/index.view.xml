@@ -171,7 +171,9 @@ dsRenyuantongji.flushAsync();</ClientEvent>
           <Property name="height">360</Property>
           <Property name="closeable">false</Property>
           <Property name="icon">url(>skin>common/icons.gif) -140px -60px</Property>
-          <Children/>
+          <Children>
+            <IFrame/>
+          </Children>
         </Portlet>
         <Portlet>
           <Property name="caption">部内新闻</Property>

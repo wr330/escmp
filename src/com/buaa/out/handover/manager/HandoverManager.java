@@ -100,7 +100,8 @@ public class HandoverManager {
 					item.setDatablock(null);
 					item.setBytes(null);
 				} else {
-					String path = "/Out_Handover/" + item.getOid() + "/"  + item.getFilename();
+					//附件名字存储在efile字段中，因此path采用item.getEfile()
+					String path = "/Out_Handover/" + item.getOid() + "/"  + item.getEfile();
 					FileHelper.fileToData(path);
 					if (FileHelper.bytes != 0) {
 						item.setBytes(FileHelper.bytes);

@@ -23,6 +23,7 @@ import com.buaa.comm.btReportSharePerson.dao.BtReportSharePersonDao;
 import com.buaa.comm.btreport.dao.BtreportDao;
 import com.buaa.comm.joballot.dao.JoballotDao;
 import com.buaa.comm.jobstatistics.dao.JobstatisticsDao;
+import com.buaa.out.handover.dao.HandoverDao;
 
 @Component("todoDao")
 public class TodoDao extends JdbcBaseDao {
@@ -40,6 +41,8 @@ public class TodoDao extends JdbcBaseDao {
 	private BtreportDao btreportDao;
 	@Resource
 	private BtReportSharePersonDao btReportSharePersonDao;
+	@Resource
+	private HandoverDao handoverDao;
 	
 	//获取待办及消息提醒
 	@Expose
@@ -93,7 +96,7 @@ public class TodoDao extends JdbcBaseDao {
 		Integer btreportDCount = btreportDao.queryBtreportDH(user.getUsername());
 		if(btreportDCount > 0){
 			map = new HashMap<String, Object>();
-			map.put("title", "出差报告审阅有：<font color=red>" + btreportDCount + "</font>个报告待审阅");
+			map.put("title", "出差报告审核有：<font color=red>" + btreportDCount + "</font>个报告待审核");
 			map.put("url", "com.buaa.comm.view.BusinessTripReportCheckDH.d");
 			list.add(map);
 		}
@@ -102,6 +105,13 @@ public class TodoDao extends JdbcBaseDao {
 			map = new HashMap<String, Object>();
 			map.put("title", "出差报告共享有：<font color=red>" + btreportShareCount + "</font>个报告待阅读");
 			map.put("url", "com.buaa.comm.view.BusinessTripReportShare.d");
+			list.add(map);
+		}
+		Integer handoverMakeCount = handoverDao.queryHandoverMakeSure(user.getUsername());
+		if(handoverMakeCount > 0){
+			map = new HashMap<String, Object>();
+			map.put("title", "外场现场交接确认有：<font color=red>" + handoverMakeCount + "</font>个记录待确认");
+			map.put("url", "com.buaa.out.view.OutchiefSure.d");
 			list.add(map);
 		}
 		return list;

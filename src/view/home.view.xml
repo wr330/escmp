@@ -55,7 +55,7 @@ iFrame.set(&quot;path&quot;, current.path);</ClientEvent>
                   </Entity>
                   <Entity>
                     <Property name="value">试飞技术</Property>
-                    <Property name="image">images/home/MT_2.jpg</Property>
+                    <Property name="image">images/home/MT_2.png</Property>
                     <Property name="path">view.fly.d</Property>
                   </Entity>
                   <Entity>

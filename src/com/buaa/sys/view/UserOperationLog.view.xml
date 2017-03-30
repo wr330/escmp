@@ -7,7 +7,7 @@
     <DataSet id="dsUserOperationLog">
       <Property name="dataProvider">userOperationLogPR#queryUserOperationLog</Property>
       <Property name="dataType">[UserOperationLog]</Property>
-      <Property name="pageSize">20</Property>
+      <Property name="pageSize">25</Property>
     </DataSet>
     <UpdateAction id="uaUserOperationLog">
       <Property name="dataResolver">userOperationLogPR#saveUserOperationLog</Property>
@@ -22,7 +22,7 @@
     <DataSet id="dsAuditLog">
       <Property name="dataProvider">auditLogPR#queryAuditLog</Property>
       <Property name="dataType">[AuditLog]</Property>
-      <Property name="pageSize">20</Property>
+      <Property name="pageSize">25</Property>
     </DataSet>
     <UpdateAction id="uaAuditLog">
       <Property name="dataResolver">auditLogPR#saveAuditLog</Property>
@@ -376,7 +376,10 @@ dsAuditLog.flushAsync();&#xD;
             </Children>
           </FieldSet>
           <ToolBar>
-            <DataPilot/>
+            <DataPilot>
+              <Property name="dataSet">dsAuditLog</Property>
+              <Property name="itemCodes">pages</Property>
+            </DataPilot>
             <ToolBarButton>
               <Property name="action">export2ReportActionAudit</Property>
               <Property name="caption">导出Excel</Property>

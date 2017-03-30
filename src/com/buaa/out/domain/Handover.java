@@ -37,6 +37,8 @@ public class  Handover implements Serializable {
 	private String sectionChiefSure ;
 	private byte[] datablock;//因为在model中类型无法确定，所以此字段在model中没有加
 	private Supportprogram supportprogram;
+	private String sectionChief ;
+	private String sectionChiefName ;
 
 
 	@Id
@@ -112,6 +114,21 @@ public class  Handover implements Serializable {
 		this.datablock=datablock;
 	}
 
+	@Column(name="SectionChief")
+	public String getSectionChief() {
+		return sectionChief;
+	}
+	public void setSectionChief(String sectionChief) {
+		this.sectionChief = sectionChief;
+	}
+	
+	@Column(name="SectionChiefName")
+	public String getSectionChiefName() {
+		return sectionChiefName;
+	}
+	public void setSectionChiefName(String sectionChiefName) {
+		this.sectionChiefName = sectionChiefName;
+	}
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn(name = "SupportProgram")
 	public Supportprogram getSupportprogram() {

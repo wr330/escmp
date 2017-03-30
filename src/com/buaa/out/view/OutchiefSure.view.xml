@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Property name="metaData">
+    <Property name="securityTag">Supportprogram</Property>
+  </Property>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="dtSP">
+      <PropertyDef name="data">
+        <Property name="dataType">[Map]</Property>
+      </PropertyDef>
+      <PropertyDef name="amountPersonDay">
+        <Property name="dataType">Long</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <ClientEvent name="onCreate">self.checkButton = function(cur,tagName,status){	&#xD;
+	this.set(&quot;^&quot; + tagName +&quot;.disabled&quot;, cur &amp;&amp; cur.get(&quot;sectionChiefSure&quot;) != status);  &#xD;
+}</ClientEvent>
+    <DataSet id="dsHandover">
+      <ClientEvent name="onLoadData">var cur = view.id('dsHandover').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'makeSure','0');&#xD;
+});</ClientEvent>
+      <Property name="dataType">[Handover]</Property>
+      <Property name="dataProvider">handoverPR#queryHandover</Property>
+      <Property name="pageSize">20</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="sectionChief">${loginUser.getUsername()}</Property>
+        </Entity>
+      </Property>
+    </DataSet>
+    <UpdateAction id="uaHandover">
+      <Property name="dataResolver">handoverPR#saveHandover</Property>
+      <UpdateItem>
+        <Property name="dataSet">dsHandover</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <ToolBar>
+      <DataPilot>
+        <Property name="itemCodes">pages</Property>
+        <Property name="dataSet">dsHandover</Property>
+        <Property name="dataPath"></Property>
+      </DataPilot>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsHandover').getData('#');
+if (cur) {
+	view.id('diaHandover').show();
+}</ClientEvent>
+        <Property name="caption">室主任确认</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -200px -0px</Property>
+        <Property name="tags">makeSure</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid id="dgHandover">
+      <ClientEvent name="onCurrentChange">var cur = view.id('dsHandover').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'makeSure','0');&#xD;
+});</ClientEvent>
+      <Property name="readOnly">true</Property>
+      <Property name="dataSet">dsHandover</Property>
+      <Property name="dataPath"></Property>
+      <Property name="filterMode">clientSide</Property>
+      <Property name="showFilterBar">false</Property>
+      <Property name="rowHeight">22</Property>
+      <Property name="fixedColumnCount">3</Property>
+      <RowNumColumn/>
+      <DataColumn name="efile">
+        <ClientEvent name="onRenderCell">jQuery(arg.dom).empty();&#xD;
+var file = arg.data.get(&quot;efile&quot;);&#xD;
+var oid = arg.data.get(&quot;oid&quot;);&#xD;
+var href = &quot;ServletDownload?filename=Out_Handover/&quot; + oid + &quot;/&quot; + file;&#xD;
+jQuery(arg.dom).xCreate({&#xD;
+	tagName:&quot;A&quot;,&#xD;
+	href:href,&#xD;
+	content:arg.data.get(&quot;efile&quot;)&#xD;
+});</ClientEvent>
+        <Property name="property">efile</Property>
+        <Property name="width">152</Property>
+      </DataColumn>
+      <DataColumn name="filename">
+        <Property name="property">filename</Property>
+        <Property name="width">150</Property>
+      </DataColumn>
+      <DataColumn name="personto">
+        <Property name="property">personto</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="filenumber">
+        <Property name="property">filenumber</Property>
+        <Property name="width">150</Property>
+      </DataColumn>
+      <DataColumn name="personfrom">
+        <Property name="property">personfrom</Property>
+        <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn name="handovertime">
+        <Property name="property">handovertime</Property>
+        <Property name="width">150</Property>
+      </DataColumn>
+      <DataColumn name="sectionChiefName">
+        <Property name="property">sectionChiefName</Property>
+        <Property name="width">75</Property>
+      </DataColumn>
+      <DataColumn name="sectionChiefSure">
+        <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;sectionChiefSure&quot;);&#xD;
+if(status == 0){&#xD;
+	arg.dom.style.color = &quot;red&quot;;&#xD;
+}&#xD;
+else{&#xD;
+	arg.dom.style.color = &quot;&quot;;&#xD;
+}&#xD;
+arg.processDefault = true;</ClientEvent>
+        <Property name="property">sectionChiefSure</Property>
+        <Property name="width">100</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">supportprogram.troop</Property>
+        <Property name="name">troop</Property>
+        <Property name="width">100</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">supportprogram.staffrequirement</Property>
+        <Property name="name">staffrequirement</Property>
+        <Property name="align">left</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn name="workaddress">
+        <Property name="property">supportprogram.workaddress</Property>
+      </DataColumn>
+      <DataColumn name="worktime">
+        <Property name="property">supportprogram.worktime</Property>
+      </DataColumn>
+      <DataColumn name="endtime">
+        <Property name="property">supportprogram.endtime</Property>
+      </DataColumn>
+      <DataColumn name="changeperiod">
+        <Property name="property">supportprogram.changeperiod</Property>
+        <Property name="align">left</Property>
+      </DataColumn>
+      <DataColumn name="maker">
+        <Property name="property">supportprogram.maker</Property>
+      </DataColumn>
+    </DataGrid>
+    <Dialog id="diaHandover">
+      <ClientEvent name="onHide">var cur = view.id('dsHandover').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'makeSure','0');&#xD;
+});</ClientEvent>
+      <ClientEvent name="onClose">var cur=view.id('dsHandover').getData('#');&#xD;
+cur.cancel();&#xD;
+view.id('diaHandover').hide();</ClientEvent>
+      <Property name="center">true</Property>
+      <Property name="modal">true</Property>
+      <Property name="caption">现场交接管理</Property>
+      <Property name="width">500</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('uaHandover').execute(function(){
+    view.id('diaHandover').hide();
+});        </ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
+          <ClientEvent name="onClick">var cur=view.id('dsHandover').getData('#');
+cur.cancel();
+view.id('diaHandover').hide();</ClientEvent>
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afHandover">
+          <Property name="cols">*</Property>
+          <Property name="dataSet">dsHandover</Property>
+          <Property name="dataPath">#</Property>
+          <AutoFormElement>
+            <Property name="name">handoverTime</Property>
+            <Property name="property">handovertime</Property>
+            <Property name="readOnly">true</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">personFrom</Property>
+            <Property name="property">personfrom</Property>
+            <Property name="trigger">customDropDownUser2</Property>
+            <Property name="readOnly">true</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">personTo</Property>
+            <Property name="property">personto</Property>
+            <Property name="trigger">customDropDownUser2</Property>
+            <Property name="readOnly">true</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">FileName</Property>
+            <Property name="property">filename</Property>
+            <Property name="readOnly">true</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">fileNumber</Property>
+            <Property name="property">filenumber</Property>
+            <Property name="readOnly">true</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">EFile</Property>
+            <Property name="property">efile</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">sectionChiefName</Property>
+            <Property name="property">sectionChiefName</Property>
+            <Property name="trigger">customDropDownUser1,triggerClear</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">sectionChiefSure</Property>
+            <Property name="property">sectionChiefSure</Property>
+            <Property name="readOnly">false</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+  </View>
+</ViewConfig>

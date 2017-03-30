@@ -228,7 +228,6 @@ else{
           <AutoFormElement>
             <Property name="name">changeperiod</Property>
             <Property name="property">changeperiod</Property>
-            <Property name="editorType">NumberSpinner</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>

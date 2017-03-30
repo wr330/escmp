@@ -23,12 +23,12 @@
       <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="changeperiod">
-      <Property name="dataType">Integer</Property>
+      <Property name="dataType">float</Property>
       <Property name="label">更换周期(月)</Property>
       <Property name="defaultValue">1</Property>
       <Property name="required">true</Property>
       <Validator type="range">
-        <Property name="minValue">1</Property>
+        <Property name="minValue">0</Property>
         <Property name="minValueValidateMode">allowEquals</Property>
       </Validator>
     </PropertyDef>
@@ -198,6 +198,33 @@ arg.parameter = parameter;</ClientEvent>
       <Property></Property>
       <Property name="dataType">String</Property>
       <Property name="label">室主任确认</Property>
+      <Property name="required">true</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="value">否</Property>
+              <Property name="key">0</Property>
+            </Entity>
+            <Entity>
+              <Property name="value">是</Property>
+              <Property name="key">1</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
+      <Property name="defaultValue">0</Property>
+    </PropertyDef>
+    <PropertyDef name="sectionChief">
+      <Property/>
+      <Property name="dataType">String</Property>
+      <Property name="label">室主任用户名</Property>
+      <Property name="required">false</Property>
+    </PropertyDef>
+    <PropertyDef name="sectionChiefName">
+      <Property/>
+      <Property name="dataType">String</Property>
+      <Property name="label">室主任选择</Property>
       <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="oid">
