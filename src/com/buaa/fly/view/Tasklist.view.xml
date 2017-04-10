@@ -536,6 +536,72 @@ if(cur){
       </Children>
       <Tools/>
     </Dialog>
+    <Dialog id="diaSeeTasklist">
+      <Property name="caption">试飞任务单记录</Property>
+      <Property name="width">480</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('diaSeeTasklist').hide();  </ClientEvent>
+          <Property name="icon">url(>skin>common/icons.gif) -40px -0px</Property>
+          <Property name="caption">关闭</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afSeeTasklist">
+          <Property name="cols">*</Property>
+          <Property name="dataPath">#</Property>
+          <Property name="dataSet">dsTasklist</Property>
+          <Property name="dataType">Tasklist</Property>
+          <Property name="readOnly">true</Property>
+          <Property name="labelWidth">90</Property>
+          <AutoFormElement>
+            <Property name="name">aircrafttype</Property>
+            <Property name="property">aircrafttype</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">tasknumber</Property>
+            <Property name="property">tasknumber</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">subject</Property>
+            <Property name="property">subject</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">taskexecution</Property>
+            <Property name="property">taskexecution</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">taskcontent</Property>
+            <Property name="property">taskcontent</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">130</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">filename</Property>
+            <Property name="property">filename</Property>
+            <Editor>
+              <Container>
+                <Link id="lefileSee" layoutConstraint="center">
+                  <Property name="dataSet">dsTasklist</Property>
+                  <Property name="property">filename</Property>
+                </Link>
+              </Container>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
     <ToolBar>
       <FormElement id="formElement1">
         <Property name="editorWidth">150</Property>
@@ -610,6 +676,26 @@ if(cur){
 	</ClientEvent>
         <Property name="caption">删除</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsTasklist').getData('#');&#xD;
+if (cur) {&#xD;
+	view.id('diaSeeTasklist').show();&#xD;
+	var file = cur.get(&quot;filename&quot;);&#xD;
+    var link = view.id(&quot;lefileSee&quot;);&#xD;
+    if(file){&#xD;
+        var oid = cur.get(&quot;oid&quot;);&#xD;
+		var href = &quot;ServletDownload?filename=Fly_Tasklist/&quot; + oid + &quot;/&quot; + file;&#xD;
+        link.set({&#xD;
+	       href: href,&#xD;
+	       visible: true&#xD;
+        });&#xD;
+    }&#xD;
+    else&#xD;
+      link.set(&quot;visible&quot;,false);&#xD;
+}</ClientEvent>
+        <Property name="caption">浏览</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -40px -100px</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">view.id('dgTasklist').set(&quot;showFilterBar&quot;,!view.id('dgTasklist').get(&quot;showFilterBar&quot;));</ClientEvent>

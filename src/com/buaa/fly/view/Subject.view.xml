@@ -180,6 +180,19 @@ else&#xD;
               <Property name="width">57</Property>
             </ToolBarButton>
             <ToolBarButton>
+              <ClientEvent name="onClick">var cur=view.id('dgSubject').getCurrentItem();&#xD;
+if (cur) {&#xD;
+	view.id('diaSeeSubject').show();&#xD;
+}</ClientEvent>
+              <Property name="caption">浏览</Property>
+              <Property name="icon">url(>skin>common/icons.gif) -40px -100px</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <ClientEvent name="onClick">view.id('dgSubject').set(&quot;showFilterBar&quot;,!view.id('dgSubject').get(&quot;showFilterBar&quot;));</ClientEvent>
+              <Property name="caption">自定义查询</Property>
+              <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
+            </ToolBarButton>
+            <ToolBarButton>
               <ClientEvent name="onClick">var dataTree = this.get(&quot;#dataTreeSubject&quot;);&#xD;
 var NodeType = dataTree.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
 if(NodeType==&quot;FType&quot;)&#xD;
@@ -250,7 +263,8 @@ if(NodeType!=&quot;FType&quot;){&#xD;
   index = 1;&#xD;
 }&#xD;
 view.id(&quot;dgSubject&quot;).set(&quot;dataPath&quot;,dataPath);&#xD;
-  view.id(&quot;cardbook&quot;).set(&quot;currentIndex&quot;,index);</ClientEvent>
+  view.id(&quot;cardbook&quot;).set(&quot;currentIndex&quot;,index);&#xD;
+  view.id(&quot;cardbookSee&quot;).set(&quot;currentIndex&quot;,index)</ClientEvent>
               <Property name="currentNodeDataPath">currentNode</Property>
               <Property name="draggable">false</Property>
               <Property name="dataSet">dsSubject</Property>
@@ -356,6 +370,83 @@ if(cur){
             <Property name="dataType">Subject</Property>
             <Property name="dataSet">dsSubject</Property>
             <Property name="dataPath">!CURRENT_SUBJECT.#children</Property>
+            <AutoFormElement>
+              <Property name="name">ftype</Property>
+              <Property name="property">ftype</Property>
+              <Property name="readOnly">true</Property>
+              <Editor/>
+            </AutoFormElement>
+            <AutoFormElement>
+              <Property name="name">orderno</Property>
+              <Property name="property">orderno</Property>
+              <Property name="editorType">NumberSpinner</Property>
+              <Editor/>
+            </AutoFormElement>
+            <AutoFormElement>
+              <Property name="name">name</Property>
+              <Property name="property">name</Property>
+              <Editor/>
+            </AutoFormElement>
+            <AutoFormElement>
+              <Property name="name">description</Property>
+              <Property name="property">description</Property>
+              <Property name="editorType">TextArea</Property>
+              <Editor/>
+            </AutoFormElement>
+          </AutoForm>
+        </CardBook>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaSeeSubject">
+      <Property name="caption">试飞科目记录</Property>
+      <Property name="width">400</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('diaSeeSubject').hide();  </ClientEvent>
+          <Property name="caption">关闭</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <CardBook id="cardbookSee">
+          <AutoForm id="afSubjectSee1">
+            <Property name="cols">*</Property>
+            <Property name="dataType">Subject</Property>
+            <Property name="dataSet">dsSubject</Property>
+            <Property name="dataPath">!CURRENT_FTYPES.#subject</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="width">375</Property>
+            <AutoFormElement>
+              <Property name="name">ftype</Property>
+              <Property name="property">ftype</Property>
+              <Property name="readOnly">true</Property>
+              <Editor/>
+            </AutoFormElement>
+            <AutoFormElement>
+              <Property name="name">orderno</Property>
+              <Property name="property">orderno</Property>
+              <Property name="editorType">NumberSpinner</Property>
+              <Editor/>
+            </AutoFormElement>
+            <AutoFormElement>
+              <Property name="name">name</Property>
+              <Property name="property">name</Property>
+              <Editor/>
+            </AutoFormElement>
+            <AutoFormElement>
+              <Property name="name">description</Property>
+              <Property name="property">description</Property>
+              <Property name="editorType">TextArea</Property>
+              <Editor/>
+            </AutoFormElement>
+          </AutoForm>
+          <AutoForm id="afSubjectSee2">
+            <Property name="cols">*</Property>
+            <Property name="dataType">Subject</Property>
+            <Property name="dataSet">dsSubject</Property>
+            <Property name="dataPath">!CURRENT_SUBJECT.#children</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="width">375</Property>
             <AutoFormElement>
               <Property name="name">ftype</Property>
               <Property name="property">ftype</Property>

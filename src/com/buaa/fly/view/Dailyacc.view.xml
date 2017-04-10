@@ -299,6 +299,56 @@ if(cur){
       </Children>
       <Tools/>
     </Dialog>
+    <Dialog id="diaSeeDailyacc">
+      <Property name="width">500</Property>
+      <Property name="height">240</Property>
+      <Property name="caption">现场汇报记录</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('diaSeeDailyacc').hide();  </ClientEvent>
+          <Property name="caption">关闭</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -40px -0px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm>
+          <Property name="cols">*</Property>
+          <Property name="dataPath">#</Property>
+          <Property name="dataSet">dsDailyacc</Property>
+          <Property name="dataType">Dailyacc</Property>
+          <Property name="readOnly">true</Property>
+          <AutoFormElement>
+            <Property name="name">ftype</Property>
+            <Property name="property">ftype</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">filename</Property>
+            <Property name="property">filename</Property>
+            <Editor>
+              <Container>
+                <Link id="lefileSee" layoutConstraint="center">
+                  <Property name="dataSet">dsDailyacc</Property>
+                  <Property name="property">filename</Property>
+                </Link>
+              </Container>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">summary</Property>
+            <Property name="property">summary</Property>
+            <Property name="editorType">TextArea</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
     <ToolBar>
       <FormElement id="formElement1">
         <Property name="property">name</Property>
@@ -347,7 +397,7 @@ if (cur) {
     var link = view.id(&quot;lefile&quot;);
     if(file){
         var oid = cur.get(&quot;id&quot;);
-		var href = &quot;ServletDownload?filename=Fly_Shifeirequestacc/&quot; + oid + &quot;/&quot; + file;
+		var href = &quot;ServletDownload?filename=Fly_Dailyacc/&quot; + oid + &quot;/&quot; + file;
         link.set({
 	       href: href,
 	       visible: true
@@ -381,6 +431,26 @@ dsDailyacc.flushAsync();</ClientEvent>
         <Property name="width">57</Property>
       </ToolBarButton>
       <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsDailyacc').getData('#');&#xD;
+if (cur) {&#xD;
+	view.id('diaSeeDailyacc').show();&#xD;
+	var file = cur.get(&quot;filename&quot;);&#xD;
+    var link = view.id(&quot;lefileSee&quot;);&#xD;
+    if(file){&#xD;
+        var oid = cur.get(&quot;id&quot;);&#xD;
+		var href = &quot;ServletDownload?filename=Fly_Dailyacc/&quot; + oid + &quot;/&quot; + file;&#xD;
+        link.set({&#xD;
+	       href: href,&#xD;
+	       visible: true&#xD;
+        });&#xD;
+    }&#xD;
+    else&#xD;
+      link.set(&quot;visible&quot;,false);&#xD;
+}</ClientEvent>
+        <Property name="icon">url(>skin>common/icons.gif) -40px -100px</Property>
+        <Property name="caption">浏览</Property>
+      </ToolBarButton>
+      <ToolBarButton>
         <ClientEvent name="onClick">view.id('dgDailyacc').set(&quot;showFilterBar&quot;,!view.id('dgDailyacc').get(&quot;showFilterBar&quot;));</ClientEvent>
         <Property name="caption">自定义查询</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
@@ -406,6 +476,7 @@ open(path,&quot;_blank&quot;);
 </ClientEvent>
         <Property name="caption">查看文档</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -120px -140px</Property>
+        <Property name="visible">false</Property>
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgDailyacc">

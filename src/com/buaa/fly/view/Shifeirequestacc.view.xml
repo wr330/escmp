@@ -186,6 +186,78 @@ if(cur){
       </Children>
       <Tools/>
     </Dialog>
+    <Dialog id="diaSeeShifeirequestacc">
+      <Property name="caption">试飞文件记录</Property>
+      <Property name="width">500</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('diaSeeShifeirequestacc').hide();  </ClientEvent>
+          <Property name="caption">关闭</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afSeeSFRequest">
+          <Property name="dataSet">dsShifeirequestacc</Property>
+          <Property name="dataType">Shifeirequestacc</Property>
+          <Property name="dataPath">#</Property>
+          <Property name="cols">*</Property>
+          <Property name="readOnly">true</Property>
+          <AutoFormElement>
+            <Property name="name">ftype</Property>
+            <Property name="property">ftype</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">fileno</Property>
+            <Property name="property">fileno</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">date</Property>
+            <Property name="property">date</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">author</Property>
+            <Property name="property">author</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">authorDepartment</Property>
+            <Property name="property">authorDepartment</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">autorSection</Property>
+            <Property name="property">autorSection</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">type</Property>
+            <Property name="property">type</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">filename</Property>
+            <Property name="property">filename</Property>
+            <Editor>
+              <Container>
+                <Link id="lefileSee" layoutConstraint="center">
+                  <Property name="dataSet">dsShifeirequestacc</Property>
+                  <Property name="property">filename</Property>
+                </Link>
+              </Container>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
     <ToolBar>
       <FormElement id="formElement1">
         <Property name="property">name</Property>
@@ -260,6 +332,26 @@ if(cur){
         <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
       </ToolBarButton>
       <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsShifeirequestacc').getData('#');&#xD;
+if (cur) {&#xD;
+	view.id('diaSeeShifeirequestacc').show();&#xD;
+	var file = cur.get(&quot;filename&quot;);&#xD;
+    var link = view.id(&quot;lefileSee&quot;);&#xD;
+    if(file){&#xD;
+        var oid = cur.get(&quot;id&quot;);&#xD;
+		var href = &quot;ServletDownload?filename=Fly_Shifeirequestacc/&quot; + oid + &quot;/&quot; + file;&#xD;
+        link.set({&#xD;
+	       href: href,&#xD;
+	       visible: true&#xD;
+        });&#xD;
+    }&#xD;
+    else&#xD;
+      link.set(&quot;visible&quot;,false);&#xD;
+}</ClientEvent>
+        <Property name="caption">浏览</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -40px -100px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
         <ClientEvent name="onClick">view.id('dgShifeirequestacc').set(&quot;showFilterBar&quot;,!view.id('dgShifeirequestacc').get(&quot;showFilterBar&quot;));</ClientEvent>
         <Property name="caption">自定义查询</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
@@ -279,6 +371,7 @@ var path=&quot;a.jsp?url='&quot;+ url +&quot;'&quot;;
 open(path,&quot;_blank&quot;);</ClientEvent>
         <Property name="caption">查看文档</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -120px -140px</Property>
+        <Property name="visible">false</Property>
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgShifeirequestacc">

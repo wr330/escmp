@@ -304,6 +304,11 @@ if(cur){&#xD;
                   <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
                 </ToolBarButton>
                 <ToolBarButton>
+                  <ClientEvent name="onClick">view.id('dgFtype').set(&quot;showFilterBar&quot;,!view.id('dgFtype').get(&quot;showFilterBar&quot;));</ClientEvent>
+                  <Property name="caption">自定义查询</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
                   <ClientEvent name="onClick">view.id(&quot;dsExamples&quot;).getData(&quot;!CURRENT_ROOT&quot;).reset(&quot;categories&quot;);</ClientEvent>
                   <Property name="caption">刷新</Property>
                   <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
@@ -312,7 +317,7 @@ if(cur){&#xD;
               <DataGrid id="dgFtype">
                 <Property name="readOnly">true</Property>
                 <Property name="dataSet">dsExamples</Property>
-                <Property name="filterMode">serverSide</Property>
+                <Property name="filterMode">clientSide</Property>
                 <Property name="rowHeight">22</Property>
                 <Property name="dataPath">!CURRENT_ROOT.categories</Property>
                 <RowNumColumn/>
@@ -398,6 +403,11 @@ if(cur){&#xD;
                   <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
                 </ToolBarButton>
                 <ToolBarButton>
+                  <ClientEvent name="onClick">view.id('dgFpici').set(&quot;showFilterBar&quot;,!view.id('dgFpici').get(&quot;showFilterBar&quot;));</ClientEvent>
+                  <Property name="caption">自定义查询</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
                   <ClientEvent name="onClick">view.id(&quot;dsExamples&quot;).getData(&quot;!CURRENT_TYPE&quot;).reset(&quot;fpici&quot;);</ClientEvent>
                   <Property name="caption">刷新</Property>
                   <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
@@ -407,7 +417,7 @@ if(cur){&#xD;
               <DataGrid id="dgFpici">
                 <Property name="readOnly">true</Property>
                 <Property name="dataSet">dsExamples</Property>
-                <Property name="filterMode">serverSide</Property>
+                <Property name="filterMode">clientSide</Property>
                 <Property name="rowHeight">22</Property>
                 <Property name="dataPath">!CURRENT_TYPE.fpici</Property>
                 <RowNumColumn/>
@@ -494,6 +504,11 @@ if(cur){&#xD;
                   <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
                 </ToolBarButton>
                 <ToolBarButton>
+                  <ClientEvent name="onClick">view.id('dgFighterinfo').set(&quot;showFilterBar&quot;,!view.id('dgFighterinfo').get(&quot;showFilterBar&quot;));</ClientEvent>
+                  <Property name="caption">自定义查询</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
                   <ClientEvent name="onClick">view.id(&quot;dsExamples&quot;).getData(&quot;!CURRENT_PICI&quot;).reset(&quot;fighterinfo&quot;);&#xD;
 </ClientEvent>
                   <Property name="caption">刷新</Property>
@@ -505,7 +520,7 @@ if(cur){&#xD;
                 <Property name="readOnly">true</Property>
                 <Property name="dataSet">dsExamples</Property>
                 <Property name="dataPath">!CURRENT_PICI.fighterinfo</Property>
-                <Property name="filterMode">serverSide</Property>
+                <Property name="filterMode">clientSide</Property>
                 <Property name="rowHeight">22</Property>
                 <RowNumColumn/>
                 <DataColumn>
@@ -606,6 +621,11 @@ if(cur){&#xD;
 }</ClientEvent>
                   <Property name="caption">删除</Property>
                   <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">view.id('dgFighterout').set(&quot;showFilterBar&quot;,!view.id('dgFighterout').get(&quot;showFilterBar&quot;));</ClientEvent>
+                  <Property name="caption">自定义查询</Property>
+                  <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
                 </ToolBarButton>
                 <ToolBarButton>
                   <ClientEvent name="onClick">view.id(&quot;dsExamples&quot;).getData(&quot;!CURRENT_FLIGHT&quot;).reset(&quot;fighterout&quot;);&#xD;
