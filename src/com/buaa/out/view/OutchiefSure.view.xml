@@ -21,7 +21,7 @@
 }</ClientEvent>
     <DataSet id="dsHandover">
       <ClientEvent name="onLoadData">var cur = view.id('dsHandover').getDataAsync('#',function(cur){&#xD;
-	view.checkButton(cur,'makeSure','0');&#xD;
+	view.checkButton(cur,'makeSure','1');&#xD;
 });</ClientEvent>
       <Property name="dataType">[Handover]</Property>
       <Property name="dataProvider">handoverPR#queryHandover</Property>
@@ -29,6 +29,7 @@
       <Property name="parameter">
         <Entity>
           <Property name="sectionChief">${loginUser.getUsername()}</Property>
+          <Property name="status">1</Property>
         </Entity>
       </Property>
     </DataSet>
@@ -46,17 +47,38 @@
       </DataPilot>
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsHandover').getData('#');
-if (cur) {
-	view.id('diaHandover').show();
+if(cur){
+	cur.set('sectionChiefSure',2);
+	view.checkButton(cur,'makeSure','1');
+	view.id('uaHandover').execute();     
 }</ClientEvent>
         <Property name="caption">室主任确认</Property>
         <Property name="icon">url(>skin>common/icons.gif) -200px -0px</Property>
         <Property name="tags">makeSure</Property>
       </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var cur=view.id('dsHandover').getData('#');
+if (cur) {
+	view.id('diaSeeHan').show();
+}</ClientEvent>
+        <Property name="caption">浏览</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -40px -100px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">view.id('dgHandover').set(&quot;showFilterBar&quot;,!view.id('dgHandover').get(&quot;showFilterBar&quot;));</ClientEvent>
+        <Property name="caption">自定义查询</Property>
+        <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">var dsHandover = view.get(&quot;#dsHandover&quot;);&#xD;
+dsHandover.flushAsync();</ClientEvent>
+        <Property name="caption">刷新</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+      </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgHandover">
       <ClientEvent name="onCurrentChange">var cur = view.id('dsHandover').getDataAsync('#',function(cur){&#xD;
-	view.checkButton(cur,'makeSure','0');&#xD;
+	view.checkButton(cur,'makeSure','1');&#xD;
 });</ClientEvent>
       <Property name="readOnly">true</Property>
       <Property name="dataSet">dsHandover</Property>
@@ -105,7 +127,7 @@ jQuery(arg.dom).xCreate({&#xD;
       </DataColumn>
       <DataColumn name="sectionChiefSure">
         <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;sectionChiefSure&quot;);&#xD;
-if(status == 0){&#xD;
+if(status == 1){&#xD;
 	arg.dom.style.color = &quot;red&quot;;&#xD;
 }&#xD;
 else{&#xD;
@@ -144,31 +166,16 @@ arg.processDefault = true;</ClientEvent>
         <Property name="property">supportprogram.maker</Property>
       </DataColumn>
     </DataGrid>
-    <Dialog id="diaHandover">
-      <ClientEvent name="onHide">var cur = view.id('dsHandover').getDataAsync('#',function(cur){&#xD;
-	view.checkButton(cur,'makeSure','0');&#xD;
-});</ClientEvent>
-      <ClientEvent name="onClose">var cur=view.id('dsHandover').getData('#');&#xD;
-cur.cancel();&#xD;
-view.id('diaHandover').hide();</ClientEvent>
+    <Dialog id="diaSeeHan">
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
       <Property name="caption">现场交接管理</Property>
       <Property name="width">500</Property>
       <Buttons>
         <Button>
-          <ClientEvent name="onClick">view.id('uaHandover').execute(function(){
-    view.id('diaHandover').hide();
-});        </ClientEvent>
-          <Property name="caption">确定</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
-        </Button>
-        <Button>
-          <ClientEvent name="onClick">var cur=view.id('dsHandover').getData('#');
-cur.cancel();
-view.id('diaHandover').hide();</ClientEvent>
-          <Property name="caption">取消</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
+          <ClientEvent name="onClick">view.id('diaSeeHan').hide();     </ClientEvent>
+          <Property name="caption">关闭</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -40px -0px</Property>
         </Button>
       </Buttons>
       <Children>
@@ -176,6 +183,7 @@ view.id('diaHandover').hide();</ClientEvent>
           <Property name="cols">*</Property>
           <Property name="dataSet">dsHandover</Property>
           <Property name="dataPath">#</Property>
+          <Property name="readOnly">true</Property>
           <AutoFormElement>
             <Property name="name">handoverTime</Property>
             <Property name="property">handovertime</Property>
@@ -219,7 +227,41 @@ view.id('diaHandover').hide();</ClientEvent>
           <AutoFormElement>
             <Property name="name">sectionChiefSure</Property>
             <Property name="property">sectionChiefSure</Property>
-            <Property name="readOnly">false</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">supportprogram.troop</Property>
+            <Property name="name">troop</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">supportprogram.staffrequirement</Property>
+            <Property name="name">staffrequirement</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">supportprogram.workaddress</Property>
+            <Property name="name">workaddress</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">supportprogram.worktime</Property>
+            <Property name="name">worktime</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">supportprogram.endtime</Property>
+            <Property name="name">endtime</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">supportprogram.changeperiod</Property>
+            <Property name="name">changeperiod</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">supportprogram.maker</Property>
+            <Property name="name">maker</Property>
             <Editor/>
           </AutoFormElement>
         </AutoForm>

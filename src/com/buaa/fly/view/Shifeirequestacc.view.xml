@@ -7,7 +7,13 @@
   <Context/>
   <Model/>
   <View>
+    <ClientEvent name="onCreate">self.checkButton = function(cur,tagName,username){&#xD;
+	this.set(&quot;^&quot; + tagName +&quot;.disabled&quot;, cur &amp;&amp; cur.get(&quot;inputPersOid&quot;) != username);  &#xD;
+}</ClientEvent>
     <DataSet id="dsShifeirequestacc">
+      <ClientEvent name="onLoadData">var cur = self.getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'reportCheck','${loginUser.getUsername()}');&#xD;
+});</ClientEvent>
       <Property name="dataType">[Shifeirequestacc]</Property>
       <Property name="dataProvider">shifeirequestaccPR#queryShifeirequestacc</Property>
       <Property name="pageSize">20</Property>
@@ -87,8 +93,14 @@ dorado.MessageBox.show({&#xD;
       <ClientEvent name="onClose">var cur=view.id('dsShifeirequestacc').getData('#');&#xD;
 if(cur){&#xD;
 	cur.cancel();&#xD;
-	view.id('diaShifeirequestacc').hide();&#xD;
+	self.hide();&#xD;
+	view.id('dsShifeirequestacc').getDataAsync('#',function(cur1){&#xD;
+		view.checkButton(cur1,'reportCheck','${loginUser.getUsername()}');&#xD;
+	});		&#xD;
 }</ClientEvent>
+      <ClientEvent name="onHide">var cur = view.id('dsShifeirequestacc').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'reportCheck','${loginUser.getUsername()}');&#xD;
+});</ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
       <Property name="width">500</Property>
@@ -125,7 +137,19 @@ if(cur){
             <Property name="readOnly">true</Property>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="name">FileNo</Property>
+            <Property name="name">inputPers</Property>
+            <Property name="property">inputPers</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="editable">false</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">inputPersOid</Property>
+            <Property name="property">inputPersOid</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="editable">false</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">fileNo</Property>
             <Property name="property">fileno</Property>
           </AutoFormElement>
           <AutoFormElement>
@@ -208,6 +232,18 @@ if(cur){
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
+            <Property name="name">inputPers</Property>
+            <Property name="property">inputPers</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="editable">false</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">inputPersOid</Property>
+            <Property name="property">inputPersOid</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="editable">false</Property>
+          </AutoFormElement>
+          <AutoFormElement>
             <Property name="name">fileno</Property>
             <Property name="property">fileno</Property>
             <Editor/>
@@ -283,8 +319,10 @@ dialog.set(&quot;caption&quot;,&quot;新增试飞文件&quot;);
 var ftype = view.id(&quot;formElement1&quot;).get(&quot;value&quot;);
 if(ftype){
 	view.id('dsShifeirequestacc').getData().insert({
-	ftype: ftype,
-	id: guid
+		ftype: ftype,
+		id: guid,
+		inputPersOid: &quot;${loginUser.getUsername()}&quot;,
+		inputPers: &quot;${loginUser.getCname()}&quot;
 	});
 	view.id('diaShifeirequestacc').show();
 	var link = view.id(&quot;lefile&quot;);
@@ -317,6 +355,7 @@ if (cur) {
 }</ClientEvent>
         <Property name="caption">修改</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+        <Property name="tags">reportCheck</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsShifeirequestacc').getData('#');
@@ -325,11 +364,15 @@ if(cur){
 	dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
 		cur.remove();
 		ua.execute();
+		view.id('dsShifeirequestacc').getDataAsync('#',function(cur1){
+			view.checkButton(cur1,'reportCheck','${loginUser.getUsername()}');
+		});
 	}); 
 } 
 	</ClientEvent>
         <Property name="caption">删除</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+        <Property name="tags">reportCheck</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsShifeirequestacc').getData('#');&#xD;
@@ -375,6 +418,9 @@ open(path,&quot;_blank&quot;);</ClientEvent>
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgShifeirequestacc">
+      <ClientEvent name="onCurrentChange">var cur = view.id('dsShifeirequestacc').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'reportCheck','${loginUser.getUsername()}');&#xD;
+});</ClientEvent>
       <Property name="readOnly">true</Property>
       <Property name="dataSet">dsShifeirequestacc</Property>
       <Property name="dataPath"></Property>
@@ -382,6 +428,16 @@ open(path,&quot;_blank&quot;);</ClientEvent>
       <Property name="showFilterBar">false</Property>
       <Property name="rowHeight">22</Property>
       <RowNumColumn/>
+      <DataColumn>
+        <Property name="property">inputPers</Property>
+        <Property name="width">100</Property>
+        <Property name="name">inputPers</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">inputPersOid</Property>
+        <Property name="width">100</Property>
+        <Property name="name">inputPersOid</Property>
+      </DataColumn>
       <DataColumn name="fileno">
         <Property name="property">fileno</Property>
         <Property name="width">120</Property>

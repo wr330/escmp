@@ -90,6 +90,14 @@ link.set(&quot;visible&quot;,false);&#xD;
         <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
       </ToolBarButton>
       <ToolBarButton>
+        <ClientEvent name="onClick">var cur = view.id('dsSupportevaluation').getData('#');&#xD;
+if (cur) {&#xD;
+	view.id('diaSeeSupp').show();&#xD;
+}</ClientEvent>
+        <Property name="icon">url(>skin>common/icons.gif) -40px -100px</Property>
+        <Property name="caption">浏览</Property>
+      </ToolBarButton>
+      <ToolBarButton>
         <ClientEvent name="onClick">view.id('dgSupportevaluation').set(&quot;showFilterBar&quot;,!view.id('dgSupportevaluation').get(&quot;showFilterBar&quot;));</ClientEvent>
         <Property name="caption">自定义查询</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
@@ -237,6 +245,71 @@ else{
                 </Button>
               </Container>
             </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="diaSeeSupp">
+      <Property name="width">500</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('diaSeeSupp').hide();    </ClientEvent>
+          <Property name="icon">url(>skin>common/icons.gif) -40px -0px</Property>
+          <Property name="caption">关闭</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afSupp">
+          <Property name="dataSet">dsSupportevaluation</Property>
+          <Property name="dataPath">#</Property>
+          <Property name="cols">*</Property>
+          <Property name="labelWidth">90</Property>
+          <Property name="readOnly">true</Property>
+          <AutoFormElement>
+            <Property name="name">supportAddress</Property>
+            <Property name="property">supportAddress</Property>
+            <Property name="trigger">dataSetDropDown1</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">supportGrade</Property>
+            <Property name="property">supportGrade</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">supportStartTime</Property>
+            <Property name="property">supportStartTime</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">supportEndTime</Property>
+            <Property name="property">supportEndTime</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">feedbackQuestion</Property>
+            <Property name="property">feedbackQuestion</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">100</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">supportSuggest</Property>
+            <Property name="property">supportSuggest</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">100</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">efile</Property>
+            <Property name="property">efile</Property>
+            <Editor/>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">miji</Property>

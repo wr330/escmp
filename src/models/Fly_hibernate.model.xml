@@ -708,6 +708,16 @@ else {&#xD;
 }</ClientEvent>
       </Validator>
     </PropertyDef>
+    <PropertyDef name="inputPers">
+      <Property/>
+      <Property name="dataType">String</Property>
+      <Property name="label">录入人</Property>
+    </PropertyDef>
+    <PropertyDef name="inputPersOid">
+      <Property/>
+      <Property name="label">录入人ID</Property>
+      <Property name="dataType">String</Property>
+    </PropertyDef>
   </DataType>
   <DataType name="Dailyacc" meta="x:996;y:10">
     <Property name="creationType">com.buaa.fly.domain.Dailyacc</Property>
@@ -776,6 +786,16 @@ else {&#xD;
 	arg.result = { state:&quot;error&quot;, text: &quot;新增数据的密级超过自己对应密级&quot;};	&#xD;
 }</ClientEvent>
       </Validator>
+    </PropertyDef>
+    <PropertyDef name="inputPers">
+      <Property/>
+      <Property name="dataType">String</Property>
+      <Property name="label">录入人</Property>
+    </PropertyDef>
+    <PropertyDef name="inputPersOid">
+      <Property/>
+      <Property name="dataType">String</Property>
+      <Property name="label">录入人ID</Property>
     </PropertyDef>
   </DataType>
   <DataType name="Ftypes" meta="x:1114;y:10">

@@ -16,7 +16,13 @@
     </DataType>
   </Model>
   <View>
+    <ClientEvent name="onCreate">self.checkButton = function(cur,tagName,status){	&#xD;
+	this.set(&quot;^&quot; + tagName +&quot;.disabled&quot;, cur &amp;&amp; cur.get(&quot;sectionChiefSure&quot;) != status);  &#xD;
+}</ClientEvent>
     <DataSet id="dsSupportprogram">
+      <ClientEvent name="onLoadData">var cur = view.id('dsSupportprogram').getDataAsync('#.#handover',function(cur){&#xD;
+	view.checkButton(cur,'makeSure','0');&#xD;
+});</ClientEvent>
       <Property name="dataType">[Supportprogram]</Property>
       <Property name="dataProvider">supportprogramPR#querySupportprogram</Property>
       <Property name="pageSize">20</Property>
@@ -24,6 +30,15 @@
     <DataSet id="dsUsers">
       <Property name="dataProvider">bdf2.userMaintain#loadUsers2</Property>
       <Property name="dataType">[User]</Property>
+    </DataSet>
+    <DataSet id="dsUsersPesi">
+      <Property name="dataProvider">userQueryDao#queryUserDro</Property>
+      <Property name="dataType">[User]</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="position">室主任</Property>
+        </Entity>
+      </Property>
     </DataSet>
     <DataSet id="dsDictionary">
       <Property name="dataProvider">dictionaryPR#queryDictionary</Property>
@@ -183,9 +198,7 @@ var dialog=view.id('dgHandover');&#xD;
 dialog.set(&quot;caption&quot;,&quot;新增交接记录&quot;);&#xD;
 dialog.show();&#xD;
 var link = view.id(&quot;lefile&quot;);&#xD;
-link.set(&quot;visible&quot;,false);&#xD;
-&#xD;
-</ClientEvent>
+link.set(&quot;visible&quot;,false);</ClientEvent>
                   <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
                   <Property name="caption">新增</Property>
                 </ToolBarButton>
@@ -212,6 +225,7 @@ if (cur) {&#xD;
                   <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
                   <Property name="caption">修改</Property>
                   <Property name="visible">true</Property>
+                  <Property name="tags">makeSure</Property>
                 </ToolBarButton>
                 <ToolBarButton>
                   <ClientEvent name="onClick">var cur = view.id('dsSupportprogram').getData('#.#handover');&#xD;
@@ -219,13 +233,16 @@ var uaSupportprogram = view.id('uaSupportprogram');&#xD;
 if(cur){&#xD;
 	dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){&#xD;
 		cur.remove();&#xD;
-		uaSupportprogram.execute();	&#xD;
-		}); &#xD;
-	}&#xD;
-</ClientEvent>
+		uaSupportprogram.execute();&#xD;
+		var cur = view.id('dsSupportprogram').getDataAsync('#.#handover',function(cur){&#xD;
+			view.checkButton(cur,'makeSure','0');&#xD;
+		});	&#xD;
+	}); &#xD;
+}</ClientEvent>
                   <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
                   <Property name="caption">删除</Property>
-                  <Property name="visible">false</Property>
+                  <Property name="visible">true</Property>
+                  <Property name="tags">makeSure</Property>
                 </ToolBarButton>
                 <ToolBarButton>
                   <ClientEvent name="onClick">view.id('GridHandover').set(&quot;showFilterBar&quot;,!view.id('GridHandover').get(&quot;showFilterBar&quot;));</ClientEvent>
@@ -240,6 +257,9 @@ dsSupportprogram.getData(&quot;#&quot;).reset(&quot;handover&quot;);</ClientEven
                 </ToolBarButton>
               </ToolBar>
               <DataGrid id="GridHandover">
+                <ClientEvent name="onCurrentChange">var cur = view.id('dsSupportprogram').getDataAsync('#.#handover',function(cur){&#xD;
+	view.checkButton(cur,'makeSure','0');&#xD;
+});</ClientEvent>
                 <Property name="dataPath">#.handover</Property>
                 <Property name="dataSet">dsSupportprogram</Property>
                 <Property name="dataType">Handover</Property>
@@ -285,6 +305,14 @@ jQuery(arg.dom).xCreate({&#xD;
                   <Property name="width">90</Property>
                 </DataColumn>
                 <DataColumn name="sectionChiefSure">
+                  <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;sectionChiefSure&quot;);&#xD;
+if(status == 0){&#xD;
+	arg.dom.style.color = &quot;red&quot;;&#xD;
+}&#xD;
+else{&#xD;
+	arg.dom.style.color = &quot;&quot;;&#xD;
+}&#xD;
+arg.processDefault = true;</ClientEvent>
                   <Property name="property">sectionChiefSure</Property>
                   <Property name="width">90</Property>
                 </DataColumn>
@@ -404,20 +432,45 @@ view.id('dgSupportprogram').hide();&#xD;
       <ClientEvent name="onClose">var cur=view.id('dsSupportprogram').getData('#.#supportitem');&#xD;
 cur.cancel();&#xD;
 view.id('diaSupportitem').hide();</ClientEvent>
-      <Property name="width">450</Property>
+      <Property name="width">500</Property>
       <Buttons>
         <Button>
-          <ClientEvent name="onClick">var afSupportitem = view.id('afSupportitem');&#xD;
-var startexecutiontime = afSupportitem.getElement('startexecutiontime').get('value');&#xD;
-var endexecutiontime = afSupportitem.getElement('endexecutiontime').get('value');&#xD;
-if(startexecutiontime > endexecutiontime){&#xD;
-	dorado.MessageBox.alert('开始时间大于等于结束时间');&#xD;
+          <ClientEvent name="onClick" signature="self,dgUser">var selectPerson = dgUser.get(&quot;selection&quot;);&#xD;
+var afSupportitem = view.id('afSupportitem');&#xD;
+var ajaxSupItem = view.id('ajaxSupItem');&#xD;
+var dsSupportprogram = view.get(&quot;#dsSupportprogram&quot;);&#xD;
+var staTime = afSupportitem.getElement('startexecutiontime').get('value');&#xD;
+var endTime = afSupportitem.getElement('endexecutiontime').get('value');&#xD;
+var persons = new Array();&#xD;
+var i = 0;&#xD;
+if(staTime == null){&#xD;
+	dorado.MessageBox.alert('请填写开始时间！');&#xD;
 }&#xD;
-else{&#xD;
-	view.id('uaSupportprogram').execute(function(){&#xD;
-    	view.id('diaSupportitem').hide();&#xD;
-   	});&#xD;
-}</ClientEvent>
+else if(endTime == null){&#xD;
+	dorado.MessageBox.alert('请填写结束时间！');&#xD;
+}&#xD;
+else if(!(selectPerson &amp;&amp; selectPerson.length)){&#xD;
+	dorado.MessageBox.alert('请至少选择一名登记执行人！');&#xD;
+}&#xD;
+else if(staTime > endTime){&#xD;
+	dorado.MessageBox.alert('开始时间需要小于结束时间！');&#xD;
+}&#xD;
+else{		&#xD;
+	selectPerson.each(function(per){&#xD;
+		persons[i] = per.get(&quot;username&quot;);&#xD;
+		i++;&#xD;
+	});&#xD;
+	ajaxSupItem.set('parameter',{&#xD;
+		'startTime':staTime,&#xD;
+		'endTime':endTime,&#xD;
+		'selectPerson':	persons,&#xD;
+		'support':dsSupportprogram.getData(&quot;#&quot;)&#xD;
+	});&#xD;
+	ajaxSupItem.execute(function(){&#xD;
+		dsSupportprogram.getData(&quot;#&quot;).reset(&quot;supportitem&quot;);&#xD;
+	});&#xD;
+	view.id('diaSupportitem').hide();		&#xD;
+}		</ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
         </Button>
@@ -432,28 +485,66 @@ view.id('diaSupportitem').hide();&#xD;
         </Button>
       </Buttons>
       <Children>
-        <AutoForm id="afSupportitem">
-          <Property name="cols">*</Property>
-          <Property name="dataSet">dsSupportprogram</Property>
-          <Property name="dataPath">#.#supportitem</Property>
-          <Property name="dataType">Supportitem</Property>
-          <AutoFormElement>
-            <Property name="name">startexecutiontime</Property>
-            <Property name="property">startexecutiontime</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">endexecutiontime</Property>
-            <Property name="property">endexecutiontime</Property>
-            <Editor/>
-          </AutoFormElement>
-          <AutoFormElement>
-            <Property name="name">registrationexecutor</Property>
-            <Property name="property">registrationexecutor</Property>
-            <Property name="trigger">customDropDownUser2</Property>
-            <Editor/>
-          </AutoFormElement>
-        </AutoForm>
+        <Container>
+          <Label>
+            <Property name="text">登记执行人选择：</Property>
+          </Label>
+          <DataGrid id="dgUser">
+            <Property name="showFilterBar">true</Property>
+            <Property name="rowHeight">22</Property>
+            <Property name="dataSet">dsUsers</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="height">300</Property>
+            <Property name="selectionMode">multiRows</Property>
+            <Property name="tip">选择登记执行人</Property>
+            <RowNumColumn/>
+            <RowSelectorColumn/>
+            <DataColumn>
+              <Property name="name">username</Property>
+              <Property name="property">username</Property>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">cname</Property>
+              <Property name="property">cname</Property>
+            </DataColumn>
+            <DataColumn name="depts">
+              <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;depts&quot;);&#xD;
+var name = [];&#xD;
+if (entitylist) {&#xD;
+	entitylist.each(function(item){&#xD;
+		name.push(item.get(&quot;name&quot;));&#xD;
+	});&#xD;
+}&#xD;
+arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
+              <Property name="property">depts</Property>
+              <Property name="visible">false</Property>
+            </DataColumn>
+            <DataColumn name="department">
+              <Property name="property">department</Property>
+              <Property name="width">70</Property>
+            </DataColumn>
+            <DataColumn name="position">
+              <Property name="property">position</Property>
+              <Property name="width">100</Property>
+            </DataColumn>
+          </DataGrid>
+          <AutoForm id="afSupportitem">
+            <Property name="cols">*</Property>
+            <Property name="dataSet">dsSupportprogram</Property>
+            <Property name="dataPath">#.#supportitem</Property>
+            <Property name="dataType">Supportitem</Property>
+            <AutoFormElement>
+              <Property name="name">startexecutiontime</Property>
+              <Property name="property">startexecutiontime</Property>
+              <Editor/>
+            </AutoFormElement>
+            <AutoFormElement>
+              <Property name="name">endexecutiontime</Property>
+              <Property name="property">endexecutiontime</Property>
+              <Editor/>
+            </AutoFormElement>
+          </AutoForm>
+        </Container>
       </Children>
       <Tools/>
     </Dialog>
@@ -461,10 +552,15 @@ view.id('diaSupportitem').hide();&#xD;
       <ClientEvent name="onClose">var cur=view.id('dsSupportprogram').getData('#.#handover');&#xD;
 cur.cancel();&#xD;
 view.id('dgHandover').hide();</ClientEvent>
-      <Property name="width">450</Property>
+      <ClientEvent name="onHide">var cur = view.id('dsSupportprogram').getDataAsync('#.#handover',function(cur){&#xD;
+	view.checkButton(cur,'makeSure','0');&#xD;
+});</ClientEvent>
+      <Property name="width">500</Property>
       <Buttons>
         <Button>
-          <ClientEvent name="onClick">view.id('uaSupportprogram').execute(function(){&#xD;
+          <ClientEvent name="onClick">var cur = view.id('dsSupportprogram').getData('#.#handover');&#xD;
+cur.set('sectionChiefSure','1');&#xD;
+view.id('uaSupportprogram').execute(function(){	&#xD;
 	view.id('dgHandover').hide();&#xD;
 });</ClientEvent>
           <Property name="caption">确定并上报</Property>
@@ -546,7 +642,7 @@ view.id('dgHandover').hide();</ClientEvent>
     <CustomDropDown id="customDropDownUser1">
       <Property name="editable">false</Property>
       <Property name="autoOpen">true</Property>
-      <DataGrid id="dsSectionChief">
+      <DataGrid id="dgSectionChief">
         <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
 var user=view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;);&#xD;
 var cur = view.id('dsSupportprogram').getData('#.#handover');&#xD;
@@ -556,7 +652,7 @@ if (user) {&#xD;
 }</ClientEvent>
         <Property name="showFilterBar">true</Property>
         <Property name="rowHeight">22</Property>
-        <Property name="dataSet">dsUsers</Property>
+        <Property name="dataSet">dsUsersPesi</Property>
         <Property name="readOnly">true</Property>
         <Property name="height">300</Property>
         <RowNumColumn/>
@@ -594,47 +690,35 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
       <Property name="editable">false</Property>
       <Property name="autoOpen">true</Property>
       <Property name="height">300</Property>
-      <DataGrid id="dsUser">
-        <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
-var user=view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;);&#xD;
-if (user) {&#xD;
-	dropDown.close(user.get(&quot;cname&quot;));&#xD;
+      <ToolBar>
+        <ToolBarButton>
+          <ClientEvent name="onClick" signature="self,dgUsers">var selection = dgUsers.get(&quot;selection&quot;);&#xD;
+var cur = view.id('dsSupportprogram').getData('#.#supportitem');&#xD;
+var regExe = ''; &#xD;
+var regExecOid = ''; &#xD;
+if(cur){&#xD;
+	if (selection &amp;&amp; selection.length){&#xD;
+		selection.each(function(data){&#xD;
+			regExe = regExe + &quot;,&quot; + data.get(&quot;cname&quot;);&#xD;
+			regExecOid = regExecOid + &quot;,&quot; + data.get(&quot;username&quot;);&#xD;
+		});&#xD;
+		regExe = regExe.substring(1,btpersonName.length);&#xD;
+		regExecOid = regExe.substring(1,btpersonName.length);&#xD;
+		cur.set(&quot;regExe&quot;,btpersonName);&#xD;
+		&#xD;
+	}&#xD;
+	else{&#xD;
+		dorado.MessageBox.alert(&quot;没有选中任何共享人员&quot;);&#xD;
+	}&#xD;
+	view.get(&quot;#customDropDown1&quot;).close();&#xD;
 }</ClientEvent>
-        <Property name="showFilterBar">true</Property>
-        <Property name="rowHeight">22</Property>
-        <Property name="dataSet">dsUsers</Property>
-        <Property name="readOnly">true</Property>
-        <Property name="height">300</Property>
-        <RowNumColumn/>
-        <DataColumn>
-          <Property name="name">username</Property>
-          <Property name="property">username</Property>
-        </DataColumn>
-        <DataColumn>
-          <Property name="name">cname</Property>
-          <Property name="property">cname</Property>
-        </DataColumn>
-        <DataColumn name="depts">
-          <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;depts&quot;);&#xD;
-var name = [];&#xD;
-if (entitylist) {&#xD;
-	entitylist.each(function(item){&#xD;
-		name.push(item.get(&quot;name&quot;));&#xD;
-	});&#xD;
-}&#xD;
-arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
-          <Property name="property">depts</Property>
-          <Property name="visible">false</Property>
-        </DataColumn>
-        <DataColumn name="department">
-          <Property name="property">department</Property>
-          <Property name="width">70</Property>
-        </DataColumn>
-        <DataColumn name="position">
-          <Property name="property">position</Property>
-          <Property name="width">100</Property>
-        </DataColumn>
-      </DataGrid>
+          <Property name="caption">确定</Property>
+        </ToolBarButton>
+        <ToolBarButton>
+          <ClientEvent name="onClick">view.get(&quot;#customDropDown1&quot;).close();</ClientEvent>
+          <Property name="caption">取消</Property>
+        </ToolBarButton>
+      </ToolBar>
     </CustomDropDown>
     <DataSetDropDown id="dataSetDropDown1">
       <Property name="autoOpen">true</Property>
@@ -760,5 +844,8 @@ dsStatisticSupportitem.flushAsync();</ClientEvent>
       </Children>
       <Tools/>
     </Dialog>
+    <AjaxAction id="ajaxSupItem">
+      <Property name="service">supportitemManager#selectPerson</Property>
+    </AjaxAction>
   </View>
 </ViewConfig>

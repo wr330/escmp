@@ -50,6 +50,11 @@ public class HandoverDao extends HibernateBaseDao {
         		coreHql.append(" and a.sectionChief = :sc ");
         		args.put("sc", sectionChief);
         	}
+        	String status = (String)parameter.get("status");
+        	if(StringUtils.isNotEmpty( status )){
+        		coreHql.append(" and a.sectionChiefSure >= :st ");
+        		args.put("st", status);
+        	}
         }
 		
 		if (null != criteria) {
@@ -63,7 +68,7 @@ public class HandoverDao extends HibernateBaseDao {
         
         String countHql = "select count(*) " + coreHql.toString();
         String hql = coreHql.toString();
-        hql += "order by handovertime desc ";
+        hql += "order by sectionChiefSure asc, handovertime desc ";
 		this.pagingQuery(page, hql, countHql, args);
 	}
 	

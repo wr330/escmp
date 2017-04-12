@@ -7,7 +7,13 @@
   <Context/>
   <Model/>
   <View>
+    <ClientEvent name="onCreate">self.checkButton = function(cur,tagName,username){&#xD;
+	this.set(&quot;^&quot; + tagName +&quot;.disabled&quot;, cur &amp;&amp; cur.get(&quot;creatPersonOid&quot;) != username);  &#xD;
+}</ClientEvent>
     <DataSet id="dsTechnicaldocument">
+      <ClientEvent name="onLoadData">var cur = self.getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'reportCheck','${loginUser.getUsername()}');&#xD;
+});</ClientEvent>
       <Property name="dataType">[Technicaldocument]</Property>
       <Property name="dataProvider">technicaldocumentPR#queryTechnicaldocument</Property>
       <Property name="pageSize">20</Property>
@@ -47,24 +53,26 @@
         <Property name="dataPath"></Property>
       </DataPilot>
       <ToolBarButton>
-        <ClientEvent name="onClick">
-	view.id('dsTechnicaldocument').getData().insert();
-	var cur=view.id('dsTechnicaldocument').getData('#');
-	var dateNow = new Date();
-	cur.set(&quot;issuedate&quot;,dateNow);
-	var guid = &quot;&quot;;
-	for(var i=1;i&lt;=32;i++){
-		var n = Math.floor(Math.random()*16.0).toString(16);
-		guid += n;
-		if((i==8)||(i==12)||(i==16)||(i==20))
-		   guid += &quot;-&quot;;
-	}
-	cur.set(&quot;oid&quot;,guid);
-	var dialog=view.id('diaTechnicaldocument');
-	dialog.set(&quot;caption&quot;,&quot;新增技术文件记录&quot;);
-	dialog.show();
-	var link = view.id(&quot;lefile&quot;);
-    link.set(&quot;visible&quot;,false);
+        <ClientEvent name="onClick">var cur=view.id('dsTechnicaldocument').getData('#');
+var dateNow = new Date();
+cur.set(&quot;issuedate&quot;,dateNow);
+var guid = &quot;&quot;;
+for(var i=1;i&lt;=32;i++){
+	var n = Math.floor(Math.random()*16.0).toString(16);
+	guid += n;
+	if((i==8)||(i==12)||(i==16)||(i==20))
+	   guid += &quot;-&quot;;
+}
+view.id('dsTechnicaldocument').getData().insert({
+	oid: guid,
+	creatPersonOid: &quot;${loginUser.getUsername()}&quot;,
+	creatPerson: &quot;${loginUser.getCname()}&quot;
+});
+var dialog=view.id('diaTechnicaldocument');
+dialog.set(&quot;caption&quot;,&quot;新增技术文件记录&quot;);
+dialog.show();
+var link = view.id(&quot;lefile&quot;);
+link.set(&quot;visible&quot;,false);
 	
 	
 	
@@ -95,6 +103,7 @@ if (cur) {
 </ClientEvent>
         <Property name="caption">修改</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+        <Property name="tags">reportCheck</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsTechnicaldocument').getData('#');
@@ -103,11 +112,14 @@ if (cur) {
 		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
 			cur.remove();
 			ua.execute();
-				}); 
-			} 
-	</ClientEvent>
+			view.id('dsTechnicaldocument').getDataAsync('#',function(cur2){
+				view.checkButton(cur2,'reportCheck','${loginUser.getUsername()}');
+			});
+		}); 
+	} </ClientEvent>
         <Property name="caption">删除</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+        <Property name="tags">reportCheck</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsTechnicaldocument').getData('#');
@@ -130,6 +142,9 @@ dsTechnicaldocument.flushAsync();</ClientEvent>
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgTechnicaldocument">
+      <ClientEvent name="onCurrentChange">var cur = view.id('dsTechnicaldocument').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'reportCheck','${loginUser.getUsername()}');&#xD;
+});</ClientEvent>
       <Property name="readOnly">true</Property>
       <Property name="dataSet">dsTechnicaldocument</Property>
       <Property name="dataPath"></Property>
@@ -141,6 +156,11 @@ dsTechnicaldocument.flushAsync();</ClientEvent>
       <DataColumn name="documenttype">
         <Property name="property">documenttype</Property>
         <Property name="width">160</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">creatPerson</Property>
+        <Property name="name">creatPerson</Property>
+        <Editor/>
       </DataColumn>
       <DataColumn>
         <Property name="property">aircrafttype</Property>
@@ -222,8 +242,17 @@ jQuery(arg.dom).xCreate({&#xD;
     </DataGrid>
     <Dialog id="diaTechnicaldocument">
       <ClientEvent name="onClose">var cur=view.id('dsTechnicaldocument').getData('#');&#xD;
-				cur.cancel();&#xD;
-				view.id('diaTechnicaldocument').hide();</ClientEvent>
+if(cur){&#xD;
+	cur.cancel();&#xD;
+	view.id('diaTechnicaldocument').hide();&#xD;
+	view.id('dsTechnicaldocument').getDataAsync('#',function(cur1){&#xD;
+		view.checkButton(cur1,'reportCheck','${loginUser.getUsername()}');&#xD;
+	});&#xD;
+}&#xD;
+</ClientEvent>
+      <ClientEvent name="onHide">var cur = view.id('dsTechnicaldocument').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'reportCheck','${loginUser.getUsername()}');&#xD;
+});</ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
       <Property name="width">500</Property>
@@ -249,7 +278,7 @@ jQuery(arg.dom).xCreate({&#xD;
         <CustomDropDown id="customDropDown1">
           <Property name="editable">false</Property>
           <Property name="autoOpen">true</Property>
-          <DataGrid>
+          <DataGrid id="dgUser1">
             <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
 var user=view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;);&#xD;
 if (user) {&#xD;
@@ -269,16 +298,13 @@ if (user) {&#xD;
               <Property name="name">cname</Property>
               <Property name="property">cname</Property>
             </DataColumn>
-            <DataColumn name="depts">
-              <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;depts&quot;);&#xD;
-var name = [];&#xD;
-if (entitylist) {&#xD;
-	entitylist.each(function(item){&#xD;
-		name.push(item.get(&quot;name&quot;));&#xD;
-	});&#xD;
-}&#xD;
-arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
-              <Property name="property">depts</Property>
+            <DataColumn name="department">
+              <Property name="property">department</Property>
+              <Property name="width">70</Property>
+            </DataColumn>
+            <DataColumn name="position">
+              <Property name="property">position</Property>
+              <Property name="width">100</Property>
             </DataColumn>
           </DataGrid>
         </CustomDropDown>
@@ -327,6 +353,18 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <Property name="dataPath">#</Property>
           <Property name="labelWidth">90</Property>
           <Property name="dataType">Technicaldocument</Property>
+          <AutoFormElement>
+            <Property name="name">creatPerson</Property>
+            <Property name="property">creatPerson</Property>
+            <Property name="readOnly">false</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">creatPersonOid</Property>
+            <Property name="property">creatPersonOid</Property>
+            <Property name="readOnly">false</Property>
+            <Editor/>
+          </AutoFormElement>
           <AutoFormElement>
             <Property name="name">DocumentType</Property>
             <Property name="property">documenttype</Property>
@@ -447,6 +485,18 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <Property name="labelWidth">90</Property>
           <Property name="dataType">Technicaldocument</Property>
           <Property name="readOnly">true</Property>
+          <AutoFormElement>
+            <Property name="name">creatPerson</Property>
+            <Property name="property">creatPerson</Property>
+            <Property name="readOnly">false</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">creatPersonOid</Property>
+            <Property name="property">creatPersonOid</Property>
+            <Property name="readOnly">false</Property>
+            <Editor/>
+          </AutoFormElement>
           <AutoFormElement>
             <Property name="name">DocumentType</Property>
             <Property name="property">documenttype</Property>

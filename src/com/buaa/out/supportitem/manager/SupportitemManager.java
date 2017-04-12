@@ -2,6 +2,7 @@ package com.buaa.out.supportitem.manager;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -9,11 +10,15 @@ import org.springframework.stereotype.Component;
 
 import com.bstek.bdf2.core.business.IUser;
 import com.bstek.bdf2.core.context.ContextHolder;
+import com.bstek.bdf2.core.model.DefaultUser;
+import com.bstek.bdf2.core.view.user.UserQueryDao;
+import com.bstek.dorado.annotation.Expose;
 import com.bstek.dorado.data.entity.EntityState;
 import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 import com.buaa.out.domain.Supportitem;
+import com.buaa.out.domain.Supportprogram;
 import com.buaa.out.supportitem.dao.SupportitemDao;
 import com.buaa.sys.userOperationLog.manager.UserOperationLogManager;
 
@@ -24,6 +29,8 @@ public class SupportitemManager {
 	private SupportitemDao supportitemDao;
 	@Resource	
 	private UserOperationLogManager userOperationLogManager;
+	@Resource
+	private UserQueryDao userQueryDao;
 	
 	/**                  
 	* 分页查询信息，带有criteria
@@ -54,8 +61,7 @@ public class SupportitemManager {
 	 public void saveSupportitem(Map<String, Collection> dataItems) throws Exception {
 	    Collection<Supportitem> details =(Collection<Supportitem>) dataItems.get("dsSupportitem");
 		this.saveSupportitem(details);
-	 }
-	 
+	 }	 
 	 
 	 /**
 	 * 针对单个数据集操作 包括增删改
@@ -91,6 +97,30 @@ public class SupportitemManager {
 				}
 			}
 		}
+	 }
+	 
+	 /**
+	  * 通过前台传来的“被选中登记执行人”、“计划开始时间”、“计划结束时间”与“外场保障计划”参数，用于创建外场保障条目的方法的方法。
+	  * 
+	  * @param parameter
+	  * @throws Exception
+	  */
+	 @Expose
+	 public void selectPerson(Map<String, Object> parameter) throws Exception{
+		 //设置parameter,对用户信息进行搜索
+		 Map<String, Object> userpara = new HashMap<String, Object>();
+		 userpara.put("persons", parameter.get("selectPerson"));
+		 Collection<DefaultUser> users = userQueryDao.queryUser(userpara);
+		 
+		 Supportitem supitem = new Supportitem();
+		 for (DefaultUser item : users) {
+			 supitem.setStartexecutiontime((Date)parameter.get("startTime"));
+			 supitem.setEndexecutiontime((Date)parameter.get("endTime"));
+			 supitem.setSupportprogram((Supportprogram)parameter.get("support"));
+			 supitem.setRegistExecOid(item.getUsername());
+			 supitem.setRegistrationexecutor(item.getCname());
+			 supportitemDao.saveData(supitem);
+		 }
 	 }
 	
 }

@@ -42,7 +42,7 @@
     </PropertyDef>
     <PropertyDef name="worktime">
       <Property name="dataType">Date</Property>
-      <Property name="label">制定日期</Property>
+      <Property name="label">开始日期</Property>
       <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="oid">
@@ -104,6 +104,11 @@ else {&#xD;
       <Property name="label">终止日期</Property>
       <Property name="required">true</Property>
     </PropertyDef>
+    <PropertyDef name="maketime">
+      <Property name="dataType">Date</Property>
+      <Property name="label">制定日期</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
     <Reference name="supportitem">
       <Property name="dataProvider">supportitemPR#querySupportitem</Property>
       <Property name="dataType">[Supportitem]</Property>
@@ -141,7 +146,12 @@ else {&#xD;
     <PropertyDef name="registrationexecutor">
       <Property name="dataType">String</Property>
       <Property name="label">登记执行人</Property>
-      <Property name="required">true</Property>
+      <Property name="required">false</Property>
+    </PropertyDef>
+    <PropertyDef name="registExecOid">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">登记执行人ID</Property>
     </PropertyDef>
     <PropertyDef name="oid">
       <Property name="dataType">String</Property>
@@ -203,12 +213,16 @@ arg.parameter = parameter;</ClientEvent>
         <Property name="mapValues">
           <Collection>
             <Entity>
-              <Property name="value">否</Property>
+              <Property name="value">未上报</Property>
               <Property name="key">0</Property>
             </Entity>
             <Entity>
-              <Property name="value">是</Property>
+              <Property name="value">待确认</Property>
               <Property name="key">1</Property>
+            </Entity>
+            <Entity>
+              <Property name="value">已确认</Property>
+              <Property name="key">2</Property>
             </Entity>
           </Collection>
         </Property>
@@ -216,13 +230,13 @@ arg.parameter = parameter;</ClientEvent>
       <Property name="defaultValue">0</Property>
     </PropertyDef>
     <PropertyDef name="sectionChief">
-      <Property/>
+      <Property></Property>
       <Property name="dataType">String</Property>
       <Property name="label">室主任用户名</Property>
       <Property name="required">false</Property>
     </PropertyDef>
     <PropertyDef name="sectionChiefName">
-      <Property/>
+      <Property></Property>
       <Property name="dataType">String</Property>
       <Property name="label">室主任选择</Property>
       <Property name="required">true</Property>
@@ -464,6 +478,16 @@ else {&#xD;
     <PropertyDef name="bytes">
       <Property name="dataType">Integer</Property>
       <Property name="label">bytes</Property>
+    </PropertyDef>
+    <PropertyDef name="creatPerson">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">编写人</Property>
+    </PropertyDef>
+    <PropertyDef name="creatPersonOid">
+      <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">编写人ID</Property>
     </PropertyDef>
   </DataType>
   <DataType name="Personstatistic">

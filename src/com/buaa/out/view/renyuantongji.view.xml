@@ -199,6 +199,11 @@ dsStatisticPersonNumber.flushAsync();</ClientEvent>
                           </ToolBarLabel>
                           <Separator/>
                           <ToolBarButton>
+                            <ClientEvent name="onClick">view.id('dgRenyuan').set(&quot;showFilterBar&quot;,!view.id('dgRenyuan').get(&quot;showFilterBar&quot;));</ClientEvent>
+                            <Property name="caption">自定义查询</Property>
+                            <Property name="icon"> url(>skin>common/icons.gif) -20px -40px</Property>
+                          </ToolBarButton>
+                          <ToolBarButton>
                             <ClientEvent name="onClick">var dsSupportitem_add = view.get(&quot;#dsSupportitem_add&quot;);&#xD;
 dsSupportitem_add.flushAsync();</ClientEvent>
                             <Property name="caption">刷新</Property>

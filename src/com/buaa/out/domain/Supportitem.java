@@ -33,6 +33,7 @@ public class  Supportitem implements Serializable {
 	private Date endexecutiontime ;
 	private Date startexecutiontime ;
 	private String registrationexecutor ;
+	private String registExecOid ;
 
 	private Supportprogram supportprogram;
 	private Integer days ;
@@ -67,6 +68,13 @@ public class  Supportitem implements Serializable {
 	}
 	public void setRegistrationexecutor(String registrationexecutor) {
 		this.registrationexecutor=registrationexecutor;
+	}
+	@Column(name="RegistExecOid")
+	public String getRegistExecOid() {
+		return registExecOid;
+	}
+	public void setRegistExecOid(String registExecOid) {
+		this.registExecOid = registExecOid;
 	}
 	@Column(name="Days",insertable=false,updatable=false)
 	public Integer getDays() {

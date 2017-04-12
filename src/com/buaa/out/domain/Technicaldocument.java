@@ -53,6 +53,8 @@ public class  Technicaldocument implements Serializable {
 	private Integer bytes ;
 	private String miji ;
 	private int sendStatus;
+	private String creatPerson;
+	private String creatPersonOid;
 	
 
 	
@@ -197,5 +199,19 @@ public class  Technicaldocument implements Serializable {
 	}
 	public void setSendStatus(int sendStatus) {
 		this.sendStatus = sendStatus;
+	}
+	@Column(name="CreatPersonOid")
+	public String getCreatPersonOid() {
+		return creatPersonOid;
+	}
+	public void setCreatPersonOid(String creatPersonOid) {
+		this.creatPersonOid = creatPersonOid;
+	}
+	@Column(name="CreatPerson")
+	public String getCreatPerson() {
+		return creatPerson;
+	}
+	public void setCreatPerson(String creatPerson) {
+		this.creatPerson = creatPerson;
 	}
 }

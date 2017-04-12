@@ -42,6 +42,7 @@ public class  Supportprogram implements Serializable {
 	private String workaddress ;
 	private Date worktime ;
 	private Date endtime ;
+	private Date maketime ;
 	private String miji ;
 
 	private Collection<Supportitem> supportitem;
@@ -111,6 +112,13 @@ public class  Supportprogram implements Serializable {
 	}
 	public void setEndtime(Date endtime) {
 		this.endtime = endtime;
+	}
+	@Column(name="MakeTime")
+	public Date getMaketime() {
+		return maketime;
+	}
+	public void setMaketime(Date maketime) {
+		this.maketime = maketime;
 	}
 	@Column(name="miji")
 	public String getMiji() {

@@ -7,7 +7,13 @@
   <Context/>
   <Model/>
   <View>
+    <ClientEvent name="onCreate">self.checkButton = function(cur,tagName,username){&#xD;
+	this.set(&quot;^&quot; + tagName +&quot;.disabled&quot;, cur &amp;&amp; cur.get(&quot;inputPersOid&quot;) != username);  &#xD;
+}</ClientEvent>
     <DataSet id="dsDailyacc">
+      <ClientEvent name="onLoadData">var cur = self.getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'reportCheck','${loginUser.getUsername()}');&#xD;
+});</ClientEvent>
       <Property name="dataType">[Dailyacc]</Property>
       <Property name="dataProvider">dailyaccPR#queryDailyacc</Property>
       <Property name="pageSize">20</Property>
@@ -114,7 +120,13 @@ else{&#xD;
 if(cur){&#xD;
 	cur.cancel();&#xD;
 	view.id('diaDailyacc').hide();&#xD;
+	view.id('dsDailyacc').getDataAsync('#',function(cur1){&#xD;
+		view.checkButton(cur1,'reportCheck','${loginUser.getUsername()}');&#xD;
+	});&#xD;
 }</ClientEvent>
+      <ClientEvent name="onHide">var cur = view.id('dsDailyacc').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'reportCheck','${loginUser.getUsername()}');&#xD;
+});</ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
       <Property name="width">500</Property>
@@ -168,6 +180,18 @@ if(cur){
             <Property name="property">ftype</Property>
             <Property name="editable">false</Property>
             <Property name="readOnly">true</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">inputPers</Property>
+            <Property name="property">inputPers</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="editable">false</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">inputPersOid</Property>
+            <Property name="property">inputPersOid</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="editable">false</Property>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">summary</Property>
@@ -301,7 +325,6 @@ if(cur){
     </Dialog>
     <Dialog id="diaSeeDailyacc">
       <Property name="width">500</Property>
-      <Property name="height">240</Property>
       <Property name="caption">现场汇报记录</Property>
       <Buttons>
         <Button>
@@ -321,6 +344,18 @@ if(cur){
             <Property name="name">ftype</Property>
             <Property name="property">ftype</Property>
             <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">inputPers</Property>
+            <Property name="property">inputPers</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="editable">false</Property>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">inputPersOid</Property>
+            <Property name="property">inputPersOid</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="editable">false</Property>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">filename</Property>
@@ -375,7 +410,9 @@ var ftype = view.id(&quot;formElement1&quot;).get(&quot;value&quot;);
 if(ftype){
 	view.id('dsDailyacc').getData().insert({
 		id: guid,
-		ftype: ftype
+		ftype: ftype,
+		inputPersOid: &quot;${loginUser.getUsername()}&quot;,
+		inputPers: &quot;${loginUser.getCname()}&quot;
 	});
 	view.id('diaDailyacc').show();
 	var link = view.id(&quot;lefile&quot;);
@@ -409,6 +446,7 @@ if (cur) {
 	</ClientEvent>
         <Property name="caption">修改</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+        <Property name="tags">reportCheck</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsDailyacc').getData('#');
@@ -417,11 +455,15 @@ if(cur){
 	dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
 		cur.remove();
 		ua.execute();
+		view.id('dsDailyacc').getDataAsync('#',function(cur1){
+			view.checkButton(cur1,'reportCheck','${loginUser.getUsername()}');
+		});
 	}); 
 } 
 	</ClientEvent>
         <Property name="caption">删除</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+        <Property name="tags">reportCheck</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var dsDailyacc = view.id(&quot;dsDailyacc&quot;);&#xD;
@@ -480,6 +522,9 @@ open(path,&quot;_blank&quot;);
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgDailyacc">
+      <ClientEvent name="onCurrentChange">var cur = view.id('dsDailyacc').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'reportCheck','${loginUser.getUsername()}');&#xD;
+});</ClientEvent>
       <Property name="readOnly">true</Property>
       <Property name="dataSet">dsDailyacc</Property>
       <Property name="dataPath"></Property>
@@ -490,6 +535,18 @@ open(path,&quot;_blank&quot;);
       <DataColumn name="ftype">
         <Property name="property">ftype</Property>
         <Property name="width">200</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">inputPers</Property>
+        <Property name="width">100</Property>
+        <Property name="name">inputPers</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">inputPersOid</Property>
+        <Property name="name">inputPersOid</Property>
+        <Property name="readOnly">false</Property>
+        <Property name="width">100</Property>
+        <Editor/>
       </DataColumn>
       <DataColumn name="filename">
         <ClientEvent name="onRenderCell">jQuery(arg.dom).empty();&#xD;

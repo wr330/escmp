@@ -32,13 +32,15 @@ public class Shifeirequestacc implements Serializable {
 	private String id;
 	private Integer bytes;
 	private Date date;
-	private String author;
+	private String author;	
 	private String authorDepartment;
 	private String autorSection;
 	private byte[] datablock;
 	private String type;
 	private String filename;
 	private String miji;
+	private String inputPers;
+	private String inputPersOid;
 
 	@Column(name = "FileNo")
 	public String getFileno() {
@@ -94,7 +96,7 @@ public class Shifeirequestacc implements Serializable {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
-	
+
 	@Column(name = "authorDepartment")
 	public String getAuthorDepartment() {
 		return authorDepartment;
@@ -147,6 +149,24 @@ public class Shifeirequestacc implements Serializable {
 
 	public void setMiji(String miji) {
 		this.miji = miji;
+	}
+
+	@Column(name = "inputPers")
+	public String getInputPers() {
+		return inputPers;
+	}
+
+	public void setInputPers(String inputPers) {
+		this.inputPers = inputPers;
+	}
+
+	@Column(name = "inputPersOid")
+	public String getInputPersOid() {
+		return inputPersOid;
+	}
+
+	public void setInputPersOid(String inputPersOid) {
+		this.inputPersOid = inputPersOid;
 	}
 
 }

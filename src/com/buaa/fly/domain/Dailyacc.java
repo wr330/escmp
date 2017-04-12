@@ -30,6 +30,8 @@ public class Dailyacc implements Serializable {
 	private String summary;
 	private byte[] datablock;
 	private String miji;
+	private String inputPers;
+	private String inputPersOid;
 
 	@Column(name = "FileName")
 	public String getFilename() {
@@ -93,6 +95,24 @@ public class Dailyacc implements Serializable {
 
 	public void setMiji(String miji) {
 		this.miji = miji;
+	}
+	
+	@Column(name = "inputPers")
+	public String getInputPers() {
+		return inputPers;
+	}
+	
+	public void setInputPers(String inputPers) {
+		this.inputPers = inputPers;
+	}
+
+	@Column(name = "inputPersOid")
+	public String getInputPersOid() {
+		return inputPersOid;
+	}
+
+	public void setInputPersOid(String inputPersOid) {
+		this.inputPersOid = inputPersOid;
 	}
 
 }
