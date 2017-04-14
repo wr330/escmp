@@ -294,8 +294,13 @@ else {&#xD;
       <Property name="dataType">DateTime</Property>
       <Property name="label">上传时间</Property>
     </PropertyDef>
-    <PropertyDef name="uploadPerson">
+    <PropertyDef name="uploadPersonOid">
       <Property></Property>
+      <Property name="dataType">String</Property>
+      <Property name="label">上传人ID</Property>
+    </PropertyDef>
+    <PropertyDef name="uploadPerson">
+      <Property/>
       <Property name="dataType">String</Property>
       <Property name="label">上传人</Property>
     </PropertyDef>
@@ -539,6 +544,13 @@ else {&#xD;
       <Property name="label">归档人</Property>
       <Property name="readOnly">true</Property>
       <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="filingpersonOid">
+      <Property/>
+      <Property name="dataType">String</Property>
+      <Property name="label">归档人ID</Property>
+      <Property name="required">true</Property>
+      <Property name="readOnly">true</Property>
     </PropertyDef>
     <PropertyDef name="efile">
       <Property name="dataType">String</Property>
@@ -1096,7 +1108,7 @@ else {&#xD;
       <Property name="label">用户姓名</Property>
     </PropertyDef>
     <PropertyDef name="personDepartment">
-      <Property/>
+      <Property></Property>
       <Property name="dataType">String</Property>
       <Property name="label">部门</Property>
     </PropertyDef>

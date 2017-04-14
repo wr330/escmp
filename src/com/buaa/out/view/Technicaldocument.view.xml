@@ -53,9 +53,7 @@
         <Property name="dataPath"></Property>
       </DataPilot>
       <ToolBarButton>
-        <ClientEvent name="onClick">var cur=view.id('dsTechnicaldocument').getData('#');
-var dateNow = new Date();
-cur.set(&quot;issuedate&quot;,dateNow);
+        <ClientEvent name="onClick">var dateNow = new Date();
 var guid = &quot;&quot;;
 for(var i=1;i&lt;=32;i++){
 	var n = Math.floor(Math.random()*16.0).toString(16);
@@ -65,6 +63,7 @@ for(var i=1;i&lt;=32;i++){
 }
 view.id('dsTechnicaldocument').getData().insert({
 	oid: guid,
+	issuedate: dateNow,
 	creatPersonOid: &quot;${loginUser.getUsername()}&quot;,
 	creatPerson: &quot;${loginUser.getCname()}&quot;
 });
@@ -151,15 +150,22 @@ dsTechnicaldocument.flushAsync();</ClientEvent>
       <Property name="filterMode">clientSide</Property>
       <Property name="showFilterBar">false</Property>
       <Property name="rowHeight">22</Property>
-      <Property name="fixedColumnCount">5</Property>
+      <Property name="fixedColumnCount">8</Property>
       <RowNumColumn/>
       <DataColumn name="documenttype">
         <Property name="property">documenttype</Property>
-        <Property name="width">160</Property>
+        <Property name="width">120</Property>
       </DataColumn>
       <DataColumn>
         <Property name="property">creatPerson</Property>
         <Property name="name">creatPerson</Property>
+        <Property name="width">80</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">creatPersonOid</Property>
+        <Property name="name">creatPersonOid</Property>
+        <Property name="width">80</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
@@ -169,7 +175,7 @@ dsTechnicaldocument.flushAsync();</ClientEvent>
       </DataColumn>
       <DataColumn name="number">
         <Property name="property">number</Property>
-        <Property name="width">200</Property>
+        <Property name="width">120</Property>
       </DataColumn>
       <DataColumn>
         <Property name="width">200</Property>
@@ -362,7 +368,7 @@ if (user) {&#xD;
           <AutoFormElement>
             <Property name="name">creatPersonOid</Property>
             <Property name="property">creatPersonOid</Property>
-            <Property name="readOnly">false</Property>
+            <Property name="readOnly">true</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>

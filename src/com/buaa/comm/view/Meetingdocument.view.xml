@@ -9,7 +9,13 @@
     <DataType name="dataType1"/>
   </Model>
   <View>
+    <ClientEvent name="onCreate">self.checkButton = function(cur,tagName,username){&#xD;
+	this.set(&quot;^&quot; + tagName +&quot;.disabled&quot;, cur &amp;&amp; cur.get(&quot;filingpersonOid&quot;) != username);  &#xD;
+}</ClientEvent>
     <DataSet id="dsMeetingdocument">
+      <ClientEvent name="onLoadData">var cur = self.getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'reportCheck','${loginUser.getUsername()}');&#xD;
+});</ClientEvent>
       <Property name="dataType">[Meetingdocument]</Property>
       <Property name="dataProvider">meetingdocumentPR#queryMeetingdocument</Property>
       <Property name="pageSize">20</Property>
@@ -60,24 +66,24 @@ view.id('dsFtypes').insert({ftypename:&quot;其他机型&quot;});</ClientEvent>
         <Property name="dataPath"></Property>
       </DataPilot>
       <ToolBarButton>
-        <ClientEvent name="onClick">
-	view.id('dsMeetingdocument').getData().insert();
-	var cur=view.id('dsMeetingdocument').getData('#');
-	var dateNow = new Date();
-	var guid = &quot;&quot;;
-	for(var i=1;i&lt;=32;i++){
-		var n = Math.floor(Math.random()*16.0).toString(16);
-		guid += n;
-		if((i==8)||(i==12)||(i==16)||(i==20))
-		   guid += &quot;-&quot;;
-	}
-	cur.set(&quot;oid&quot;,guid);
-	cur.set(&quot;filingdate&quot;,dateNow);
-    cur.set(&quot;filingperson&quot;,&quot;${loginUser.getCname()}&quot;);
-	var loginUsername=&quot;${loginUser.getUsername()}&quot;;
-	var dialog=view.id('diaMeetingdocument');
-    dialog.set(&quot;caption&quot;,&quot;新增会议材料&quot;);
-    dialog.show();</ClientEvent>
+        <ClientEvent name="onClick">var dateNow = new Date();
+var guid = &quot;&quot;;
+for(var i=1;i&lt;=32;i++){
+	var n = Math.floor(Math.random()*16.0).toString(16);
+	guid += n;
+	if((i==8)||(i==12)||(i==16)||(i==20))
+	   guid += &quot;-&quot;;
+}
+view.id('dsMeetingdocument').getData().insert({
+	oid:guid,
+	filingdate:dateNow,
+	filingperson:&quot;${loginUser.getCname()}&quot;,
+	filingpersonOid:&quot;${loginUser.getUsername()}&quot;	
+	
+});
+var dialog=view.id('diaMeetingdocument');
+dialog.set(&quot;caption&quot;,&quot;新增会议材料&quot;);
+dialog.show();</ClientEvent>
         <Property name="caption">新增</Property>
         <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
       </ToolBarButton>
@@ -90,6 +96,7 @@ if (cur) {
 }	</ClientEvent>
         <Property name="caption">修改</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+        <Property name="tags">reportCheck</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsMeetingdocument').getData('#');
@@ -98,10 +105,14 @@ if(cur){
 	dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
 		cur.remove();
 		ua.execute();
+		view.id('dsMeetingdocument').getDataAsync('#',function(cur1){
+			view.checkButton(cur1,'reportCheck','${loginUser.getUsername()}');
+		});
 	}); 
 } 	</ClientEvent>
         <Property name="caption">删除</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+        <Property name="tags">reportCheck</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">view.id('dgMeetingdocument').set(&quot;showFilterBar&quot;,!view.id('dgMeetingdocument').get(&quot;showFilterBar&quot;));</ClientEvent>
@@ -116,6 +127,9 @@ dsMeetingdocument.flushAsync();</ClientEvent>
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgMeetingdocument">
+      <ClientEvent name="onCurrentChange">var cur = view.id('dsMeetingdocument').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'reportCheck','${loginUser.getUsername()}');&#xD;
+});</ClientEvent>
       <Property name="readOnly">true</Property>
       <Property name="dataSet">dsMeetingdocument</Property>
       <Property name="dataPath"></Property>
@@ -137,7 +151,7 @@ dsMeetingdocument.flushAsync();</ClientEvent>
       </DataColumn>
       <DataColumn name="holddepartment">
         <Property name="property">holddepartment</Property>
-        <Property name="width">120</Property>
+        <Property name="width">150</Property>
       </DataColumn>
       <DataColumn name="meetingtime">
         <Property name="property">meetingtime</Property>
@@ -145,7 +159,7 @@ dsMeetingdocument.flushAsync();</ClientEvent>
       </DataColumn>
       <DataColumn name="filename">
         <Property name="property">filename</Property>
-        <Property name="width">120</Property>
+        <Property name="width">150</Property>
       </DataColumn>
       <DataColumn name="filenumber">
         <Property name="property">filenumber</Property>
@@ -158,6 +172,11 @@ dsMeetingdocument.flushAsync();</ClientEvent>
       <DataColumn name="filingperson">
         <Property name="property">filingperson</Property>
         <Property name="width">120</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="property">filingpersonOid</Property>
+        <Property name="width">120</Property>
+        <Property name="name">filingpersonOid</Property>
       </DataColumn>
       <DataColumn name="category">
         <Property name="property">category</Property>
@@ -186,7 +205,13 @@ jQuery(arg.dom).xCreate({&#xD;
     <Dialog id="diaMeetingdocument">
       <ClientEvent name="onClose">var cur=view.id('dsMeetingdocument').getData('#');&#xD;
 cur.cancel();&#xD;
-view.id('diaMeetingdocument').hide();				</ClientEvent>
+view.id('diaMeetingdocument').hide();	&#xD;
+view.id('dsMeetingdocument').getDataAsync('#',function(cur1){&#xD;
+	view.checkButton(cur1,'reportCheck','${loginUser.getUsername()}');&#xD;
+});			</ClientEvent>
+      <ClientEvent name="onHide">var cur = view.id('dsMeetingdocument').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'reportCheck','${loginUser.getUsername()}');&#xD;
+});</ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
       <Property name="width">800</Property>

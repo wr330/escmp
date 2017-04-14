@@ -63,8 +63,12 @@ public class ServletDownload extends HttpServlet {
         String name = filename.substring(filename.lastIndexOf('/')+1,filename.length());//获取文件名
         String path = "/"+filename.substring(0,filename.lastIndexOf('/')+1);//获取文件路径
         //设置Content-Disposition，读取目标文件，通过response将目标文件写到客户端  
-        response.setHeader("Content-Disposition", "attachment;filename="+new String(name.getBytes("gb2312"),"ISO8859-1"));  
-        if(!FileHelper.existFile(path,name)){//如果文件不存在，从数据库读取二进制流生成文件
+        response.setHeader("Content-Disposition", "attachment;filename="+new String(name.getBytes("gb2312"),"ISO8859-1"));
+        if(!FileHelper.existFile(path,name)){
+        	
+        }
+        /*	这个方法暂时没有使用
+         * if(!FileHelper.existFile(path,name)){//如果文件不存在，从数据库读取二进制流生成文件
         	String table = filename.substring(0,filename.indexOf('/'));//获取表名
         	String oid = filename.substring(filename.indexOf('/')+1,filename.lastIndexOf('/'));//获取主键Oid
         	if(table.equals("Fly_Sfstatistic")){
@@ -78,7 +82,7 @@ public class ServletDownload extends HttpServlet {
         	    byte[] datablock = result.get(0);
 			    FileHelper.createFile(path,name,datablock);
         	}
-		}
+		}*/
         String fullFileName = getServletContext().getRealPath("/upload/" + filename);//获取目标文件的绝对路径    
         InputStream in = new FileInputStream(fullFileName);//读文件
         OutputStream out = response.getOutputStream();//写文件

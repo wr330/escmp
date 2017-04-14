@@ -7,7 +7,13 @@
   <Context/>
   <Model/>
   <View>
+    <ClientEvent name="onCreate">self.checkButton = function(cur,tagName,username){&#xD;
+	this.set(&quot;^&quot; + tagName +&quot;.disabled&quot;, cur &amp;&amp; cur.get(&quot;uploadPersonOid&quot;) != username);  &#xD;
+}</ClientEvent>
     <DataSet id="dsResourcedownload">
+      <ClientEvent name="onLoadData">var cur = self.getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'reportCheck','${loginUser.getUsername()}');&#xD;
+});</ClientEvent>
       <Property name="dataType">[Resourcedownload]</Property>
       <Property name="dataProvider">resourcedownloadPR#queryResourcedownload</Property>
       <Property name="pageSize">20</Property>
@@ -38,22 +44,23 @@
         <Property name="dataPath"></Property>
       </DataPilot>
       <ToolBarButton>
-        <ClientEvent name="onClick">	view.id('dsResourcedownload').getData().insert();
-	var dateNow = new Date();
-	var cur=view.id('dsResourcedownload').getData('#');
-	var guid = &quot;&quot;;
-	for(var i=1;i&lt;=32;i++){
-		var n = Math.floor(Math.random()*16.0).toString(16);
-		guid += n;
-		if((i==8)||(i==12)||(i==16)||(i==20))
-		   guid += &quot;-&quot;;
-	}
-	cur.set(&quot;oid&quot;,guid);
-	cur.set(&quot;uploadTime&quot;,dateNow);
-	cur.set(&quot;uploadPerson&quot;,&quot;${loginUser.getUsername()}&quot;);
-	var dialog=view.id('diaResourcedownload');
-	dialog.set(&quot;caption&quot;,&quot;新增常用资源&quot;);
-	dialog.show();
+        <ClientEvent name="onClick">var dateNow = new Date();
+var guid = &quot;&quot;;
+for(var i=1;i&lt;=32;i++){
+	var n = Math.floor(Math.random()*16.0).toString(16);
+	guid += n;
+	if((i==8)||(i==12)||(i==16)||(i==20))
+	   guid += &quot;-&quot;;
+}
+view.id('dsResourcedownload').getData().insert({
+	oid:guid,
+	uploadTime:dateNow,
+	uploadPerson:&quot;${loginUser.getCname()}&quot;,
+	uploadPersonOid:&quot;${loginUser.getUsername()}&quot;
+});
+var dialog=view.id('diaResourcedownload');
+dialog.set(&quot;caption&quot;,&quot;新增常用资源&quot;);
+dialog.show();
 
 	</ClientEvent>
         <Property name="caption">新增</Property>
@@ -83,6 +90,7 @@ var cur=view.id('dsResourcedownload').getData('#');
  }</ClientEvent>
         <Property name="caption">修改</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
+        <Property name="tags">reportCheck</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsResourcedownload').getData('#');
@@ -91,11 +99,15 @@ var cur=view.id('dsResourcedownload').getData('#');
 		dorado.MessageBox.confirm('您是否确认删除此条记录?', function(){
 			cur.remove();
 			ua.execute();
+			view.id('dsResourcedownload').getDataAsync('#',function(cur1){
+				view.checkButton(cur1,'reportCheck','${loginUser.getUsername()}');
+			});
 				}); 
 			} 
 	</ClientEvent>
         <Property name="caption">删除</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
+        <Property name="tags">reportCheck</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">view.id('dgResourcedownload').set(&quot;showFilterBar&quot;,!view.id('dgResourcedownload').get(&quot;showFilterBar&quot;));</ClientEvent>
@@ -110,6 +122,9 @@ dsResourcedownload.flushAsync();</ClientEvent>
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="dgResourcedownload">
+      <ClientEvent name="onCurrentChange">var cur = view.id('dsResourcedownload').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'reportCheck','${loginUser.getUsername()}');&#xD;
+});</ClientEvent>
       <Property name="readOnly">true</Property>
       <Property name="dataSet">dsResourcedownload</Property>
       <Property name="dataPath"></Property>
@@ -121,6 +136,12 @@ dsResourcedownload.flushAsync();</ClientEvent>
         <Property name="width">120</Property>
         <Property name="property">uploadPerson</Property>
         <Property name="name">uploadPerson</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="width">120</Property>
+        <Property name="property">uploadPersonOid</Property>
+        <Property name="name">uploadPersonOid</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
@@ -183,7 +204,13 @@ jQuery(arg.dom).xCreate({&#xD;
     <Dialog id="diaResourcedownload">
       <ClientEvent name="onClose">	var cur=view.id('dsResourcedownload').getData('#');&#xD;
 	cur.cancel();&#xD;
-	view.id('diaResourcedownload').hide();</ClientEvent>
+	view.id('diaResourcedownload').hide();&#xD;
+	var cur = view.id('dsResourcedownload').getDataAsync('#',function(cur){&#xD;
+		view.checkButton(cur,'reportCheck','${loginUser.getUsername()}');&#xD;
+	});</ClientEvent>
+      <ClientEvent name="onHide">var cur = view.id('dsResourcedownload').getDataAsync('#',function(cur){&#xD;
+	view.checkButton(cur,'reportCheck','${loginUser.getUsername()}');&#xD;
+});</ClientEvent>
       <Property name="center">true</Property>
       <Property name="modal">true</Property>
       <Property name="width">450</Property>
@@ -212,6 +239,12 @@ jQuery(arg.dom).xCreate({&#xD;
           <AutoFormElement>
             <Property name="property">uploadPerson</Property>
             <Property name="name">UploadPerson</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">uploadPersonOid</Property>
+            <Property name="name">UploadPersonOid</Property>
             <Property name="readOnly">true</Property>
             <Editor/>
           </AutoFormElement>

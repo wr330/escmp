@@ -69,14 +69,14 @@ public class HandoverManager {
 				Date myDate = new Date();
 				if (state.equals(EntityState.NEW)) {
 					String tempId = item.getOid();
-					fileManager(item);
+					//fileManager(item);把附件以二进制的形式保存到数据库中，暂时不用
 					handoverDao.saveData(item);
 					//对用户新增操作进行记录，在用户操作日志表中新增一条记录。
 					userOperationLogManager.recordUserOperationLog(0, myDate, un, ucn,"对现场交接记录表新增一条记录");
 					FileHelper.changeFolderById("/Out_Handover/" +tempId,"/Out_Handover/" +item.getOid());//替换以临时ID命名的文件夹
 					
 				} else if (state.equals(EntityState.MODIFIED)) {
-					fileManager(item);
+					//fileManager(item);把附件以二进制的形式保存到数据库中，暂时不用
 					handoverDao.updateData(item);
 					//对用户修改操作进行记录，在用户操作日志表中新增一条记录。
 					userOperationLogManager.recordUserOperationLog(1, myDate, un, ucn,"对现场交接记录表修改选定记录");

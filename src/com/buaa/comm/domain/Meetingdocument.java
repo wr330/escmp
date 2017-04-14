@@ -32,6 +32,7 @@ public class  Meetingdocument implements Serializable {
 	private String aircrafttype ;
 	private String name ;
 	private String filingperson ;
+	private String filingpersonOid ;
 	private String efile ;
 	private String address ;
 	private Date filingdate ;
@@ -43,7 +44,7 @@ public class  Meetingdocument implements Serializable {
 
 
 	@Id
-		@Column(name = "Oid", unique = true, nullable = false)
+	@Column(name = "Oid", unique = true, nullable = false)
 	public String getOid() {
 		return oid;
 	}
@@ -78,6 +79,13 @@ public class  Meetingdocument implements Serializable {
 	}
 	public void setFilingperson(String filingperson) {
 		this.filingperson=filingperson;
+	}
+	@Column(name="FilingPersonOid")
+	public String getFilingpersonOid() {
+		return filingpersonOid;
+	}
+	public void setFilingpersonOid(String filingpersonOid) {
+		this.filingpersonOid = filingpersonOid;
 	}
 	@Column(name="EFile")
 	public String getEfile() {

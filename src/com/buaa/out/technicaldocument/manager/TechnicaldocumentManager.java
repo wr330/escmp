@@ -68,17 +68,16 @@ public class TechnicaldocumentManager {
 				String un = loginUser.getUsername();
 				Date myDate = new Date();
 				if (state.equals(EntityState.NEW)) {
-					fileManager(item);
+					//fileManager(item);把附件以二进制的形式保存到数据库中，暂时不用
 					technicaldocumentDao.saveData(item);
 					//对用户新增操作进行记录，在用户操作日志表中新增一条记录。
 					userOperationLogManager.recordUserOperationLog(0, myDate, un, ucn,"对技术文件记录表新增一条记录");
 				} else if (state.equals(EntityState.MODIFIED)) {
-					fileManager(item);
+					//fileManager(item);把附件以二进制的形式保存到数据库中，暂时不用
 					technicaldocumentDao.updateData(item);
 					//对用户修改操作进行记录，在用户操作日志表中新增一条记录。
 					userOperationLogManager.recordUserOperationLog(1, myDate, un, ucn,"对技术文件记录表修改选定记录");
 				} else if (state.equals(EntityState.DELETED)) {
-					//fileManager(item);
 					technicaldocumentDao.deleteData(item);
 					//对用户删除操作进行记录，在用户操作日志表中新增一条记录。
 					userOperationLogManager.recordUserOperationLog(2, myDate, un, ucn,"对技术文件记录删除选定记录");
