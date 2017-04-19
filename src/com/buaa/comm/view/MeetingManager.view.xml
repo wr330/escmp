@@ -38,12 +38,23 @@ view.id('diaMeetingmanager').hide();	</ClientEvent>
       <Buttons>
         <Button>
           <ClientEvent name="onClick">var cur = view.id('dsMeetingmanager').getData('#');&#xD;
+var ajax = view.id('ajIfMeeting');&#xD;
 var sTime = cur.get('meetingstime');&#xD;
 var eTime = cur.get('meetingetime');&#xD;
 if(sTime &lt; eTime){&#xD;
-	view.id('uaMeetingmanager').execute(function(){&#xD;
-		view.id('diaMeetingmanager').hide();&#xD;
+	ajax.set('parameter',{&#xD;
+		'meeting': cur&#xD;
 	});&#xD;
+	ajax.execute(function(returnValue){&#xD;
+		if(returnValue == true){&#xD;
+			dorado.MessageBox.alert('当前时间段次会议室已有预定');&#xD;
+		}&#xD;
+		else{&#xD;
+			view.id('uaMeetingmanager').execute(function(){&#xD;
+				view.id('diaMeetingmanager').hide();&#xD;
+			});&#xD;
+		}		&#xD;
+	});	&#xD;
 }&#xD;
 else{&#xD;
 	dorado.MessageBox.alert('开始时间大于等于结束时间');&#xD;
@@ -111,6 +122,7 @@ view.id('diaMeetingmanager').hide();</ClientEvent>
           <ToolBar>
             <DataPilot>
               <Property name="itemCodes">pages</Property>
+              <Property name="dataSet">dsMeetingmanager</Property>
             </DataPilot>
             <ToolBarButton>
               <ClientEvent name="onClick">view.id('dsMeetingmanager').getData().insert();&#xD;
@@ -221,5 +233,8 @@ dsMeetingmanager.flushAsync();</ClientEvent>
         </DataGrid>
       </SideControl>
     </SplitPanel>
+    <AjaxAction id="ajIfMeeting">
+      <Property name="service">meetingmanagerManager#MeetingSTimeIsExists</Property>
+    </AjaxAction>
   </View>
 </ViewConfig>

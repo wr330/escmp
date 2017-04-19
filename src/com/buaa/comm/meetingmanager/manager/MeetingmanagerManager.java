@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
+import com.bstek.dorado.annotation.Expose;
 import com.bstek.dorado.data.entity.EntityState;
 import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.data.provider.Criteria;
@@ -67,6 +68,10 @@ public class MeetingmanagerManager {
 		}
 	 }
 	 
+	@Expose
+	public Boolean MeetingSTimeIsExists(Map<String, Object> parameter) {
+		return meetingmanagerDao.MeetingSTimeIsExists(parameter);
+	}   
 	 
 	
 }
