@@ -117,14 +117,8 @@ if(cur){&#xD;
       <ToolBarButton>
         <ClientEvent name="onClick">var cur=view.id('dsBtreport').getData('#');&#xD;
 if (cur) {&#xD;
-	if(cur.get('departmentHeadComment')){&#xD;
-		var dialog=view.id('diaShareBtreport');&#xD;
-		dialog.show(); &#xD;
-	}&#xD;
-	else{&#xD;
-		dorado.MessageBox.alert(&quot;请领导先审阅出差报告并填写评语&quot;);&#xD;
-	}	&#xD;
-	    &#xD;
+	var dialog=view.id('diaShareBtreport');&#xD;
+	dialog.show(); 			    &#xD;
 }</ClientEvent>
         <Property name="caption">共享</Property>
         <Property name="icon">url(>skin>common/icons.gif) -240px -100px</Property>
@@ -357,35 +351,24 @@ if (cur) {&#xD;
         <Button>
           <ClientEvent name="onClick">var dsBtreport = view.get(&quot;#dsBtreport&quot;);
 var cur=view.id('dsBtreport').getData('#');
-if(cur.get('departmentHeadComment') != null){
-	var dialog=view.id('diaShareBtreport');
-	view.id('uaBtreport').execute(function(){
-		view.id('diaBtreport').hide();
-		dialog.show();
-	});		     	
-}
-else{
-	dorado.MessageBox.alert(&quot;请填写“部领导评语”&quot;);   
-}        </ClientEvent>
+var dialog=view.id('diaShareBtreport');
+view.id('uaBtreport').execute(function(){
+	view.id('diaBtreport').hide();
+	dialog.show();
+});		     	 </ClientEvent>
           <Property name="caption">确定并共享</Property>
           <Property name="icon">url(>skin>common/icons.gif) -120px -240px</Property>
         </Button>
         <Button>
           <ClientEvent name="onClick">var dsBtreport = view.get(&quot;#dsBtreport&quot;);
 var cur=view.id('dsBtreport').getData('#');
-if(cur.get('departmentHeadComment') != null){
-	dorado.MessageBox.confirm('您是否确认驳回此出差报告?', function(){
-		cur.set(&quot;status&quot;,0);
-		view.id('uaBtreport').execute(function(){
-             view.id('diaBtreport').hide();
-    	});
-		view.id('dsBtreport').flushAsync();	
-	}); 
-	
-}
-else{
-	dorado.MessageBox.alert(&quot;请填写“部领导评语”&quot;);   
-}      </ClientEvent>
+dorado.MessageBox.confirm('您是否确认驳回此出差报告?', function(){
+	cur.set(&quot;status&quot;,0);
+	view.id('uaBtreport').execute(function(){
+         view.id('diaBtreport').hide();
+	});
+	view.id('dsBtreport').flushAsync();	
+});  </ClientEvent>
           <Property name="caption">确定并驳回</Property>
           <Property name="icon">url(>skin>common/icons.gif) -140px -240px</Property>
         </Button>
@@ -579,19 +562,13 @@ view.id('diaRejectBtreport').hide();	         </ClientEvent>
         <Button>
           <ClientEvent name="onClick">var dsBtreport = view.get(&quot;#dsBtreport&quot;);
 var cur=view.id('dsBtreport').getData('#');
-if(cur.get('departmentHeadComment') != null){
-	dorado.MessageBox.confirm('您是否确认驳回此出差报告?', function(){
-		cur.set(&quot;status&quot;,0);
-		view.id('uaBtreport').execute(function(){
-             view.id('diaRejectBtreport').hide();
-    	});
-		view.id('dsBtreport').flushAsync();	
-	}); 
-	
-}
-else{
-	dorado.MessageBox.alert(&quot;请填写“部领导评语”&quot;);   
-}      </ClientEvent>
+dorado.MessageBox.confirm('您是否确认驳回此出差报告?', function(){
+	cur.set(&quot;status&quot;,0);
+	view.id('uaBtreport').execute(function(){
+         view.id('diaRejectBtreport').hide();
+	});
+	view.id('dsBtreport').flushAsync();	
+});    </ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
         </Button>

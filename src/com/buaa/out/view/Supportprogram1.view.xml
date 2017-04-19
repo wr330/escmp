@@ -558,6 +558,13 @@ view.id('dgHandover').hide();</ClientEvent>
       <Property name="width">500</Property>
       <Buttons>
         <Button>
+          <ClientEvent name="onClick">view.id('uaSupportprogram').execute(function(){	&#xD;
+	view.id('dgHandover').hide();&#xD;
+});</ClientEvent>
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
+        </Button>
+        <Button>
           <ClientEvent name="onClick">var cur = view.id('dsSupportprogram').getData('#.#handover');&#xD;
 cur.set('sectionChiefSure','1');&#xD;
 view.id('uaSupportprogram').execute(function(){	&#xD;
@@ -689,36 +696,47 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
     <CustomDropDown id="customDropDownUser2">
       <Property name="editable">false</Property>
       <Property name="autoOpen">true</Property>
-      <Property name="height">300</Property>
-      <ToolBar>
-        <ToolBarButton>
-          <ClientEvent name="onClick" signature="self,dgUsers">var selection = dgUsers.get(&quot;selection&quot;);&#xD;
-var cur = view.id('dsSupportprogram').getData('#.#supportitem');&#xD;
-var regExe = ''; &#xD;
-var regExecOid = ''; &#xD;
-if(cur){&#xD;
-	if (selection &amp;&amp; selection.length){&#xD;
-		selection.each(function(data){&#xD;
-			regExe = regExe + &quot;,&quot; + data.get(&quot;cname&quot;);&#xD;
-			regExecOid = regExecOid + &quot;,&quot; + data.get(&quot;username&quot;);&#xD;
-		});&#xD;
-		regExe = regExe.substring(1,btpersonName.length);&#xD;
-		regExecOid = regExe.substring(1,btpersonName.length);&#xD;
-		cur.set(&quot;regExe&quot;,btpersonName);&#xD;
-		&#xD;
-	}&#xD;
-	else{&#xD;
-		dorado.MessageBox.alert(&quot;没有选中任何共享人员&quot;);&#xD;
-	}&#xD;
-	view.get(&quot;#customDropDown1&quot;).close();&#xD;
+      <DataGrid id="dgSelectUser">
+        <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
+var user=view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;);&#xD;
+if (user) {&#xD;
+	dropDown.close(user.get(&quot;cname&quot;));&#xD;
 }</ClientEvent>
-          <Property name="caption">确定</Property>
-        </ToolBarButton>
-        <ToolBarButton>
-          <ClientEvent name="onClick">view.get(&quot;#customDropDown1&quot;).close();</ClientEvent>
-          <Property name="caption">取消</Property>
-        </ToolBarButton>
-      </ToolBar>
+        <Property name="showFilterBar">true</Property>
+        <Property name="rowHeight">22</Property>
+        <Property name="dataSet">dsUsers</Property>
+        <Property name="readOnly">true</Property>
+        <Property name="height">300</Property>
+        <RowNumColumn/>
+        <DataColumn>
+          <Property name="name">username</Property>
+          <Property name="property">username</Property>
+        </DataColumn>
+        <DataColumn>
+          <Property name="name">cname</Property>
+          <Property name="property">cname</Property>
+        </DataColumn>
+        <DataColumn name="depts">
+          <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;depts&quot;);&#xD;
+var name = [];&#xD;
+if (entitylist) {&#xD;
+	entitylist.each(function(item){&#xD;
+		name.push(item.get(&quot;name&quot;));&#xD;
+	});&#xD;
+}&#xD;
+arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
+          <Property name="property">depts</Property>
+          <Property name="visible">false</Property>
+        </DataColumn>
+        <DataColumn name="department">
+          <Property name="property">department</Property>
+          <Property name="width">70</Property>
+        </DataColumn>
+        <DataColumn name="position">
+          <Property name="property">position</Property>
+          <Property name="width">100</Property>
+        </DataColumn>
+      </DataGrid>
     </CustomDropDown>
     <DataSetDropDown id="dataSetDropDown1">
       <Property name="autoOpen">true</Property>

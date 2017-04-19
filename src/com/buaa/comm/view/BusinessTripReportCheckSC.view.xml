@@ -636,7 +636,7 @@ jQuery(arg.dom).xCreate({&#xD;
         <Button>
           <ClientEvent name="onClick">var dsBtreport = view.get(&quot;#dsBtreport&quot;);
 var cur=view.id('dsBtreport').getData('#');
-if(cur.get(&quot;departmentHead&quot;) != null &amp;&amp; cur.get('sectionChiefComment') != null){
+if(cur.get(&quot;departmentHead&quot;) != null){
 	dorado.MessageBox.confirm('您是否确认请部领导审阅此出差报告?', function(){
 		cur.set(&quot;status&quot;,2);
 		view.id('uaBtreport').execute(function(){
@@ -646,7 +646,7 @@ if(cur.get(&quot;departmentHead&quot;) != null &amp;&amp; cur.get('sectionChiefC
 	
 }
 else{
-	dorado.MessageBox.alert(&quot;请填写“审阅的部领导”与“室主任评语”&quot;);   
+	dorado.MessageBox.alert(&quot;请填写“审阅的部领导&quot;);   
 }      </ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
@@ -801,18 +801,12 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
         <Button>
           <ClientEvent name="onClick">var dsBtreport = view.get(&quot;#dsBtreport&quot;);
 var cur=view.id('dsBtreport').getData('#');
-if(cur.get('sectionChiefComment') != null){
-	dorado.MessageBox.confirm('您是否确认驳回此出差报告?', function(){
-		cur.set(&quot;status&quot;,0);
-		view.id('uaBtreport').execute(function(){
-             view.id('diaRejectBtreport').hide();
-    	});
-	}); 
-	
-}
-else{
-	dorado.MessageBox.alert(&quot;请填写“室主任评语”&quot;);   
-}         </ClientEvent>
+dorado.MessageBox.confirm('您是否确认驳回此出差报告?', function(){
+	cur.set(&quot;status&quot;,0);
+	view.id('uaBtreport').execute(function(){
+         view.id('diaRejectBtreport').hide();
+	});
+});        </ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
         </Button>
