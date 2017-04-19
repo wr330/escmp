@@ -71,12 +71,12 @@ public class ShifeirequestaccManager {
 				String un = loginUser.getUsername();
 				Date myDate = new Date();
 				if (state.equals(EntityState.NEW)) {
-					fileManager(item);
+					//fileManager(item);把附件以二进制的形式保存到数据库中，暂时不用
 					shifeirequestaccDao.saveData(item);
 					//对用户新增操作进行记录，在用户操作日志表中新增一条记录。
 					userOperationLogManager.recordUserOperationLog(0, myDate, un, ucn,"对飞机试飞文件表新增一条记录");
 				} else if (state.equals(EntityState.MODIFIED)) {
-					fileManager(item);
+					//fileManager(item);把附件以二进制的形式保存到数据库中，暂时不用
 					shifeirequestaccDao.updateData(item);
 					//对用户修改操作进行记录，在用户操作日志表中新增一条记录。
 					userOperationLogManager.recordUserOperationLog(1, myDate, un, ucn,"对飞机试飞文件表修改选定记录");

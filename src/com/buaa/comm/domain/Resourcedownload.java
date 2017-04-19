@@ -1,20 +1,12 @@
 package com.buaa.comm.domain;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.hibernate.annotations.GenericGenerator;
 
 
 @Entity
@@ -36,6 +28,7 @@ public class  Resourcedownload implements Serializable {
 	private int downloadAmount;
 	private Date uploadTime ;
 	private String uploadPerson ;
+	private String uploadPersonOid ;
 
 	@Id
 		@Column(name = "Oid", unique = true, nullable = false)
@@ -104,6 +97,13 @@ public class  Resourcedownload implements Serializable {
 	}
 	public void setUploadPerson(String uploadPerson) {
 		this.uploadPerson = uploadPerson;
+	}
+	@Column(name="UploadPersonOid")
+	public String getUploadPersonOid() {
+		return uploadPersonOid;
+	}
+	public void setUploadPersonOid(String uploadPersonOid) {
+		this.uploadPersonOid = uploadPersonOid;
 	}
 
 }
