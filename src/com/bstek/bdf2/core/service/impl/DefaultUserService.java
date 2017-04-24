@@ -119,6 +119,7 @@ public class DefaultUserService extends JdbcDao implements IUserService {
     		user.setLoginCount(rs.getInt("loginCount"));
     		user.setPosition(rs.getString("Position"));
     		user.setDepartment(rs.getString("Department"));
+    		user.setAtteAirc(rs.getString("AtteAirc"));
             return user;
         }
     }

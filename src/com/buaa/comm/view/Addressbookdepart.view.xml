@@ -79,6 +79,11 @@
                 <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
               </ToolBarButton>
               <ToolBarButton>
+                <ClientEvent name="onClick">window.location.href=&quot;ServletDownload?filename=template/通讯录模板.xlsx&quot;;</ClientEvent>
+                <Property name="caption">下载模板</Property>
+                <Property name="icon">url(>skin>common/icons.gif) -140px -280px</Property>
+              </ToolBarButton>
+              <ToolBarButton>
                 <ClientEvent name="onClick">var importExcelAction=view.get(&quot;#importExcelActionDemo&quot;);&#xD;
 importExcelAction.set(&quot;excelModelId&quot;,&quot;0002&quot;);&#xD;
 importExcelAction.execute(function(arg){&#xD;

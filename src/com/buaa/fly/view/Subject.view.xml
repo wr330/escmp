@@ -18,7 +18,7 @@
       <Property name="dataProvider">ftypesPR#queryFtypes</Property>
       <Property name="parameter">
         <Entity>
-          <Property name="ftypename">通用试飞科目</Property>
+          <Property name="ftypename">${loginUser.getAtteAirc()}</Property>
         </Entity>
       </Property>
     </DataSet>
@@ -71,6 +71,7 @@ cur.flushAsync();</ClientEvent>
     </AjaxAction>
     <ToolBar>
       <FormElement id="formelement">
+        <ClientEvent name="onReady">self.set(&quot;value&quot;,&quot;${loginUser.getAtteAirc()}&quot;);</ClientEvent>
         <Property name="label">选择机型：</Property>
         <Property name="droppable">false</Property>
         <Property name="trigger">dataSetDropDownAircraftType</Property>

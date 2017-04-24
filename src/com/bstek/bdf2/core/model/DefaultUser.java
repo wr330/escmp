@@ -55,8 +55,10 @@ public class DefaultUser extends AbstractUser  implements java.io.Serializable{
 	private boolean lock;
     @Column(name="Department",length=50)
    	private String department;
-    @Column(name="Position",length=50)
+    @Column(name="Position",length=100)
    	private String position;
+    @Column(name="AtteAirc",length=50)
+   	private String atteAirc;
 	@Transient
     private List<IDept> depts;
 	@Transient
@@ -236,4 +238,11 @@ public class DefaultUser extends AbstractUser  implements java.io.Serializable{
 	public void setPosition(String position) {
 		this.position = position;
 	}
+	public String getAtteAirc() {
+		return atteAirc;
+	}
+	public void setAtteAirc(String atteAirc) {
+		this.atteAirc = atteAirc;
+	}
+	
 }

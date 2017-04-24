@@ -145,6 +145,22 @@ function buildTree(topNode,url){&#xD;
         </Entity>
       </Property>
     </DataSet>
+    <DataSet id="dsFtypes">
+      <Property name="dataType">[Ftypes]</Property>
+      <Property name="dataProvider">ftypesPR#queryFtypes</Property>
+    </DataSet>
+    <DataSetDropDown id="chooseAircraft">
+      <ClientEvent name="onValueSelect">var ajaxAri = view.id('saveAricraft');&#xD;
+ajaxAri.set('parameter',{&#xD;
+	'airc': arg.selectedValue&#xD;
+});&#xD;
+ajaxAri.execute();</ClientEvent>
+      <Property name="dataSet">dsFtypes</Property>
+      <Property name="property">ftypename</Property>
+      <Property name="editable">false</Property>
+      <Property name="autoOpen">true</Property>
+      <Property name="reloadDataOnOpen">true</Property>
+    </DataSetDropDown>
     <Menu id="menuForTab">
       <MenuItem>
         <ClientEvent name="onClick">setTimeout(function(){&#xD;
@@ -188,6 +204,16 @@ function buildTree(topNode,url){&#xD;
                 <Property name="caption">试飞模块流程图</Property>
                 <Property name="closeable">true</Property>
                 <Container>
+                  <ToolBar>
+                    <FormElement id="fmAircraft">
+                      <ClientEvent name="onReady">self.set(&quot;value&quot;,&quot;${loginUser.getAtteAirc()}&quot;);</ClientEvent>
+                      <Property name="label">选择关注机型：</Property>
+                      <Property name="labelWidth">100</Property>
+                      <Property name="trigger">chooseAircraft</Property>
+                      <Property name="width">200</Property>
+                      <Editor/>
+                    </FormElement>
+                  </ToolBar>
                   <BlockView id="blockView1" layoutConstraint="anchorLeft:container;left:50%">
                     <ClientEvent name="onCreate">self.set(&quot;renderer&quot;, new dorado.widget.blockview.ImageBlockRenderer({&#xD;
 	captionProperty: &quot;value&quot;,&#xD;
@@ -363,5 +389,8 @@ if(current.url){&#xD;
         <Property name="margin-left">2px</Property>
       </Property>
     </Container>
+    <AjaxAction id="saveAricraft">
+      <Property name="service">loginUserSave#atteAric</Property>
+    </AjaxAction>
   </View>
 </ViewConfig>

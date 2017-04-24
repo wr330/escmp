@@ -19,7 +19,7 @@
       <Property name="pageSize">20</Property>
       <Property name="parameter">
         <Entity>
-          <Property name="ftype"></Property>
+          <Property name="ftype">${loginUser.getAtteAirc()}</Property>
         </Entity>
       </Property>
     </DataSet>
@@ -296,6 +296,7 @@ if(cur){
     </Dialog>
     <ToolBar>
       <FormElement id="formElement1">
+        <ClientEvent name="onReady">self.set(&quot;value&quot;,&quot;${loginUser.getAtteAirc()}&quot;);</ClientEvent>
         <Property name="property">name</Property>
         <Property name="trigger">chooseAircraftType</Property>
         <Property name="label">选择机型:</Property>

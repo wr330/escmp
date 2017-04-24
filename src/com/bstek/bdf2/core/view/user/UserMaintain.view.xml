@@ -207,6 +207,11 @@ else {&#xD;
         <Property name="label">岗位</Property>
         <Property name="dataType">String</Property>
       </PropertyDef>
+      <PropertyDef name="atteAirc">
+        <Property/>
+        <Property name="dataType">String</Property>
+        <Property name="label">用户关注机型</Property>
+      </PropertyDef>
     </DataType>
     <DataType name="dataTypeResetPassword">
       <PropertyDef name="oldPassword">
@@ -500,6 +505,7 @@ importExcelAction.execute(function(arg){&#xD;
         <Property name="caption">测试</Property>
         <Property name="icon">url(>skin>common/icons.gif) -40px -140px</Property>
         <Property name="action">ajaxActionR</Property>
+        <Property name="visible">false</Property>
       </ToolBarButton>
       <ToolBarButton>
         <ClientEvent name="onClick">	&#xD;

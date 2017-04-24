@@ -22,7 +22,7 @@
       <Property name="dataProvider">flightrestrictPR#queryshfxzh</Property>
       <Property name="parameter">
         <Entity>
-          <Property name="ftypename"></Property>
+          <Property name="ftypename">${loginUser.getAtteAirc()}</Property>
           <Property name="piciID"></Property>
           <Property name="outfactoryno"></Property>
         </Entity>
@@ -372,6 +372,7 @@ select(this.get(&quot;#dTFtypes.nodes&quot;));</ClientEvent>
               <Property name="currentNodeDataPath">CURRENT_NODE</Property>
               <Property name="expandingMode">async</Property>
               <Property name="selectionMode">multiRows</Property>
+              <Property name="tip">选择此条使用限制对应的飞机信息</Property>
               <BindingConfigs>
                 <BindingConfig>
                   <Property name="labelProperty">label</Property>
@@ -553,6 +554,7 @@ select(this.get(&quot;#dTFtypes2.nodes&quot;));</ClientEvent>
     </Dialog>
     <ToolBar>
       <FormElement id="info">
+        <ClientEvent name="onReady">self.set(&quot;value&quot;,&quot;${loginUser.getAtteAirc()}&quot;);</ClientEvent>
         <Property name="property">name</Property>
         <Property name="label">选择飞机信息:</Property>
         <Property name="trigger">showCustomDropDown</Property>

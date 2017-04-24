@@ -22,6 +22,10 @@
   <View>
     <Property name="contentOverflow">scroll</Property>
     <DataSet id="dsSubject">
+      <ClientEvent name="onReady">self.set(&quot;parameter&quot;, {&#xD;
+	ftypename: &quot;${loginUser.getAtteAirc()}&quot;&#xD;
+});&#xD;
+self.flushAsync();</ClientEvent>
       <Property name="dataType">[Ftypes]</Property>
       <Property name="dataProvider">ftypesPR#queryFtypes</Property>
       <Property name="parameter"></Property>
@@ -51,7 +55,7 @@
       <Property name="parameter">
         <Entity>
           <Property name="parentnode"></Property>
-          <Property name="ftype"></Property>
+          <Property name="ftype">${loginUser.getAtteAirc()}</Property>
         </Entity>
       </Property>
     </DataSet>
@@ -605,6 +609,7 @@ if(cur){&#xD;
         <Container>
           <ToolBar>
             <FormElement id="formelement">
+              <ClientEvent name="onReady">self.set(&quot;value&quot;,&quot;${loginUser.getAtteAirc()}&quot;);</ClientEvent>
               <Property name="label">选择机型：</Property>
               <Property name="droppable">false</Property>
               <Property name="trigger">dataSetDropDownAircraftType</Property>
