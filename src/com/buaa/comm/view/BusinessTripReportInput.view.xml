@@ -904,7 +904,7 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <Property name="cols">*</Property>
           <Property name="dataSet">dsBtreport</Property>
           <Property name="dataPath">#</Property>
-          <Property name="labelWidth">100</Property>
+          <Property name="labelWidth">90</Property>
           <AutoFormElement>
             <Property name="name">BtPersonName</Property>
             <Property name="property">btpersonName</Property>
