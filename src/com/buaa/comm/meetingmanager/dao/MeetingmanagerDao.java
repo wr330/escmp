@@ -112,7 +112,7 @@ public class MeetingmanagerDao extends HibernateBaseDao {
 		String addr = mm.getMeetingaddress();
 		
 		//以Map方式来拼接sql查询语句,查询用户所输入申请会议室时间段是否与已有预定时间段冲突
-		Map<String, Object> args = new HashMap<String,Object>();	
+		/*  Map<String, Object> args = new HashMap<String,Object>();	
 		String hql = "select count(*) from " + Meetingmanager.class.getName()
 				+ " u where u.meetingaddress = :addr" 
 				+ " and ((u.meetingstime < :start and u.meetingetime > :start)" 
@@ -121,13 +121,13 @@ public class MeetingmanagerDao extends HibernateBaseDao {
 		args.put("start",startDa);
 		args.put("end",endDa);
 		args.put("addr",addr);
-		int count = this.queryForInt(hql,args);	
+		int count = this.queryForInt(hql,args);	 */
 		
 		/*
 		 * 将时间转换成特定格式（2017-04-05 16:58:32），并拼接sql查询语句，查询用户所输入申请会议室时间段是否与已有预定时间段冲突
 		*/
 		
-		/*SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String start = formatter.format(startDa);
 		String end = formatter.format(endDa);	
 		String hql = "select count(*) from " + Meetingmanager.class.getName()
@@ -136,7 +136,7 @@ public class MeetingmanagerDao extends HibernateBaseDao {
 				+ "') or (u.meetingstime < '" + end + "' and u.meetingetime > '" + end 
 				+ "') or (u.meetingstime > '" + start + "' and u.meetingetime < '" + end 
 				+ "'))";
-		int count = this.queryForInt(hql);*/
+		int count = this.queryForInt(hql);
 			
 		
 		Boolean returnStr = null;

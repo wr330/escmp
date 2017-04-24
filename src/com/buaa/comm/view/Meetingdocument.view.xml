@@ -237,6 +237,7 @@ view.id('diaMeetingdocument').hide();	         </ClientEvent>
           <Property name="cols">*,*</Property>
           <Property name="dataSet">dsMeetingdocument</Property>
           <Property name="dataPath">#</Property>
+          <Property name="labelWidth">85</Property>
           <AutoFormElement>
             <Property name="name">name</Property>
             <Property name="property">name</Property>

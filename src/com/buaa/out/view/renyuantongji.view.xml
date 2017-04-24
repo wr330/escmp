@@ -238,6 +238,7 @@ dsStatisticPerson.flushAsync();</ClientEvent>
                           </DataColumn>
                           <DataColumn>
                             <Property name="property">supportprogram.supporttype</Property>
+                            <Property name="width">100</Property>
                             <Editor/>
                           </DataColumn>
                           <DataColumn>
@@ -826,6 +827,7 @@ dsSupportitem.flushAsync();</ClientEvent>
                       </DataColumn>
                       <DataColumn>
                         <Property name="property">supportprogram.supporttype</Property>
+                        <Property name="width">100</Property>
                         <Editor/>
                       </DataColumn>
                       <DataColumn>

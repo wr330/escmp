@@ -472,12 +472,15 @@ dsJobstatistics.flushAsync();</ClientEvent>
       <RowNumColumn/>
       <DataColumn name="projectname">
         <Property name="property">projectname</Property>
+        <Property name="width">80</Property>
       </DataColumn>
       <DataColumn name="departname">
         <Property name="property">departname</Property>
+        <Property name="width">85</Property>
       </DataColumn>
       <DataColumn name="status">
         <Property name="property">status</Property>
+        <Property name="width">80</Property>
       </DataColumn>
       <DataColumn name="refreshtime">
         <Property name="property">refreshtime</Property>
@@ -485,9 +488,11 @@ dsJobstatistics.flushAsync();</ClientEvent>
       </DataColumn>
       <DataColumn name="arrangementdate">
         <Property name="property">arrangementdate</Property>
+        <Property name="width">80</Property>
       </DataColumn>
       <DataColumn name="plancompletedate">
         <Property name="property">plancompletedate</Property>
+        <Property name="width">90</Property>
       </DataColumn>
       <DataColumn name="realcompletedate">
         <ClientEvent name="onRenderCell">var planDate = arg.data.get(&quot;plancompletedate&quot;);&#xD;
@@ -500,6 +505,7 @@ else{&#xD;
 }&#xD;
 arg.processDefault = true;</ClientEvent>
         <Property name="property">realcompletedate</Property>
+        <Property name="width">90</Property>
       </DataColumn>
       <DataColumn>
         <ClientEvent name="onRenderCell">var status = arg.data.get(&quot;workStatus&quot;);&#xD;
@@ -516,30 +522,37 @@ arg.processDefault = true;</ClientEvent>
         <Property name="property">workStatus</Property>
         <Property name="name">WorkStatus</Property>
         <Property name="align">left</Property>
+        <Property name="width">80</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
         <Property name="property">writingpersonName</Property>
         <Property name="name">writingpersonName</Property>
+        <Property name="width">80</Property>
       </DataColumn>
       <DataColumn name="sourcepersonname">
         <Property name="property">sourcepersonname</Property>
+        <Property name="width">85</Property>
       </DataColumn>
       <DataColumn name="sourceevent">
         <Property name="property">sourceevent</Property>
+        <Property name="width">90</Property>
       </DataColumn>
       <DataColumn name="addp6">
         <Property name="property">addp6</Property>
+        <Property name="width">75</Property>
       </DataColumn>
       <DataColumn>
         <Property name="property">sectionChiefName</Property>
         <Property name="name">sectionChiefName</Property>
+        <Property name="width">90</Property>
         <Editor/>
       </DataColumn>
       <DataColumn>
         <Property name="property">miji</Property>
         <Property name="name">miji</Property>
         <Property name="align">left</Property>
+        <Property name="width">75</Property>
       </DataColumn>
     </DataGrid>
     <GroupBox>
@@ -990,7 +1003,7 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
           <Property name="cols">*,*</Property>
           <Property name="dataSet">dsJobstatistics</Property>
           <Property name="dataPath">#</Property>
-          <Property name="labelWidth">90</Property>
+          <Property name="labelWidth">86</Property>
           <Property name="readOnly">true</Property>
           <AutoFormElement>
             <Property name="name">ProjectName</Property>

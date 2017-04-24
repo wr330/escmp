@@ -340,15 +340,18 @@ arg.processDefault = true;</ClientEvent>
             <DataColumn name="staffrequirement">
               <Property name="property">staffrequirement</Property>
               <Property name="align">left</Property>
+              <Property name="width">83</Property>
             </DataColumn>
             <DataColumn name="workaddress">
               <Property name="property">workaddress</Property>
             </DataColumn>
             <DataColumn name="worktime">
               <Property name="property">worktime</Property>
+              <Property name="width">85</Property>
             </DataColumn>
             <DataColumn name="endtime">
               <Property name="property">endtime</Property>
+              <Property name="width">85</Property>
             </DataColumn>
             <DataColumn name="maker">
               <Property name="property">maker</Property>
@@ -432,7 +435,7 @@ view.id('dgSupportprogram').hide();&#xD;
       <ClientEvent name="onClose">var cur=view.id('dsSupportprogram').getData('#.#supportitem');&#xD;
 cur.cancel();&#xD;
 view.id('diaSupportitem').hide();</ClientEvent>
-      <Property name="width">500</Property>
+      <Property name="width">530</Property>
       <Buttons>
         <Button>
           <ClientEvent name="onClick" signature="self,dgUser">var selectPerson = dgUser.get(&quot;selection&quot;);&#xD;
@@ -502,10 +505,12 @@ view.id('diaSupportitem').hide();&#xD;
             <DataColumn>
               <Property name="name">username</Property>
               <Property name="property">username</Property>
+              <Property name="width">110</Property>
             </DataColumn>
             <DataColumn>
               <Property name="name">cname</Property>
               <Property name="property">cname</Property>
+              <Property name="width">110</Property>
             </DataColumn>
             <DataColumn name="depts">
               <ClientEvent name="onRenderCell">var entitylist = arg.data.get(&quot;depts&quot;);&#xD;
@@ -521,11 +526,11 @@ arg.dom.innerHTML = name.join(&quot;,&quot;);</ClientEvent>
             </DataColumn>
             <DataColumn name="department">
               <Property name="property">department</Property>
-              <Property name="width">70</Property>
+              <Property name="width">100</Property>
             </DataColumn>
             <DataColumn name="position">
               <Property name="property">position</Property>
-              <Property name="width">100</Property>
+              <Property name="width">120</Property>
             </DataColumn>
           </DataGrid>
           <AutoForm id="afSupportitem">
