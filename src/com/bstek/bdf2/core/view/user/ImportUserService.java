@@ -93,9 +93,11 @@ public class ImportUserService extends ImportExcelJdbcDao implements IExcelProce
 						String value =columnValue.toString();
 						columnValue = value.substring(0,value.indexOf("."));
 					}
-					if (columnName.equals("dept"))
+					if (columnName.equals("dept")){
 						dept = columnValue == null ?null:columnValue.toString();
-					else {
+						columnName = "department";
+					}
+					//else {
 						columnNameList.add(columnName);
 						if (columnName.equals("username"))
 							username = columnValue.toString();
@@ -111,7 +113,7 @@ public class ImportUserService extends ImportExcelJdbcDao implements IExcelProce
 								columnValue = 0;
 						}
 						columnValueList.add(columnValue);
-					}
+					//}
 					if (cellWrapper.isPrimaryKey() && excelModel.getPrimaryKeyType().equals(GeneratePkStrategry.ASSIGNED.name())) {
 						String sql = "select count(1) from " + tableName + " where " + columnName + "=?";
 						int sum = this.getJdbcTemplate(excelModel.getDatasourceName()).queryForInt(sql, new Object[] { columnValue });
