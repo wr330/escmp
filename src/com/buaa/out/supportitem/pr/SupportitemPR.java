@@ -257,14 +257,14 @@ public class SupportitemPR{
 			for(int i = 0; i < 366; i++){
 				num.add(i, 0);
 				date.add(i, sdf.format(currentDate.getTime()));
-				currentDate.add(Calendar.DATE, 1);
+				currentDate.add(Calendar.DATE, 1);//日期增加一天
 			}
 		}
 		else{
-			for(int i = 0; i < 366; i++){
+			for(int i = 0; i < 365; i++){
 				num.add(i, 0);
 				date.add(i, sdf.format(currentDate.getTime()));
-				currentDate.add(Calendar.DATE, 1);
+				currentDate.add(Calendar.DATE, 1);//日期增加一天
 			}
 		}  
 		for (Supportitem item : dataItems) {
@@ -327,7 +327,7 @@ public class SupportitemPR{
 	}
 	
 	/**                  
-	  * 判断是否为闰年   
+	  * 判断是否为闰年，是闰年返回true   
 	  * @param year
 	  */
 	private boolean isLeapYear(Integer year){

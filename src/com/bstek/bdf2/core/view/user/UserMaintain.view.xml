@@ -208,7 +208,7 @@ else {&#xD;
         <Property name="dataType">String</Property>
       </PropertyDef>
       <PropertyDef name="atteAirc">
-        <Property/>
+        <Property></Property>
         <Property name="dataType">String</Property>
         <Property name="label">用户关注机型</Property>
       </PropertyDef>
@@ -495,6 +495,11 @@ importExcelAction.execute(function(arg){&#xD;
 </ClientEvent>
         <Property name="caption">批量导入</Property>
         <Property name="icon">dorado/res/com/bstek/bdf2/importexcel/view/icons/page_excel.png</Property>
+      </ToolBarButton>
+      <ToolBarButton>
+        <ClientEvent name="onClick">window.location.href=&quot;ServletDownload?filename=template/导入用户表.xlsx&quot;;</ClientEvent>
+        <Property name="caption">下载模板</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -140px -280px</Property>
       </ToolBarButton>
       <ToolBarButton>
         <Property name="caption">导出</Property>

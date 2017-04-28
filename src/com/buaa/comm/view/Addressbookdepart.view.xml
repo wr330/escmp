@@ -79,7 +79,7 @@
                 <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
               </ToolBarButton>
               <ToolBarButton>
-                <ClientEvent name="onClick">window.location.href=&quot;ServletDownload?filename=template/通讯录模板.xlsx&quot;;</ClientEvent>
+                <ClientEvent name="onClick">window.location.href=&quot;ServletDownload?filename=template/导入部门通讯录.xlsx&quot;;</ClientEvent>
                 <Property name="caption">下载模板</Property>
                 <Property name="icon">url(>skin>common/icons.gif) -140px -280px</Property>
               </ToolBarButton>
