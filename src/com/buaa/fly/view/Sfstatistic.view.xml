@@ -110,24 +110,57 @@ arg.value = count;</ClientEvent>
       <Property name="dataProvider">sfstatisticPR#querySfstatistic</Property>
       <Property name="pageSize">10</Property>
       <Property name="readOnly">true</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="ftype">${loginUser.getAtteAirc()}</Property>
+        </Entity>
+      </Property>
     </DataSet>
     <DataSet id="dsTotal">
       <Property name="dataType">dataTypeTotal</Property>
       <Property name="dataProvider">totalService#loadTotal</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="ftype">${loginUser.getAtteAirc()}</Property>
+        </Entity>
+      </Property>
     </DataSet>
     <DataSet id="dsMonthTotal">
       <Property name="dataType">[dataTypeMonthTotal]</Property>
       <Property name="dataProvider">totalService#loadMonthTotal</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="ftype">${loginUser.getAtteAirc()}</Property>
+        </Entity>
+      </Property>
     </DataSet>
     <DataSet id="dsSFBaoXian">
+      <ClientEvent name="onReady">self.flushAsync();</ClientEvent>
+      <ClientEvent name="onLoadData">if(self.getData().isEmpty()){&#xD;
+	this.set('^Sfbx.disabled',false);&#xD;
+}&#xD;
+else{&#xD;
+	this.set('^Sfbx.disabled',true);&#xD;
+}</ClientEvent>
       <Property name="dataType">[dataTypeSFBaoXian]</Property>
       <Property name="dataProvider">sFBaoXianService#loadSFBaoXian</Property>
       <Property name="loadMode">manual</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="ftype">${loginUser.getAtteAirc()}</Property>
+        </Entity>
+      </Property>
     </DataSet>
     <DataSet id="dsSFscheme">
+      <ClientEvent name="onReady">self.flushAsync();</ClientEvent>
       <Property name="dataType">[dataTypeSFscheme]</Property>
       <Property name="loadMode">manual</Property>
       <Property name="dataProvider">sFBaoXianService#loadSFscheme</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="ftype">${loginUser.getAtteAirc()}</Property>
+        </Entity>
+      </Property>
     </DataSet>
     <DataSet id="dsTasklist">
       <Property name="dataType">[Tasklist]</Property>
@@ -136,10 +169,11 @@ arg.value = count;</ClientEvent>
       <Property name="parameter"></Property>
     </DataSet>
     <DataSet id="dsJiaci">
+      <ClientEvent name="onReady">self.flushAsync();</ClientEvent>
       <Property name="dataProvider">sfstatisticPR#queryJiacinum</Property>
       <Property name="parameter">
         <Entity>
-          <Property name="ftype"></Property>
+          <Property name="ftype">${loginUser.getAtteAirc()}</Property>
           <Property name="parentnode"></Property>
         </Entity>
       </Property>
@@ -150,7 +184,7 @@ arg.value = count;</ClientEvent>
       <Property name="dataProvider">fighterinfoPR#queryFighterinfobyFtype</Property>
       <Property name="parameter">
         <Entity>
-          <Property name="ftype"></Property>
+          <Property name="ftype">${loginUser.getAtteAirc()}</Property>
         </Entity>
       </Property>
     </DataSet>
@@ -180,6 +214,12 @@ arg.value = count;</ClientEvent>
         <Property name="dataSet">dsTasklist</Property>
       </UpdateItem>
     </UpdateAction>
+    <AjaxAction id="ajBxtjInsert">
+      <Property name="service">sFBaoXianService#saveBXtjInsert</Property>
+    </AjaxAction>
+    <AjaxAction id="ajBxtjSave">
+      <Property name="service">sFBaoXianService#saveBXtj</Property>
+    </AjaxAction>
     <Trigger id="triggerTaskNo">
       <ClientEvent name="onExecute">view.id(&quot;dgChooseTasklist&quot;).show();</ClientEvent>
     </Trigger>
@@ -1485,15 +1525,44 @@ view.id(&quot;imageBaoXian&quot;).set(&quot;image&quot;,&quot;>images/baoxian/ba
               <Property name="caption">包线扩展统计</Property>
               <Property name="height">360</Property>
               <Property name="border">normal</Property>
+              <Buttons>
+                <Button>
+                  <ClientEvent name="onClick">var afType = view.id('formElement1').get('value');&#xD;
+var aj = view.id('ajBxtjInsert');&#xD;
+aj.set(&quot;parameter&quot;,{&#xD;
+	'ftype':afType&#xD;
+});&#xD;
+var ds = view.id('dsSFBaoXian');&#xD;
+aj.execute(function(){&#xD;
+	ds.flushAsync();		&#xD;
+});</ClientEvent>
+                  <Property name="caption">新增</Property>
+                  <Property name="tags">Sfbx</Property>
+                </Button>
+                <Button>
+                  <ClientEvent name="onClick">var ds = view.id('dsSFBaoXian');&#xD;
+if(ds.getData('#')){&#xD;
+	var afType = view.id('formElement1').get('value');&#xD;
+	var aj = view.id('ajBxtjSave');	&#xD;
+	aj.set(&quot;parameter&quot;,{&#xD;
+		'SFBaoXian':ds.getData(),&#xD;
+		'ftype': afType&#xD;
+	});&#xD;
+	aj.execute();&#xD;
+}</ClientEvent>
+                  <Property name="caption">保存</Property>
+                </Button>
+              </Buttons>
               <Children>
                 <DataGrid>
                   <Property name="dataSet">dsSFBaoXian</Property>
                   <Property name="dataType">dataTypeSFBaoXian</Property>
                   <Property name="exClassName">d-grid1</Property>
-                  <Property name="readOnly">true</Property>
+                  <Property name="readOnly">false</Property>
                   <Property name="rowHeight">22</Property>
                   <DataColumn name="parameter">
                     <Property name="property">parameter</Property>
+                    <Property name="readOnly">true</Property>
                   </DataColumn>
                   <DataColumn name="value">
                     <Property name="property">value</Property>
