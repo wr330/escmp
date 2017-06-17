@@ -40,14 +40,14 @@
     </DataType>
     <DataType name="dataTypeStatistic" parent="Dictionary">
       <PropertyDef name="count">
-        <ClientEvent name="onGet">var name = arg.entity.get(&quot;name&quot;);&#xD;
+        <ClientEvent name="onGet">/*var name = arg.entity.get(&quot;name&quot;);&#xD;
 var entitylist = [];&#xD;
     entitylist = view.id(&quot;dsSfstatistic&quot;).queryData(&quot;[@.get('taskNo.subject')=='&quot; + name + &quot;']&quot;);&#xD;
 var count = 0;&#xD;
 entitylist.each(function(entity){&#xD;
     count++;//JSON只有这样才能拿到个数&#xD;
 });&#xD;
-arg.value = count;</ClientEvent>
+arg.value = count;*/</ClientEvent>
         <Property name="dataType">Integer</Property>
         <Property name="label">架次</Property>
       </PropertyDef>
@@ -98,7 +98,7 @@ arg.value = count;</ClientEvent>
     <DataSet id="dsSfstatistic">
       <Property name="dataType">[Sfstatistic]</Property>
       <Property name="dataProvider">sfstatisticPR#querySfstatistic</Property>
-      <Property name="pageSize">20</Property>
+      <Property name="pageSize">15</Property>
       <Property name="parameter">
         <Entity>
           <Property name="ftype">${loginUser.getAtteAirc()}</Property>
@@ -163,14 +163,28 @@ else{&#xD;
       </Property>
     </DataSet>
     <DataSet id="dsTasklist">
+      <ClientEvent name="onLoadData">var sfStat = view.get('#dsSfstatistic').getData('#');&#xD;
+var tasklist = self.getData();&#xD;
+setTimeout(function(){&#xD;
+	var a = view.get(&quot;#dgTasklist.selection&quot;);&#xD;
+	tasklist.each(function(task){&#xD;
+		if(task.get('sfstatistic.id') == sfStat.get('id')){&#xD;
+			a.push(task);&#xD;
+		}		&#xD;
+	});&#xD;
+	view.set(&quot;#dgTasklist.selection&quot;,a);&#xD;
+ },300);</ClientEvent>
       <Property name="dataType">[Tasklist]</Property>
       <Property name="dataProvider">tasklistPR#queryTasklist</Property>
       <Property name="pageSize">20</Property>
-      <Property name="parameter"></Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="aircrafttype">${loginUser.getAtteAirc()}</Property>
+        </Entity>
+      </Property>
     </DataSet>
     <DataSet id="dsJiaci">
       <ClientEvent name="onReady">self.flushAsync();</ClientEvent>
-      <Property name="dataProvider">sfstatisticPR#queryJiacinum</Property>
       <Property name="parameter">
         <Entity>
           <Property name="ftype">${loginUser.getAtteAirc()}</Property>
@@ -178,6 +192,7 @@ else{&#xD;
         </Entity>
       </Property>
       <Property name="loadMode">manual</Property>
+      <Property name="dataProvider">sfstatisticPR#queryJiacinum</Property>
     </DataSet>
     <DataSet id="dsFighter">
       <Property name="dataType">[Fighterinfo]</Property>
@@ -205,24 +220,20 @@ else{&#xD;
     </UpdateAction>
     <UpdateAction id="uaTasklist">
       <Property name="dataResolver">tasklistPR#saveTasklist</Property>
-      <Property name="parameter">
-        <Entity>
-          <Property name="aircrafttype"></Property>
-        </Entity>
-      </Property>
       <UpdateItem>
         <Property name="dataSet">dsTasklist</Property>
+        <Property name="dataPath">!DIRTY_TREE</Property>
       </UpdateItem>
     </UpdateAction>
+    <AjaxAction id="ajTasklistSave">
+      <Property name="service">tasklistManager#saveTaskSfStatistic</Property>
+    </AjaxAction>
     <AjaxAction id="ajBxtjInsert">
       <Property name="service">sFBaoXianService#saveBXtjInsert</Property>
     </AjaxAction>
     <AjaxAction id="ajBxtjSave">
       <Property name="service">sFBaoXianService#saveBXtj</Property>
     </AjaxAction>
-    <Trigger id="triggerTaskNo">
-      <ClientEvent name="onExecute">view.id(&quot;dgChooseTasklist&quot;).show();</ClientEvent>
-    </Trigger>
     <DataSetDropDown id="dataSetDropDownAircraftType">
       <ClientEvent name="onValueSelect">var dsFighter = this.get(&quot;#dsFighter&quot;);&#xD;
 dsFighter.set(&quot;parameter&quot;, {&#xD;
@@ -264,6 +275,11 @@ dsJiaci.set(&quot;parameter&quot;, {&#xD;
 	ftype: arg.selectedValue,&#xD;
 });&#xD;
 dsJiaci.flushAsync();&#xD;
+var dsTasklist = this.get(&quot;#dsTasklist&quot;);&#xD;
+dsTasklist.set(&quot;parameter&quot;, {&#xD;
+	aircrafttype: arg.selectedValue,&#xD;
+});&#xD;
+dsTasklist.flushAsync();&#xD;
 //view.id(&quot;imageBaoXian&quot;).set(&quot;image&quot;,&quot;>images/baoxian/baoxian&quot;+arg.selectedValue+&quot;.png&quot;);&#xD;
 view.id(&quot;imageBaoXian&quot;).set(&quot;image&quot;,&quot;>images/baoxian/baoxianJ20.png&quot;);</ClientEvent>
       <Property name="autoOpen">true</Property>
@@ -271,30 +287,6 @@ view.id(&quot;imageBaoXian&quot;).set(&quot;image&quot;,&quot;>images/baoxian/ba
       <Property name="displayProperty">ftypename</Property>
       <Property name="editable">false</Property>
       <Property name="property">ftypename</Property>
-      <Property name="reloadDataOnOpen">true</Property>
-    </DataSetDropDown>
-    <DataSetDropDown id="chooseListNumber">
-      <ClientEvent name="onValueSelect">var tasklist = view.id(&quot;dsTasklist&quot;).getData(&quot;#&quot;);&#xD;
-view.id(&quot;dsSfstatistic&quot;).getData(&quot;#&quot;).set(&quot;taskNo&quot;,tasklist.toJSON());&#xD;
-view.id(&quot;dsSfstatistic&quot;).getData(&quot;#&quot;).reset(&quot;taskNo&quot;);&#xD;
-</ClientEvent>
-      <ClientEvent name="onOpen">var dsTasklist = this.get(&quot;#dsTasklist&quot;);&#xD;
-dsTasklist.set(&quot;parameter&quot;, {&#xD;
-	aircrafttype: view.id(&quot;formElement1&quot;).get(&quot;value&quot;)&#xD;
-});&#xD;
-dsTasklist.flushAsync();&#xD;
-&#xD;
-</ClientEvent>
-      <Property name="dataSet">dsTasklist</Property>
-      <Property name="autoOpen">true</Property>
-      <Property name="editable">true</Property>
-      <Property name="dynaFilter">true</Property>
-      <Property name="filterOnOpen">false</Property>
-      <Property name="filterOnTyping">true</Property>
-      <Property name="displayProperty">tasknumber</Property>
-      <Property name="filterMode">clientSide</Property>
-      <Property name="buttonVisible">true</Property>
-      <Property name="property">tasknumber</Property>
       <Property name="reloadDataOnOpen">true</Property>
     </DataSetDropDown>
     <DataSetDropDown id="dataSetDropDownFighter">
@@ -311,7 +303,7 @@ dsTasklist.flushAsync();&#xD;
       <Property name="displayProperty">name</Property>
       <Property name="editable">false</Property>
       <Property name="property">name</Property>
-      <Property name="useEmptyItem">true</Property>
+      <Property name="useEmptyItem">false</Property>
     </DataSetDropDown>
     <UploadAction id="uaUpload1">
       <ClientEvent name="onFilesAdded">var cur=view.id('dsSfstatistic').getData('#');&#xD;
@@ -321,6 +313,7 @@ self.set(&quot;multipartParams&quot;, {record: value});</ClientEvent>
 var cur=view.id('dsSfstatistic').getData('#');&#xD;
 cur.set(&quot;filename1&quot;,returnValue);&#xD;
 var link = view.id(&quot;lefile1&quot;);&#xD;
+var link1 = view.id(&quot;lefile5&quot;);&#xD;
 if(returnValue){&#xD;
 	var oid = cur.get(&quot;id&quot;);&#xD;
     var href = &quot;ServletDownload?filename=Fly_Sfstatistic/&quot; + oid + &quot;/&quot; + returnValue;&#xD;
@@ -328,9 +321,14 @@ if(returnValue){&#xD;
 		href: href,&#xD;
 		visible: true&#xD;
 	});&#xD;
+	link1.set({&#xD;
+		href: href,&#xD;
+		visible: true&#xD;
+	});&#xD;
 }&#xD;
 else{&#xD;
     link.set(&quot;visible&quot;,false);&#xD;
+	link1.set(&quot;visible&quot;,false);&#xD;
 }</ClientEvent>
       <ClientEvent name="onError">	var error = arg.error;&#xD;
 	dorado.MessageBox.show({&#xD;
@@ -351,6 +349,7 @@ self.set(&quot;multipartParams&quot;, {record: value});</ClientEvent>
 var cur=view.id('dsSfstatistic').getData('#');&#xD;
 cur.set(&quot;filename2&quot;,returnValue);&#xD;
 var link = view.id(&quot;lefile2&quot;);&#xD;
+var link1 = view.id(&quot;lefile6&quot;);&#xD;
 if(returnValue){&#xD;
 	var oid = cur.get(&quot;id&quot;);&#xD;
     var href = &quot;ServletDownload?filename=Fly_Sfstatistic/&quot; + oid + &quot;/&quot; + returnValue;&#xD;
@@ -358,17 +357,22 @@ if(returnValue){&#xD;
 		href: href,&#xD;
 		visible: true&#xD;
 	});&#xD;
+	link1.set({&#xD;
+		href: href,&#xD;
+		visible: true&#xD;
+	});&#xD;
 }&#xD;
 else{&#xD;
     link.set(&quot;visible&quot;,false);&#xD;
+	link1.set(&quot;visible&quot;,false);&#xD;
 }</ClientEvent>
-      <ClientEvent name="onError">	var error = arg.error;&#xD;
-	dorado.MessageBox.show({&#xD;
-		title:error.message,&#xD;
-		message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
-		icon: &quot;WARNING&quot;,&#xD;
-		buttons: [&quot;ok&quot;]&#xD;
-	});</ClientEvent>
+      <ClientEvent name="onError">var error = arg.error;&#xD;
+dorado.MessageBox.show({&#xD;
+	title:error.message,&#xD;
+	message:error.file.name + &quot; 超过大小限制:&quot;+ self.get('maxFileSize'),&#xD;
+	icon: &quot;WARNING&quot;,&#xD;
+	buttons: [&quot;ok&quot;]&#xD;
+});</ClientEvent>
       <Property name="url">>dorado/uploader/fileupload</Property>
       <Property name="maxFileSize">100MB</Property>
       <Filters/>
@@ -381,6 +385,7 @@ self.set(&quot;multipartParams&quot;, {record: value});</ClientEvent>
 var cur=view.id('dsSfstatistic').getData('#');&#xD;
 cur.set(&quot;filename3&quot;,returnValue);&#xD;
 var link = view.id(&quot;lefile3&quot;);&#xD;
+var link1 = view.id(&quot;lefile7&quot;);&#xD;
 if(returnValue){&#xD;
 	var oid = cur.get(&quot;id&quot;);&#xD;
     var href = &quot;ServletDownload?filename=Fly_Sfstatistic/&quot; + oid + &quot;/&quot; + returnValue;&#xD;
@@ -388,9 +393,14 @@ if(returnValue){&#xD;
 		href: href,&#xD;
 		visible: true&#xD;
 	});&#xD;
+	link1.set({&#xD;
+		href: href,&#xD;
+		visible: true&#xD;
+	});&#xD;
 }&#xD;
 else{&#xD;
     link.set(&quot;visible&quot;,false);&#xD;
+	link1.set(&quot;visible&quot;,false);&#xD;
 }</ClientEvent>
       <ClientEvent name="onError">	var error = arg.error;&#xD;
 	dorado.MessageBox.show({&#xD;
@@ -411,6 +421,7 @@ self.set(&quot;multipartParams&quot;, {record: value});</ClientEvent>
 var cur=view.id('dsSfstatistic').getData('#');&#xD;
 cur.set(&quot;filename4&quot;,returnValue);&#xD;
 var link = view.id(&quot;lefile4&quot;);&#xD;
+var link1 = view.id(&quot;lefile4&quot;);&#xD;
 if(returnValue){&#xD;
 	var oid = cur.get(&quot;id&quot;);&#xD;
     var href = &quot;ServletDownload?filename=Fly_Sfstatistic/&quot; + oid + &quot;/&quot; + returnValue;&#xD;
@@ -418,9 +429,14 @@ if(returnValue){&#xD;
 		href: href,&#xD;
 		visible: true&#xD;
 	});&#xD;
+	link1.set({&#xD;
+		href: href,&#xD;
+		visible: true&#xD;
+	});&#xD;
 }&#xD;
 else{&#xD;
     link.set(&quot;visible&quot;,false);&#xD;
+	link1.set(&quot;visible&quot;,false);&#xD;
 }</ClientEvent>
       <ClientEvent name="onError">	var error = arg.error;&#xD;
 	dorado.MessageBox.show({&#xD;
@@ -443,6 +459,7 @@ if(cur){&#xD;
       <Property name="modal">true</Property>
       <Property name="width">800</Property>
       <Property name="caption">试飞信息</Property>
+      <Property name="height">420</Property>
       <Buttons>
         <Button>
           <ClientEvent name="onClick">var cur=view.id('dsSfstatistic').getData('#');
@@ -452,8 +469,7 @@ if(cur.get(&quot;timeqifei&quot;) > cur.get(&quot;timeland&quot;)){
 	view.id('uaSfstatistic').execute(function(){
          view.id('diaSfstatistic').hide();
 		 });
-		 }
-</ClientEvent>
+}</ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
         </Button>
@@ -498,11 +514,9 @@ if(cur){
                 </Editor>
               </AutoFormElement>
               <AutoFormElement>
-                <Property name="name">TimeFly</Property>
-                <Property name="property">timefly</Property>
+                <Property name="name">address</Property>
+                <Property name="property">address</Property>
                 <Property name="labelPosition">top</Property>
-                <Property name="readOnly">true</Property>
-                <Editor/>
               </AutoFormElement>
               <AutoFormElement>
                 <Property name="name">JiaCi</Property>
@@ -527,28 +541,6 @@ if(cur){
                 <Property name="property">gdasdir</Property>
                 <Property name="labelPosition">top</Property>
               </AutoFormElement>
-              <AutoFormElement id="autoformelement2">
-                <Property name="property">taskNo.tasknumber</Property>
-                <Property name="labelPosition">top</Property>
-                <Property name="name">tasknumber</Property>
-                <Property name="trigger">triggerTaskNo</Property>
-                <Property name="editable">false</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement id="autoformelement3">
-                <Property name="property">taskNo.subject</Property>
-                <Property name="labelPosition">top</Property>
-                <Property name="name">subject</Property>
-                <Property name="readOnly">true</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement>
-                <Property name="property">taskexecution</Property>
-                <Property name="labelPosition">top</Property>
-                <Property name="name">taskexecution</Property>
-                <Property name="trigger">dataSetDropDownTaskExecution</Property>
-                <Editor/>
-              </AutoFormElement>
               <AutoFormElement>
                 <Property name="name">fighterNo</Property>
                 <Property name="property">fighterno</Property>
@@ -563,11 +555,6 @@ if(cur){
               <AutoFormElement>
                 <Property name="name">YuYou</Property>
                 <Property name="property">yuyou</Property>
-                <Property name="labelPosition">top</Property>
-              </AutoFormElement>
-              <AutoFormElement>
-                <Property name="name">address</Property>
-                <Property name="property">address</Property>
                 <Property name="labelPosition">top</Property>
               </AutoFormElement>
               <AutoFormElement>
@@ -662,7 +649,7 @@ if(cur){
                 <Property name="editorWidth">100</Property>
                 <Property name="readOnly">true</Property>
                 <Property name="label">飞行员讲评</Property>
-                <Property name="labelWidth">100</Property>
+                <Property name="labelWidth">110</Property>
               </AutoFormElement>
               <AutoFormElement layoutConstraint="colSpan:2">
                 <Property name="name">TowerDir</Property>
@@ -672,7 +659,7 @@ if(cur){
                 <Property name="editable">false</Property>
                 <Property name="readOnly">true</Property>
                 <Property name="label">塔台指挥员讲评</Property>
-                <Property name="labelWidth">100</Property>
+                <Property name="labelWidth">110</Property>
               </AutoFormElement>
               <AutoFormElement layoutConstraint="colSpan:2;vAlign:top">
                 <Property name="name">PilotJP</Property>
@@ -696,14 +683,13 @@ if(cur){
                 <Property name="editorWidth">100</Property>
                 <Property name="readOnly">true</Property>
                 <Property name="label">GDAS指挥员讲评</Property>
-                <Property name="labelWidth">100</Property>
+                <Property name="labelWidth">110</Property>
               </AutoFormElement>
               <AutoFormElement layoutConstraint="colSpan:4;vAlign:top">
                 <Property name="name">GDASDirJP</Property>
                 <Property name="property">gdasdirjp</Property>
                 <Property name="labelPosition">top</Property>
                 <Property name="editorType">TextArea</Property>
-                <Property name="editorWidth">350</Property>
                 <Property name="showLabel">false</Property>
               </AutoFormElement>
               <AutoFormElement layoutConstraint="rowSpan:2;colSpan:2">
@@ -861,22 +847,8 @@ if(cur){
                 <Property name="labelPosition">top</Property>
               </AutoFormElement>
               <AutoFormElement>
-                <Property name="property">taskNo.tasknumber</Property>
-                <Property name="labelPosition">top</Property>
-                <Property name="name">tasknumber</Property>
-                <Property name="editable">false</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement>
-                <Property name="property">taskNo.subject</Property>
-                <Property name="labelPosition">top</Property>
-                <Property name="name">subject</Property>
-                <Property name="readOnly">true</Property>
-                <Editor/>
-              </AutoFormElement>
-              <AutoFormElement>
                 <Property name="name">taskexecution</Property>
-                <Property name="property">taskNo.taskexecution</Property>
+                <Property name="property">taskexecution</Property>
                 <Property name="labelPosition">top</Property>
                 <Property name="readOnly">true</Property>
               </AutoFormElement>
@@ -895,17 +867,6 @@ if(cur){
                 <Property name="property">yuyou</Property>
                 <Property name="labelPosition">top</Property>
               </AutoFormElement>
-              <AutoFormElement>
-                <Property name="name">address</Property>
-                <Property name="property">address</Property>
-                <Property name="labelPosition">top</Property>
-              </AutoFormElement>
-              <AutoFormElement>
-                <Property name="name">miji</Property>
-                <Property name="property">miji</Property>
-                <Property name="labelPosition">top</Property>
-                <Editor/>
-              </AutoFormElement>
               <AutoFormElement layoutConstraint="colSpan:2">
                 <Property name="name">action</Property>
                 <Property name="property">action</Property>
@@ -918,7 +879,79 @@ if(cur){
                 <Property name="labelPosition">top</Property>
                 <Property name="editorType">TextArea</Property>
               </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">address</Property>
+                <Property name="property">address</Property>
+                <Property name="labelPosition">top</Property>
+              </AutoFormElement>
+              <AutoFormElement>
+                <Property name="name">miji</Property>
+                <Property name="property">miji</Property>
+                <Property name="labelPosition">top</Property>
+                <Editor/>
+              </AutoFormElement>
             </AutoForm>
+          </ControlTab>
+          <ControlTab>
+            <Property name="caption">任务单信息</Property>
+            <ToolBar>
+              <DataPilot>
+                <Property name="dataSet">dsSfstatistic</Property>
+                <Property name="dataPath">#.tasklist</Property>
+                <Property name="itemCodes">pages</Property>
+              </DataPilot>
+            </ToolBar>
+            <DataGrid>
+              <Property name="dataPath">#.tasklist</Property>
+              <Property name="dataSet">dsSfstatistic</Property>
+              <Property name="readOnly">false</Property>
+              <Property name="rowHeight">22</Property>
+              <RowNumColumn/>
+              <DataColumn name="aircrafttype">
+                <Property name="property">aircrafttype</Property>
+                <Property name="width">60</Property>
+              </DataColumn>
+              <DataColumn name="tasknumber">
+                <Property name="property">tasknumber</Property>
+                <Property name="width">120</Property>
+                <Property name="readOnly">true</Property>
+              </DataColumn>
+              <DataColumn name="subject">
+                <Property name="property">subject</Property>
+                <Property name="width">300</Property>
+                <Property name="readOnly">true</Property>
+              </DataColumn>
+              <DataColumn name="taskexecution">
+                <Property name="property">taskexecution</Property>
+                <Property name="width">120</Property>
+                <Property name="trigger">dataSetDropDownTaskExecution</Property>
+              </DataColumn>
+              <DataColumn name="taskcontent">
+                <Property name="property">taskcontent</Property>
+                <Property name="width">400</Property>
+                <Property name="readOnly">true</Property>
+              </DataColumn>
+              <DataColumn name="filename">
+                <ClientEvent name="onRenderCell">jQuery(arg.dom).empty();&#xD;
+var file = arg.data.get(&quot;filename&quot;);&#xD;
+var oid = arg.data.get(&quot;oid&quot;);&#xD;
+var href = &quot;ServletDownload?filename=Fly_Tasklist/&quot; + oid + &quot;/&quot; + file;&#xD;
+jQuery(arg.dom).xCreate({&#xD;
+	tagName:&quot;A&quot;,&#xD;
+	href:href,&#xD;
+	content:arg.data.get(&quot;filename&quot;)&#xD;
+});</ClientEvent>
+                <Property name="property">filename</Property>
+                <Property name="width">200</Property>
+                <Property name="readOnly">true</Property>
+              </DataColumn>
+              <DataColumn>
+                <Property name="width">120</Property>
+                <Property name="property">miji</Property>
+                <Property name="align">left</Property>
+                <Property name="readOnly">true</Property>
+              </DataColumn>
+            </DataGrid>
           </ControlTab>
           <ControlTab>
             <Property name="caption">试飞日志</Property>
@@ -956,6 +989,18 @@ if(cur){
               <AutoFormElement layoutConstraint="colSpan:2">
                 <Property name="name">dataAddr</Property>
                 <Property name="property">dataaddr</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:2">
+                <Property name="name">FileName1</Property>
+                <Property name="property">filename1</Property>
+                <Editor>
+                  <Container>
+                    <Link id="lefile5" layoutConstraint="center">
+                      <Property name="dataSet">dsSfstatistic</Property>
+                      <Property name="property">filename1</Property>
+                    </Link>
+                  </Container>
+                </Editor>
               </AutoFormElement>
             </AutoForm>
           </ControlTab>
@@ -1015,7 +1060,6 @@ if(cur){
                 <Property name="property">gdasdirjp</Property>
                 <Property name="labelPosition">top</Property>
                 <Property name="editorType">TextArea</Property>
-                <Property name="editorWidth">350</Property>
                 <Property name="showLabel">false</Property>
               </AutoFormElement>
               <AutoFormElement layoutConstraint="rowSpan:2;colSpan:2">
@@ -1030,6 +1074,42 @@ if(cur){
               <AutoFormElement layoutConstraint="rowSpan:2">
                 <Property name="name">DailyName</Property>
                 <Property name="property">dailyname</Property>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:2">
+                <Property name="name">FileName2</Property>
+                <Property name="property">filename2</Property>
+                <Editor>
+                  <Container>
+                    <Link id="lefile6" layoutConstraint="center">
+                      <Property name="dataSet">dsSfstatistic</Property>
+                      <Property name="property">filename2</Property>
+                    </Link>
+                  </Container>
+                </Editor>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:2">
+                <Property name="name">FileName3</Property>
+                <Property name="property">filename3</Property>
+                <Editor>
+                  <Container>
+                    <Link id="lefile7" layoutConstraint="center">
+                      <Property name="dataSet">dsSfstatistic</Property>
+                      <Property name="property">filename3</Property>
+                    </Link>
+                  </Container>
+                </Editor>
+              </AutoFormElement>
+              <AutoFormElement layoutConstraint="colSpan:2">
+                <Property name="name">FileName4</Property>
+                <Property name="property">filename4</Property>
+                <Editor>
+                  <Container>
+                    <Link id="lefile8" layoutConstraint="center">
+                      <Property name="dataSet">dsSfstatistic</Property>
+                      <Property name="property">filename4</Property>
+                    </Link>
+                  </Container>
+                </Editor>
               </AutoFormElement>
             </AutoForm>
           </ControlTab>
@@ -1052,8 +1132,6 @@ if(cur){
       <Children>
         <AutoForm id="afTasklist">
           <Property name="cols">*</Property>
-          <Property name="dataSet">dsSfstatistic</Property>
-          <Property name="dataPath">#.taskNo</Property>
           <Property name="labelWidth">90</Property>
           <Property name="readOnly">true</Property>
           <AutoFormElement>
@@ -1122,21 +1200,30 @@ open(path,&quot;_blank&quot;);</ClientEvent>
       <Property name="caption">选择试飞任务单</Property>
       <Buttons>
         <Button>
-          <ClientEvent name="onClick">var tasklist = view.id(&quot;dsTasklist&quot;).getData(&quot;#&quot;);
-var taskexecution = tasklist.get(&quot;taskexecution&quot;);
-view.id(&quot;dsSfstatistic&quot;).getData(&quot;#&quot;).set(&quot;taskNo&quot;,tasklist.toJSON());
-view.id(&quot;dsSfstatistic&quot;).getData(&quot;#&quot;).set(&quot;taskexecution&quot;,taskexecution);
-view.id(&quot;dsSfstatistic&quot;).getData(&quot;#&quot;).reset(&quot;taskNo&quot;);
-view.id(&quot;dgChooseTasklist&quot;).hide();</ClientEvent>
+          <ClientEvent name="onClick" signature="self,dgTasklist">var aj = view.get('#ajTasklistSave');
+var selection = dgTasklist.get(&quot;selection&quot;);
+var cur = view.get('#dsSfstatistic').getData('#');
+var tasklist = view.get('#dsSfstatistic').getData('#.tasklist');
+if(cur &amp;&amp; selection &amp;&amp; selection.length){
+	aj.set(&quot;parameter&quot;,{
+		'tasklist':selection,
+		'sfstatistic':cur,
+		'pastTasklist':tasklist
+	});
+	
+	aj.execute(function(){
+		view.get(&quot;#dsSfstatistic&quot;).getData(&quot;#&quot;).reset(&quot;tasklist&quot;);		
+	});				
+	view.get(&quot;#dgChooseTasklist&quot;).close();
+}
+else{
+	dorado.widget.NotifyTipManager.notify(&quot;没有选中任何共享人员&quot;);
+}</ClientEvent>
           <Property name="caption">确定</Property>
           <Property name="icon">url(>skin>common/icons.gif) -20px 0px</Property>
         </Button>
         <Button>
-          <ClientEvent name="onClick">var cur=view.id('dsTasklist').getData('#');
-if(cur){
-	cur.cancel();
-	view.id(&quot;dgChooseTasklist&quot;).hide();
-}</ClientEvent>
+          <ClientEvent name="onClick">view.id(&quot;dgChooseTasklist&quot;).hide();</ClientEvent>
           <Property name="caption">取消</Property>
           <Property name="icon">url(>skin>common/icons.gif) -220px -240px</Property>
         </Button>
@@ -1150,11 +1237,11 @@ if(cur){
         <DataGrid id="dgTasklist">
           <Property name="readOnly">true</Property>
           <Property name="dataSet">dsTasklist</Property>
-          <Property name="dataPath"></Property>
-          <Property name="filterMode">serverSide</Property>
           <Property name="showFilterBar">false</Property>
           <Property name="rowHeight">22</Property>
+          <Property name="selectionMode">multiRows</Property>
           <RowNumColumn/>
+          <RowSelectorColumn/>
           <DataColumn name="aircrafttype">
             <Property name="property">aircrafttype</Property>
             <Property name="width">60</Property>
@@ -1197,6 +1284,72 @@ jQuery(arg.dom).xCreate({&#xD;
       </Children>
       <Tools/>
     </Dialog>
+    <Dialog id="diaSeeTasklist">
+      <Property name="caption">试飞任务单记录</Property>
+      <Property name="width">700</Property>
+      <Buttons>
+        <Button>
+          <ClientEvent name="onClick">view.id('diaSeeTasklist').hide();  </ClientEvent>
+          <Property name="icon">url(>skin>common/icons.gif) -40px -0px</Property>
+          <Property name="caption">关闭</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="afSeeTasklist">
+          <Property name="cols">*</Property>
+          <Property name="dataPath">#.#tasklist</Property>
+          <Property name="dataSet">dsSfstatistic</Property>
+          <Property name="readOnly">true</Property>
+          <Property name="labelWidth">90</Property>
+          <AutoFormElement>
+            <Property name="name">aircrafttype</Property>
+            <Property name="property">aircrafttype</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">tasknumber</Property>
+            <Property name="property">tasknumber</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">subject</Property>
+            <Property name="property">subject</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">taskexecution</Property>
+            <Property name="property">taskexecution</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">taskcontent</Property>
+            <Property name="property">taskcontent</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">130</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">filename</Property>
+            <Property name="property">filename</Property>
+            <Editor>
+              <Container>
+                <Link id="lefileSee" layoutConstraint="center">
+                  <Property name="dataSet">dsSfstatistic</Property>
+                  <Property name="property">filename</Property>
+                  <Property name="dataPath">#.#tasklist</Property>
+                </Link>
+              </Container>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">miji</Property>
+            <Property name="property">miji</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
     <ToolBar>
       <FormElement id="formElement1">
         <ClientEvent name="onReady">self.set(&quot;value&quot;,&quot;${loginUser.getAtteAirc()}&quot;);</ClientEvent>
@@ -1205,6 +1358,7 @@ jQuery(arg.dom).xCreate({&#xD;
         <Property name="label">选择机型:</Property>
         <Editor/>
       </FormElement>
+      <Separator/>
       <DataPilot>
         <Property name="itemCodes">pages</Property>
         <Property name="dataSet">dsSfstatistic</Property>
@@ -1238,12 +1392,12 @@ if(ftype){
 	link4.set(&quot;visible&quot;,false);
 	}else{
 		dorado.MessageBox.alert(&quot;请先选择机型！&quot;);
-		}</ClientEvent>
+	}</ClientEvent>
         <Property name="caption">新增</Property>
         <Property name="icon">url(>skin>common/icons.gif) -120px -0px</Property>
       </ToolBarButton>
       <ToolBarButton>
-        <ClientEvent name="onClick">if(view.id(&quot;tabControl1&quot;).get(&quot;currentIndex&quot;) == 1){
+        <ClientEvent name="onClick">if(view.id(&quot;tabControl&quot;).get(&quot;currentIndex&quot;) == 1){
 	var cur=view.id('dsSfstatistic').getData('#');
 	if (cur) {
 		view.id('diaSfstatistic').show();
@@ -1304,7 +1458,7 @@ else{
         <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>
       </ToolBarButton>
       <ToolBarButton>
-        <ClientEvent name="onClick">if(view.id(&quot;tabControl1&quot;).get(&quot;currentIndex&quot;) == 1){
+        <ClientEvent name="onClick">if(view.id(&quot;tabControl&quot;).get(&quot;currentIndex&quot;) == 1){
 var cur = view.id('dsSfstatistic').getData('#');
 	var ua=view.id('uaSfstatistic');
 	if(cur){
@@ -1321,14 +1475,14 @@ else{
         <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
       </ToolBarButton>
       <ToolBarButton>
-        <ClientEvent name="onClick">if(view.id(&quot;tabControl1&quot;).get(&quot;currentIndex&quot;) == 1){
+        <ClientEvent name="onClick">if(view.id(&quot;tabControl&quot;).get(&quot;currentIndex&quot;) == 1){
 	var cur=view.id('dsSfstatistic').getData('#');
 	if (cur) {
 		view.id('diaShowSfstatistic').show();
 	}
 }
 else{
-	dorado.MessageBox.alert(&quot;请先切换至“试飞信息管理”页面！&quot;);
+	dorado.widget.NotifyTipManager.notify(&quot;请先切换至“试飞信息管理”页面！&quot;);
 }</ClientEvent>
         <Property name="caption">浏览</Property>
         <Property name="icon">url(>skin>common/icons.gif) -40px -100px</Property>
@@ -1380,7 +1534,7 @@ view.id(&quot;imageBaoXian&quot;).set(&quot;image&quot;,&quot;>images/baoxian/ba
         <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
       </ToolBarButton>
     </ToolBar>
-    <TabControl id="tabControl1">
+    <TabControl id="tabControl">
       <Property name="tabPlacement">bottom</Property>
       <ControlTab>
         <Property name="caption">试飞统计</Property>
@@ -1595,23 +1749,27 @@ if(ds.getData('#')){&#xD;
                   <DataColumn>
                     <Property name="property">timefly</Property>
                     <Property name="name">timefly</Property>
-                    <Property name="width">90</Property>
+                    <Property name="width">80</Property>
+                  </DataColumn>
+                  <DataColumn>
+                    <Property name="property">address</Property>
+                    <Property name="name">address</Property>
+                    <Property name="width">70</Property>
+                    <Editor/>
                   </DataColumn>
                   <DataColumn>
                     <Property name="property">pilot</Property>
                     <Property name="name">pilot</Property>
                     <Property name="width">65</Property>
                   </DataColumn>
-                  <DataColumn name="mainsubject">
-                    <Property name="property">taskNo.subject</Property>
-                    <Property name="width">100</Property>
-                  </DataColumn>
                   <DataColumn name="action">
                     <Property name="property">action</Property>
-                    <Property name="width">110</Property>
+                    <Property name="width">150</Property>
                   </DataColumn>
                   <DataColumn name="result">
-                    <Property name="property">taskNo.taskexecution</Property>
+                    <Property name="property">taskexecution</Property>
+                    <Property name="align">left</Property>
+                    <Property name="caption">完成情况</Property>
                   </DataColumn>
                 </DataGrid>
               </Children>
@@ -1636,98 +1794,239 @@ if(ds.getData('#')){&#xD;
       </ControlTab>
       <ControlTab>
         <Property name="caption">试飞信息管理</Property>
-        <DataGrid id="dgSfstatistic">
-          <Property name="readOnly">true</Property>
-          <Property name="dataSet">dsSfstatistic</Property>
-          <Property name="filterMode">serverSide</Property>
-          <Property name="showFilterBar">false</Property>
-          <Property name="rowHeight">22</Property>
-          <Property name="fixedColumnCount">8</Property>
-          <Property name="sortMode">clientSide</Property>
-          <RowNumColumn/>
-          <DataColumn name="ftype">
-            <Property name="property">ftype</Property>
-            <Property name="width">60</Property>
-          </DataColumn>
-          <DataColumn name="fighterno">
-            <Property name="property">fighterno</Property>
-            <Property name="width">60</Property>
-          </DataColumn>
-          <DataColumn>
-            <Property name="property">jiaci</Property>
-            <Property name="width">60</Property>
-            <Property name="name">jiaci</Property>
-            <Property name="align">left</Property>
-          </DataColumn>
-          <DataColumn name="fdate">
-            <Property name="property">fdate</Property>
-            <Property name="width">80</Property>
-          </DataColumn>
-          <DataColumn name="timeqifei">
-            <Property name="property">timeqifei</Property>
-            <Property name="width">80</Property>
-          </DataColumn>
-          <DataColumn>
-            <Property name="property">timefly</Property>
-            <Property name="width">80</Property>
-            <Property name="name">timefly</Property>
-          </DataColumn>
-          <DataColumn name="taskno">
-            <ClientEvent name="onRenderCell">jQuery(arg.dom).empty();&#xD;
-var file = arg.data.get(&quot;taskNo.tasknumber&quot;);&#xD;
-var oid = arg.data.get(&quot;taskNo.oid&quot;);&#xD;
-var name = arg.data.get(&quot;taskNo.filename&quot;);&#xD;
+        <SplitPanel>
+          <Property name="direction">bottom</Property>
+          <Property name="position">38.2%</Property>
+          <MainControl>
+            <DataGrid id="dgSfstatistic">
+              <Property name="readOnly">true</Property>
+              <Property name="dataSet">dsSfstatistic</Property>
+              <Property name="filterMode">serverSide</Property>
+              <Property name="showFilterBar">false</Property>
+              <Property name="rowHeight">22</Property>
+              <Property name="fixedColumnCount">8</Property>
+              <Property name="sortMode">clientSide</Property>
+              <RowNumColumn/>
+              <DataColumn name="ftype">
+                <Property name="property">ftype</Property>
+                <Property name="width">60</Property>
+              </DataColumn>
+              <DataColumn name="fighterno">
+                <Property name="property">fighterno</Property>
+                <Property name="width">100</Property>
+              </DataColumn>
+              <DataColumn>
+                <Property name="property">jiaci</Property>
+                <Property name="width">60</Property>
+                <Property name="name">jiaci</Property>
+                <Property name="align">left</Property>
+              </DataColumn>
+              <DataColumn>
+                <Property name="property">pilot</Property>
+                <Property name="name">pilot</Property>
+                <Property name="width">60</Property>
+                <Editor/>
+              </DataColumn>
+              <DataColumn name="fdate">
+                <Property name="property">fdate</Property>
+                <Property name="width">80</Property>
+              </DataColumn>
+              <DataColumn name="timeqifei">
+                <Property name="property">timeqifei</Property>
+                <Property name="width">80</Property>
+              </DataColumn>
+              <DataColumn>
+                <Property name="property">timeland</Property>
+                <Property name="name">timeland</Property>
+                <Property name="width">80</Property>
+                <Editor/>
+              </DataColumn>
+              <DataColumn>
+                <Property name="property">timefly</Property>
+                <Property name="width">80</Property>
+                <Property name="name">timefly</Property>
+              </DataColumn>
+              <DataColumn>
+                <Property name="property">taskexecution</Property>
+                <Property name="width">95</Property>
+                <Property name="align">left</Property>
+                <Editor/>
+              </DataColumn>
+              <DataColumn name="action">
+                <Property name="property">action</Property>
+                <Property name="width">285</Property>
+              </DataColumn>
+              <DataColumn name="config">
+                <Property name="property">config</Property>
+                <Property name="width">285</Property>
+              </DataColumn>
+              <DataColumn>
+                <Property name="property">address</Property>
+                <Property name="name">address</Property>
+                <Property name="width">80</Property>
+                <Editor/>
+              </DataColumn>
+              <DataColumn name="summary">
+                <Property name="property">summary</Property>
+                <Property name="width">198</Property>
+              </DataColumn>
+              <DataColumn>
+                <Property name="width">60</Property>
+                <Property name="property">miji</Property>
+                <Property name="align">left</Property>
+                <Editor/>
+              </DataColumn>
+            </DataGrid>
+          </MainControl>
+          <SideControl>
+            <Container>
+              <ToolBar>
+                <FormElement id="formElement2">
+                  <Property name="property">taskexecution</Property>
+                  <Property name="trigger">taskExecList</Property>
+                  <Property name="label">任务单完成情况：</Property>
+                  <Property name="dataSet">dsSfstatistic</Property>
+                  <Property name="labelWidth">110</Property>
+                  <Editor/>
+                </FormElement>
+                <Separator/>
+                <DataPilot>
+                  <Property name="dataSet">dsSfstatistic</Property>
+                  <Property name="dataPath">#.tasklist</Property>
+                  <Property name="itemCodes">pages</Property>
+                </DataPilot>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">/*var sfStat = view.get('#dsSfstatistic').getData('#');&#xD;
+var tasklist = view.get('#dsTasklist').getData();&#xD;
+view.get('#dsTasklist').flushAsync(function(){&#xD;
+	view.get('#dgChooseTasklist').show(function(){&#xD;
+		var a = view.get(&quot;#dgTasklist.selection&quot;);&#xD;
+		tasklist.each(function(task){			&#xD;
+			if(task.get('sfstatistic.id') == sfStat.get('id')){&#xD;
+				a.push(task);&#xD;
+			}		&#xD;
+		});&#xD;
+		view.set(&quot;#dgTasklist.selection&quot;,a); &#xD;
+		console.log(a);&#xD;
+		console.log(view.get(&quot;#dgTasklist.selection&quot;));&#xD;
+	});			&#xD;
+	&#xD;
+});*/&#xD;
+&#xD;
+view.get('#dsTasklist').flushAsync(function(){&#xD;
+	view.get('#dgChooseTasklist').show();				&#xD;
+});</ClientEvent>
+                  <Property name="caption">关联任务单</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -240px -60px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">view.id('uaSfstatistic').execute();</ClientEvent>
+                  <Property name="caption">保存</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -140px -20px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">var cur = view.get('#dsSfstatistic').getData('#.#tasklist');&#xD;
+if (cur) {&#xD;
+	view.id('diaSeeTasklist').show();&#xD;
+	var file = cur.get(&quot;filename&quot;);&#xD;
+    var link = view.id(&quot;lefileSee&quot;);&#xD;
+    if(file){&#xD;
+        var oid = cur.get(&quot;oid&quot;);&#xD;
+		var href = &quot;ServletDownload?filename=Fly_Tasklist/&quot; + oid + &quot;/&quot; + file;&#xD;
+        link.set({&#xD;
+	       href: href,&#xD;
+	       visible: true&#xD;
+        });&#xD;
+    }&#xD;
+    else{&#xD;
+		link.set(&quot;visible&quot;,false);&#xD;
+	}&#xD;
+}</ClientEvent>
+                  <Property name="caption">浏览</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -40px -100px</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <ClientEvent name="onClick">view.get(&quot;#dsSfstatistic&quot;).getData(&quot;#&quot;).reset(&quot;tasklist&quot;);</ClientEvent>
+                  <Property name="caption">刷新</Property>
+                  <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid>
+                <Property name="dataPath">#.tasklist</Property>
+                <Property name="dataSet">dsSfstatistic</Property>
+                <Property name="readOnly">false</Property>
+                <Property name="rowHeight">22</Property>
+                <RowNumColumn/>
+                <DataColumn name="tasknumber">
+                  <Property name="property">tasknumber</Property>
+                  <Property name="width">120</Property>
+                  <Property name="readOnly">true</Property>
+                </DataColumn>
+                <DataColumn name="subject">
+                  <Property name="property">subject</Property>
+                  <Property name="width">300</Property>
+                  <Property name="readOnly">true</Property>
+                </DataColumn>
+                <DataColumn name="taskexecution">
+                  <Property name="property">taskexecution</Property>
+                  <Property name="width">120</Property>
+                  <Property name="trigger">dataSetDropDownTaskExecution</Property>
+                </DataColumn>
+                <DataColumn name="taskcontent">
+                  <Property name="property">taskcontent</Property>
+                  <Property name="width">400</Property>
+                  <Property name="readOnly">true</Property>
+                </DataColumn>
+                <DataColumn name="filename">
+                  <ClientEvent name="onRenderCell">jQuery(arg.dom).empty();&#xD;
+var file = arg.data.get(&quot;filename&quot;);&#xD;
+var oid = arg.data.get(&quot;oid&quot;);&#xD;
+var href = &quot;ServletDownload?filename=Fly_Tasklist/&quot; + oid + &quot;/&quot; + file;&#xD;
 jQuery(arg.dom).xCreate({&#xD;
 	tagName:&quot;A&quot;,&#xD;
-	href:&quot;#&quot;,&#xD;
-	content:arg.data.get(&quot;taskNo.tasknumber&quot;),&#xD;
-	onclick: function(){   &#xD;
-        view.id(&quot;diaTasklist&quot;).show();&#xD;
-		var link = view.id(&quot;lefile&quot;);&#xD;
-		var href = &quot;ServletDownload?filename=Fly_Tasklist/&quot; + oid + &quot;/&quot; + name ;&#xD;
-    	link.set({&#xD;
-			href: href,&#xD;
-			visible: true&#xD;
-		});&#xD;
-    }&#xD;
+	href:href,&#xD;
+	content:arg.data.get(&quot;filename&quot;)&#xD;
 });</ClientEvent>
-            <Property name="property">taskNo.tasknumber</Property>
-            <Property name="width">100</Property>
-          </DataColumn>
-          <DataColumn name="mainsubject">
-            <Property name="property">taskNo.subject</Property>
-            <Property name="width">150</Property>
-          </DataColumn>
-          <DataColumn>
-            <Property name="property">taskNo.taskcontent</Property>
-            <Property name="width">200</Property>
-            <Property name="name">taskcontent</Property>
-          </DataColumn>
-          <DataColumn>
-            <Property name="property">taskexecution</Property>
-            <Property name="width">80</Property>
-            <Editor/>
-          </DataColumn>
-          <DataColumn name="action">
-            <Property name="property">action</Property>
-            <Property name="width">200</Property>
-          </DataColumn>
-          <DataColumn name="config">
-            <Property name="property">config</Property>
-            <Property name="width">200</Property>
-          </DataColumn>
-          <DataColumn name="summary">
-            <Property name="property">summary</Property>
-            <Property name="width">200</Property>
-          </DataColumn>
-          <DataColumn>
-            <Property name="width">60</Property>
-            <Property name="property">miji</Property>
-            <Property name="align">left</Property>
-            <Editor/>
-          </DataColumn>
-        </DataGrid>
+                  <Property name="property">filename</Property>
+                  <Property name="width">200</Property>
+                  <Property name="readOnly">true</Property>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="width">120</Property>
+                  <Property name="property">miji</Property>
+                  <Property name="align">left</Property>
+                  <Property name="readOnly">true</Property>
+                </DataColumn>
+              </DataGrid>
+            </Container>
+          </SideControl>
+        </SplitPanel>
       </ControlTab>
     </TabControl>
+    <ListDropDown id="taskExecList">
+      <ClientEvent name="onValueSelect">var value = arg.selectedValue;&#xD;
+var tasklist = view.get('#dsSfstatistic').getData('#.tasklist');&#xD;
+var status; &#xD;
+if(tasklist){&#xD;
+	if(value == '全部完成'){&#xD;
+		status = '已完成';&#xD;
+	}&#xD;
+	else{&#xD;
+		status = '未完成';&#xD;
+	}&#xD;
+	tasklist.each(function(task){&#xD;
+		task.set('taskexecution',status);&#xD;
+	});&#xD;
+}&#xD;
+&#xD;
+</ClientEvent>
+      <Property name="items">
+        <Collection>
+          <Value>全部完成</Value>
+          <Value>部分完成</Value>
+          <Value>全未完成</Value>
+        </Collection>
+      </Property>
+    </ListDropDown>
   </View>
 </ViewConfig>

@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.bstek.bdf2.core.orm.ParseResult;
 import com.bstek.bdf2.core.view.user.QueryUserData;
+import com.bstek.dorado.annotation.Expose;
 import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 import com.common.HibernateBaseDao;
@@ -69,10 +70,17 @@ public class TasklistDao extends HibernateBaseDao {
 				args.put("outlinesub", "%" + outlinesub + "%");
 			}
 			String aircrafttype = (String) parameter.get("aircrafttype");
-			if (StringUtils.isNotEmpty(aircrafttype)) {
+			if(StringUtils.isNotEmpty(aircrafttype)) {
 				coreHql.append(" and a.aircrafttype = '" + aircrafttype + "'");
-			} else
+			} 
+			/*else{
 				coreHql.append(" and a.aircrafttype = null ");
+			}*/
+			String sfstatistic = (String) parameter.get("sfstatistic");
+			if (StringUtils.isNotEmpty(sfstatistic)) {
+				coreHql.append(" and a.sfstatistic.id like :oid ");
+				args.put("oid", "%" + sfstatistic + "%");
+			}	
 		}
 		if (null != criteria) {
 			ParseResult result = this.parseCriteria(criteria, true, "a");
@@ -186,4 +194,18 @@ public class TasklistDao extends HibernateBaseDao {
 			session.close();
 		}
 	}
+	
+	/**
+	 * 任务管理单查询
+	 * 
+	 * @param parameter
+	 * @throws Exception
+	 */
+	public int queryTaskbySubject(String subjectName) {
+		String hql = "select COUNT(*) from " + Tasklist.class.getName() + " a where 1=1 "; 
+		hql += "and a.subject LIKE '%" + subjectName + "%'";
+		hql += "and a.sfstatistic is not null";
+		return this.queryForInt(hql);
+	}
+	
 }

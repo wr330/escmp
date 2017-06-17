@@ -3,7 +3,6 @@ package com.buaa.fly.outlineexecution.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -13,7 +12,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.buaa.fly.domain.Outlineexecution;
-import com.buaa.fly.domain.Subject;
 import com.buaa.fly.subject.dao.SubjectDao;
 import com.common.JdbcBaseDao;
 @Repository("outlineexecutionDaoforJDBC")

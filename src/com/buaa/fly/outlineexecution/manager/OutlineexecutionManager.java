@@ -182,8 +182,7 @@ public class OutlineexecutionManager {
 						outlineexecutionDao.updateData(item);
 					}
 				}
-				combineVehicleManager.saveCombineVehicle(item
-						.getCombineVehicle());
+				combineVehicleManager.saveCombineVehicle(item.getCombineVehicle());
 			}
 		}
 	}

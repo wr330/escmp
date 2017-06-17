@@ -157,7 +157,7 @@ if(cur){&#xD;
       <Property name="modal">true</Property>
       <Property name="width">800</Property>
       <Property name="caption">试飞大纲执行情况</Property>
-      <Property name="height">500</Property>
+      <Property name="height">700</Property>
       <Buttons>
         <Button>
           <ClientEvent name="onClick">var cur=view.id('dsSubject').getData('!CURRENT_ROOT.#outlineexecution');
@@ -188,6 +188,7 @@ if(cur){
           <Property name="dataSet">dsSubject</Property>
           <Property name="dataPath">!CURRENT_ROOT.#outlineexecution</Property>
           <Property name="dataType">Outlineexecution</Property>
+          <Property name="labelWidth">93</Property>
           <AutoFormElement>
             <Property name="name">project</Property>
             <Property name="property">project.name</Property>
@@ -204,30 +205,46 @@ if(cur){
             <Property name="name">aircraftStruct</Property>
             <Property name="property">aircraftStruct</Property>
             <Property name="editorType">TextArea</Property>
+            <Property name="height">150</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">testMethod</Property>
             <Property name="property">testMethod</Property>
             <Property name="editorType">TextArea</Property>
+            <Property name="height">150</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">testStatus</Property>
             <Property name="property">testStatus</Property>
             <Property name="editorType">TextArea</Property>
+            <Property name="height">150</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">engineState</Property>
             <Property name="property">engineState</Property>
             <Property name="editorType">TextArea</Property>
+            <Property name="height">150</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">outlineFlights</Property>
             <Property name="property">outlineFlights</Property>
             <Property name="editorType">NumberSpinner</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">testFligMaxNum</Property>
+            <Property name="property">testFligMaxNum</Property>
+            <Property name="editorType">NumberSpinner</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">combineFlights</Property>
+            <Property name="property">combineFlights</Property>
+            <Property name="readOnly">true</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
@@ -301,8 +318,8 @@ if(cur){&#xD;
       <Tools/>
     </Dialog>
     <Dialog id="OutlineGraph">
-      <Property name="width">800</Property>
-      <Property name="height">550</Property>
+      <Property name="width">1000</Property>
+      <Property name="height">650</Property>
       <Property name="caption">大纲架次完成图</Property>
       <Property name="icon">url(>skin>common/icons.gif) -240px -40px</Property>
       <Buttons>
@@ -314,17 +331,26 @@ if(cur){&#xD;
         </Button>
       </Buttons>
       <Children>
-        <Container>
-          <Chart id="chartA">
+        <Container layoutConstraint="bottom">
+          <Property name="height">500</Property>
+          <Chart>
+            <Property name="tooltip">
+              <Property name="enabled">true</Property>
+            </Property>
+            <Property name="style">
+              <Property name="color">black</Property>
+              <Property name="backgroundColor">red</Property>
+            </Property>
             <Axes>
               <CategoryAxis>
                 <Property name="dataSet">statisticjiaci</Property>
                 <Property name="properties">name</Property>
+                <Property name="labels">
+                  <Property name="rotation">-45</Property>
+                </Property>
               </CategoryAxis>
               <NumbericAxis>
                 <Property name="min">0</Property>
-                <Property name="max">100</Property>
-                <Property name="steps">10</Property>
                 <Property name="title">架次完成率（%）</Property>
               </NumbericAxis>
             </Axes>
@@ -334,12 +360,11 @@ if(cur){&#xD;
                   <Property name="yProperty">price</Property>
                 </Property>
                 <Property name="dataSet">statisticjiaci</Property>
-                <Property name="title">百分比</Property>
+                <Property name="title">架次完成率：</Property>
                 <Property name="dataLabels">
-                  <Property name="hideOnOverflow">false</Property>
+                  <Property name="labelPadding">-20</Property>
                   <Property name="enabled">true</Property>
                   <Property name="color">black</Property>
-                  <Property name="labelPadding">-20</Property>
                 </Property>
               </Column>
             </Series>
@@ -570,12 +595,22 @@ if(cur){&#xD;
                     <DataColumn name="outlineFlights">
                       <Property name="property">outlineFlights</Property>
                       <Property name="align">left</Property>
-                      <Property name="width">80</Property>
+                      <Property name="width">100</Property>
+                    </DataColumn>
+                    <DataColumn name="testFligMaxNum">
+                      <Property name="property">testFligMaxNum</Property>
+                      <Property name="width">100</Property>
+                      <Property name="align">left</Property>
+                    </DataColumn>
+                    <DataColumn name="combineFlights">
+                      <Property name="property">combineFlights</Property>
+                      <Property name="width">65</Property>
+                      <Property name="align">left</Property>
                     </DataColumn>
                     <DataColumn name="shijijiaci">
                       <Property name="property">shijijiaci</Property>
                       <Property name="align">left</Property>
-                      <Property name="width">80</Property>
+                      <Property name="width">65</Property>
                     </DataColumn>
                     <DataColumn name="testStatus">
                       <Property name="property">testStatus</Property>
@@ -677,7 +712,7 @@ dorado.DataPath.registerInterceptor(&quot;CURRENT_SUBJECT&quot;, function(data) 
       <Property name="modal">true</Property>
       <Property name="width">800</Property>
       <Property name="caption">试飞大纲执行情况</Property>
-      <Property name="height">500</Property>
+      <Property name="height">700</Property>
       <Buttons>
         <Button>
           <ClientEvent name="onClick">view.id('diaShowOutlineexecution').hide();
@@ -709,30 +744,44 @@ dorado.DataPath.registerInterceptor(&quot;CURRENT_SUBJECT&quot;, function(data) 
             <Property name="name">aircraftStruct</Property>
             <Property name="property">aircraftStruct</Property>
             <Property name="editorType">TextArea</Property>
+            <Property name="height">150</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">testMethod</Property>
             <Property name="property">testMethod</Property>
             <Property name="editorType">TextArea</Property>
+            <Property name="height">150</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">testStatus</Property>
             <Property name="property">testStatus</Property>
             <Property name="editorType">TextArea</Property>
+            <Property name="height">150</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">engineState</Property>
             <Property name="property">engineState</Property>
             <Property name="editorType">TextArea</Property>
+            <Property name="height">150</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">outlineFlights</Property>
             <Property name="property">outlineFlights</Property>
             <Property name="editorType">NumberSpinner</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">testFligMaxNum</Property>
+            <Property name="property">testFligMaxNum</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">combineFlights</Property>
+            <Property name="property">combineFlights</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
@@ -751,6 +800,13 @@ dorado.DataPath.registerInterceptor(&quot;CURRENT_SUBJECT&quot;, function(data) 
             <Property name="property">miji</Property>
           </AutoFormElement>
         </AutoForm>
+        <ToolBar>
+          <DataPilot>
+            <Property name="itemCodes">pages</Property>
+            <Property name="dataSet">dsSubject</Property>
+            <Property name="dataPath">!CURRENT_ROOT.#outlineexecution.combineVehicle</Property>
+          </DataPilot>
+        </ToolBar>
         <Panel>
           <Buttons/>
           <Children>

@@ -75,6 +75,7 @@ arg.parameter = parameter;</ClientEvent>
     <PropertyDef name="taskexecution">
       <Property name="dataType">String</Property>
       <Property name="label">执行情况</Property>
+      <Property name="defaultValue">未完成</Property>
     </PropertyDef>
     <PropertyDef name="tasknumber">
       <Property name="dataType">String</Property>
@@ -139,7 +140,7 @@ arg.parameter = parameter;</ClientEvent>
           </Collection>
         </Property>
       </Property>
-      <Property name="defaultValue">0</Property>
+      <Property name="defaultValue">4</Property>
       <Validator type="custom">
         <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
 if (arg.data &lt;= secret) {&#xD;
@@ -150,17 +151,6 @@ else {&#xD;
 }</ClientEvent>
       </Validator>
     </PropertyDef>
-    <Reference name="sfstatistic">
-      <Property name="dataProvider">sfstatisticPR#querySfstatistic</Property>
-      <Property name="pageSize">20</Property>
-      <Property name="dataType">[Sfstatistic]</Property>
-      <Property name="parameter">
-        <Entity>
-          <Property name="taskno">$${this.oid}</Property>
-        </Entity>
-      </Property>
-      <Property name="label">sfstatistic</Property>
-    </Reference>
     <PropertyDef name="taskcontent">
       <Property name="dataType">String</Property>
       <Property name="label">任务单内容</Property>
@@ -173,6 +163,10 @@ else {&#xD;
     <PropertyDef name="bytes">
       <Property name="dataType">String</Property>
       <Property name="label">bytes</Property>
+    </PropertyDef>
+    <PropertyDef name="sfstatistic">
+      <Property name="dataType">Sfstatistic</Property>
+      <Property name="label">sfstatistic</Property>
     </PropertyDef>
   </DataType>
   <DataType name="Sfstatistic" meta="x:426;y:10">
@@ -255,11 +249,6 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
       <Property name="dataType">String</Property>
       <Property name="label">飞行时间</Property>
       <Property name="defaultValue">00:00:00</Property>
-    </PropertyDef>
-    <PropertyDef name="taskNo">
-      <Property name="dataType">Tasklist</Property>
-      <Property name="label">任务单号</Property>
-      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="jiaci">
       <Property name="dataType">Integer</Property>
@@ -463,7 +452,7 @@ if(timeland != null &amp;&amp; timeqifei != null){&#xD;
           </Collection>
         </Property>
       </Property>
-      <Property name="defaultValue">0</Property>
+      <Property name="defaultValue">4</Property>
       <Validator type="custom">
         <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
 if (arg.data &lt;= secret) {&#xD;
@@ -476,8 +465,39 @@ else {&#xD;
     </PropertyDef>
     <PropertyDef name="taskexecution">
       <Property></Property>
-      <Property name="label">完成情况</Property>
+      <Property name="label">任务单完成情况</Property>
+      <Property name="dataType">Integer</Property>
+      <Property name="defaultValue">0</Property>
+      <Property name="mapping">
+        <Property name="mapValues">
+          <Collection>
+            <Entity>
+              <Property name="key">2</Property>
+              <Property name="value">全部完成</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">1</Property>
+              <Property name="value">部分完成</Property>
+            </Entity>
+            <Entity>
+              <Property name="key">0</Property>
+              <Property name="value">全未完成</Property>
+            </Entity>
+          </Collection>
+        </Property>
+      </Property>
     </PropertyDef>
+    <Reference name="tasklist">
+      <Property name="pageSize">20</Property>
+      <Property name="dataType">[Tasklist]</Property>
+      <Property name="parameter">
+        <Entity>
+          <Property name="sfstatistic">$${this.id}</Property>
+        </Entity>
+      </Property>
+      <Property name="label">tasklist</Property>
+      <Property name="dataProvider">tasklistPR#queryTasklist</Property>
+    </Reference>
   </DataType>
   <DataType name="Flightrestrict" meta="x:573;y:10">
     <Property name="creationType">com.buaa.fly.domain.Flightrestrict</Property>
@@ -584,7 +604,7 @@ else {&#xD;
           </Collection>
         </Property>
       </Property>
-      <Property name="defaultValue">0</Property>
+      <Property name="defaultValue">4</Property>
       <Validator type="custom">
         <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
 if (arg.data &lt;= secret) {&#xD;
@@ -697,7 +717,7 @@ arg.parameter = parameter;</ClientEvent>
           </Collection>
         </Property>
       </Property>
-      <Property name="defaultValue">0</Property>
+      <Property name="defaultValue">4</Property>
       <Validator type="custom">
         <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
 if (arg.data &lt;= secret) {&#xD;
@@ -709,12 +729,12 @@ else {&#xD;
       </Validator>
     </PropertyDef>
     <PropertyDef name="inputPers">
-      <Property/>
+      <Property></Property>
       <Property name="dataType">String</Property>
       <Property name="label">录入人</Property>
     </PropertyDef>
     <PropertyDef name="inputPersOid">
-      <Property/>
+      <Property></Property>
       <Property name="label">录入人ID</Property>
       <Property name="dataType">String</Property>
     </PropertyDef>
@@ -776,7 +796,7 @@ else {&#xD;
           </Collection>
         </Property>
       </Property>
-      <Property name="defaultValue">0</Property>
+      <Property name="defaultValue">4</Property>
       <Validator type="custom">
         <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
 if (arg.data &lt;= secret) {&#xD;
@@ -788,12 +808,12 @@ else {&#xD;
       </Validator>
     </PropertyDef>
     <PropertyDef name="inputPers">
-      <Property/>
+      <Property></Property>
       <Property name="dataType">String</Property>
       <Property name="label">录入人</Property>
     </PropertyDef>
     <PropertyDef name="inputPersOid">
-      <Property/>
+      <Property></Property>
       <Property name="dataType">String</Property>
       <Property name="label">录入人ID</Property>
     </PropertyDef>
@@ -994,7 +1014,7 @@ arg.parameter = parameter;</ClientEvent>
     </PropertyDef>
     <PropertyDef name="outlineFlights">
       <Property name="dataType">int</Property>
-      <Property name="label">大纲架次</Property>
+      <Property name="label">大纲架次(最小)</Property>
       <Property name="defaultValue">1</Property>
       <Property name="required">true</Property>
       <Validator type="range">
@@ -1002,9 +1022,17 @@ arg.parameter = parameter;</ClientEvent>
         <Property name="minValueValidateMode">allowEquals</Property>
       </Validator>
     </PropertyDef>
+    <PropertyDef name="testFligMaxNum">
+      <Property name="dataType">Integer</Property>
+      <Property name="label">大纲架次(最大)</Property>
+      <Property name="defaultValue">1</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
     <PropertyDef name="combineFlights">
-      <Property name="dataType">int</Property>
+      <Property name="dataType">Integer</Property>
       <Property name="label">结合架次</Property>
+      <Property name="defaultValue">0</Property>
+      <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="combineSubject">
       <Property></Property>
@@ -1014,18 +1042,22 @@ arg.parameter = parameter;</ClientEvent>
       <Property></Property>
       <Property name="label">飞机构形</Property>
       <Property name="required">true</Property>
+      <Property name="dataType">String</Property>
     </PropertyDef>
     <PropertyDef name="testStatus">
       <Property></Property>
       <Property name="label">试飞状态</Property>
+      <Property name="dataType">String</Property>
     </PropertyDef>
     <PropertyDef name="engineState">
       <Property></Property>
       <Property name="label">发动机状态</Property>
+      <Property name="dataType">String</Property>
     </PropertyDef>
     <PropertyDef name="testMethod">
       <Property></Property>
       <Property name="label">试飞方法</Property>
+      <Property name="dataType">String</Property>
     </PropertyDef>
     <Reference name="combineVehicle">
       <Property name="label">combineVehicle</Property>
@@ -1036,7 +1068,7 @@ arg.parameter = parameter;</ClientEvent>
       </Property>
       <Property name="dataType">[CombineVehicle]</Property>
       <Property name="dataProvider">combineVehiclePR#queryCombineVehicle</Property>
-      <Property name="pageSize">20</Property>
+      <Property name="pageSize">10</Property>
     </Reference>
     <PropertyDef name="shijijiaci">
       <Property name="dataType">Integer</Property>
@@ -1079,7 +1111,7 @@ arg.parameter = parameter;</ClientEvent>
           </Collection>
         </Property>
       </Property>
-      <Property name="defaultValue">0</Property>
+      <Property name="defaultValue">4</Property>
       <Validator type="custom">
         <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
 if (arg.data &lt;= secret) {&#xD;
@@ -1318,7 +1350,7 @@ else {&#xD;
           </Collection>
         </Property>
       </Property>
-      <Property name="defaultValue">0</Property>
+      <Property name="defaultValue">4</Property>
       <Validator type="custom">
         <ClientEvent name="onValidate">var secret = ${loginUser.getMiji()};&#xD;
 if (arg.data &lt;= secret) {&#xD;

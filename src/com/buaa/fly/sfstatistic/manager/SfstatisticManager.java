@@ -15,8 +15,8 @@ import com.bstek.dorado.data.provider.Criteria;
 import com.bstek.dorado.data.provider.Page;
 
 import com.buaa.fly.domain.Sfstatistic;
-import com.buaa.fly.domain.Tasklist;
 import com.buaa.fly.sfstatistic.dao.SfstatisticDao;
+import com.buaa.fly.tasklist.manager.TasklistManager;
 import com.buaa.sys.userOperationLog.manager.UserOperationLogManager;
 import com.common.FileHelper;
 
@@ -27,6 +27,8 @@ public class SfstatisticManager {
 	private SfstatisticDao sfstatisticDao;
 	@Resource	
 	private UserOperationLogManager userOperationLogManager;
+	@Resource
+	private TasklistManager tasklistManager;
 
 	/**
 	 * 分页查询信息，带有criteria 将criteria转换为一个Map
@@ -80,18 +82,19 @@ public class SfstatisticManager {
 					//对用户修改操作进行记录，在用户操作日志表中新增一条记录。
 					userOperationLogManager.recordUserOperationLog(1, myDate, un, ucn,"对飞行统计表修改选定记录");
 				} else if (state.equals(EntityState.DELETED)) {
+					
 					sfstatisticDao.deleteData(item);
 					//对用户删除操作进行记录，在用户操作日志表中新增一条记录。
 					userOperationLogManager.recordUserOperationLog(2, myDate, un, ucn,"对飞行统计表删除选定记录");
 					FileHelper.deleteFile("/Fly_Sfstatistic/" + item.getId());// 删除相关文件
 				} else if (state.equals(EntityState.NONE)) {
-					EntityState tasklistState = EntityUtils.getState(item
-							.getTaskNo());
-
+					
+					/*EntityState tasklistState = EntityUtils.getState(item.getTaskNo());
 					if (tasklistState.equals(EntityState.MODIFIED)) {
 						sfstatisticDao.updateData(item);
-					}
+					}*/
 				}
+				tasklistManager.saveTasklist(item.getTasklist());
 			}
 		}
 

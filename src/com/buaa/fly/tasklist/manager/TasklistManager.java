@@ -3,6 +3,7 @@ package com.buaa.fly.tasklist.manager;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
@@ -29,8 +30,6 @@ public class TasklistManager {
 
 	@Resource
 	private TasklistDao tasklistDao;
-	@Resource
-	private SfstatisticManager sfstatisticManager;
 	@Resource
 	private SfstatisticDao sfstatisticDao;
 	@Resource	
@@ -112,16 +111,16 @@ public class TasklistManager {
 						tasklistDao.updateData(item);
 					}
 				}
-				sfstatisticManager.saveSfstatistic(item.getSfstatistic());
+				
 			}
 		}
 	}
-
+	
 	/**
 	 * 这个方法用来判断在添加时任务单是否已经存在
 	 * 
-	 * @param tasknumber
-	 *            用户输入的任务单号
+	 * @param tasknumber 用户输入的任务单号
+	 *            
 	 */
 	@Expose
 	public String tasklistIsExists(String oid,String tasknumber) {
@@ -141,4 +140,31 @@ public class TasklistManager {
 		}
 	}
 
+	/**
+	 根据前台用户选择的飞行统计记录、所需关联任务单、原来关联的任务单，把所需关联的任务单关联到飞行统计记录
+	 @param parameter Map<String, Object>类型,表示飞行统计记录、所需关联任务单、原来关联的任务单
+	 @throws Exception 
+	 *
+	 */
+	@Expose
+	@SuppressWarnings("unchecked")
+	public void saveTaskSfStatistic(Map<String, Object> parameter) throws Exception {		
+		if (null != parameter && !parameter.isEmpty()) {
+			Collection<Tasklist> pastTasklist = (Collection<Tasklist>) parameter.get("pastTasklist");
+			//清空原来关联的任务单中飞行统计记录
+			for(Tasklist pastTask : pastTasklist){
+				pastTask.setSfstatistic(null);
+				tasklistDao.updateData(pastTask);
+			}
+			
+			Collection<Tasklist> tasklist = (Collection<Tasklist>) parameter.get("tasklist");
+			Sfstatistic sfstatistic = (Sfstatistic) parameter.get("sfstatistic");
+			//所选飞行统计记录关联任务单
+			for(Tasklist task : tasklist){
+				task.setSfstatistic(sfstatistic);
+				tasklistDao.updateData(task);
+			}
+		}		
+		
+	}
 }

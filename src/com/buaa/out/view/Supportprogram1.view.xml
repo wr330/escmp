@@ -656,9 +656,10 @@ view.id('dgHandover').hide();</ClientEvent>
       <Property name="autoOpen">true</Property>
       <DataGrid id="dgSectionChief">
         <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
-var user=view.id(&quot;dsUsers&quot;).getData(&quot;#&quot;);&#xD;
+//var dropDown = view.id('customDropDownUser1');&#xD;
+var user=view.id(&quot;dsUsersPesi&quot;).getData(&quot;#&quot;);&#xD;
 var cur = view.id('dsSupportprogram').getData('#.#handover');&#xD;
-if (user) {&#xD;
+if (user) {	&#xD;
 	cur.set('sectionChief',user.get(&quot;username&quot;));&#xD;
 	dropDown.close(user.get(&quot;cname&quot;));&#xD;
 }</ClientEvent>

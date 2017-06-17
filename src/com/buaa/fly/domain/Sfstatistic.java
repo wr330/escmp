@@ -29,7 +29,6 @@ public class  Sfstatistic implements Serializable {
 	private String ftype ;
 	private Date fdate ;
 	private String id ;
-	private Tasklist taskNo ;
 	private Integer jiaci ;
 	private String config ;
 	private String address ;
@@ -77,7 +76,8 @@ public class  Sfstatistic implements Serializable {
 	private byte[] datablock2 ;
 	private String content ;
 	private Integer miji ;
-	private String taskexecution;
+	private Integer taskexecution;
+	private Collection<Tasklist> tasklist;
 
 	@Column(name="ftype")
 	public String getFtype() {
@@ -100,14 +100,6 @@ public class  Sfstatistic implements Serializable {
 	}
 	public void setId(String id) {
 		this.id=id;
-	}
-	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "TaskNo")
-    public Tasklist getTaskNo() {
-		return taskNo;
-	}
-	public void setTaskNo(Tasklist taskNo) {
-		this.taskNo = taskNo;
 	}
 	
 	@Column(name="JiaCi")
@@ -441,11 +433,18 @@ public class  Sfstatistic implements Serializable {
     	return content;
 	}
     @Column(name = "TaskExecution")
-	public String getTaskexecution() {
+	public Integer getTaskexecution() {
 		return taskexecution;
 	}
-	public void setTaskexecution(String taskexecution) {
+	public void setTaskexecution(Integer taskexecution) {
 		this.taskexecution = taskexecution;
+	}
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "sfstatistic")
+	public Collection<Tasklist> getTasklist() {
+		return tasklist;
+	}
+	public void setTasklist(Collection<Tasklist> tasklist) {
+		this.tasklist = tasklist;
 	}
 
 }

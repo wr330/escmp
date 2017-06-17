@@ -112,7 +112,6 @@ public class SFBaoXianService extends JdbcBaseDao {
 					+ "', overload = '" + str[5] + "', Noverload = '" + str[6] 
 					+ "' where ftype='" + ftype + "'";
 			this.getJdbcTemplate().update(sql);
-		}		
-		
+		}				
 	}
 }

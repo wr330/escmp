@@ -872,7 +872,7 @@ if (node ) {&#xD;
     </AjaxAction>
     <ImportExcelAction id="importExcelActionDemo">
       <Property name="showImportData">true</Property>
-      <Property name="bigData">true</Property>
+      <Property name="bigData">false</Property>
       <Property name="startRow">2</Property>
     </ImportExcelAction>
     <Export2ReportAction id="export2ReportAction1">

@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -28,11 +30,11 @@ public class Tasklist implements Serializable {
 	private String aircrafttype;
 	private String taskcontent;
 	private String subject;
-	private Integer miji;
-	private Collection<Sfstatistic> sfstatistic;
+	private Integer miji;	
 	private byte[] datablock;
 	private String filename;
 	private Integer bytes;
+	private Sfstatistic sfstatistic;
 
 	@Column(name = "Datablock")
 	public byte[] getDatablock() {
@@ -124,13 +126,16 @@ public class Tasklist implements Serializable {
 	public void setMiji(Integer miji) {
 		this.miji = miji;
 	}
-
-	@OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, mappedBy = "taskNo")
-	public Collection<Sfstatistic> getSfstatistic() {
+	
+	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinColumn(name = "FlyStatistic")
+	public Sfstatistic getSfstatistic() {
 		return sfstatistic;
 	}
 
-	public void setSfstatistic(Collection<Sfstatistic> sfstatistic) {
+	public void setSfstatistic(Sfstatistic sfstatistic) {
 		this.sfstatistic = sfstatistic;
 	}
+
+	
 }

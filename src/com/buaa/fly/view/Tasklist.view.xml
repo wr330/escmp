@@ -54,7 +54,7 @@
       <Property name="parameter">
         <Entity>
           <Property name="parentnode"></Property>
-          <Property name="ftype"/>
+          <Property name="ftype"></Property>
         </Entity>
       </Property>
     </DataSet>
@@ -427,7 +427,7 @@ if(returnValue){&#xD;
     link.set({&#xD;
 		href: href,&#xD;
 		visible: true&#xD;
-	});&#xD;
+	});	&#xD;
 }&#xD;
 else{&#xD;
     link.set(&quot;visible&quot;,false);&#xD;
@@ -536,7 +536,7 @@ if(cur){
     </Dialog>
     <Dialog id="diaSeeTasklist">
       <Property name="caption">试飞任务单记录</Property>
-      <Property name="width">480</Property>
+      <Property name="width">800</Property>
       <Buttons>
         <Button>
           <ClientEvent name="onClick">view.id('diaSeeTasklist').hide();  </ClientEvent>

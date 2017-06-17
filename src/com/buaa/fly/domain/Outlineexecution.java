@@ -37,7 +37,7 @@ public class Outlineexecution implements Serializable {
 	private String parentnode;
 	private String subject;
 	private int outlineFlights;
-	private int combineFlights;
+	private Integer combineFlights;
 	private String combineSubject;
 	private String aircraftStruct;
 	private String testStatus;
@@ -47,6 +47,7 @@ public class Outlineexecution implements Serializable {
 	private Integer jiaci;
 	private Integer shijijiaci;
 	private Subject project;
+	private Integer testFligMaxNum;
 	private List<Outlineexecution> children;
 	private Collection<CombineVehicle> combineVehicle;
 
@@ -124,16 +125,16 @@ public class Outlineexecution implements Serializable {
 		this.outlineFlights = outlineFlights;
 	}
 
-	@Column(name = "combineFlights")
-	public int getCombineFlights() {
+	@Column(name = "CombineFlights")
+	public Integer getCombineFlights() {
 		return combineFlights;
 	}
 
-	public void setCombineFlights(int combineFlights) {
+	public void setCombineFlights(Integer combineFlights) {
 		this.combineFlights = combineFlights;
 	}
 
-	@Column(name = "combineSubject")
+	@Column(name = "CombineSubject")
 	public String getCombineSubject() {
 		return combineSubject;
 	}
@@ -219,17 +220,26 @@ public class Outlineexecution implements Serializable {
 		return jiaci;
 	}
 
-	@Column(name = "shijijiaci")
 	public void setJiaci(Integer jiaci) {
 		this.jiaci = jiaci;
 	}
-
+	
+	@Column(name = "shijijiaci")
 	public Integer getShijijiaci() {
 		return shijijiaci;
 	}
 
 	public void setShijijiaci(Integer shijijiaci) {
 		this.shijijiaci = shijijiaci;
+	}
+
+	@Column(name = "TestFligMaxNum")
+	public Integer getTestFligMaxNum() {
+		return testFligMaxNum;
+	}
+
+	public void setTestFligMaxNum(Integer testFligMaxNum) {
+		this.testFligMaxNum = testFligMaxNum;
 	}
 
 }

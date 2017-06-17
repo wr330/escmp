@@ -26,6 +26,7 @@ import com.buaa.fly.domain.Sfstatistic;
 import com.buaa.fly.domain.Subject;
 import com.buaa.fly.domain.Tasklist;
 import com.buaa.fly.subject.manager.SubjectManager;
+import com.buaa.fly.tasklist.dao.TasklistDao;
 
 @Repository("sfstatisticDao")
 public class SfstatisticDao extends HibernateBaseDao {
@@ -33,6 +34,8 @@ public class SfstatisticDao extends HibernateBaseDao {
 	private QueryUserData userService;
 	@Resource
 	private SubjectManager subjectManager;
+	@Resource
+	private TasklistDao tasklistDao;
 
 	/**
 	 * 同时也支持普通类型查询，在数据类型和日期类型支持区间查询
@@ -89,15 +92,16 @@ public class SfstatisticDao extends HibernateBaseDao {
 			Map<String, Object> parameter) throws Exception {
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		Collection<Subject> dataItems = subjectManager.querySubject(parameter);
-		for (Subject item : dataItems) {
+		for (Subject item : dataItems) {			
 			HashMap<String, Object> map = new HashMap<String, Object>();
-			map.put("count", this.querynum(item.getOid()));
+			//map.put("count", this.querynum(item.getOid()));
+			map.put("count", tasklistDao.queryTaskbySubject(item.getName()));
 			map.put("name", item.getName());
 			list.add(map);
 		}
 		return list;
 	}
-
+	
 	/**
 	 * 依据飞行统计，根据试飞科目对架次进行统计
 	 * 

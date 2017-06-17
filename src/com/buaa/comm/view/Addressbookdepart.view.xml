@@ -513,7 +513,7 @@ view.id('uaAddressbook').execute(function(){&#xD;
     </Dialog>
     <ImportExcelAction id="importExcelActionDemo">
       <Property name="showImportData">true</Property>
-      <Property name="bigData">true</Property>
+      <Property name="bigData">false</Property>
       <Property name="startRow">2</Property>
     </ImportExcelAction>
     <AjaxAction id="ajaxActionCheckChildren">

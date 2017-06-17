@@ -283,7 +283,7 @@
 <Prop name="tabPlacement" defaultValue="left" enumValues="left,right"/>
 <Prop name="verticalText" type="boolean"/></Props><Children><Child rule="Tab" name="Tab" aggregated="true" public="false"></Child></Children></Rule><Rule name="ToolBar" parents="Control_1" label="ToolBar" type="com.bstek.dorado.view.widget.base.toolbar.ToolBar" scope="public" sortFactor="2022" category="General" icon="/com/bstek/dorado/view/widget/base/toolbar/ToolBar.png" clientTypes="desktop"><Props>
 <Prop name="fixRight" type="boolean"/>
-<Prop name="showMenuOnHover" defaultValue="false" type="boolean"/></Props><Children><Child rule="Separator" name="Separator" aggregated="true"></Child><Child rule="MenuButton" name="MenuButton" aggregated="true"></Child><Child rule="Button_1" name="ToolBarButton" aggregated="true"></Child><Child rule="Fill" name="Fill" aggregated="true"></Child><Child rule="Label_1" name="ToolBarLabel" aggregated="true"></Child><Child rule="Control_1" name="Items" aggregated="true"></Child></Children></Rule><Rule name="SplitPanel" parents="Control_1" label="SplitPanel" type="com.bstek.dorado.view.widget.base.SplitPanel" scope="public" sortFactor="2023" category="General" icon="/com/bstek/dorado/view/widget/base/SplitPanel.png" clientTypes="desktop"><Props>
+<Prop name="showMenuOnHover" defaultValue="false" type="boolean"/></Props><Children><Child rule="Label_1" name="ToolBarLabel" aggregated="true"></Child><Child rule="MenuButton" name="MenuButton" aggregated="true"></Child><Child rule="Button_1" name="ToolBarButton" aggregated="true"></Child><Child rule="Separator_1" name="Separator" aggregated="true"></Child><Child rule="Fill" name="Fill" aggregated="true"></Child><Child rule="Control_1" name="Items" aggregated="true"></Child></Children></Rule><Rule name="SplitPanel" parents="Control_1" label="SplitPanel" type="com.bstek.dorado.view.widget.base.SplitPanel" scope="public" sortFactor="2023" category="General" icon="/com/bstek/dorado/view/widget/base/SplitPanel.png" clientTypes="desktop"><Props>
 <Prop name="collapseable" defaultValue="true" type="boolean"/>
 <Prop name="collapsed" type="boolean"/>
 <Prop name="direction" defaultValue="left" highlight="1" enumValues="left,top,right,bottom"/>
@@ -1026,7 +1026,7 @@
 <ClientEvent name="onTabContextMenu" parameters="self,arg"/>
 <ClientEvent name="onTabRemove" parameters="self,arg"/>
 <ClientEvent name="beforeTabChange" parameters="self,arg"/>
-<ClientEvent name="onTabChange" parameters="self,arg"/></ClientEvents></Rule><Rule name="Separator" parents="Control_1" label="Separator" type="com.bstek.dorado.view.widget.base.toolbar.Separator" scope="protected" category="ToolBar" icon="/com/bstek/dorado/view/widget/base/toolbar/Separator.png" clientTypes="desktop"></Rule><Rule name="MenuButton" parents="Button" label="MenuButton" nodeName="MenuButton" type="com.bstek.dorado.view.widget.base.toolbar.MenuButton" scope="protected" category="ToolBar" icon="/com/bstek/dorado/view/widget/base/toolbar/MenuButton.png" clientTypes="desktop"><Props>
+<ClientEvent name="onTabChange" parameters="self,arg"/></ClientEvents></Rule><Rule name="Label_1" parents="Label" label="Label" nodeName="ToolBarLabel" type="com.bstek.dorado.view.widget.base.toolbar.Label" scope="protected" category="ToolBar" icon="/com/bstek/dorado/view/widget/base/toolbar/Label.png" clientTypes="desktop"></Rule><Rule name="MenuButton" parents="Button" label="MenuButton" nodeName="MenuButton" type="com.bstek.dorado.view.widget.base.toolbar.MenuButton" scope="protected" category="ToolBar" icon="/com/bstek/dorado/view/widget/base/toolbar/MenuButton.png" clientTypes="desktop"><Props>
 <Prop name="hideMenuOnMouseLeave" type="boolean"/>
 <Prop name="hideMenuOnMouseLeaveDelay" defaultValue="300" type="int"/>
 <Prop name="menu" deprecated="true" visible="false"/>
@@ -1040,14 +1040,14 @@
 <Prop name="tip"/>
 <Prop name="userData" type="java.lang.Object"/>
 <Prop name="visible" defaultValue="true" type="boolean"/>
-<Prop name="width"/></Props></Rule><Rule name="ControlMenuItem" parents="TextMenuItem" label="ControlMenuItem" type="com.bstek.dorado.view.widget.base.menu.ControlMenuItem" scope="public" icon="/com/bstek/dorado/view/widget/base/menu/ControlMenuItem.png" clientTypes="desktop"><Children><Child rule="FloatControl" name="Control"></Child></Children></Rule><Rule name="TextMenuItem" parents="BaseMenuItem" abstract="true" type="com.bstek.dorado.view.widget.base.menu.TextMenuItem" scope="public"><Props>
+<Prop name="width"/></Props></Rule><Rule name="TextMenuItem" parents="BaseMenuItem" abstract="true" type="com.bstek.dorado.view.widget.base.menu.TextMenuItem" scope="public"><Props>
 <Prop name="action" reference="Action:id"/>
 <Prop name="caption"/>
 <Prop name="disabled" type="boolean"/>
 <Prop name="hideOnClick" defaultValue="true" type="boolean"/>
 <Prop name="icon"/>
 <Prop name="iconClass"/></Props><ClientEvents>
-<ClientEvent name="onClick" parameters="self,arg"/></ClientEvents></Rule><Rule name="FloatControl" abstract="true" type="com.bstek.dorado.view.widget.FloatControl" scope="public"><Props>
+<ClientEvent name="onClick" parameters="self,arg"/></ClientEvents></Rule><Rule name="MenuItem" parents="TextMenuItem" label="MenuItem" type="com.bstek.dorado.view.widget.base.menu.MenuItem" scope="public" icon="/com/bstek/dorado/view/widget/base/menu/MenuItem.png" clientTypes="desktop"><Children><Child rule="BaseMenuItem" name="Items" aggregated="true"></Child></Children></Rule><Rule name="Separator" parents="BaseMenuItem" label="Separator" type="com.bstek.dorado.view.widget.base.menu.Separator" scope="public" icon="/com/bstek/dorado/view/widget/base/menu/Separator.png" clientTypes="desktop,touch"></Rule><Rule name="ControlMenuItem" parents="TextMenuItem" label="ControlMenuItem" type="com.bstek.dorado.view.widget.base.menu.ControlMenuItem" scope="public" icon="/com/bstek/dorado/view/widget/base/menu/ControlMenuItem.png" clientTypes="desktop"><Children><Child rule="FloatControl" name="Control"></Child></Children></Rule><Rule name="FloatControl" abstract="true" type="com.bstek.dorado.view.widget.FloatControl" scope="public"><Props>
 <Prop name="align" enumValues="left,innerleft,center,innerright,top" visible="false"/>
 <Prop name="anchorTarget" visible="false"/>
 <Prop name="animateTarget" visible="false"/>
@@ -1071,10 +1071,10 @@
 <Prop name="vAlign" enumValues="top,innertop,center,innerbottom,bottom" visible="false"/></Props></Rule><Rule name="CheckableMenuItem" parents="MenuItem" label="CheckableMenuItem" type="com.bstek.dorado.view.widget.base.menu.CheckableMenuItem" scope="public" icon="/com/bstek/dorado/view/widget/base/menu/CheckableMenuItem.png" clientTypes="desktop"><Props>
 <Prop name="checked" type="boolean"/>
 <Prop name="group"/></Props><ClientEvents>
-<ClientEvent name="onCheckedChange" parameters="self,arg"/></ClientEvents></Rule><Rule name="MenuItem" parents="TextMenuItem" label="MenuItem" type="com.bstek.dorado.view.widget.base.menu.MenuItem" scope="public" icon="/com/bstek/dorado/view/widget/base/menu/MenuItem.png" clientTypes="desktop"><Children><Child rule="BaseMenuItem" name="Items" aggregated="true"></Child></Children></Rule><Rule name="Separator_1" parents="BaseMenuItem" label="Separator" type="com.bstek.dorado.view.widget.base.menu.Separator" scope="public" icon="/com/bstek/dorado/view/widget/base/menu/Separator.png" clientTypes="desktop,touch"></Rule><Rule name="Button_1" parents="Button" label="ToolBarButton" nodeName="ToolBarButton" type="com.bstek.dorado.view.widget.base.toolbar.Button" scope="protected" category="ToolBar" icon="/com/bstek/dorado/view/widget/base/toolbar/Button.png" clientTypes="desktop"><Props>
+<ClientEvent name="onCheckedChange" parameters="self,arg"/></ClientEvents></Rule><Rule name="Button_1" parents="Button" label="ToolBarButton" nodeName="ToolBarButton" type="com.bstek.dorado.view.widget.base.toolbar.Button" scope="protected" category="ToolBar" icon="/com/bstek/dorado/view/widget/base/toolbar/Button.png" clientTypes="desktop"><Props>
 <Prop name="hideMenuOnMouseLeave" type="boolean"/>
 <Prop name="hideMenuOnMouseLeaveDelay" defaultValue="300" type="int"/>
-<Prop name="showMenuOnHover" defaultValue="false" type="boolean"/></Props></Rule><Rule name="Fill" parents="Control_1" label="Fill" type="com.bstek.dorado.view.widget.base.toolbar.Fill" scope="protected" category="ToolBar" icon="/com/bstek/dorado/view/widget/base/toolbar/Fill.png" clientTypes="desktop"></Rule><Rule name="Label_1" parents="Label" label="Label" nodeName="ToolBarLabel" type="com.bstek.dorado.view.widget.base.toolbar.Label" scope="protected" category="ToolBar" icon="/com/bstek/dorado/view/widget/base/toolbar/Label.png" clientTypes="desktop"></Rule><Rule name="Section" label="Section" type="com.bstek.dorado.view.widget.base.accordion.Section" scope="public" icon="/com/bstek/dorado/view/widget/base/accordion/Section.png"><Props>
+<Prop name="showMenuOnHover" defaultValue="false" type="boolean"/></Props></Rule><Rule name="Separator_1" parents="Control_1" label="Separator" type="com.bstek.dorado.view.widget.base.toolbar.Separator" scope="protected" category="ToolBar" icon="/com/bstek/dorado/view/widget/base/toolbar/Separator.png" clientTypes="desktop"></Rule><Rule name="Fill" parents="Control_1" label="Fill" type="com.bstek.dorado.view.widget.base.toolbar.Fill" scope="protected" category="ToolBar" icon="/com/bstek/dorado/view/widget/base/toolbar/Fill.png" clientTypes="desktop"></Rule><Rule name="Section" label="Section" type="com.bstek.dorado.view.widget.base.accordion.Section" scope="public" icon="/com/bstek/dorado/view/widget/base/accordion/Section.png"><Props>
 <Prop name="caption"/>
 <Prop name="className"/>
 <Prop name="disabled" type="boolean"/>
@@ -1155,7 +1155,14 @@
 <Prop name="visible" defaultValue="true" type="boolean"/></Props><ClientEvents>
 <ClientEvent name="onRenderHeaderCell" parameters="self,arg"/>
 <ClientEvent name="onHeaderClick" parameters="self,arg"/>
-<ClientEvent name="onGetCellEditor" parameters="self,arg"/></ClientEvents></Rule><Rule name="DataColumn" parents="AbstractDataColumn" label="DataColumn" type="com.bstek.dorado.view.widget.grid.DataColumn" scope="public" icon="/com/bstek/dorado/view/widget/grid/DataColumn.png" labelProperty="name,property"><Props>
+<ClientEvent name="onGetCellEditor" parameters="self,arg"/></ClientEvents></Rule><Rule name="RowNumColumn" parents="AbstractDataColumn" label="RowNumColumn" type="com.bstek.dorado.view.widget.grid.RowNumColumn" scope="public" icon="/com/bstek/dorado/view/widget/grid/RowNumColumn.png"></Rule><Rule name="AbstractDataColumn" parents="Column" abstract="true" type="com.bstek.dorado.view.widget.grid.AbstractDataColumn" scope="public"><Props>
+<Prop name="filterBarRenderer"/>
+<Prop name="footerRenderer"/>
+<Prop name="renderer"/>
+<Prop name="resizeable" defaultValue="true" type="boolean"/>
+<Prop name="width"/></Props><ClientEvents>
+<ClientEvent name="onRenderFooterCell" parameters="self,arg"/>
+<ClientEvent name="onRenderCell" parameters="self,arg"/></ClientEvents></Rule><Rule name="ColumnGroup" parents="Column" label="ColumnGroup" type="com.bstek.dorado.view.widget.grid.ColumnGroup" scope="public" icon="/com/bstek/dorado/view/widget/grid/ColumnGroup.png"><Children><Child rule="Column" name="Columns" aggregated="true"></Child></Children></Rule><Rule name="DataColumn" parents="AbstractDataColumn" label="DataColumn" type="com.bstek.dorado.view.widget.grid.DataColumn" scope="public" icon="/com/bstek/dorado/view/widget/grid/DataColumn.png" labelProperty="name,property"><Props>
 <Prop name="align" enumValues="left,center,right"/>
 <Prop name="dataType" type="com.bstek.dorado.data.type.DataType"/>
 <Prop name="defaultFilterOperator"/>
@@ -1170,14 +1177,7 @@
 <Prop name="summaryType" enumValues="sum,average,count,max,min"/>
 <Prop name="trigger" enumValues="triggerClear,autoMappingDropDown1,autoMappingDropDown2,autoOpenMappingDropDown1,autoOpenMappingDropDown2,defaultDateDropDown,defaultDateTimeDropDown,defaultYearMonthDropDown,defaultYearDropDown,defaultMonthDropDown" reference="Trigger:id"/>
 <Prop name="typeFormat"/>
-<Prop name="wrappable" type="boolean"/></Props><Children><Child name="Editor" fixed="true"><Rule name="Wrapper.Editor" label="Editor" nodeName="Editor" scope="public" icon="/com/bstek/dorado/view/widget/grid/Editor.png"><Children><Child rule="Control_1" name="Editor"></Child></Children></Rule></Child></Children></Rule><Rule name="AbstractDataColumn" parents="Column" abstract="true" type="com.bstek.dorado.view.widget.grid.AbstractDataColumn" scope="public"><Props>
-<Prop name="filterBarRenderer"/>
-<Prop name="footerRenderer"/>
-<Prop name="renderer"/>
-<Prop name="resizeable" defaultValue="true" type="boolean"/>
-<Prop name="width"/></Props><ClientEvents>
-<ClientEvent name="onRenderFooterCell" parameters="self,arg"/>
-<ClientEvent name="onRenderCell" parameters="self,arg"/></ClientEvents></Rule><Rule name="RowSelectorColumn" parents="AbstractDataColumn" label="RowSelectorColumn" type="com.bstek.dorado.view.widget.grid.RowSelectorColumn" scope="public" icon="/com/bstek/dorado/view/widget/grid/RowSelectorColumn.png"></Rule><Rule name="IndicatorColumn" parents="AbstractDataColumn" label="IndicatorColumn" type="com.bstek.dorado.view.widget.grid.IndicatorColumn" scope="public" icon="/com/bstek/dorado/view/widget/grid/IndicatorColumn.png"></Rule><Rule name="RowNumColumn" parents="AbstractDataColumn" label="RowNumColumn" type="com.bstek.dorado.view.widget.grid.RowNumColumn" scope="public" icon="/com/bstek/dorado/view/widget/grid/RowNumColumn.png"></Rule><Rule name="ColumnGroup" parents="Column" label="ColumnGroup" type="com.bstek.dorado.view.widget.grid.ColumnGroup" scope="public" icon="/com/bstek/dorado/view/widget/grid/ColumnGroup.png"><Children><Child rule="Column" name="Columns" aggregated="true"></Child></Children></Rule><Rule name="AbstractList" parents="Control_1" abstract="true" type="com.bstek.dorado.view.widget.list.AbstractList" scope="protected"><Props>
+<Prop name="wrappable" type="boolean"/></Props><Children><Child name="Editor" fixed="true"><Rule name="Wrapper.Editor" label="Editor" nodeName="Editor" scope="public" icon="/com/bstek/dorado/view/widget/grid/Editor.png"><Children><Child rule="Control_1" name="Editor"></Child></Children></Rule></Child></Children></Rule><Rule name="RowSelectorColumn" parents="AbstractDataColumn" label="RowSelectorColumn" type="com.bstek.dorado.view.widget.grid.RowSelectorColumn" scope="public" icon="/com/bstek/dorado/view/widget/grid/RowSelectorColumn.png"></Rule><Rule name="IndicatorColumn" parents="AbstractDataColumn" label="IndicatorColumn" type="com.bstek.dorado.view.widget.grid.IndicatorColumn" scope="public" icon="/com/bstek/dorado/view/widget/grid/IndicatorColumn.png"></Rule><Rule name="AbstractList" parents="Control_1" abstract="true" type="com.bstek.dorado.view.widget.list.AbstractList" scope="protected"><Props>
 <Prop name="allowNoCurrent" type="boolean"/>
 <Prop name="dragMode" defaultValue="item" enumValues="item,control,itemOrControl"/>
 <Prop name="dropMode" defaultValue="insertItems" enumValues="onControl,onItem,insertItems,onOrInsertItems,onAnyWhere"/>
@@ -1321,14 +1321,12 @@
 <Prop name="icon32"/>
 <Prop name="icon48"/>
 <Prop name="icon64"/>
-<Prop name="id"/></Props></Rule><Rule name="DialogApp" parents="AbstractControlApp" label="DialogApp" type="com.bstek.dorado.desktop.DialogApp" scope="public" icon="/com/bstek/dorado/desktop/DialogApp.png"><Props>
-<Prop name="showTaskButton" defaultValue="true" type="boolean"/>
-<Prop name="taskButtonTip"/></Props><Children><Child rule="Dialog" name="Control"></Child></Children></Rule><Rule name="AbstractControlApp" parents="App" abstract="true" type="com.bstek.dorado.desktop.AbstractControlApp" scope="public"></Rule><Rule name="WidgetApp" parents="AbstractControlApp" label="WidgetApp" type="com.bstek.dorado.desktop.WidgetApp" scope="public" icon="/com/bstek/dorado/desktop/WidgetApp.png"><Props>
+<Prop name="id"/></Props></Rule><Rule name="WidgetApp" parents="AbstractControlApp" label="WidgetApp" type="com.bstek.dorado.desktop.WidgetApp" scope="public" icon="/com/bstek/dorado/desktop/WidgetApp.png"><Props>
 <Prop name="align" enumValues="left,innerleft,center,innerright,top"/>
 <Prop name="offsetLeft" type="int"/>
 <Prop name="offsetTop" type="int"/>
 <Prop name="renderTarget" defaultValue="desktop" enumValues="shell,desktop"/>
-<Prop name="vAlign" enumValues="top,innertop,center,innerbottom,bottom"/></Props><Children><Child rule="Control_1" name="Control"></Child></Children></Rule><Rule name="IFrameApp" parents="DialogApp" label="IFrameApp" type="com.bstek.dorado.desktop.IFrameApp" scope="public" icon="/com/bstek/dorado/desktop/IFrameApp.png"><Props>
+<Prop name="vAlign" enumValues="top,innertop,center,innerbottom,bottom"/></Props><Children><Child rule="Control_1" name="Control"></Child></Children></Rule><Rule name="AbstractControlApp" parents="App" abstract="true" type="com.bstek.dorado.desktop.AbstractControlApp" scope="public"></Rule><Rule name="IFrameApp" parents="DialogApp" label="IFrameApp" type="com.bstek.dorado.desktop.IFrameApp" scope="public" icon="/com/bstek/dorado/desktop/IFrameApp.png"><Props>
 <Prop name="center" defaultValue="true" type="boolean"/>
 <Prop name="height" type="int"/>
 <Prop name="left" type="int"/>
@@ -1342,20 +1340,22 @@
 <Prop name="modal" highlight="1" type="boolean"/>
 <Prop name="path"/>
 <Prop name="top" type="int"/>
-<Prop name="width" type="int"/></Props></Rule><Rule name="AbstractDesktop" parents="Control_1" abstract="true" type="com.bstek.dorado.desktop.AbstractDesktop" scope="protected"><Props>
+<Prop name="width" type="int"/></Props></Rule><Rule name="DialogApp" parents="AbstractControlApp" label="DialogApp" type="com.bstek.dorado.desktop.DialogApp" scope="public" icon="/com/bstek/dorado/desktop/DialogApp.png"><Props>
+<Prop name="showTaskButton" defaultValue="true" type="boolean"/>
+<Prop name="taskButtonTip"/></Props><Children><Child rule="Dialog" name="Control"></Child></Children></Rule><Rule name="AbstractDesktop" parents="Control_1" abstract="true" type="com.bstek.dorado.desktop.AbstractDesktop" scope="protected"><Props>
 <Prop name="autoArrange" type="boolean"/>
 <Prop name="orientation" defaultValue="vertical" enumValues="horizontal,vertical"/></Props><ClientEvents>
-<ClientEvent name="onShortcutContextMenu" parameters="self,arg"/></ClientEvents></Rule><Rule name="DesktopCarousel" parents="AbstractDesktop" label="DesktopCarousel" type="com.bstek.dorado.desktop.DesktopCarousel" scope="public" category="Advance" icon="/com/bstek/dorado/desktop/DesktopCarousel.png" clientTypes="desktop"><Props>
-<Prop name="switcherPosition" defaultValue="top" enumValues="top,bottom"/></Props><ClientEvents>
-<ClientEvent name="onCurrentChange" parameters="self,arg"/>
-<ClientEvent name="beforeCurrentChange" parameters="self,arg"/></ClientEvents><Children><Child rule="Desktop" name="Controls" aggregated="true"></Child></Children></Rule><Rule name="Desktop" parents="AbstractDesktop" label="Desktop" type="com.bstek.dorado.desktop.Desktop" scope="public" category="Advance" icon="/com/bstek/dorado/desktop/Desktop.png" clientTypes="desktop"><Props>
+<ClientEvent name="onShortcutContextMenu" parameters="self,arg"/></ClientEvents></Rule><Rule name="Desktop" parents="AbstractDesktop" label="Desktop" type="com.bstek.dorado.desktop.Desktop" scope="public" category="Advance" icon="/com/bstek/dorado/desktop/Desktop.png" clientTypes="desktop"><Props>
 <Prop name="gridPadding" defaultValue="5" type="java.lang.Integer"/>
 <Prop name="iconSize" enumValues="small,medium,big"/>
 <Prop name="navtip"/></Props><Children><Child rule="Shortcut" name="Items" aggregated="true"></Child></Children></Rule><Rule name="Shortcut" label="Shortcut" type="com.bstek.dorado.desktop.Shortcut" scope="public" icon="/com/bstek/dorado/desktop/Shortcut.png"><Props>
 <Prop name="appId"/>
 <Prop name="caption"/>
 <Prop name="icon"/>
-<Prop name="iconClass"/></Props></Rule><Rule name="Taskbar" parents="Control_1" label="Taskbar" type="com.bstek.dorado.desktop.Taskbar" scope="public" category="Advance" icon="/com/bstek/dorado/desktop/Taskbar.png" clientTypes="desktop"><Props>
+<Prop name="iconClass"/></Props></Rule><Rule name="DesktopCarousel" parents="AbstractDesktop" label="DesktopCarousel" type="com.bstek.dorado.desktop.DesktopCarousel" scope="public" category="Advance" icon="/com/bstek/dorado/desktop/DesktopCarousel.png" clientTypes="desktop"><Props>
+<Prop name="switcherPosition" defaultValue="top" enumValues="top,bottom"/></Props><ClientEvents>
+<ClientEvent name="onCurrentChange" parameters="self,arg"/>
+<ClientEvent name="beforeCurrentChange" parameters="self,arg"/></ClientEvents><Children><Child rule="Desktop" name="Controls" aggregated="true"></Child></Children></Rule><Rule name="Taskbar" parents="Control_1" label="Taskbar" type="com.bstek.dorado.desktop.Taskbar" scope="public" category="Advance" icon="/com/bstek/dorado/desktop/Taskbar.png" clientTypes="desktop"><Props>
 <Prop name="showTimeLabel" defaultValue="true" type="boolean"/>
 <Prop name="timeLabelFormat" defaultValue="H:i"/></Props><ClientEvents>
 <ClientEvent name="onTaskButtonContextMenu" parameters="self,arg"/></ClientEvents><Children><Child name="QuickButtons" fixed="true"><Rule name="Wrapper.QuickButtons" label="QuickButtons" nodeName="QuickButtons" scope="public" icon="/com/bstek/dorado/desktop/Buttons.png"><Children><Child rule="QuickButton" name="QuickButtons" aggregated="true"></Child></Children></Rule></Child><Child name="StartButton" fixed="true"><Rule name="Wrapper.StartButton" label="StartButton" nodeName="StartButton" scope="public" icon="/com/bstek/dorado/desktop/StartButton.png"><Children><Child rule="SimpleButton" name="StartButton"></Child></Children></Rule></Child><Child name="TaskButtons" fixed="true"><Rule name="Wrapper.TaskButtons" label="TaskButtons" nodeName="TaskButtons" scope="public" icon="/com/bstek/dorado/desktop/Buttons.png"><Children><Child rule="TaskButton" name="TaskButtons" aggregated="true"></Child></Children></Rule></Child><Child name="TrayButtons" fixed="true"><Rule name="Wrapper.TrayButtons" label="TrayButtons" nodeName="TrayButtons" scope="public" icon="/com/bstek/dorado/desktop/Buttons.png"><Children><Child rule="SimpleButton" name="TrayButtons" aggregated="true"></Child></Children></Rule></Child></Children></Rule><Rule name="QuickButton" parents="SimpleIconButton" label="SimpleIconButton" type="com.bstek.dorado.desktop.QuickButton" scope="protected"><Props>
@@ -1397,22 +1397,7 @@
 <Prop name="color"/>
 <Prop name="fontSize" type="java.lang.Integer"/></Prop></Props><ClientEvents>
 <ClientEvent name="onGetBindingDataType" parameters="self,arg"/>
-<ClientEvent name="onGetBindingData" parameters="self,arg"/></ClientEvents></Rule><Rule name="CategoryAxis" parents="Axis" label="CategoryAxis" type="com.bstek.dorado.xchart.axis.CategoryAxis" scope="public" icon="/com/bstek/dorado/xchart/axis/CategoryAxis.png"><Props>
-<Prop name="categories" type="[Ljava.lang.String;"/>
-<Prop name="labelProperty" highlight="1"/>
-<Prop name="properties" deprecated="true"/><Prop name="style" type="com.bstek.dorado.xchart.axis.AxisStyle" compositeType="Fixed">
-<Prop name="lineColor"/>
-<Prop name="lineWidth" type="java.lang.Integer"/></Prop>
-<Prop name="tickmarkPlacement" enumValues="between,on"/></Props></Rule><Rule name="RadarAxis" parents="Axis" label="RadarAxis" type="com.bstek.dorado.xchart.axis.RadarAxis" scope="public" icon="/com/bstek/dorado/xchart/axis/RadarAxis.png"><Props>
-<Prop name="categories" type="[Ljava.lang.String;"/>
-<Prop name="labelFormat"/>
-<Prop name="labelProperty" highlight="1"/>
-<Prop name="max" highlight="1" type="java.lang.Double"/>
-<Prop name="min" highlight="1" type="java.lang.Double"/>
-<Prop name="size" type="java.lang.Double"/>
-<Prop name="steps" type="java.lang.Double"/>
-<Prop name="tickmarkPlacement" enumValues="between,on"/>
-<Prop name="valueFormat"/></Props></Rule><Rule name="NumbericAxis" parents="Axis" label="NumbericAxis" type="com.bstek.dorado.xchart.axis.NumbericAxis" scope="public" icon="/com/bstek/dorado/xchart/axis/NumbericAxis.png"><Props>
+<ClientEvent name="onGetBindingData" parameters="self,arg"/></ClientEvents></Rule><Rule name="NumbericAxis" parents="Axis" label="NumbericAxis" type="com.bstek.dorado.xchart.axis.NumbericAxis" scope="public" icon="/com/bstek/dorado/xchart/axis/NumbericAxis.png"><Props>
 <Prop name="allowDecimals" type="java.lang.Boolean"/>
 <Prop name="endOnTick" type="java.lang.Boolean"/>
 <Prop name="labelDecimals" type="java.lang.Integer"/>
@@ -1431,7 +1416,22 @@
 <Prop name="lineWidth" type="java.lang.Integer"/>
 <Prop name="thresholdLineColor"/>
 <Prop name="thresholdLineWidth" type="java.lang.Integer"/></Prop>
-<Prop name="threshold" type="java.lang.Double"/></Props></Rule><Rule name="Series" abstract="true" type="com.bstek.dorado.xchart.Series" scope="public" icon="/com/bstek/dorado/xchart/Series.png"><Props>
+<Prop name="threshold" type="java.lang.Double"/></Props></Rule><Rule name="RadarAxis" parents="Axis" label="RadarAxis" type="com.bstek.dorado.xchart.axis.RadarAxis" scope="public" icon="/com/bstek/dorado/xchart/axis/RadarAxis.png"><Props>
+<Prop name="categories" type="[Ljava.lang.String;"/>
+<Prop name="labelFormat"/>
+<Prop name="labelProperty" highlight="1"/>
+<Prop name="max" highlight="1" type="java.lang.Double"/>
+<Prop name="min" highlight="1" type="java.lang.Double"/>
+<Prop name="size" type="java.lang.Double"/>
+<Prop name="steps" type="java.lang.Double"/>
+<Prop name="tickmarkPlacement" enumValues="between,on"/>
+<Prop name="valueFormat"/></Props></Rule><Rule name="CategoryAxis" parents="Axis" label="CategoryAxis" type="com.bstek.dorado.xchart.axis.CategoryAxis" scope="public" icon="/com/bstek/dorado/xchart/axis/CategoryAxis.png"><Props>
+<Prop name="categories" type="[Ljava.lang.String;"/>
+<Prop name="labelProperty" highlight="1"/>
+<Prop name="properties" deprecated="true"/><Prop name="style" type="com.bstek.dorado.xchart.axis.AxisStyle" compositeType="Fixed">
+<Prop name="lineColor"/>
+<Prop name="lineWidth" type="java.lang.Integer"/></Prop>
+<Prop name="tickmarkPlacement" enumValues="between,on"/></Props></Rule><Rule name="Series" abstract="true" type="com.bstek.dorado.xchart.Series" scope="public" icon="/com/bstek/dorado/xchart/Series.png"><Props>
 <Prop name="color"/>
 <Prop name="dataPath" highlight="1"/>
 <Prop name="dataSet" highlight="1" reference="DataSet:id"/>
@@ -1443,7 +1443,32 @@
 <Prop name="yAxisName"/></Props><ClientEvents>
 <ClientEvent name="onClick" parameters="self,arg"/>
 <ClientEvent name="onGetBindingDataType" parameters="self,arg"/>
-<ClientEvent name="onGetBindingData" parameters="self,arg"/></ClientEvents></Rule><Rule name="Column_2" parents="Series" label="Column" type="com.bstek.dorado.xchart.series.Column" scope="public" icon="/com/bstek/dorado/xchart/series/Column.png"><Props><Prop name="bindingConfig" type="com.bstek.dorado.xchart.binding.CartesianBindingConfig" compositeType="Fixed">
+<ClientEvent name="onGetBindingData" parameters="self,arg"/></ClientEvents></Rule><Rule name="Area" parents="Line" label="Area" type="com.bstek.dorado.xchart.series.Area" scope="public" icon="/com/bstek/dorado/xchart/series/Area.png"><Props>
+<Prop name="stack" highlight="1"/></Props></Rule><Rule name="Line" parents="Series" label="Line" type="com.bstek.dorado.xchart.series.Line" scope="public" icon="/com/bstek/dorado/xchart/series/Line.png"><Props><Prop name="bindingConfig" type="com.bstek.dorado.xchart.binding.CartesianBindingConfig" compositeType="Fixed">
+<Prop name="xProperty"/>
+<Prop name="yProperty"/></Prop>
+<Prop name="color"/><Prop name="dataLabels" type="com.bstek.dorado.xchart.datalabels.SymbolDataLabels" compositeType="Fixed">
+<Prop name="align" enumValues="left,center,right"/>
+<Prop name="color"/>
+<Prop name="enabled" highlight="1" type="java.lang.Boolean"/>
+<Prop name="fontFamily"/>
+<Prop name="fontSize"/>
+<Prop name="format" highlight="1"/>
+<Prop name="labelPadding" type="java.lang.Integer"/>
+<Prop name="verticalAlign" enumValues="top,bottom,middle"/></Prop><Prop name="markerHoverStyle" type="com.bstek.dorado.xchart.BaseMarkerStyle" compositeType="Fixed">
+<Prop name="backgroundColor"/>
+<Prop name="borderColor"/>
+<Prop name="borderWidth" type="java.lang.Integer"/>
+<Prop name="enabled" highlight="1" type="java.lang.Boolean"/>
+<Prop name="size" type="java.lang.Integer"/></Prop><Prop name="markerStyle" type="com.bstek.dorado.xchart.MarkerStyle" compositeType="Fixed">
+<Prop name="backgroundColor"/>
+<Prop name="borderColor"/>
+<Prop name="borderWidth" type="java.lang.Integer"/>
+<Prop name="enabled" highlight="1" type="java.lang.Boolean"/>
+<Prop name="size" type="java.lang.Integer"/>
+<Prop name="symbolType" highlight="1" enumValues="circle,diamond,triangle,rect"/></Prop>
+<Prop name="smooth" highlight="1" type="java.lang.Boolean"/><Prop name="style" type="com.bstek.dorado.xchart.series.LineStyle" compositeType="Fixed">
+<Prop name="lineWidth" type="java.lang.Integer"/></Prop></Props></Rule><Rule name="Column_2" parents="Series" label="Column" type="com.bstek.dorado.xchart.series.Column" scope="public" icon="/com/bstek/dorado/xchart/series/Column.png"><Props><Prop name="bindingConfig" type="com.bstek.dorado.xchart.binding.CartesianBindingConfig" compositeType="Fixed">
 <Prop name="xProperty"/>
 <Prop name="yProperty"/></Prop>
 <Prop name="color"/><Prop name="dataLabels" type="com.bstek.dorado.xchart.datalabels.ColumnDataLabels" compositeType="Fixed">
@@ -1476,8 +1501,7 @@
 <Prop name="defaultOffset" type="java.lang.Integer"/>
 <Prop name="innerSize" type="java.lang.Double"/>
 <Prop name="size" type="java.lang.Double"/>
-<Prop name="slicedOffset" type="java.lang.Integer"/></Prop></Props></Rule><Rule name="Area" parents="Line" label="Area" type="com.bstek.dorado.xchart.series.Area" scope="public" icon="/com/bstek/dorado/xchart/series/Area.png"><Props>
-<Prop name="stack" highlight="1"/></Props></Rule><Rule name="Line" parents="Series" label="Line" type="com.bstek.dorado.xchart.series.Line" scope="public" icon="/com/bstek/dorado/xchart/series/Line.png"><Props><Prop name="bindingConfig" type="com.bstek.dorado.xchart.binding.CartesianBindingConfig" compositeType="Fixed">
+<Prop name="slicedOffset" type="java.lang.Integer"/></Prop></Props></Rule><Rule name="Scatter" parents="Series" label="Scatter" type="com.bstek.dorado.xchart.series.Scatter" scope="public" icon="/com/bstek/dorado/xchart/series/Scatter.png"><Props><Prop name="bindingConfig" type="com.bstek.dorado.xchart.binding.CartesianBindingConfig" compositeType="Fixed">
 <Prop name="xProperty"/>
 <Prop name="yProperty"/></Prop>
 <Prop name="color"/><Prop name="dataLabels" type="com.bstek.dorado.xchart.datalabels.SymbolDataLabels" compositeType="Fixed">
@@ -1499,9 +1523,7 @@
 <Prop name="borderWidth" type="java.lang.Integer"/>
 <Prop name="enabled" highlight="1" type="java.lang.Boolean"/>
 <Prop name="size" type="java.lang.Integer"/>
-<Prop name="symbolType" highlight="1" enumValues="circle,diamond,triangle,rect"/></Prop>
-<Prop name="smooth" highlight="1" type="java.lang.Boolean"/><Prop name="style" type="com.bstek.dorado.xchart.series.LineStyle" compositeType="Fixed">
-<Prop name="lineWidth" type="java.lang.Integer"/></Prop></Props></Rule><Rule name="Bar" parents="Series" label="Bar" type="com.bstek.dorado.xchart.series.Bar" scope="public" icon="/com/bstek/dorado/xchart/series/Bar.png"><Props><Prop name="bindingConfig" type="com.bstek.dorado.xchart.binding.CartesianBindingConfig" compositeType="Fixed">
+<Prop name="symbolType" highlight="1" enumValues="circle,diamond,triangle,rect"/></Prop></Props></Rule><Rule name="Bar" parents="Series" label="Bar" type="com.bstek.dorado.xchart.series.Bar" scope="public" icon="/com/bstek/dorado/xchart/series/Bar.png"><Props><Prop name="bindingConfig" type="com.bstek.dorado.xchart.binding.CartesianBindingConfig" compositeType="Fixed">
 <Prop name="xProperty"/>
 <Prop name="yProperty"/></Prop>
 <Prop name="color"/><Prop name="dataLabels" type="com.bstek.dorado.xchart.datalabels.BarDataLabels" compositeType="Fixed">
@@ -1517,26 +1539,4 @@
 <Prop name="stack" highlight="1"/><Prop name="style" type="com.bstek.dorado.xchart.series.BarStyle" compositeType="Fixed">
 <Prop name="lineColor"/>
 <Prop name="lineWidth" type="java.lang.Integer"/></Prop>
-<Prop name="threshold" type="java.lang.Double"/></Props></Rule><Rule name="Scatter" parents="Series" label="Scatter" type="com.bstek.dorado.xchart.series.Scatter" scope="public" icon="/com/bstek/dorado/xchart/series/Scatter.png"><Props><Prop name="bindingConfig" type="com.bstek.dorado.xchart.binding.CartesianBindingConfig" compositeType="Fixed">
-<Prop name="xProperty"/>
-<Prop name="yProperty"/></Prop>
-<Prop name="color"/><Prop name="dataLabels" type="com.bstek.dorado.xchart.datalabels.SymbolDataLabels" compositeType="Fixed">
-<Prop name="align" enumValues="left,center,right"/>
-<Prop name="color"/>
-<Prop name="enabled" highlight="1" type="java.lang.Boolean"/>
-<Prop name="fontFamily"/>
-<Prop name="fontSize"/>
-<Prop name="format" highlight="1"/>
-<Prop name="labelPadding" type="java.lang.Integer"/>
-<Prop name="verticalAlign" enumValues="top,bottom,middle"/></Prop><Prop name="markerHoverStyle" type="com.bstek.dorado.xchart.BaseMarkerStyle" compositeType="Fixed">
-<Prop name="backgroundColor"/>
-<Prop name="borderColor"/>
-<Prop name="borderWidth" type="java.lang.Integer"/>
-<Prop name="enabled" highlight="1" type="java.lang.Boolean"/>
-<Prop name="size" type="java.lang.Integer"/></Prop><Prop name="markerStyle" type="com.bstek.dorado.xchart.MarkerStyle" compositeType="Fixed">
-<Prop name="backgroundColor"/>
-<Prop name="borderColor"/>
-<Prop name="borderWidth" type="java.lang.Integer"/>
-<Prop name="enabled" highlight="1" type="java.lang.Boolean"/>
-<Prop name="size" type="java.lang.Integer"/>
-<Prop name="symbolType" highlight="1" enumValues="circle,diamond,triangle,rect"/></Prop></Props></Rule><Rule name="DefaultView" parents="View" label="View" nodeName="View" type="com.bstek.dorado.view.DefaultView" scope="public" category="General" icon="/com/bstek/dorado/view/DefaultView.png" clientTypes="desktop"></Rule></RuleSet>
+<Prop name="threshold" type="java.lang.Double"/></Props></Rule><Rule name="DefaultView" parents="View" label="View" nodeName="View" type="com.bstek.dorado.view.DefaultView" scope="public" category="General" icon="/com/bstek/dorado/view/DefaultView.png" clientTypes="desktop"></Rule></RuleSet>

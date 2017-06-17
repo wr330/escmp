@@ -166,13 +166,41 @@ dsRenyuantongji.flushAsync();</ClientEvent>
           </Children>
         </Portlet>
         <Portlet>
-          <Property name="caption">保障设备技术状态查询</Property>
+          <Property name="caption">常用资源下载</Property>
           <Property name="column">0</Property>
           <Property name="height">360</Property>
           <Property name="closeable">false</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -140px -60px</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -140px -280px</Property>
           <Children>
-            <IFrame/>
+            <HtmlContainer layoutConstraint="center padding:10">
+              <ClientEvent name="onReady">var action=view.id(&quot;aaQueryResource&quot;);&#xD;
+action.execute(function(result){&#xD;
+	if(result!=''&amp;&amp;result.length>0)&#xD;
+	  result.each(function(item){&#xD;
+		var str = &quot;&lt;li style='*float:left;*overflow:hidden;'>&lt;a style='*float:left;color:#003D79;' href='&quot;+item.url+&quot;' onclick=\&quot;window.download('&quot;+item.oid+&quot;')\&quot; target=_blank>&quot;+item.name1+&quot;&lt;/a>&quot;+item.name2+&quot;&lt;/li>&quot;;&#xD;
+		$(&quot;#li_list2&quot;).append(str);&#xD;
+	  });&#xD;
+});</ClientEvent>
+              <ClientEvent name="onCreate">window.download = function(oid){//下载量加1&#xD;
+	view.id(&quot;aaDownloadCount&quot;).set(&quot;parameter&quot;,oid).execute();&#xD;
+}</ClientEvent>
+              <Property name="content">&lt;div class=&quot;Resources&quot;>&#xD;
+   &lt;ul id=&quot;li_list2&quot; style=&quot;margin-left:5px;margin-top:0px&quot;>&lt;/ul>&#xD;
+   &lt;div style=&quot;margin-top:5px;text-align:right;&quot;>&lt;a href=&quot;com.buaa.comm.view.Resourcedownload.d&quot; target=&quot;_blank&quot; style=&quot;color:#35678F;&quot; title=&quot;更多&quot;>more&lt;/a>&lt;/div>&#xD;
+       &lt;style>&#xD;
+        .Resources ul { list-style:none; margin:0; padding:0; }&#xD;
+        .Resources li { background:url(images/home/node.png) left no-repeat; padding:4px 5px 4px 25px; margin:0; border-bottom:1px solid #eaeaea; }&#xD;
+        .Resources ul li a { font: normal 13px 'SimSun-ExtB',Verdana,Arial,Sans-Serif; color:#3a3c3c; text-decoration:none; }&#xD;
+        .Resources ul li a:hover { color:#2e5a7c; text-decoration:underline; }&#xD;
+       &lt;/style>&#xD;
+&lt;/div></Property>
+            </HtmlContainer>
+            <AjaxAction id="aaQueryResource">
+              <Property name="service">resourcedownloadManager#queryResource</Property>
+            </AjaxAction>
+            <AjaxAction id="aaDownloadCount">
+              <Property name="service">resourcedownloadManager#downloadCount</Property>
+            </AjaxAction>
           </Children>
         </Portlet>
         <Portlet>
@@ -759,41 +787,13 @@ view.id('diaMyDesk').show();</ClientEvent>
           </Tools>
         </Portlet>
         <Portlet>
-          <Property name="caption">常用资源下载</Property>
+          <Property name="caption">保障设备技术状态查询</Property>
           <Property name="column">2</Property>
           <Property name="height">630</Property>
           <Property name="closeable">false</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -140px -280px</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -300px -20px</Property>
           <Children>
-            <HtmlContainer layoutConstraint="center padding:10">
-              <ClientEvent name="onReady">var action=view.id(&quot;aaQueryResource&quot;);&#xD;
-action.execute(function(result){&#xD;
-	if(result!=''&amp;&amp;result.length>0)&#xD;
-	  result.each(function(item){&#xD;
-		var str = &quot;&lt;li style='*float:left;*overflow:hidden;'>&lt;a style='*float:left;color:#003D79;' href='&quot;+item.url+&quot;' onclick=\&quot;window.download('&quot;+item.oid+&quot;')\&quot; target=_blank>&quot;+item.name1+&quot;&lt;/a>&quot;+item.name2+&quot;&lt;/li>&quot;;&#xD;
-		$(&quot;#li_list2&quot;).append(str);&#xD;
-	  });&#xD;
-});</ClientEvent>
-              <ClientEvent name="onCreate">window.download = function(oid){//下载量加1&#xD;
-	view.id(&quot;aaDownloadCount&quot;).set(&quot;parameter&quot;,oid).execute();&#xD;
-}</ClientEvent>
-              <Property name="content">&lt;div class=&quot;Resources&quot;>&#xD;
-   &lt;ul id=&quot;li_list2&quot; style=&quot;margin-left:5px;margin-top:0px&quot;>&lt;/ul>&#xD;
-   &lt;div style=&quot;margin-top:5px;text-align:right;&quot;>&lt;a href=&quot;com.buaa.comm.view.Resourcedownload.d&quot; target=&quot;_blank&quot; style=&quot;color:#35678F;&quot; title=&quot;更多&quot;>more&lt;/a>&lt;/div>&#xD;
-       &lt;style>&#xD;
-        .Resources ul { list-style:none; margin:0; padding:0; }&#xD;
-        .Resources li { background:url(images/home/node.png) left no-repeat; padding:4px 5px 4px 25px; margin:0; border-bottom:1px solid #eaeaea; }&#xD;
-        .Resources ul li a { font: normal 13px 'SimSun-ExtB',Verdana,Arial,Sans-Serif; color:#3a3c3c; text-decoration:none; }&#xD;
-        .Resources ul li a:hover { color:#2e5a7c; text-decoration:underline; }&#xD;
-       &lt;/style>&#xD;
-&lt;/div></Property>
-            </HtmlContainer>
-            <AjaxAction id="aaQueryResource">
-              <Property name="service">resourcedownloadManager#queryResource</Property>
-            </AjaxAction>
-            <AjaxAction id="aaDownloadCount">
-              <Property name="service">resourcedownloadManager#downloadCount</Property>
-            </AjaxAction>
+            <IFrame/>
           </Children>
         </Portlet>
       </Portlets>

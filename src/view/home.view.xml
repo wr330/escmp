@@ -24,20 +24,11 @@
               <Property name="contentOverflow">hidden</Property>
               <Property name="width">200</Property>
               <Image>
-                <Property name="image">>images/home/logo.png</Property>
+                <Property name="image">images/home/logo3.png</Property>
                 <Property name="hideMode">visibility</Property>
                 <Property name="height">80</Property>
+                <Property name="stretchMode">keepRatio</Property>
               </Image>
-              <Container layoutConstraint="anchorLeft:container;left:10;top:5">
-                <Property name="height">80</Property>
-                <Property name="contentOverflow">hidden</Property>
-                <Property name="width">200</Property>
-                <Image>
-                  <Property name="image">>images/home/logo.png</Property>
-                  <Property name="hideMode">visibility</Property>
-                  <Property name="height">80</Property>
-                </Image>
-              </Container>
             </Container>
             <BlockView id="blockView1" layoutConstraint="anchorLeft:container;left:50%">
               <ClientEvent name="onCreate">self.set(&quot;renderer&quot;, new dorado.widget.blockview.ImageBlockRenderer({&#xD;

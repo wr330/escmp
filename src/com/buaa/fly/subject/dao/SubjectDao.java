@@ -44,7 +44,9 @@ public class SubjectDao extends HibernateBaseDao {
 		
 		if(StringUtils.isEmpty(parentnode)){
 			hql+=" and u.parentnode is null order by OrderNo";
+			Collection<Subject> a = this.query(hql,map);
 			return this.query(hql,map);
+			
 		}else{
 			map.put("parentnode",parentnode);
 			hql+=" and u.parentnode=:parentnode order by OrderNo";
