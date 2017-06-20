@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.UUID;
 
 import javax.annotation.Resource;
@@ -25,6 +27,7 @@ import com.bstek.dorado.data.provider.Page;
 import com.common.HibernateBaseDao;
 
 import com.buaa.fly.domain.Outlineexecution;
+import com.buaa.fly.domain.Sfstatistic;
 import com.buaa.fly.domain.Subject;
 import com.buaa.fly.domain.Tasklist;
 
@@ -41,6 +44,7 @@ public class TasklistDao extends HibernateBaseDao {
 	 * @param criteria
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unchecked")
 	public void queryTasklist(Page<Tasklist> page,
 			Map<String, Object> parameter, Criteria criteria) throws Exception {
 		Map<String, Object> args = new HashMap<String, Object>();
@@ -52,8 +56,8 @@ public class TasklistDao extends HibernateBaseDao {
 				coreHql.append(" and a.tasknumber = :tn ");
 				args.put("tn", tasknumber);
 			}
-			List<String> subject = new ArrayList<String>();
-			subject = (List<String>) parameter.get("subject");
+			
+			List<String> subject = (List<String>) parameter.get("subject");
 			if ((subject != null)) {
 				if (subject.size() != 0) {
 					coreHql.append(" and(");
@@ -202,10 +206,34 @@ public class TasklistDao extends HibernateBaseDao {
 	 * @throws Exception
 	 */
 	public int queryTaskbySubject(String subjectName) {
-		String hql = "select COUNT(*) from " + Tasklist.class.getName() + " a where 1=1 "; 
+		String hql = "from " + Tasklist.class.getName() + " a where 1=1 "; 
 		hql += "and a.subject LIKE '%" + subjectName + "%'";
 		hql += "and a.sfstatistic is not null";
-		return this.queryForInt(hql);
+		Collection<Tasklist> tasks = this.query(hql);
+		Set<String> set = new TreeSet<String>();    
+		for(Tasklist task:tasks){     
+			set.add(task.getSfstatistic().getId());//将所有字符串添加到Set   
+		}
+		return set.size();
 	}
 	
+	
+	/**
+	 根据飞行统计的Id删除与之相关联的试飞任务单
+	 @param SfstatisticId String类型,表示飞行统计的主键id
+	 @throws Exception 
+	 *
+	 */
+	public void clearSfstatistic(String SfstatisticId) throws Exception {		
+		String hql = "from " + Tasklist.class.getName() + " a where 1=1 ";
+		if (!SfstatisticId.isEmpty()) {
+			hql += "and a.sfstatistic.id = '" + SfstatisticId +"'";
+			Collection<Tasklist> tasklist = this.query(hql);//搜索与飞行统计id相关联的任务单
+			//清空原来关联的任务单中飞行统计记录
+			for(Tasklist task : tasklist){ 
+				task.setSfstatistic(null);
+				this.updateData(task);
+			}				
+		}			
+	}
 }

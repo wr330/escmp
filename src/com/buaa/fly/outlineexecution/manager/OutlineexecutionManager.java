@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,7 @@ import com.buaa.fly.combineVehicle.dao.CombineVehicleDao;
 import com.buaa.fly.combineVehicle.manager.CombineVehicleManager;
 import com.buaa.fly.domain.CombineVehicle;
 import com.buaa.fly.domain.Outlineexecution;
+import com.buaa.fly.domain.Tasklist;
 
 import com.buaa.fly.outlineexecution.dao.OutlineexecutionDao;
 import com.buaa.fly.outlineexecution.dao.OutlineexecutionDaoforJDBC;
@@ -108,8 +111,7 @@ public class OutlineexecutionManager {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void saveOutline(Map<String, Collection> dataItems) throws Exception {
-		Collection<Outlineexecution> details = (Collection<Outlineexecution>) dataItems
-				.get("dsOutlineexecution");
+		Collection<Outlineexecution> details = (Collection<Outlineexecution>) dataItems.get("dsOutlineexecution");
 		this.saveOutlineexecution(details);
 	}
 
@@ -219,5 +221,16 @@ public class OutlineexecutionManager {
 			}
 		}
 	}
+	
+	/**
+	 * 根据试飞大纲中关联的试飞科目信息查询实际大纲完成架次
+	 * 
+	 * @param parameter
+	 * @throws Exception
+	 */
+	public int queryShifeiJiaCi(Map<String, Object> parameter) {
+		return outlineexecutionDao.queryShifeiJiaCi(parameter);
+	}
+	
 	
 }

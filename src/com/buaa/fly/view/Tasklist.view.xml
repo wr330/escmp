@@ -54,7 +54,7 @@
       <Property name="parameter">
         <Entity>
           <Property name="parentnode"></Property>
-          <Property name="ftype"></Property>
+          <Property name="ftype">${loginUser.getAtteAirc()}</Property>
         </Entity>
       </Property>
     </DataSet>

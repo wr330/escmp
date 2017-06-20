@@ -1452,7 +1452,7 @@ if(ftype){
       link4.set(&quot;visible&quot;,false);
 }
 else{
-	dorado.MessageBox.alert(&quot;请先切换至“试飞信息管理”页面！&quot;);
+	dorado.widget.NotifyTipManager.notify(&quot;请先切换至“试飞信息管理”页面！&quot;);
 }</ClientEvent>
         <Property name="caption">修改</Property>
         <Property name="icon"> url(>skin>common/icons.gif) -300px -60px</Property>

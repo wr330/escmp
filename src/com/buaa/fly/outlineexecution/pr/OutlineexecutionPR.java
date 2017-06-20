@@ -20,7 +20,6 @@ import com.bstek.dorado.data.provider.Page;
 import com.buaa.fly.domain.Outlineexecution;
 import com.buaa.fly.domain.Subject;
 import com.buaa.fly.outlineexecution.manager.OutlineexecutionManager;
-import com.buaa.fly.sfstatistic.dao.SfstatisticDao;
 import com.buaa.fly.subject.manager.SubjectManager;
 
 @Component("outlineexecutionPR")
@@ -30,8 +29,6 @@ public class OutlineexecutionPR {
 	private OutlineexecutionManager outlineexecutionManager;
 	@Resource
 	private SubjectManager subjectManager;
-	@Resource
-	private SfstatisticDao sfstatisticDao;
 
 	/**
 	 * 大纲查询方法，该方法没有应用
@@ -69,6 +66,18 @@ public class OutlineexecutionPR {
 		return outlineexecutionManager.queryOutlineexecutionforJDBC(parameter);
 	}
 
+	/**
+	 * 根据试飞大纲中关联的试飞科目信息查询实际大纲完成架次
+	 * 
+	 * @param parameter
+	 * @throws Exception
+	 */
+	@Expose
+	public int queryShifeiJiaCi(Map<String, Object> parameter) {
+		return outlineexecutionManager.queryShifeiJiaCi(parameter);
+	}
+	
+	
 	/**
 	 * 分页查询信息，带有criteria
 	 * 
@@ -191,18 +200,22 @@ public class OutlineexecutionPR {
 		for (Subject item : dataItems) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			float statistic = 0;
-			if (item.getOutlineexecution().size() > 0
-					&& item.getOutlineexecution() != null)
+			float a = 0;
+			float b = 1;
+			if (item.getOutlineexecution().size() > 0 && item.getOutlineexecution() != null)
 				if (item.getOutlineexecution().get(0).getShijijiaci() != null) {
-					statistic = (float)(item.getOutlineexecution().get(0)
-							.getShijijiaci())
-							/ (float)(item.getOutlineexecution().get(0)
-									.getOutlineFlights());
+					a = (float)(item.getOutlineexecution().get(0).getShijijiaci());
+					b = (float)(item.getOutlineexecution().get(0).getOutlineFlights());
+					
 				} else {
-					statistic = (float)(sfstatisticDao.querynum(item.getOid()))
-							/ (float)(item.getOutlineexecution().get(0)
-									.getOutlineFlights());
+					//statistic = (float)(sfstatisticDao.querynum(item.getOid()))/ (float)(item.getOutlineexecution().get(0).getOutlineFlights());
+					a = 0;
+					b = (float)item.getOutlineexecution().get(0).getOutlineFlights();										
 				}
+			if(a > b){
+				a = b;
+			}
+			statistic = a / b;
 			DecimalFormat df = new DecimalFormat("#.00");
 	        String price = df.format(statistic*100);
 			map.put("price", price);

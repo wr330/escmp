@@ -164,7 +164,7 @@ public class TasklistManager {
 				task.setSfstatistic(sfstatistic);
 				tasklistDao.updateData(task);
 			}
-		}		
-		
+		}				
 	}
+	
 }

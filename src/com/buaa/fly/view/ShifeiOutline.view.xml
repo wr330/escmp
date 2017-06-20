@@ -92,6 +92,9 @@ if(!result){&#xD;
       <Property name="service">outlineexecutionManager#downloadFile</Property>
       <Property name="async">false</Property>
     </AjaxAction>
+    <AjaxAction id="ajFlushJiaci">
+      <Property name="service">outlineexecutionPR#queryShifeiJiaCi</Property>
+    </AjaxAction>
     <DataSetDropDown id="dataSetDropDownAircraftType">
       <ClientEvent name="onValueSelect">var dsSubject = this.get(&quot;#dsSubject&quot;);&#xD;
 dsSubject.set(&quot;parameter&quot;, {&#xD;
@@ -248,10 +251,34 @@ if(cur){
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
-            <Property name="name">shijijiaci</Property>
-            <Property name="property">shijijiaci</Property>
-            <Property name="editorType">NumberSpinner</Property>
-            <Editor/>
+            <Property name="label">实际架次</Property>
+            <Property name="labelWidth">88</Property>
+            <Editor>
+              <Container layout="hbox">
+                <FormElement id="shijijiaci">
+                  <Property name="editorType">NumberSpinner</Property>
+                  <Property name="property">shijijiaci</Property>
+                  <Property name="dataSet">dsSubject</Property>
+                  <Property name="dataPath">!CURRENT_ROOT.#outlineexecution</Property>
+                  <Property name="showLabel">false</Property>
+                  <Property name="width">225</Property>
+                  <Property name="editorWidth">220</Property>
+                  <Editor/>
+                </FormElement>
+                <Button>
+                  <ClientEvent name="onClick">var outline = view.id('dsSubject').getData(&quot;!CURRENT_ROOT.#outlineexecution&quot;);&#xD;
+var aj = view.get('#ajFlushJiaci');&#xD;
+aj.set(&quot;parameter&quot;,{&#xD;
+		'outline':outline,&#xD;
+});&#xD;
+aj.execute(function(num){&#xD;
+	outline.set('shijijiaci',num);&#xD;
+});</ClientEvent>
+                  <Property name="icon">url(>skin>common/icons.gif) -40px -240px</Property>
+                  <Property name="tip">根据飞行统计和试飞任务单自动计算实际飞行架次</Property>
+                </Button>
+              </Container>
+            </Editor>
           </AutoFormElement>
           <AutoFormElement>
             <Property name="name">completestate</Property>
@@ -352,6 +379,8 @@ if(cur){&#xD;
               <NumbericAxis>
                 <Property name="min">0</Property>
                 <Property name="title">架次完成率（%）</Property>
+                <Property name="steps">10</Property>
+                <Property name="max">100</Property>
               </NumbericAxis>
             </Axes>
             <Series>
@@ -447,7 +476,7 @@ if(ftype){&#xD;
 	var dataTree = this.get(&quot;#dataTreeSubject&quot;);&#xD;
     var NodeType = dataTree.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
 	if(NodeType==&quot;FType&quot;){&#xD;
-		dorado.MessageBox.alert(&quot;请先在左侧【试飞科目导航树】上选择一个科目！&quot;);&#xD;
+		dorado.widget.NotifyTipManager.notify(&quot;请先在左侧【试飞科目导航树】上选择一个科目！&quot;);&#xD;
 	}else{&#xD;
 		var cur=view.id('dsSubject').getData(&quot;!CURRENT_ROOT&quot;);&#xD;
 		view.id('ajaxActionCheck').set(&quot;parameter&quot;,{&#xD;
@@ -455,7 +484,7 @@ if(ftype){&#xD;
 		}).execute();&#xD;
 	}&#xD;
 }else{&#xD;
-	dorado.MessageBox.alert(&quot;请先选择机型！&quot;);&#xD;
+	dorado.widget.NotifyTipManager.notify(&quot;请先选择机型！&quot;);&#xD;
 }&#xD;
 </ClientEvent>
                       <Property name="caption">新增</Property>
@@ -464,10 +493,18 @@ if(ftype){&#xD;
                       <Property name="disabled">false</Property>
                     </ToolBarButton>
                     <ToolBarButton>
-                      <ClientEvent name="onClick">var cur=view.id('dsSubject').getData(&quot;!CURRENT_ROOT.#outlineexecution&quot;);&#xD;
-if (cur) {&#xD;
-	view.id('diaOutlineexecution').show();	&#xD;
+                      <ClientEvent name="onClick">var dataTree = this.get(&quot;#dataTreeSubject&quot;);&#xD;
+var NodeType = dataTree.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+if(NodeType==&quot;FType&quot;){&#xD;
+	dorado.widget.NotifyTipManager.notify(&quot;请先在左侧【试飞科目导航树】上选择一个科目！&quot;);&#xD;
+}else{&#xD;
+	var cur=view.id('dsSubject').getData(&quot;!CURRENT_ROOT.#outlineexecution&quot;);&#xD;
+	if (cur) {&#xD;
+		view.id('diaOutlineexecution').show();	&#xD;
+	}&#xD;
 }&#xD;
+&#xD;
+&#xD;
 </ClientEvent>
                       <Property name="caption">修改</Property>
                       <Property name="icon"> url(>skin>common/icons.gif) -100px -0px</Property>
@@ -478,13 +515,20 @@ if (cur) {&#xD;
                     <ToolBarButton>
                       <ClientEvent name="onClick">var cur=view.id('dsSubject').getData(&quot;!CURRENT_ROOT.#outlineexecution&quot;);&#xD;
 var uaSubject = view.id('uaSubject');&#xD;
-if(cur){&#xD;
+var dataTree = this.get(&quot;#dataTreeSubject&quot;);&#xD;
+var NodeType = dataTree.get(&quot;currentNode.bindingConfig.name&quot;);&#xD;
+if(NodeType==&quot;FType&quot;){&#xD;
+	dorado.widget.NotifyTipManager.notify(&quot;请先在左侧【试飞科目导航树】上选择一个科目！&quot;);&#xD;
+}else{&#xD;
+	if(cur){&#xD;
 	dorado.MessageBox.confirm('您是否确认删除此大纲内容?', function(){&#xD;
 		cur.remove();&#xD;
 		uaSubject.execute();	&#xD;
 		}); &#xD;
-}else&#xD;
-	dorado.MessageBox.alert(&quot;请选择删除的试飞大纲!&quot;);</ClientEvent>
+	}else{&#xD;
+		dorado.widget.NotifyTipManager.notify(&quot;请选择删除的试飞大纲!&quot;);&#xD;
+	}&#xD;
+}</ClientEvent>
                       <Property name="caption">删除</Property>
                       <Property name="icon"> url(>skin>common/icons.gif) -140px -0px</Property>
                       <Property name="tags">onDirtyNode</Property>

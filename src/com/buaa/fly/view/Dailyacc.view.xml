@@ -257,67 +257,63 @@ if(cur){
           <Property name="filterMode">serverSide</Property>
           <Property name="rowHeight">22</Property>
           <Property name="selectionMode">multiRows</Property>
+          <Property name="fixedColumnCount">5</Property>
           <RowNumColumn/>
           <RowSelectorColumn/>
           <DataColumn>
-            <Property name="width">120</Property>
+            <Property name="width">60</Property>
             <Property name="property">miji</Property>
             <Property name="align">left</Property>
             <Editor/>
           </DataColumn>
           <DataColumn name="ftype">
             <Property name="property">ftype</Property>
-            <Property name="width">120</Property>
+            <Property name="width">60</Property>
           </DataColumn>
           <DataColumn name="fighterno">
             <Property name="property">fighterno</Property>
-            <Property name="width">120</Property>
+            <Property name="width">100</Property>
           </DataColumn>
           <DataColumn name="fdate">
             <Property name="property">fdate</Property>
-            <Property name="width">120</Property>
+            <Property name="width">80</Property>
           </DataColumn>
           <DataColumn name="timeqifei">
             <Property name="property">timeqifei</Property>
-            <Property name="width">120</Property>
+            <Property name="width">80</Property>
+          </DataColumn>
+          <DataColumn>
+            <Property name="property">timeland</Property>
+            <Property name="name">timeland</Property>
+            <Property name="width">80</Property>
+            <Editor/>
           </DataColumn>
           <DataColumn>
             <Property name="property">timefly</Property>
-            <Property name="width">120</Property>
+            <Property name="width">80</Property>
             <Property name="name">timefly</Property>
           </DataColumn>
-          <DataColumn name="taskno">
-            <Property name="property">taskNo.tasknumber</Property>
-            <Property name="width">120</Property>
-          </DataColumn>
           <DataColumn>
-            <Property name="property">taskNo.taskcontent</Property>
-            <Property name="width">120</Property>
-            <Property name="name">content</Property>
-          </DataColumn>
-          <DataColumn name="subject">
-            <Property name="property">taskNo.subject</Property>
-            <Property name="width">120</Property>
-          </DataColumn>
-          <DataColumn name="result">
-            <Property name="property">taskNo.taskexecution</Property>
-            <Property name="width">120</Property>
+            <Property name="property">taskexecution</Property>
+            <Property name="width">95</Property>
+            <Property name="align">left</Property>
+            <Editor/>
           </DataColumn>
           <DataColumn name="config">
             <Property name="property">config</Property>
-            <Property name="width">120</Property>
+            <Property name="width">200</Property>
           </DataColumn>
           <DataColumn name="action">
             <Property name="property">action</Property>
-            <Property name="width">120</Property>
+            <Property name="width">200</Property>
           </DataColumn>
           <DataColumn name="feixingqk">
             <Property name="property">feixingqk</Property>
-            <Property name="width">120</Property>
+            <Property name="width">200</Property>
           </DataColumn>
           <DataColumn name="summary">
             <Property name="property">summary</Property>
-            <Property name="width">120</Property>
+            <Property name="width">200</Property>
           </DataColumn>
         </DataGrid>
       </Children>

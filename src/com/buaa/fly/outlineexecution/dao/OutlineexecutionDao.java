@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
@@ -18,6 +20,7 @@ import com.common.HibernateBaseDao;
 
 import com.buaa.fly.domain.Outlineexecution;
 import com.buaa.fly.domain.Sfstatistic;
+import com.buaa.fly.domain.Tasklist;
 
 @Repository("outlineexecutionDao")
 public class OutlineexecutionDao extends HibernateBaseDao {
@@ -30,7 +33,6 @@ public class OutlineexecutionDao extends HibernateBaseDao {
 	 */
 	public Collection<Outlineexecution> queryOutlineexecution(
 			Map<String, Object> parameter) throws Exception {
-		
 		Map<String, Object> map = new HashMap<String, Object>();
 		String parentnode = (String) parameter.get("parentnode");
 		String hql = "from " + Outlineexecution.class.getName()
@@ -289,6 +291,35 @@ public class OutlineexecutionDao extends HibernateBaseDao {
 			session.close();
 		}
 	}
+	
+	/**
+	 * 根据试飞大纲中关联的试飞科目信息查询实际大纲完成架次
+	 * 
+	 * @param parameter
+	 * @throws Exception
+	 */
+	public int queryShifeiJiaCi(Map<String, Object> parameter) {
+		int num = 0;
+		String hql = "from " + Tasklist.class.getName() + " a where 1=1 ";
+		if (null != parameter && !parameter.isEmpty()) {
+			//得到前台传来需要查询实际试飞架次的试飞大纲信息
+			Outlineexecution outline = (Outlineexecution)parameter.get("outline");
+			String subjectName = outline.getProject().getName();
+			hql += "and a.subject LIKE '%" + subjectName + "%' ";
+			hql += "and a.taskexecution = '已完成' ";
+			hql += "and a.sfstatistic is not null ";
+			//查询试飞任务单完成的数量
+			Collection<Tasklist> tasks = this.query(hql);
+			//利用Set来去重
+			Set<String> set = new TreeSet<String>();    
+			for(Tasklist task:tasks){     
+				set.add(task.getSfstatistic().getId());//将所有字符串添加到Set   
+			}
+			num = set.size();
+		} 
+		return num;
+	}
+	
 	/**
 	 * 查询大纲树上某一节点是否具有子节点，该方法未应用
 	 * 
