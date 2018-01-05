@@ -22,7 +22,7 @@ import com.buaa.comm.domain.Joballot;
 import com.buaa.comm.domain.Jobconcern;
 
 @Entity
-@Table(name="Comm_JobStatistics")
+@Table(name="COMM_JOBSTATISTICS")
 public class  Jobstatistics implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Jobstatistics(){}
@@ -49,7 +49,7 @@ public class  Jobstatistics implements Serializable {
 	private String status ;
 	private String departname ;
 	private Date plancompletedate ;
-	private String miji ;
+	private int miji ;
 	private int workStatus ;
 	private String sectionChief ;
 	private String sectionChiefName ;
@@ -68,7 +68,7 @@ public class  Jobstatistics implements Serializable {
 	private Collection<Jobconcern> jobconcern;
 
 	@Id
-		@Column(name = "Oid", unique = true, nullable = false)
+		@Column(name = "OID_", unique = true, nullable = false)
 	public String getOid() {
 		return oid;
 	}
@@ -76,119 +76,119 @@ public class  Jobstatistics implements Serializable {
 		this.oid=oid;
 	}
 
-	@Column(name="RealCompleteDate")
+	@Column(name="REALCOMPLETEDATE_")
 	public Date getRealcompletedate() {
 		return realcompletedate;
 	}
 	public void setRealcompletedate(Date realcompletedate) {
 		this.realcompletedate=realcompletedate;
 	}
-	@Column(name="SourcePersonID")
+	@Column(name="SOURCEPERSONID_")
 	public String getSourcepersonid() {
 		return sourcepersonid;
 	}
 	public void setSourcepersonid(String sourcepersonid) {
 		this.sourcepersonid=sourcepersonid;
 	}
-	@Column(name="WritingPerson")
+	@Column(name="WRITINGPERSON_")
 	public String getWritingperson() {
 		return writingperson;
 	}
 	public void setWritingperson(String writingperson) {
 		this.writingperson=writingperson;
 	}
-	@Column(name="WritingPersonName")
+	@Column(name="WRITINGPERSONNAME_")
 	public String getWritingpersonName() {
 		return writingpersonName;
 	}
 	public void setWritingpersonName(String writingpersonName) {
 		this.writingpersonName = writingpersonName;
 	}
-	@Column(name="SourceEvent")
+	@Column(name="SOURCEEVENT_")
 	public String getSourceevent() {
 		return sourceevent;
 	}
 	public void setSourceevent(String sourceevent) {
 		this.sourceevent=sourceevent;
 	}
-	@Column(name="ArrangementDate")
+	@Column(name="ARRANGEMENTDATE_")
 	public Date getArrangementdate() {
 		return arrangementdate;
 	}
 	public void setArrangementdate(Date arrangementdate) {
 		this.arrangementdate=arrangementdate;
 	}
-	@Column(name="SourcePersonName")
+	@Column(name="SOURCEPERSONNAME_")
 	public String getSourcepersonname() {
 		return sourcepersonname;
 	}
 	public void setSourcepersonname(String sourcepersonname) {
 		this.sourcepersonname=sourcepersonname;
 	}
-	@Column(name="Content")
+	@Column(name="CONTENT_")
 	public String getContent() {
 		return content;
 	}
 	public void setContent(String content) {
 		this.content=content;
 	}
-	@Column(name="RefreshTime")
+	@Column(name="REFRESHTIME_")
 	public Date getRefreshtime() {
 		return refreshtime;
 	}
 	public void setRefreshtime(Date refreshtime) {
 		this.refreshtime=refreshtime;
 	}
-	@Column(name="AddP6")
+	@Column(name="ADDP6_")
 	public Boolean getAddp6() {
 		return addp6;
 	}
 	public void setAddp6(Boolean addp6) {
 		this.addp6=addp6;
 	}
-	@Column(name="ProjectName")
+	@Column(name="PROJECTNAME_")
 	public String getProjectname() {
 		return projectname;
 	}
 	public void setProjectname(String projectname) {
 		this.projectname=projectname;
 	}
-	@Column(name="DepartID")
+	@Column(name="DEPARTID_")
 	public String getDepartid() {
 		return departid;
 	}
 	public void setDepartid(String departid) {
 		this.departid=departid;
 	}
-	@Column(name="IsFromP6")
+	@Column(name="ISFROMP6_")
 	public Boolean getIsfromp6() {
 		return isfromp6;
 	}
 	public void setIsfromp6(Boolean isfromp6) {
 		this.isfromp6=isfromp6;
 	}
-	@Column(name="Tag")
+	@Column(name="TAG_")
 	public String getTag() {
 		return tag;
 	}
 	public void setTag(String tag) {
 		this.tag=tag;
 	}
-	@Column(name="Status")
+	@Column(name="STATUS_")
 	public String getStatus() {
 		return status;
 	}
 	public void setStatus(String status) {
 		this.status=status;
 	}
-	@Column(name="DepartName")
+	@Column(name="DEPARTNAME_")
 	public String getDepartname() {
 		return departname;
 	}
 	public void setDepartname(String departname) {
 		this.departname=departname;
 	}
-	@Column(name="PlanCompleteDate")
+	@Column(name="PLANCOMPLETEDATE_")
 	public Date getPlancompletedate() {
 		return plancompletedate;
 	}
@@ -196,35 +196,35 @@ public class  Jobstatistics implements Serializable {
 		this.plancompletedate=plancompletedate;
 	}
 
-	@Column(name="miji")
-	public String getMiji() {
+	@Column(name="MIJI_")
+	public int getMiji() {
 		return miji;
 	}
-	public void setMiji(String miji) {
+	public void setMiji(int miji) {
 		this.miji = miji;
 	}
-	@Column(name="WorkStatus")
+	@Column(name="WORKSTATUS_")
 	public int getWorkStatus() {
 		return workStatus;
 	}
 	public void setWorkStatus(int workStatus) {
 		this.workStatus = workStatus;
 	}
-	@Column(name="SectionChief")
+	@Column(name="SECTIONCHIEF_")
 	public String getSectionChief() {
 		return sectionChief;
 	}
 	public void setSectionChief(String sectionChief) {
 		this.sectionChief = sectionChief;
 	}
-	@Column(name="SectionChiefName")
+	@Column(name="SECTIONCHIEFNAME_")
 	public String getSectionChiefName() {
 		return sectionChiefName;
 	}
 	public void setSectionChiefName(String sectionChiefName) {
 		this.sectionChiefName = sectionChiefName;
 	}
-	@Column(name="WorkReport")
+	@Column(name="WORKREPORT_")
 	public String getWorkReport() {
 		return workReport;
 	}

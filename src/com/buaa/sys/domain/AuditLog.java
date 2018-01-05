@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "Sys_AuditLog")
+@Table(name = "SYS_AUDITLOG")
 public class AuditLog implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -30,7 +30,7 @@ public class AuditLog implements Serializable{
 	private int operationType;
 
 	@Id
-	@Column(name = "Oid", unique = true, nullable = false)
+	@Column(name = "OID_", unique = true, nullable = false)
 	public String getOid() {
 		return oid;
 	}
@@ -39,7 +39,7 @@ public class AuditLog implements Serializable{
 		this.oid = oid;
 	}
 
-	@Column(name = "OperationPerson")
+	@Column(name = "OPERATIONPERSON_")
 	public String getOperationPerson() {
 		return operationPerson;
 	}
@@ -48,7 +48,7 @@ public class AuditLog implements Serializable{
 		this.operationPerson = operationPerson;
 	}
 	
-	@Column(name = "OperationPersonName")
+	@Column(name = "OPERATIONPERSONNAME_")
 	public String getOperationPersonName() {
 		return operationPersonName;
 	}
@@ -57,7 +57,7 @@ public class AuditLog implements Serializable{
 		this.operationPersonName = operationPersonName;
 	}
 
-	@Column(name = "OperationTime")
+	@Column(name = "OPERATIONTIME_")
 	public Date getOperationTime() {
 		return operationTime;
 	}
@@ -66,7 +66,7 @@ public class AuditLog implements Serializable{
 		this.operationTime = operationTime;
 	}
 
-	@Column(name = "OperationContent")
+	@Column(name = "OPERATIONCONTENT_")
 	public String getOperationContent() {
 		return operationContent;
 	}
@@ -75,7 +75,7 @@ public class AuditLog implements Serializable{
 		this.operationContent = operationContent;
 	}
 
-	@Column(name = "OperationType")
+	@Column(name = "OPERATIONTYPE_")
 	public int getOperationType() {
 		return operationType;
 	}

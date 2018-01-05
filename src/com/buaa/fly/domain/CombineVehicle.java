@@ -12,7 +12,7 @@ import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenericGenerators;
 
 @Entity
-@Table(name = "Fly_CombineVehicle")
+@Table(name = "FLY_COMBINEVEHICLE")
 public class CombineVehicle {
 	private static final long serialVersionUID = 1L;
 
@@ -26,7 +26,7 @@ public class CombineVehicle {
 	private int combineNumber;
 
 	@Id
-	@Column(name = "Oid", unique = true, nullable = false)
+	@Column(name = "OID_", unique = true, nullable = false)
 	public String getOid() {
 		return oid;
 	}
@@ -35,7 +35,7 @@ public class CombineVehicle {
 		this.oid = oid;
 	}
 
-	@Column(name = "CombineSubject")
+	@Column(name = "COMBINESUBJECT_")
 	public String getCombineSubject() {
 		return combineSubject;
 	}
@@ -44,7 +44,7 @@ public class CombineVehicle {
 		this.combineSubject = combineSubject;
 	}
 
-	@Column(name = "CombineNumber")
+	@Column(name = "COMBINENUMBER_")
 	public int getCombineNumber() {
 		return combineNumber;
 	}
@@ -54,7 +54,7 @@ public class CombineVehicle {
 	}
 
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "OutlineExecution")
+	@JoinColumn(name = "OUTLINEEXECUTION_")
 	public Outlineexecution getOutlineExecution() {
 		return outlineExecution;
 	}

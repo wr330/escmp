@@ -17,7 +17,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 
 @Entity
-@Table(name="Sys_Dictionary")
+@Table(name="SYS_DICTIONARY")
 public class  Dictionary implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Dictionary(){}
@@ -36,7 +36,7 @@ public class  Dictionary implements Serializable {
 
 
 	@Id
-	@Column(name = "Oid", unique = true, nullable = false)
+	@Column(name = "OID_", unique = true, nullable = false)
 	public String getOid() {
 		return oid;
 	}
@@ -44,35 +44,35 @@ public class  Dictionary implements Serializable {
 		this.oid=oid;
 	}
 
-	@Column(name="Status")
+	@Column(name="STATUS_")
 	public Integer getStatus() {
 		return status;
 	}
 	public void setStatus(Integer status) {
 		this.status=status;
 	}
-	@Column(name="Name")
+	@Column(name="NAME_")
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name=name;
 	}
-	@Column(name="DicType")
+	@Column(name="DICTYPE_")
 	public String getDictype() {
 		return dictype;
 	}
 	public void setDictype(String dictype) {
 		this.dictype=dictype;
 	}
-	@Column(name="Description")
+	@Column(name="DESCRIPTION_")
 	public String getDescription() {
 		return description;
 	}
 	public void setDescription(String description) {
 		this.description=description;
 	}
-	@Column(name="NumericalOrder")
+	@Column(name="NUMERICALORDER_")
 	public Integer getNumericalOrder() {
 		return numericalOrder;
 	}

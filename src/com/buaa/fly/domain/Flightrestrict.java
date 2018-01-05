@@ -20,7 +20,7 @@ import java.util.Date;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "Fly_FlightRestrict")
+@Table(name = "FLY_FLIGHTRESTRICT")
 public class Flightrestrict implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -41,10 +41,10 @@ public class Flightrestrict implements Serializable {
 	private Date modifydate;
 	private String fno;
 	private String maincontent;
-	private String miji;
+	private int miji;
 	private Collection<Fighterxzh> fighterxzh;
 
-	@Column(name = "ftype")
+	@Column(name = "FTYPE_")
 	public String getFtype() {
 		return ftype;
 	}
@@ -54,7 +54,7 @@ public class Flightrestrict implements Serializable {
 	}
 
 	@Id
-	@Column(name = "Oid")
+	@Column(name = "OID_")
 	public String getId() {
 		return id;
 	}
@@ -63,7 +63,7 @@ public class Flightrestrict implements Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "begindate")
+	@Column(name = "BEGINDATE_")
 	public Date getBegindate() {
 		return begindate;
 	}
@@ -72,7 +72,7 @@ public class Flightrestrict implements Serializable {
 		this.begindate = begindate;
 	}
 
-	@Column(name = "bytes")
+	@Column(name = "BYTES_")
 	public Integer getBytes() {
 		return bytes;
 	}
@@ -81,7 +81,7 @@ public class Flightrestrict implements Serializable {
 		this.bytes = bytes;
 	}
 
-	@Column(name = "isnew")
+	@Column(name = "ISNEW_")
 	public String getIsnew() {
 		return isnew;
 	}
@@ -90,7 +90,7 @@ public class Flightrestrict implements Serializable {
 		this.isnew = isnew;
 	}
 
-	@Column(name = "datablock")
+	@Column(name = "DATABLOCK_")
 	public byte[] getDatablock() {
 		return datablock;
 	}
@@ -99,7 +99,7 @@ public class Flightrestrict implements Serializable {
 		this.datablock = datablock;
 	}
 
-	@Column(name = "fname")
+	@Column(name = "FNAME_")
 	public String getFname() {
 		return fname;
 	}
@@ -108,7 +108,7 @@ public class Flightrestrict implements Serializable {
 		this.fname = fname;
 	}
 
-	@Column(name = "isaffect")
+	@Column(name = "ISAFFECT_")
 	public Boolean getIsaffect() {
 		return isaffect;
 	}
@@ -117,7 +117,7 @@ public class Flightrestrict implements Serializable {
 		this.isaffect = isaffect;
 	}
 
-	@Column(name = "major")
+	@Column(name = "MAJOR_")
 	public String getMajor() {
 		return major;
 	}
@@ -126,7 +126,7 @@ public class Flightrestrict implements Serializable {
 		this.major = major;
 	}
 
-	@Column(name = "affect")
+	@Column(name = "AFFECT_")
 	public String getAffect() {
 		return affect;
 	}
@@ -135,7 +135,7 @@ public class Flightrestrict implements Serializable {
 		this.affect = affect;
 	}
 
-	@Column(name = "FileName")
+	@Column(name = "FILENAME_")
 	public String getFilename() {
 		return filename;
 	}
@@ -144,7 +144,7 @@ public class Flightrestrict implements Serializable {
 		this.filename = filename;
 	}
 
-	@Column(name = "modifydate")
+	@Column(name = "MODIFYDATE_")
 	public Date getModifydate() {
 		return modifydate;
 	}
@@ -153,7 +153,7 @@ public class Flightrestrict implements Serializable {
 		this.modifydate = modifydate;
 	}
 
-	@Column(name = "fno")
+	@Column(name = "FNO_")
 	public String getFno() {
 		return fno;
 	}
@@ -162,7 +162,7 @@ public class Flightrestrict implements Serializable {
 		this.fno = fno;
 	}
 
-	@Column(name = "maincontent")
+	@Column(name = "MAINCONTENT_")
 	public String getMaincontent() {
 		return maincontent;
 	}
@@ -171,12 +171,12 @@ public class Flightrestrict implements Serializable {
 		this.maincontent = maincontent;
 	}
 
-	@Column(name = "miji")
-	public String getMiji() {
+	@Column(name = "MIJI_")
+	public int getMiji() {
 		return miji;
 	}
 
-	public void setMiji(String miji) {
+	public void setMiji(int miji) {
 		this.miji = miji;
 	}
 

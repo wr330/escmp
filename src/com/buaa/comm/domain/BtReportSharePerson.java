@@ -18,7 +18,7 @@ import org.hibernate.annotations.GenericGenerator;
 import java.util.Date;
 
 @Entity
-@Table(name="Comm_BtReportSharePerson")
+@Table(name="COMM_BTREPORTSHAREPERSON")
 public class BtReportSharePerson implements Serializable {
 	private static final long serialVersionUID = 1L;
     public BtReportSharePerson(){}
@@ -36,7 +36,7 @@ public class BtReportSharePerson implements Serializable {
 	private Date latelyReadTime;
 	
 	@Id
-	@Column(name = "Oid", unique = true, nullable = false)
+	@Column(name = "OID_", unique = true, nullable = false)
 	public String getOid() {
 		return oid;
 	}
@@ -44,7 +44,7 @@ public class BtReportSharePerson implements Serializable {
 		this.oid = oid;
 	}
 	
-	@Column(name="PersonName")
+	@Column(name="PERSONNAME_")
 	public String getPersonName() {
 		return personName;
 	}
@@ -52,7 +52,7 @@ public class BtReportSharePerson implements Serializable {
 		this.personName = personName;
 	}
 	
-	@Column(name="PersonDepartment")
+	@Column(name="PERSONDEPARTMENT_")
 	public String getPersonDepartment() {
 		return personDepartment;
 	}
@@ -60,7 +60,7 @@ public class BtReportSharePerson implements Serializable {
 		this.personDepartment = personDepartment;
 	}
 	
-	@Column(name="UserName")
+	@Column(name="USERNAME_")
 	public String getUserName() {
 		return userName;
 	}
@@ -68,7 +68,7 @@ public class BtReportSharePerson implements Serializable {
 		this.userName = userName;
 	}
 		
-	@Column(name="ReadStatus")
+	@Column(name="READSTATUS_")
 	public int getReadStatus() {
 		return readStatus;
 	}
@@ -76,7 +76,7 @@ public class BtReportSharePerson implements Serializable {
 		this.readStatus = readStatus;
 	}
 	
-	@Column(name="FirstReadTime")
+	@Column(name="FIRSTREADTIME_")
 	public Date getFirstReadTime() {
 		return firstReadTime;
 	}
@@ -84,7 +84,7 @@ public class BtReportSharePerson implements Serializable {
 		this.firstReadTime = firstReadTime;
 	}
 	
-	@Column(name="LatelyReadTime")
+	@Column(name="LATELYREADTIME_")
 	public Date getLatelyReadTime() {
 		return latelyReadTime;
 	}
@@ -93,7 +93,7 @@ public class BtReportSharePerson implements Serializable {
 	}
 	
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "Btreport")
+	@JoinColumn(name = "BTREPORT_")
 	public Btreport getBtreport() {
 		return btreport;
 	}

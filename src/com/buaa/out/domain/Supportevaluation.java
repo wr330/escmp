@@ -19,7 +19,7 @@ import java.util.Date;
 import java.lang.String;
 
 @Entity
-@Table(name="Out_SupportEvaluation")
+@Table(name="OUT_SUPPORTEVALUATION")
 public class  Supportevaluation implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Supportevaluation(){}
@@ -36,14 +36,14 @@ public class  Supportevaluation implements Serializable {
 	private Date supportStartTime ;
 	private String supportSuggest ;
 	private String efile ;
-	private String miji ;
+	private int miji ;
 	private byte[] datablock ;
 	private Integer bytes ;
 
 
 
 	@Id
-	@Column(name = "Oid", unique = true, nullable = false)
+	@Column(name = "OID_", unique = true, nullable = false)
 	public String getOid() {
 		return oid;
 	}
@@ -51,7 +51,7 @@ public class  Supportevaluation implements Serializable {
 		this.oid = oid;
 	}
 
-	@Column(name="SupportGrade")
+	@Column(name="SUPPORTGRADE_")
 	public String getSupportGrade() {
 		return supportGrade;
 	}
@@ -59,7 +59,7 @@ public class  Supportevaluation implements Serializable {
 		this.supportGrade = supportGrade;
 	}
 	
-	@Column(name="SupportEndTime")
+	@Column(name="SUPPORTENDTIME_")
 	public Date getSupportEndTime() {
 		return supportEndTime;
 	}
@@ -67,7 +67,7 @@ public class  Supportevaluation implements Serializable {
 		this.supportEndTime = supportEndTime;
 	}
 	
-	@Column(name="SupportAddress")
+	@Column(name="SUPPORTADDRESS_")
 	public String getSupportAddress() {
 		return supportAddress;
 	}
@@ -75,7 +75,7 @@ public class  Supportevaluation implements Serializable {
 		this.supportAddress = supportAddress;
 	}
 	
-	@Column(name="FeedbackQuestion")
+	@Column(name="FEEDBACKQUESTION_")
 	public String getFeedbackQuestion() {
 		return feedbackQuestion;
 	}
@@ -83,7 +83,7 @@ public class  Supportevaluation implements Serializable {
 		this.feedbackQuestion = feedbackQuestion;
 	}
 	
-	@Column(name="SupportStartTime")
+	@Column(name="SUPPORTSTARTTIME_")
 	public Date getSupportStartTime() {
 		return supportStartTime;
 	}
@@ -91,7 +91,7 @@ public class  Supportevaluation implements Serializable {
 		this.supportStartTime = supportStartTime;
 	}
 	
-	@Column(name="SupportSuggest")
+	@Column(name="SUPPORTSUGGEST_")
 	public String getSupportSuggest() {
 		return supportSuggest;
 	}
@@ -99,28 +99,28 @@ public class  Supportevaluation implements Serializable {
 		this.supportSuggest = supportSuggest;
 	}
 	
-	@Column(name="CustomerSatisfactionSurvey")
+	@Column(name="CUSSATSUR_")
 	public String getEfile() {
 		return efile;
 	}
 	public void setEfile(String efile) {
 		this.efile = efile;
 	}
-	@Column(name="miji")
-	public String getMiji() {
+	@Column(name="MIJI_")
+	public int getMiji() {
 		return miji;
 	}
-	public void setMiji(String miji) {
+	public void setMiji(int miji) {
 		this.miji = miji;
 	}
-	@Column(name="datablock")
+	@Column(name="DATABLOCK_")
 	public byte[] getDatablock() {
 		return datablock;
 	}
 	public void setDatablock(byte[] datablock) {
 		this.datablock = datablock;
 	}
-	@Column(name="bytes")
+	@Column(name="BYTES_")
 	public Integer getBytes() {
 		return bytes;
 	}

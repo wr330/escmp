@@ -96,7 +96,7 @@ public class MenuDao extends CoreHibernateDao implements InitializingBean{
 		Session session = this.getSessionFactory().openSession();
 		List<String> urls = null;
 		try {
-			String sql = "select Url from Sys_MyDesk where Username='"+user.getUsername()+"'";
+			String sql = "select URL_ as Url from SYS_MYDESK where USERNAME_='"+user.getUsername()+"'";
 			Query query = session.createSQLQuery(sql).addScalar("Url",Hibernate.STRING);// 设置返回值类型，不然会报错
 			urls = query.list();//获取已设置的办公桌URL
 	    } finally {
@@ -146,7 +146,7 @@ public class MenuDao extends CoreHibernateDao implements InitializingBean{
 		}
 		Session session = this.getSessionFactory().openSession();
 		try {
-		    String sql = "select url,name,'>images/home/MyDesk.png' image from Sys_MyDesk where Username='"+user.getUsername()+"' order by Sequence";
+		    String sql = "select URL_ as url,NAME_ as name,'>images/home/MyDesk.png' image from SYS_MYDESK where USERNAME_='"+user.getUsername()+"' order by SEQUENCE_";
 		    Query query = session.createSQLQuery(sql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
 		    List<Map<String, Object>> list = query.list();
 		    return list;
@@ -164,12 +164,12 @@ public class MenuDao extends CoreHibernateDao implements InitializingBean{
 		}
 		Session session = this.getSessionFactory().openSession();
 		try {
-			String sql = "delete from Sys_MyDesk where Username='"+user.getUsername()+"'";
+			String sql = "delete from SYS_MYDESK where USERNAME_='"+user.getUsername()+"'";
             session.createSQLQuery(sql).executeUpdate();
             int i=1;
             for(Url url:urls ){
             	String oid = UUID.randomUUID().toString();
-            	String sql0 = "insert into Sys_MyDesk('Oid','Username','Url','name','Sequence') values (''{0}'',''{1}'',''{2}'',''{3}'',{4})";
+            	String sql0 = "insert into SYS_MYDESK('OID_','USERNAME_','URL_','NAME_','SEQUENCE_') values (''{0}'',''{1}'',''{2}'',''{3}'',{4})";
             	String sql1 = MessageFormat.format(sql0,oid,user.getUsername(),url.getUrl(),url.getName(),i++);
             	session.createSQLQuery(sql1).executeUpdate();
             }

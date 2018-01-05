@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name="Comm_ResourceDownLoad")
+@Table(name="COMM_RESOURCEDOWNLOAD")
 public class  Resourcedownload implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Resourcedownload(){}
@@ -24,14 +24,14 @@ public class  Resourcedownload implements Serializable {
 	private String resourcetype ;
 	private String description ;
 	private String filename ;
-	private String miji ;
+	private int miji ;
 	private int downloadAmount;
 	private Date uploadTime ;
 	private String uploadPerson ;
 	private String uploadPersonOid ;
 
 	@Id
-		@Column(name = "Oid", unique = true, nullable = false)
+		@Column(name = "OID_", unique = true, nullable = false)
 	public String getOid() {
 		return oid;
 	}
@@ -39,43 +39,43 @@ public class  Resourcedownload implements Serializable {
 		this.oid=oid;
 	}
 
-	@Column(name="EFile")
+	@Column(name="EFILE_")
 	public String getEfile() {
 		return efile;
 	}
 	public void setEfile(String efile) {
 		this.efile=efile;
 	}
-	@Column(name="ResourceType")
+	@Column(name="RESOURCETYPE_")
 	public String getResourcetype() {
 		return resourcetype;
 	}
 	public void setResourcetype(String resourcetype) {
 		this.resourcetype=resourcetype;
 	}
-	@Column(name="Description")
+	@Column(name="DESCRIPTION_")
 	public String getDescription() {
 		return description;
 	}
 	public void setDescription(String description) {
 		this.description=description;
 	}
-	@Column(name="FileName")
+	@Column(name="FILENAME_")
 	public String getFilename() {
 		return filename;
 	}
 	public void setFilename(String filename) {
 		this.filename=filename;
 	}
-	@Column(name="miji")
-	public String getMiji() {
+	@Column(name="MIJI_")
+	public int getMiji() {
 		return miji;
 	}
-	public void setMiji(String miji) {
+	public void setMiji(int miji) {
 		this.miji = miji;
 	}
 	
-	@Column(name="DownloadAmount")
+	@Column(name="DOWNLOADAMOUNT_")
 	public int getDownloadAmount() {
 		return downloadAmount;
 	}
@@ -83,7 +83,7 @@ public class  Resourcedownload implements Serializable {
 		this.downloadAmount = downloadAmount;
 	}
 	
-	@Column(name="UploadTime")
+	@Column(name="UPLOADTIME_")
 	public Date getUploadTime() {
 		return uploadTime;
 	}
@@ -91,14 +91,14 @@ public class  Resourcedownload implements Serializable {
 		this.uploadTime = uploadTime;
 	}
 	
-	@Column(name="UploadPerson")
+	@Column(name="UPLOADPERSON_")
 	public String getUploadPerson() {
 		return uploadPerson;
 	}
 	public void setUploadPerson(String uploadPerson) {
 		this.uploadPerson = uploadPerson;
 	}
-	@Column(name="UploadPersonOid")
+	@Column(name="UPLOADPERSONOID_")
 	public String getUploadPersonOid() {
 		return uploadPersonOid;
 	}

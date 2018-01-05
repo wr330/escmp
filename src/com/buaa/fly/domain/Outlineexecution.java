@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "Fly_OutlineExecution")
+@Table(name = "FLY_OUTLINEEXECUTION")
 public class Outlineexecution implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -43,7 +43,7 @@ public class Outlineexecution implements Serializable {
 	private String testStatus;
 	private String engineState;
 	private String testMethod;
-	private String miji;
+	private int miji;
 	private Integer jiaci;
 	private Integer shijijiaci;
 	private Subject project;
@@ -52,7 +52,7 @@ public class Outlineexecution implements Serializable {
 	private Collection<CombineVehicle> combineVehicle;
 
 	@Id
-	@Column(name = "Oid", unique = true, nullable = false)
+	@Column(name = "OID_", unique = true, nullable = false)
 	public String getOid() {
 		return oid;
 	}
@@ -61,7 +61,7 @@ public class Outlineexecution implements Serializable {
 		this.oid = oid;
 	}
 
-	@Column(name = "AircraftType")
+	@Column(name = "AIRCRAFTTYPE_")
 	public String getAircrafttype() {
 		return aircrafttype;
 	}
@@ -71,7 +71,7 @@ public class Outlineexecution implements Serializable {
 	}
 
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "project")
+	@JoinColumn(name = "PROJECT_")
 	public Subject getProject() {
 		return project;
 	}
@@ -80,7 +80,7 @@ public class Outlineexecution implements Serializable {
 		this.project = project;
 	}
 
-	@Column(name = "RemainState")
+	@Column(name = "REMAINSTATE_")
 	public String getRemainstate() {
 		return remainstate;
 	}
@@ -89,7 +89,7 @@ public class Outlineexecution implements Serializable {
 		this.remainstate = remainstate;
 	}
 
-	@Column(name = "ExecDate")
+	@Column(name = "EXECDATE_")
 	public Date getExecdate() {
 		return execdate;
 	}
@@ -98,7 +98,7 @@ public class Outlineexecution implements Serializable {
 		this.execdate = execdate;
 	}
 
-	@Column(name = "CompleteState")
+	@Column(name = "COMPLETESTATE_")
 	public String getCompletestate() {
 		return completestate;
 	}
@@ -107,7 +107,7 @@ public class Outlineexecution implements Serializable {
 		this.completestate = completestate;
 	}
 
-	@Column(name = "Subject")
+	@Column(name = "SUBJECT_")
 	public String getSubject() {
 		return subject;
 	}
@@ -116,7 +116,7 @@ public class Outlineexecution implements Serializable {
 		this.subject = subject;
 	}
 
-	@Column(name = "outlineFlights")
+	@Column(name = "OUTLINEFLIGHTS_")
 	public int getOutlineFlights() {
 		return outlineFlights;
 	}
@@ -125,7 +125,7 @@ public class Outlineexecution implements Serializable {
 		this.outlineFlights = outlineFlights;
 	}
 
-	@Column(name = "CombineFlights")
+	@Column(name = "COMBINEFLIGHTS_")
 	public Integer getCombineFlights() {
 		return combineFlights;
 	}
@@ -134,7 +134,7 @@ public class Outlineexecution implements Serializable {
 		this.combineFlights = combineFlights;
 	}
 
-	@Column(name = "CombineSubject")
+	@Column(name = "COMBINESUBJECT_")
 	public String getCombineSubject() {
 		return combineSubject;
 	}
@@ -143,7 +143,7 @@ public class Outlineexecution implements Serializable {
 		this.combineSubject = combineSubject;
 	}
 
-	@Column(name = "aircraftStruct")
+	@Column(name = "AIRCRAFTSTRUCT_")
 	public String getAircraftStruct() {
 		return aircraftStruct;
 	}
@@ -152,7 +152,7 @@ public class Outlineexecution implements Serializable {
 		this.aircraftStruct = aircraftStruct;
 	}
 
-	@Column(name = "testStatus")
+	@Column(name = "TESTSTATUS_")
 	public String getTestStatus() {
 		return testStatus;
 	}
@@ -161,7 +161,7 @@ public class Outlineexecution implements Serializable {
 		this.testStatus = testStatus;
 	}
 
-	@Column(name = "engineState")
+	@Column(name = "ENGINESTATE_")
 	public String getEngineState() {
 		return engineState;
 	}
@@ -170,7 +170,7 @@ public class Outlineexecution implements Serializable {
 		this.engineState = engineState;
 	}
 
-	@Column(name = "testMethod")
+	@Column(name = "TESTMETHOD_")
 	public String getTestMethod() {
 		return testMethod;
 	}
@@ -179,12 +179,12 @@ public class Outlineexecution implements Serializable {
 		this.testMethod = testMethod;
 	}
 
-	@Column(name = "miji")
-	public String getMiji() {
+	@Column(name = "MIJI_")
+	public int getMiji() {
 		return miji;
 	}
 
-	public void setMiji(String miji) {
+	public void setMiji(int miji) {
 		this.miji = miji;
 	}
 
@@ -197,7 +197,7 @@ public class Outlineexecution implements Serializable {
 		this.combineVehicle = combineVehicle;
 	}
 
-	@Column(name = "parentnode")
+	@Column(name = "PARENTNODE_")
 	public String getParentnode() {
 		return parentnode;
 	}
@@ -215,7 +215,7 @@ public class Outlineexecution implements Serializable {
 		this.children = children;
 	}
 
-	@Column(name = "jiaci")
+	@Column(name = "JIACI_")
 	public Integer getJiaci() {
 		return jiaci;
 	}
@@ -224,7 +224,7 @@ public class Outlineexecution implements Serializable {
 		this.jiaci = jiaci;
 	}
 	
-	@Column(name = "shijijiaci")
+	@Column(name = "SHIJIJIACI_")
 	public Integer getShijijiaci() {
 		return shijijiaci;
 	}
@@ -233,7 +233,7 @@ public class Outlineexecution implements Serializable {
 		this.shijijiaci = shijijiaci;
 	}
 
-	@Column(name = "TestFligMaxNum")
+	@Column(name = "TESTFLIGMAXNUM_")
 	public Integer getTestFligMaxNum() {
 		return testFligMaxNum;
 	}

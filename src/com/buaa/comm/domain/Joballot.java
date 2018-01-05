@@ -19,7 +19,7 @@ import java.util.Date;
 import com.buaa.comm.domain.Jobstatistics;
 
 @Entity
-@Table(name="Comm_JobAllot")
+@Table(name="COMM_JOBALLOT")
 public class  Joballot implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Joballot(){}
@@ -35,14 +35,14 @@ public class  Joballot implements Serializable {
 	private String workSummary ;
 	private String personname ;
 	private Date finishtime ;
-	private String miji;
+	private int miji;
 	private int workStatus;
 	private Jobstatistics jobstatistics;
 	
 
 
 	@Id
-		@Column(name = "Oid", unique = true, nullable = false)
+		@Column(name = "OID_", unique = true, nullable = false)
 	public String getOid() {
 		return oid;
 	}
@@ -50,56 +50,56 @@ public class  Joballot implements Serializable {
 		this.oid=oid;
 	}
 
-	@Column(name="PersonID")
+	@Column(name="PERSONID_")
 	public String getPersonid() {
 		return personid;
 	}
 	public void setPersonid(String personid) {
 		this.personid=personid;
 	}
-	@Column(name="Status")
+	@Column(name="STATUS_")
 	public Boolean getStatus() {
 		return status;
 	}
 	public void setStatus(Boolean status) {
 		this.status=status;
 	}
-	@Column(name="Content")
+	@Column(name="CONTENT_")
 	public String getContent() {
 		return content;
 	}
 	public void setContent(String content) {
 		this.content=content;
 	}
-	@Column(name="WorkSummary")
+	@Column(name="WORKSUMMARY_")
 	public String getWorkSummary() {
 		return workSummary;
 	}
 	public void setWorkSummary(String workSummary) {
 		this.workSummary = workSummary;
 	}
-	@Column(name="PersonName")
+	@Column(name="PERSONNAME_")
 	public String getPersonname() {
 		return personname;
 	}
 	public void setPersonname(String personname) {
 		this.personname=personname;
 	}
-	@Column(name="FinishTime")
+	@Column(name="FINISHTIME_")
 	public Date getFinishtime() {
 		return finishtime;
 	}
 	public void setFinishtime(Date finishtime) {
 		this.finishtime=finishtime;
 	}
-	@Column(name="miji")
-	public String getMiji() {
+	@Column(name="MIJI_")
+	public int getMiji() {
 		return miji;
 	}
-	public void setMiji(String miji) {
+	public void setMiji(int miji) {
 		this.miji = miji;
 	}
-	@Column(name="WorkStatus")
+	@Column(name="WORKSUMMARY_")
 	public int getWorkStatus() {
 		return workStatus;
 	}
@@ -107,7 +107,7 @@ public class  Joballot implements Serializable {
 		this.workStatus = workStatus;
 	}
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "JobStatistics")
+	@JoinColumn(name = "JOBSTATISTICS_")
     public Jobstatistics getJobstatistics() {
 		return jobstatistics;
 	}

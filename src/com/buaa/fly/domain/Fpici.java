@@ -21,7 +21,7 @@ import com.buaa.fly.domain.Ftypes;
 import com.buaa.fly.domain.Fighterinfo;
 
 @Entity
-@Table(name = "Fly_fpici")
+@Table(name = "FLY_FPICI")
 public class Fpici implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -35,7 +35,7 @@ public class Fpici implements Serializable {
 	private Collection<Fighterinfo> fighterinfo;
 
 	@Id
-	@Column(name = "piciID", unique = true, nullable = false)
+	@Column(name = "PICIID_", unique = true, nullable = false)
 	public String getPiciID() {
 		return piciID;
 	}
@@ -44,7 +44,7 @@ public class Fpici implements Serializable {
 		this.piciID = piciID;
 	}
 
-	@Column(name = "piciName")
+	@Column(name = "PICINAME_")
 	public String getPiciName() {
 		return piciName;
 	}
@@ -57,7 +57,7 @@ public class Fpici implements Serializable {
 		this.piciName = piciName;
 	}
 
-	@Column(name = "more")
+	@Column(name = "MORE_")
 	public String getMore() {
 		return more;
 	}
@@ -67,7 +67,7 @@ public class Fpici implements Serializable {
 	}
 
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "fTypeName")
+	@JoinColumn(name = "FTYPENAME_")
 	public Ftypes getfTypeName() {
 		return fTypeName;
 	}

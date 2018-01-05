@@ -17,7 +17,7 @@ import java.util.Date;
 import com.buaa.fly.domain.Fpici;
 
 @Entity
-@Table(name = "Fly_Fighterinfo")
+@Table(name = "FLY_FIGHTERINFO")
 public class Fighterinfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -33,7 +33,7 @@ public class Fighterinfo implements Serializable {
 	private Collection<Fighterout> fighterout;
 
 	@Id
-	@Column(name = "outFactoryNo", unique = true, nullable = false)
+	@Column(name = "OUTFACTORYNO_", unique = true, nullable = false)
 	public String getOutfactoryno() {
 		return outfactoryno;
 	}
@@ -42,7 +42,7 @@ public class Fighterinfo implements Serializable {
 		this.outfactoryno = outfactoryno;
 	}
 
-	@Column(name = "ftypeName")
+	@Column(name = "FTYPENAME_")
 	public String getFtypeName() {
 		return ftypeName;
 	}
@@ -51,7 +51,7 @@ public class Fighterinfo implements Serializable {
 		this.ftypeName = ftypeName;
 	}
 
-	@Column(name = "firstFDate")
+	@Column(name = "FIRSTFDATE_")
 	public Date getFirstFDate() {
 		return firstFDate;
 	}
@@ -60,7 +60,7 @@ public class Fighterinfo implements Serializable {
 		this.firstFDate = firstFDate;
 	}
 
-	@Column(name = "userNo")
+	@Column(name = "USERNO_")
 	public String getUserno() {
 		return userno;
 	}
@@ -69,7 +69,7 @@ public class Fighterinfo implements Serializable {
 		this.userno = userno;
 	}
 
-	@Column(name = "outDate")
+	@Column(name = "OUTDATE_")
 	public Date getOutDate() {
 		return outDate;
 	}
@@ -79,7 +79,7 @@ public class Fighterinfo implements Serializable {
 	}
 
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "piciid")
+	@JoinColumn(name = "PICIID_")
 	public Fpici getPiciid() {
 		return piciid;
 	}

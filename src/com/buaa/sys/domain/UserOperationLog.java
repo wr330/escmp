@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Sys_UserOperationLog")
+@Table(name = "SYS_USEROPERATIONLOG")
 public class UserOperationLog implements Serializable{
 	private static final long serialVersionUID = 1L;
 
@@ -30,7 +30,7 @@ public class UserOperationLog implements Serializable{
 	private Date operationTime;
 
 	@Id
-	@Column(name = "Oid", unique = true, nullable = false)
+	@Column(name = "OID_", unique = true, nullable = false)
 	public String getOid() {
 		return oid;
 	}
@@ -39,7 +39,7 @@ public class UserOperationLog implements Serializable{
 		this.oid = oid;
 	}
 
-	@Column(name = "LogOperationType")
+	@Column(name = "LOGOPERATIONTYPE_")
 	public int getLogOperationType() {
 		return logOperationType;
 	}
@@ -48,7 +48,7 @@ public class UserOperationLog implements Serializable{
 		this.logOperationType = logOperationType;
 	}
 	
-	@Column(name = "OperationPerson")
+	@Column(name = "OPERATIONPERSON_")
 	public String getOperationPerson() {
 		return operationPerson;
 	}
@@ -57,7 +57,7 @@ public class UserOperationLog implements Serializable{
 		this.operationPerson = operationPerson;
 	}
 	
-	@Column(name = "OperationPersonName")
+	@Column(name = "OPERATIONPERSONNAME_")
 	public String getOperationPersonName() {
 		return operationPersonName;
 	}
@@ -66,7 +66,7 @@ public class UserOperationLog implements Serializable{
 		this.operationPersonName = operationPersonName;
 	}
 
-	@Column(name = "OperationWorkType")
+	@Column(name = "OPERATIONWORKTYPE_")
 	public String getOperationWorkType() {
 		return operationWorkType;
 	}
@@ -75,7 +75,7 @@ public class UserOperationLog implements Serializable{
 		this.operationWorkType = operationWorkType;
 	}
 	
-	@Column(name = "OperationContent")
+	@Column(name = "OPERATIONCONTENT_")
 	public String getOperationContent() {
 		return operationContent;
 	}
@@ -84,7 +84,7 @@ public class UserOperationLog implements Serializable{
 		this.operationContent = operationContent;
 	}
 	
-	@Column(name = "OperationReason")
+	@Column(name = "OPERATIONREASON_")
 	public String getOperationReason() {
 		return operationReason;
 	}
@@ -93,7 +93,7 @@ public class UserOperationLog implements Serializable{
 		this.operationReason = operationReason;
 	}
 
-	@Column(name = "OperationTime")
+	@Column(name = "OPERATIONTIME_")
 	public Date getOperationTime() {
 		return operationTime;
 	}

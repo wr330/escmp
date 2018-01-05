@@ -19,7 +19,7 @@ import java.util.Date;
 import com.buaa.comm.domain.Jobstatistics;
 
 @Entity
-@Table(name="Comm_JobConcern")
+@Table(name="COMM_JOBCONCERN")
 public class  Jobconcern implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Jobconcern(){}
@@ -35,21 +35,21 @@ public class  Jobconcern implements Serializable {
 
 
 	@Id
-		@Column(name = "Oid", unique = true, nullable = false)
+		@Column(name = "OID_", unique = true, nullable = false)
 	public String getOid() {
 		return oid;
 	}
 	public void setOid(String oid) {
 		this.oid=oid;
 	}
-	@Column(name="ConcernTime")
+	@Column(name="CONCERNTIME_")
 	public Date getConcerntime() {
 		return concerntime;
 	}
 	public void setConcerntime(Date concerntime) {
 		this.concerntime=concerntime;
 	}
-	@Column(name="PersonID")
+	@Column(name="PERSONID_")
 	public String getPersonid() {
 		return personid;
 	}
@@ -58,7 +58,7 @@ public class  Jobconcern implements Serializable {
 	}
 
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "JobStatistics")
+	@JoinColumn(name = "JOBSTATISTICS_")
     public Jobstatistics getJobstatistics() {
 		return jobstatistics;
 	}

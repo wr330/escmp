@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
-@Table(name="Comm_MeetingManager")
+@Table(name="COMM_MEETINGMANAGER")
 public class  Meetingmanager implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Meetingmanager(){}
@@ -19,7 +19,7 @@ public class  Meetingmanager implements Serializable {
  	}	
 
 	private String oid ;
-	private Integer miji ;
+	private int miji ;
 	private Date meetingstime ;
 	private Date meetingetime ;
 	private String applypersonname ;
@@ -28,7 +28,7 @@ public class  Meetingmanager implements Serializable {
 
 
 	@Id
-	@Column(name = "Oid", unique = true, nullable = false)
+	@Column(name = "OID_", unique = true, nullable = false)
 	public String getOid() {
 		return oid;
 	}
@@ -37,41 +37,41 @@ public class  Meetingmanager implements Serializable {
 	}
 
 	@Column(name="Miji")
-	public Integer getMiji() {
+	public int getMiji() {
 		return miji;
 	}
-	public void setMiji(Integer miji) {
+	public void setMiji(int miji) {
 		this.miji=miji;
 	}
-	@Column(name="MeetingSTime")
+	@Column(name="MEETINGSTIME_")
 	public Date getMeetingstime() {
 		return meetingstime;
 	}
 	public void setMeetingstime(Date meetingstime) {
 		this.meetingstime=meetingstime;
 	}
-	@Column(name="MeetingETime")
+	@Column(name="MEETINGETIME_")
 	public Date getMeetingetime() {
 		return meetingetime;
 	}
 	public void setMeetingetime(Date meetingetime) {
 		this.meetingetime=meetingetime;
 	}
-	@Column(name="ApplyPersonName")
+	@Column(name="APPLYPERSONNAME_")
 	public String getApplypersonname() {
 		return applypersonname;
 	}
 	public void setApplypersonname(String applypersonname) {
 		this.applypersonname=applypersonname;
 	}
-	@Column(name="ApplyPerson")
+	@Column(name="APPLYPERSON_")
 	public String getApplyperson() {
 		return applyperson;
 	}
 	public void setApplyperson(String applyperson) {
 		this.applyperson=applyperson;
 	}
-	@Column(name="MeetingAddress")
+	@Column(name="MEETINGADDRESS_")
 	public String getMeetingaddress() {
 		return meetingaddress;
 	}

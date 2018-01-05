@@ -52,7 +52,7 @@ public class OutlineexecutionDaoforJDBC extends JdbcBaseDao{
 	        d.setTestStatus(rs.getString("testStatus"));
 	        d.setEngineState(rs.getString("engineState"));
 	        d.setExecdate(rs.getDate("execdate"));
-	        d.setMiji(rs.getString("miji"));
+	        d.setMiji(rs.getInt("miji"));
 	        try {
 				d.setProject(subjectDao.querySubjectbyId(rs.getString("project")));
 			} catch (Exception e) {

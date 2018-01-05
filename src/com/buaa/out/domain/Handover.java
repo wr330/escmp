@@ -18,7 +18,7 @@ import org.hibernate.annotations.GenericGenerator;
 import java.util.Date;
 
 @Entity
-@Table(name="Out_Handover")
+@Table(name="OUT_HANDOVER")
 public class  Handover implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Handover(){}
@@ -42,7 +42,7 @@ public class  Handover implements Serializable {
 
 
 	@Id
-		@Column(name = "Oid", unique = true, nullable = false)
+		@Column(name = "OID_", unique = true, nullable = false)
 	public String getOid() {
 		return oid;
 	}
@@ -50,63 +50,63 @@ public class  Handover implements Serializable {
 		this.oid=oid;
 	}
 
-	@Column(name="EFile")
+	@Column(name="EFILE_")
 	public String getEfile() {
 		return efile;
 	}
 	public void setEfile(String efile) {
 		this.efile=efile;
 	}
-	@Column(name="FileName")
+	@Column(name="FILENAME_")
 	public String getFilename() {
 		return filename;
 	}
 	public void setFilename(String filename) {
 		this.filename=filename;
 	}
-	@Column(name="PersonTo")
+	@Column(name="PERSONTO_")
 	public String getPersonto() {
 		return personto;
 	}
 	public void setPersonto(String personto) {
 		this.personto=personto;
 	}
-	@Column(name="FileNumber")
+	@Column(name="FILENUMBER_")
 	public String getFilenumber() {
 		return filenumber;
 	}
 	public void setFilenumber(String filenumber) {
 		this.filenumber=filenumber;
 	}
-	@Column(name="bytes")
+	@Column(name="BYTES_")
 	public Integer getBytes() {
 		return bytes;
 	}
 	public void setBytes(Integer bytes) {
 		this.bytes = bytes;
 	}
-	@Column(name="PersonFrom")
+	@Column(name="PERSONFROM_")
 	public String getPersonfrom() {
 		return personfrom;
 	}
 	public void setPersonfrom(String personfrom) {
 		this.personfrom=personfrom;
 	}
-	@Column(name="HandoverTime")
+	@Column(name="HANDOVERTIME_")
 	public Date getHandovertime() {
 		return handovertime;
 	}
 	public void setHandovertime(Date handovertime) {
 		this.handovertime=handovertime;
 	}
-	@Column(name="SectionChiefSure")
+	@Column(name="SECTIONCHIEFSURE_")
 	public String getSectionChiefSure() {
 		return sectionChiefSure;
 	}
 	public void setSectionChiefSure(String sectionChiefSure) {
 		this.sectionChiefSure = sectionChiefSure;
 	}
-	@Column(name="datablock")
+	@Column(name="DATABLOCK_")
 	public byte[] getDatablock() {
 		return datablock;
 	}
@@ -114,7 +114,7 @@ public class  Handover implements Serializable {
 		this.datablock=datablock;
 	}
 
-	@Column(name="SectionChief")
+	@Column(name="SECTIONCHIEF_")
 	public String getSectionChief() {
 		return sectionChief;
 	}
@@ -122,7 +122,7 @@ public class  Handover implements Serializable {
 		this.sectionChief = sectionChief;
 	}
 	
-	@Column(name="SectionChiefName")
+	@Column(name="SECTIONCHIEFNAME_")
 	public String getSectionChiefName() {
 		return sectionChiefName;
 	}
@@ -130,7 +130,7 @@ public class  Handover implements Serializable {
 		this.sectionChiefName = sectionChiefName;
 	}
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "SupportProgram")
+	@JoinColumn(name = "SUPPORTPROGRAM_")
 	public Supportprogram getSupportprogram() {
 		return supportprogram;
 	}

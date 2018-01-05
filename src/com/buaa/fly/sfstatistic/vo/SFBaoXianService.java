@@ -28,7 +28,7 @@ public class SFBaoXianService extends JdbcBaseDao {
 	@DataProvider
 	public Collection<SFBaoXian> loadSFBaoXian(String ftype) {
 		ArrayList<SFBaoXian> items = new ArrayList<SFBaoXian>();
-		String sql = "select * from Fly_SFBaoXian where ftype='" + ftype + "'";
+		String sql = "select * from FLY_SFBAOXIAN where FTYPE_='" + ftype + "'";
 		List<Map<String, Object>> list = this.getJdbcTemplate().queryForList(sql);
 		if (list.size() > 0) {
 			String[][] array = {
@@ -53,8 +53,8 @@ public class SFBaoXianService extends JdbcBaseDao {
 
 	@DataProvider
 	public Collection<SFscheme> loadSFscheme(String ftype) {
-		String sql = "select * from Fly_SFscheme where ftype='" + ftype
-				+ "'  order by Month";
+		String sql = "select * from FLY_SFSCHEME where FTYPE_='" + ftype
+				+ "'  order by MONTH_";
 		return this.getJdbcTemplate().query(sql, new SFschemeMapper());
 	}
 
@@ -62,11 +62,11 @@ public class SFBaoXianService extends JdbcBaseDao {
 
 		public SFscheme mapRow(ResultSet rs, int index) throws SQLException {
 			SFscheme data = new SFscheme();
-			data.setMonth((Integer) rs.getObject("Month"));
-			data.setPlandays((Integer) rs.getObject("PlanDays"));
-			data.setFactdays((Integer) rs.getObject("FactDays"));
-			data.setPlanjiaci((Integer) rs.getObject("PlanjiaCi"));
-			data.setFactjiaci((Integer) rs.getObject("FactJiaCi"));
+			data.setMonth((Integer) rs.getObject("MONTH_"));
+			data.setPlandays((Integer) rs.getObject("PLANDAYS_"));
+			data.setFactdays((Integer) rs.getObject("FACTDAYS_"));
+			data.setPlanjiaci((Integer) rs.getObject("PLANJIACI_"));
+			data.setFactjiaci((Integer) rs.getObject("FACTJIACI_"));
 			return data;
 		}
 	}
@@ -79,10 +79,10 @@ public class SFBaoXianService extends JdbcBaseDao {
 	public void saveBXtjInsert(Map<String, Object> parameter) {
 		
 		if (null != parameter && !parameter.isEmpty()) {
-			String ftype = (String) parameter.get("ftype");
+			String ftype = (String) parameter.get("FTYPE_");
 			String oid = UUID.randomUUID().toString();//生成主键
 			//编写新增记录的SQL语句
-			String sql = "INSERT INTO Fly_SFBaoXian(ftype,id) VALUES('" + ftype + "','" + oid + "')";
+			String sql = "INSERT INTO FLY_SFBAOXIAN(FTYPE_,ID_) VALUES('" + ftype + "','" + oid + "')";
 			this.getJdbcTemplate().update(sql);
 		}		
 		
@@ -96,8 +96,8 @@ public class SFBaoXianService extends JdbcBaseDao {
 	@SuppressWarnings("unchecked")	
 	public void saveBXtj(Map<String, Object> parameter) {		
 		if (null != parameter && !parameter.isEmpty()) {
-			String ftype = (String) parameter.get("ftype");
-			Collection<SFBaoXian> items = (Collection<SFBaoXian>)parameter.get("SFBaoXian");
+			String ftype = (String) parameter.get("FTYPE_");
+			Collection<SFBaoXian> items = (Collection<SFBaoXian>)parameter.get("FLY_SFBAOXIAN");
 			String[] str = new String[7];
 			int i = 0;
 			//取得前台传来的数据，放到数组str中
@@ -106,11 +106,11 @@ public class SFBaoXianService extends JdbcBaseDao {
 				i++;
 			}
 			//对Fly_SFBaoXian表中数据进行更新保存
-			String sql = "UPDATE Fly_SFBaoXian SET mach = '" + str[0] 
-					+ "', height = '" + str[1] + "', maxtable = '" + str[2]
-					+ "', mintable = '" + str[3] + "', angle = '" + str[4] 
-					+ "', overload = '" + str[5] + "', Noverload = '" + str[6] 
-					+ "' where ftype='" + ftype + "'";
+			String sql = "UPDATE FLY_SFBAOXIAN SET MACH_ = '" + str[0] 
+					+ "', HEIGHT_ = '" + str[1] + "', MAXTABLE_ = '" + str[2]
+					+ "', MINTABLE_ = '" + str[3] + "', ANGLE_ = '" + str[4] 
+					+ "', OVERLOAD_ = '" + str[5] + "', NOVERLOAD_ = '" + str[6] 
+					+ "' where FTYPE_='" + ftype + "'";
 			this.getJdbcTemplate().update(sql);
 		}				
 	}

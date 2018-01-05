@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name="Out_PersonStatistic")
+@Table(name="OUT_PERSONSTATISTIC")
 public class  Personstatistic implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Personstatistic(){}
@@ -21,14 +21,14 @@ public class  Personstatistic implements Serializable {
     private PersonstatisticKey personSKey ;
 	
 	@Id
-	@Column(name="WorkAddress")
+	@Column(name="WORKADDRESS_")
 	public String getWorkaddress() {
 		return workaddress;
 	}
 	public void setWorkaddress(String workaddress) {
 		this.workaddress=workaddress;
 	}
-	@Column(name="SumDays")
+	@Column(name="DAYS_")
 	public Integer getDays() {
 		return days;
 	}
@@ -36,7 +36,7 @@ public class  Personstatistic implements Serializable {
 		this.days=days;
 	}
 	@Id
-	@Column(name="RegistrationExecutor")
+	@Column(name="REGISTRATIONEXECUTOR_")
 	public String getRegistrationexecutor() {
 		return registrationexecutor;
 	}

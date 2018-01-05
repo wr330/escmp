@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Fly_TaskList")
+@Table(name = "FLY_TASKLIST")
 public class Tasklist implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -30,13 +30,13 @@ public class Tasklist implements Serializable {
 	private String aircrafttype;
 	private String taskcontent;
 	private String subject;
-	private Integer miji;	
+	private int miji;	
 	private byte[] datablock;
 	private String filename;
 	private Integer bytes;
 	private Sfstatistic sfstatistic;
 
-	@Column(name = "Datablock")
+	@Column(name = "DATABLOCK_")
 	public byte[] getDatablock() {
 		return datablock;
 	}
@@ -45,7 +45,7 @@ public class Tasklist implements Serializable {
 		this.datablock = datablock;
 	}
 
-	@Column(name = "Filename")
+	@Column(name = "FILENAME_")
 	public String getFilename() {
 		return filename;
 	}
@@ -54,7 +54,7 @@ public class Tasklist implements Serializable {
 		this.filename = filename;
 	}
 
-	@Column(name = "Bytes")
+	@Column(name = "BYTES_")
 	public Integer getBytes() {
 		return bytes;
 	}
@@ -64,7 +64,7 @@ public class Tasklist implements Serializable {
 	}
 
 	@Id
-	@Column(name = "Oid", unique = true, nullable = false)
+	@Column(name = "OID_", unique = true, nullable = false)
 	public String getOid() {
 		return oid;
 	}
@@ -73,7 +73,7 @@ public class Tasklist implements Serializable {
 		this.oid = oid;
 	}
 
-	@Column(name = "TaskExecution")
+	@Column(name = "TASKEXECUTION_")
 	public String getTaskexecution() {
 		return taskexecution;
 	}
@@ -82,7 +82,7 @@ public class Tasklist implements Serializable {
 		this.taskexecution = taskexecution;
 	}
 
-	@Column(name = "TaskNumber")
+	@Column(name = "TASKNUMBER_")
 	public String getTasknumber() {
 		return tasknumber;
 	}
@@ -91,7 +91,7 @@ public class Tasklist implements Serializable {
 		this.tasknumber = tasknumber;
 	}
 
-	@Column(name = "AircraftType")
+	@Column(name = "AIRCRAFTTYPE_")
 	public String getAircrafttype() {
 		return aircrafttype;
 	}
@@ -100,7 +100,7 @@ public class Tasklist implements Serializable {
 		this.aircrafttype = aircrafttype;
 	}
 
-	@Column(name = "TaskContent")
+	@Column(name = "TASKCONTENT_")
 	public String getTaskcontent() {
 		return taskcontent;
 	}
@@ -109,7 +109,7 @@ public class Tasklist implements Serializable {
 		this.taskcontent = taskcontent;
 	}
 
-	@Column(name = "Subject")
+	@Column(name = "SUBJECT_")
 	public String getSubject() {
 		return subject;
 	}
@@ -118,17 +118,17 @@ public class Tasklist implements Serializable {
 		this.subject = subject;
 	}
 
-	@Column(name = "miji")
-	public Integer getMiji() {
+	@Column(name = "MIJI_")
+	public int getMiji() {
 		return miji;
 	}
 
-	public void setMiji(Integer miji) {
+	public void setMiji(int miji) {
 		this.miji = miji;
 	}
 	
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "FlyStatistic")
+	@JoinColumn(name = "FLYSTATISTIC_")
 	public Sfstatistic getSfstatistic() {
 		return sfstatistic;
 	}

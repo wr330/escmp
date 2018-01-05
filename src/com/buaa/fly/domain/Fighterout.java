@@ -18,7 +18,7 @@ import org.hibernate.annotations.GenericGenerator;
 import java.util.Date;
 
 @Entity
-@Table(name="Fly_FighterOut")
+@Table(name="FLY_FIGHTEROUT")
 public class  Fighterout implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Fighterout(){}
@@ -32,7 +32,7 @@ public class  Fighterout implements Serializable {
 	private Fighterinfo fighterinfo;
 
 	@Id
-	@Column(name = "Oid", unique = true, nullable = false)
+	@Column(name = "OID_", unique = true, nullable = false)
 	public String getOid() {
 		return oid;
 	}
@@ -40,7 +40,7 @@ public class  Fighterout implements Serializable {
 		this.oid=oid;
 	}
 
-	@Column(name="OutDate")
+	@Column(name="OUTDATE_")
 	public Date getOutdate() {
 		return outdate;
 	}
@@ -48,7 +48,7 @@ public class  Fighterout implements Serializable {
 		this.outdate=outdate;
 	}
 	
-	@Column(name="OutAddress")
+	@Column(name="OUTADDRESS_")
 	public String getOutaddress() {
 		return outaddress;
 	}
@@ -57,7 +57,7 @@ public class  Fighterout implements Serializable {
 	}
 	
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "FighterInfo")
+	@JoinColumn(name = "FIGHTERINFO_")
 	public Fighterinfo getFighterinfo() {
 		return fighterinfo;
 	}

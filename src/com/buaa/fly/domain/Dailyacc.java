@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "Fly_DailyAcc")
+@Table(name = "FLY_DAILYACC")
 public class Dailyacc implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -29,11 +29,11 @@ public class Dailyacc implements Serializable {
 	private Integer bytes;
 	private String summary;
 	private byte[] datablock;
-	private String miji;
+	private int miji;
 	private String inputPers;
 	private String inputPersOid;
 
-	@Column(name = "FileName")
+	@Column(name = "FILENAME_")
 	public String getFilename() {
 		return filename;
 	}
@@ -42,7 +42,7 @@ public class Dailyacc implements Serializable {
 		this.filename = filename;
 	}
 
-	@Column(name = "ftype")
+	@Column(name = "FTYPE_")
 	public String getFtype() {
 		return ftype;
 	}
@@ -52,7 +52,7 @@ public class Dailyacc implements Serializable {
 	}
 
 	@Id
-	@Column(name = "Oid")
+	@Column(name = "OID_")
 	public String getId() {
 		return id;
 	}
@@ -61,7 +61,7 @@ public class Dailyacc implements Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "bytes")
+	@Column(name = "BYTES_")
 	public Integer getBytes() {
 		return bytes;
 	}
@@ -70,7 +70,7 @@ public class Dailyacc implements Serializable {
 		this.bytes = bytes;
 	}
 
-	@Column(name = "summary")
+	@Column(name = "SUMMARY_")
 	public String getSummary() {
 		return summary;
 	}
@@ -79,7 +79,7 @@ public class Dailyacc implements Serializable {
 		this.summary = summary;
 	}
 
-	@Column(name = "datablock")
+	@Column(name = "DATABLOCK_")
 	public byte[] getDatablock() {
 		return datablock;
 	}
@@ -88,16 +88,16 @@ public class Dailyacc implements Serializable {
 		this.datablock = datablock;
 	}
 
-	@Column(name = "miji")
-	public String getMiji() {
+	@Column(name = "MIJI_")
+	public int getMiji() {
 		return miji;
 	}
 
-	public void setMiji(String miji) {
+	public void setMiji(int miji) {
 		this.miji = miji;
 	}
 	
-	@Column(name = "inputPers")
+	@Column(name = "INPUTPERS_")
 	public String getInputPers() {
 		return inputPers;
 	}
@@ -106,7 +106,7 @@ public class Dailyacc implements Serializable {
 		this.inputPers = inputPers;
 	}
 
-	@Column(name = "inputPersOid")
+	@Column(name = "INPUTPERSOID_")
 	public String getInputPersOid() {
 		return inputPersOid;
 	}

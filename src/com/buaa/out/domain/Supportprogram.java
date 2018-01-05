@@ -25,7 +25,7 @@ import java.lang.String;
 
 
 @Entity
-@Table(name="Out_SupportProgram")
+@Table(name="OUT_SUPPORTPROGRAM")
 public class  Supportprogram implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Supportprogram(){}
@@ -43,13 +43,13 @@ public class  Supportprogram implements Serializable {
 	private Date worktime ;
 	private Date endtime ;
 	private Date maketime ;
-	private String miji ;
+	private int miji ;
 
 	private Collection<Supportitem> supportitem;
 	private Collection<Handover> handover;
 
 	@Id
-	@Column(name = "Oid", unique = true, nullable = false)
+	@Column(name = "OID_", unique = true, nullable = false)
 	public String getOid() {
 		return oid;
 	}
@@ -57,74 +57,74 @@ public class  Supportprogram implements Serializable {
 		this.oid=oid;
 	}
 
-	@Column(name="Troop")
+	@Column(name="TROOP_")
 	public String getTroop() {
 		return troop;
 	}
 	public void setTroop(String troop) {
 		this.troop=troop;
 	}
-	@Column(name="StaffRequirement")
+	@Column(name="STAFFREQUIREMENT_")
 	public Integer getStaffrequirement() {
 		return staffrequirement;
 	}
 	public void setStaffrequirement(Integer staffrequirement) {
 		this.staffrequirement=staffrequirement;
 	}
-	@Column(name="SupportType")
+	@Column(name="SUPPORTTYPE_")
 	public String getSupporttype() {
 		return supporttype;
 	}
 	public void setSupporttype(String supporttype) {
 		this.supporttype=supporttype;
 	}
-	@Column(name="ChangePeriod")
+	@Column(name="CHANGEPERIOD_")
 	public Integer getChangeperiod() {
 		return changeperiod;
 	}
 	public void setChangeperiod(Integer changeperiod) {
 		this.changeperiod=changeperiod;
 	}
-	@Column(name="WorkAddress")
+	@Column(name="WORKADDRESS_")
 	public String getWorkaddress() {
 		return workaddress;
 	}
 	public void setWorkaddress(String workaddress) {
 		this.workaddress=workaddress;
 	}
-	@Column(name="WorkTime")
+	@Column(name="WORKTIME_")
 	public Date getWorktime() {
 		return worktime;
 	}
 	public void setWorktime(Date worktime) {
 		this.worktime=worktime;
 	}
-	@Column(name="Maker")
+	@Column(name="MAKER_")
 	public String getMaker() {
 		return maker;
 	}
 	public void setMaker(String maker) {
 		this.maker = maker;
 	}
-	@Column(name="EndTime")
+	@Column(name="ENDTIME_")
 	public Date getEndtime() {
 		return endtime;
 	}
 	public void setEndtime(Date endtime) {
 		this.endtime = endtime;
 	}
-	@Column(name="MakeTime")
+	@Column(name="MAKETIME_")
 	public Date getMaketime() {
 		return maketime;
 	}
 	public void setMaketime(Date maketime) {
 		this.maketime = maketime;
 	}
-	@Column(name="miji")
-	public String getMiji() {
+	@Column(name="MIJI_")
+	public int getMiji() {
 		return miji;
 	}
-	public void setMiji(String miji) {
+	public void setMiji(int miji) {
 		this.miji = miji;
 	}
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "supportprogram")

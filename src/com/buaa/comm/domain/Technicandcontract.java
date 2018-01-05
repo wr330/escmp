@@ -18,7 +18,7 @@ import org.hibernate.annotations.GenericGenerator;
 import java.util.Date;
 
 @Entity
-@Table(name="Comm_TechnicAndContract")
+@Table(name="COMM_TECHNICANDCONTRACT")
 public class  Technicandcontract implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Technicandcontract(){}
@@ -40,11 +40,11 @@ public class  Technicandcontract implements Serializable {
 	private String contractnumber ;
 	private String contractmoney ;
 	private String responsiblepersion ;
-	private String miji ;
+	private int miji ;
 
 
 	@Id
-		@Column(name = "Oid", unique = true, nullable = false)
+		@Column(name = "OID_", unique = true, nullable = false)
 	public String getOid() {
 		return oid;
 	}
@@ -52,95 +52,95 @@ public class  Technicandcontract implements Serializable {
 		this.oid=oid;
 	}
 
-	@Column(name="ContractName")
+	@Column(name="CONTRACTNAME_")
 	public String getContractname() {
 		return contractname;
 	}
 	public void setContractname(String contractname) {
 		this.contractname=contractname;
 	}
-	@Column(name="ProjectNumber")
+	@Column(name="PROJECTNUMBER_")
 	public String getProjectnumber() {
 		return projectnumber;
 	}
 	public void setProjectnumber(String projectnumber) {
 		this.projectnumber=projectnumber;
 	}
-	@Column(name="PaymentDate")
+	@Column(name="PAYMENTDATE_")
 	public Date getPaymentdate() {
 		return paymentdate;
 	}
 	public void setPaymentdate(Date paymentdate) {
 		this.paymentdate=paymentdate;
 	}
-	@Column(name="SignContractDate")
+	@Column(name="SIGNCONTRACTDATE_")
 	public Date getSigncontractdate() {
 		return signcontractdate;
 	}
 	public void setSigncontractdate(Date signcontractdate) {
 		this.signcontractdate=signcontractdate;
 	}
-	@Column(name="Major")
+	@Column(name="MAJOR_")
 	public String getMajor() {
 		return major;
 	}
 	public void setMajor(String major) {
 		this.major=major;
 	}
-	@Column(name="SubmitArgumentReportDate")
+	@Column(name="SUBMITARGUMENTREPORTDATE_")
 	public Date getSubmitargumentreportdate() {
 		return submitargumentreportdate;
 	}
 	public void setSubmitargumentreportdate(Date submitargumentreportdate) {
 		this.submitargumentreportdate=submitargumentreportdate;
 	}
-	@Column(name="ContractSubmitedAppoveDate")
+	@Column(name="CONTRACTSUBMITEDAPPOVEDATE_")
 	public Date getContractsubmitedappovedate() {
 		return contractsubmitedappovedate;
 	}
 	public void setContractsubmitedappovedate(Date contractsubmitedappovedate) {
 		this.contractsubmitedappovedate=contractsubmitedappovedate;
 	}
-	@Column(name="PaymentMethod")
+	@Column(name="PAYMENTMETHOD_")
 	public String getPaymentmethod() {
 		return paymentmethod;
 	}
 	public void setPaymentmethod(String paymentmethod) {
 		this.paymentmethod=paymentmethod;
 	}
-	@Column(name="ProjectName")
+	@Column(name="PROJECTNAME_")
 	public String getProjectname() {
 		return projectname;
 	}
 	public void setProjectname(String projectname) {
 		this.projectname=projectname;
 	}
-	@Column(name="ContractNumber")
+	@Column(name="CONTRACTNUMBER_")
 	public String getContractnumber() {
 		return contractnumber;
 	}
 	public void setContractnumber(String contractnumber) {
 		this.contractnumber=contractnumber;
 	}
-	@Column(name="ContractMoney")
+	@Column(name="CONTRACTMONEY_")
 	public String getContractmoney() {
 		return contractmoney;
 	}
 	public void setContractmoney(String contractmoney) {
 		this.contractmoney=contractmoney;
 	}
-	@Column(name="ResponsiblePersion")
+	@Column(name="RESPONSIBLEPERSION_")
 	public String getResponsiblepersion() {
 		return responsiblepersion;
 	}
 	public void setResponsiblepersion(String responsiblepersion) {
 		this.responsiblepersion=responsiblepersion;
 	}
-	@Column(name="miji")
-	public String getMiji() {
+	@Column(name="MIJI_")
+	public int getMiji() {
 		return miji;
 	}
-	public void setMiji(String miji) {
+	public void setMiji(int miji) {
 		this.miji = miji;
 	}
 

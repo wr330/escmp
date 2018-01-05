@@ -22,11 +22,11 @@ import com.buaa.comm.domain.Addressbook;
 import com.buaa.fly.domain.Subject;
 
 @Entity
-@Table(name="Comm_AddressBookDepart")
+@Table(name="COMM_ADDRESSBOOKDEPART")
 public class  Addressbookdepart implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Addressbookdepart(){}
-   public Addressbookdepart(String oid) {
+    public Addressbookdepart(String oid) {
       this.oid=oid;
  	}	
 
@@ -42,7 +42,7 @@ public class  Addressbookdepart implements Serializable {
 	private Collection<Addressbook> addressbook;
 
 	@Id
-		@Column(name = "Oid", unique = true, nullable = false)
+	@Column(name = "OID_", unique = true, nullable = false)
 	public String getOid() {
 		return oid;
 	}
@@ -50,35 +50,35 @@ public class  Addressbookdepart implements Serializable {
 		this.oid=oid;
 	}
 
-	@Column(name="ParentNode")
+	@Column(name="PARENTNODE_")
 	public String getParentnode() {
 		return parentnode;
 	}
 	public void setParentnode(String parentnode) {
 		this.parentnode=parentnode;
 	}
-	@Column(name="Code")
+	@Column(name="CODE_")
 	public String getCode() {
 		return code;
 	}
 	public void setCode(String code) {
 		this.code=code;
 	}
-	@Column(name="Address")
+	@Column(name="ADDRESS_")
 	public String getAddress() {
 		return address;
 	}
 	public void setAddress(String address) {
 		this.address=address;
 	}
-	@Column(name="Name")
+	@Column(name="NAME_")
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name=name;
 	}
-	@Column(name="Postcode")
+	@Column(name="POSTCODE_")
 	public String getPostcode() {
 		return postcode;
 	}

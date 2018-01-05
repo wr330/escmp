@@ -18,7 +18,7 @@ import org.hibernate.annotations.GenericGenerator;
 import com.buaa.comm.domain.Btreport;
 
 @Entity
-@Table(name="Comm_AppendixDocument")
+@Table(name="COMM_APPENDIXDOCUMENT")
 public class  Appendixdocument implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Appendixdocument(){}
@@ -33,7 +33,7 @@ public class  Appendixdocument implements Serializable {
 	private Btreport btreport;
 	
 	@Id
-		@Column(name = "Oid", unique = true, nullable = false)
+		@Column(name = "OID_", unique = true, nullable = false)
 	public String getOid() {
 		return oid;
 	}
@@ -41,7 +41,7 @@ public class  Appendixdocument implements Serializable {
 		this.oid=oid;
 	}
 
-	@Column(name="EFile")
+	@Column(name="EFILE_")
 	public String getEfile() {
 		return efile;
 	}
@@ -50,7 +50,7 @@ public class  Appendixdocument implements Serializable {
 	}
 
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "BtReport")
+	@JoinColumn(name = "BTREPORT_")
     public Btreport getBtreport() {
 		return btreport;
 	}

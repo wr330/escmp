@@ -20,7 +20,7 @@ import java.lang.String;
 
 
 @Entity
-@Table(name="Out_SupportItem")
+@Table(name="OUT_SUPPORTITEM")
 public class  Supportitem implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Supportitem(){}
@@ -40,7 +40,7 @@ public class  Supportitem implements Serializable {
 	
 
 	@Id
-	@Column(name = "Oid", unique = true, nullable = false)
+	@Column(name = "OID_", unique = true, nullable = false)
 	public String getOid() {
 		return oid;
 	}
@@ -48,35 +48,35 @@ public class  Supportitem implements Serializable {
 		this.oid = oid;
 	}
 
-	@Column(name="EndExecutionTime")
+	@Column(name="ENDEXECUTIONTIME_")
 	public Date getEndexecutiontime() {
 		return endexecutiontime;
 	}
 	public void setEndexecutiontime(Date endexecutiontime) {
 		this.endexecutiontime=endexecutiontime;
 	}
-	@Column(name="StartExecutionTime")
+	@Column(name="STARTEXECUTIONTIME_")
 	public Date getStartexecutiontime() {
 		return startexecutiontime;
 	}
 	public void setStartexecutiontime(Date startexecutiontime) {
 		this.startexecutiontime=startexecutiontime;
 	}
-	@Column(name="RegistrationExecutor")
+	@Column(name="REGISTRATIONEXECUTOR_")
 	public String getRegistrationexecutor() {
 		return registrationexecutor;
 	}
 	public void setRegistrationexecutor(String registrationexecutor) {
 		this.registrationexecutor=registrationexecutor;
 	}
-	@Column(name="RegistExecOid")
+	@Column(name="REGISTEXECOID_")
 	public String getRegistExecOid() {
 		return registExecOid;
 	}
 	public void setRegistExecOid(String registExecOid) {
 		this.registExecOid = registExecOid;
 	}
-	@Column(name="Days",insertable=false,updatable=false)
+	@Column(name="DAYS_",insertable=false,updatable=false)
 	public Integer getDays() {
 		return days;
 	}
@@ -85,7 +85,7 @@ public class  Supportitem implements Serializable {
 	}
 	
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "SupportProgram")
+	@JoinColumn(name = "SUPPORTPROGRAM_")
     public Supportprogram getSupportprogram() {
 		return supportprogram;
 	}

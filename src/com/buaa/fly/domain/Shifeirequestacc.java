@@ -20,7 +20,7 @@ import java.util.Date;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "Fly_ShifeiRequestAcc")
+@Table(name = "FLY_SHIFEIREQUESTACC")
 public class Shifeirequestacc implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -38,11 +38,11 @@ public class Shifeirequestacc implements Serializable {
 	private byte[] datablock;
 	private String type;
 	private String filename;
-	private String miji;
+	private int miji;
 	private String inputPers;
 	private String inputPersOid;
 
-	@Column(name = "FileNo")
+	@Column(name = "FILENO_")
 	public String getFileno() {
 		return fileno;
 	}
@@ -51,7 +51,7 @@ public class Shifeirequestacc implements Serializable {
 		this.fileno = fileno;
 	}
 
-	@Column(name = "ftype")
+	@Column(name = "FTYPE_")
 	public String getFtype() {
 		return ftype;
 	}
@@ -61,7 +61,7 @@ public class Shifeirequestacc implements Serializable {
 	}
 
 	@Id
-	@Column(name = "Oid")
+	@Column(name = "OID_")
 	public String getId() {
 		return id;
 	}
@@ -70,7 +70,7 @@ public class Shifeirequestacc implements Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "bytes")
+	@Column(name = "BYTES_")
 	public Integer getBytes() {
 		return bytes;
 	}
@@ -79,7 +79,7 @@ public class Shifeirequestacc implements Serializable {
 		this.bytes = bytes;
 	}
 
-	@Column(name = "date")
+	@Column(name = "SFRADATE_")
 	public Date getDate() {
 		return date;
 	}
@@ -88,7 +88,7 @@ public class Shifeirequestacc implements Serializable {
 		this.date = date;
 	}
 
-	@Column(name = "author")
+	@Column(name = "AUTHOR_")
 	public String getAuthor() {
 		return author;
 	}
@@ -97,7 +97,7 @@ public class Shifeirequestacc implements Serializable {
 		this.author = author;
 	}
 
-	@Column(name = "authorDepartment")
+	@Column(name = "AUTHORDEPARTMENT_")
 	public String getAuthorDepartment() {
 		return authorDepartment;
 	}
@@ -106,7 +106,7 @@ public class Shifeirequestacc implements Serializable {
 		this.authorDepartment = authorDepartment;
 	}
 	
-	@Column(name = "autorSection")
+	@Column(name = "AUTORSECTION_")
 	public String getAutorSection() {
 		return autorSection;
 	}
@@ -115,7 +115,7 @@ public class Shifeirequestacc implements Serializable {
 		this.autorSection = autorSection;
 	}
 
-	@Column(name = "datablock")
+	@Column(name = "DATABLOCK_")
 	public byte[] getDatablock() {
 		return datablock;
 	}
@@ -124,7 +124,7 @@ public class Shifeirequestacc implements Serializable {
 		this.datablock = datablock;
 	}
 
-	@Column(name = "type")
+	@Column(name = "TYPE_")
 	public String getType() {
 		return type;
 	}
@@ -133,7 +133,7 @@ public class Shifeirequestacc implements Serializable {
 		this.type = type;
 	}
 
-	@Column(name = "FileName")
+	@Column(name = "FILENAME_")
 	public String getFilename() {
 		return filename;
 	}
@@ -142,16 +142,16 @@ public class Shifeirequestacc implements Serializable {
 		this.filename = filename;
 	}
 
-	@Column(name = "miji")
-	public String getMiji() {
+	@Column(name = "MIJI_")
+	public int getMiji() {
 		return miji;
 	}
 
-	public void setMiji(String miji) {
+	public void setMiji(int miji) {
 		this.miji = miji;
 	}
 
-	@Column(name = "inputPers")
+	@Column(name = "INPUTPERS_")
 	public String getInputPers() {
 		return inputPers;
 	}
@@ -160,7 +160,7 @@ public class Shifeirequestacc implements Serializable {
 		this.inputPers = inputPers;
 	}
 
-	@Column(name = "inputPersOid")
+	@Column(name = "INPUTPERSOID_")
 	public String getInputPersOid() {
 		return inputPersOid;
 	}

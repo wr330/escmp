@@ -26,7 +26,7 @@ import com.bstek.dorado.data.provider.Page;
 public class DefaultUserService extends JdbcDao implements IUserService {
 	private PasswordEncoder passwordEncoder;
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        String sql="select * from Sys_User where Username=?";
+        String sql="select * from SYS_USER where USERNAME_=?";
         List<IUser> users=this.getJdbcTemplate().query(sql, new Object[]{username}, new DefaultUserRowMapper());
         if(users.size()==0){
             throw new UsernameNotFoundException("User ["+username+"]  is not exist!");
@@ -39,28 +39,28 @@ public class DefaultUserService extends JdbcDao implements IUserService {
 //        String sql="select * from Sys_User where CompanyId='" + companyId + "'";
 //        Collection<IUser> users=this.getJdbcTemplate().query(sql,new UserMapper());
 //        page.setEntities(users);
-        String sql = "SELECT * FROM Sys_User x WHERE x.Username != 'admin' and ";
+        String sql = "SELECT * FROM SYS_USER x WHERE x.USERNAME_ != 'admin' and ";
 		ParseResult result = this.parseCriteria(criteria, false, "x");
 		if (result != null) {
 			StringBuffer sb = result.getAssemblySql();
 			Map<String, Object> valueMap = result.getValueMap();
-			valueMap.put("companyId", companyId);
-			sql += sb.toString() + " and x.companyId=?";
+			valueMap.put("COMPANYID_", companyId);
+			sql += sb.toString() + " and x.COMPANYID_=?";
 			this.pagingQuery(page, sql, valueMap.values().toArray(),
 					new DefaultUserRowMapper());
 		} else {
-			this.pagingQuery(page, sql + "x.companyId=?",
+			this.pagingQuery(page, sql + "x.COMPANYID_=?",
 					new Object[] { companyId }, new DefaultUserRowMapper());
 		}
     }
     public Collection<IUser> loadUsersByDeptId(String deptId) {
-		String sql = "select * from Sys_User";
+		String sql = "select * from SYS_USER";
 		if(deptId != null)
-				sql += " where Username in (select USERNAME_ from BDF2_USER_DEPT where DEPT_ID_ ='" + deptId + "')";
+				sql += " where USERNAME_ in (select USERNAME_ from BDF2_USER_DEPT where DEPT_ID_ ='" + deptId + "')";
 		return this.getJdbcTemplate().query(sql, new DefaultUserRowMapper());
     }
     public Collection<IUser> loadUsersByRole(String roleName) {
-		String sql = "select * from Sys_User where Username in (select USERNAME_ from BDF2_ROLE_MEMBER where GRANTED_ = 1 and ROLE_ID_ in (select ID_ from BDF2_ROLE where NAME_ ='" + roleName + "'))";
+		String sql = "select * from SYS_USER where USERNAME_ in (select USERNAME_ from BDF2_ROLE_MEMBER where GRANTED_ = 1 and ROLE_ID_ in (select ID_ from BDF2_ROLE where NAME_ ='" + roleName + "'))";
 		return this.getJdbcTemplate().query(sql, new DefaultUserRowMapper());
 	}
     public String checkPassword(String username, String password) {
@@ -75,7 +75,7 @@ public class DefaultUserService extends JdbcDao implements IUserService {
 		}
     }
     public void changePassword(String username, String newPassword) {
-    	String sql = "UPDATE Sys_User SET Password=?,Salt=? WHERE Username=?";
+    	String sql = "UPDATE SYS_USER SET PASSWORD_=?,SALT_=? WHERE USERNAME_=?";
     	int salt = RandomUtils.nextInt(1000);
     	String password =  "$" + passwordEncoder.encodePassword(newPassword, salt);
     	this.getJdbcTemplate().update(
@@ -102,24 +102,24 @@ public class DefaultUserService extends JdbcDao implements IUserService {
     class DefaultUserRowMapper implements RowMapper<IUser>{
         public IUser mapRow(ResultSet rs, int rowNum) throws SQLException {
         	DefaultUser user=new DefaultUser();
-            user.setCname(rs.getString("Cname"));
-            user.setUsername(rs.getString("Username"));
-    		user.setAdministrator(rs.getBoolean("Administrator"));
-    		user.setBirthday(rs.getDate("Birthday"));
-    		user.setCompanyId(rs.getString("CompanyId"));
-    		user.setEnabled(rs.getBoolean("Enabled"));
-    		user.setMale(rs.getBoolean("Male"));
-    		user.setPassword(rs.getString("Password"));
-    		user.setSalt(rs.getString("Salt"));
-    		user.setLeagueMember(rs.getBoolean("LeagueMember"));
-    		user.setPartyMember(rs.getBoolean("PartyMember"));
-    		user.setTechnicalLevel(rs.getString("TechnicalLevel"));
-    		user.setIp(rs.getString("IP"));
-    		user.setMiji(rs.getString("miji"));
-    		user.setLoginCount(rs.getInt("loginCount"));
-    		user.setPosition(rs.getString("Position"));
-    		user.setDepartment(rs.getString("Department"));
-    		user.setAtteAirc(rs.getString("AtteAirc"));
+            user.setCname(rs.getString("CNAME_"));
+            user.setUsername(rs.getString("USERNAME_"));
+    		user.setAdministrator(rs.getBoolean("ADMINISTRATOR_"));
+    		user.setBirthday(rs.getDate("BIRTHDAY_"));
+    		user.setCompanyId(rs.getString("COMPANYID_"));
+    		user.setEnabled(rs.getBoolean("ENABLED_"));
+    		user.setMale(rs.getBoolean("MALE_"));
+    		user.setPassword(rs.getString("PASSWORD_"));
+    		user.setSalt(rs.getString("SALT_"));
+    		user.setLeagueMember(rs.getBoolean("LEAGUEMEMBER_"));
+    		user.setPartyMember(rs.getBoolean("PARTYMEMBER_"));
+    		user.setTechnicalLevel(rs.getString("TECHNICALLEVEL_"));
+    		user.setIp(rs.getString("IP_"));
+    		user.setMiji(rs.getInt("MIJI_"));
+    		user.setLoginCount(rs.getInt("LOGINCOUNT_"));
+    		user.setPosition(rs.getString("POSITION_"));
+    		user.setDepartment(rs.getString("DEPARTMENT_"));
+    		user.setAtteAirc(rs.getString("ATTEAIRC_"));
             return user;
         }
     }

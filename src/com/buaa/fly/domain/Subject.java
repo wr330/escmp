@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "Fly_Subject")
+@Table(name = "FLY_SUBJECT")
 public class Subject implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -35,7 +35,7 @@ public class Subject implements Serializable {
 	private String subjectno;
 
 	@Id
-	@Column(name = "Oid", unique = true, nullable = false)
+	@Column(name = "OID_", unique = true, nullable = false)
 	public String getOid() {
 		return oid;
 	}
@@ -44,7 +44,7 @@ public class Subject implements Serializable {
 		this.oid = oid;
 	}
 
-	@Column(name = "OrderNo")
+	@Column(name = "ORDERNO_")
 	public Integer getOrderno() {
 		return orderno;
 	}
@@ -53,7 +53,7 @@ public class Subject implements Serializable {
 		this.orderno = orderno;
 	}
 
-	@Column(name = "Description")
+	@Column(name = "DESCRIPTION_")
 	public String getDescription() {
 		return description;
 	}
@@ -62,7 +62,7 @@ public class Subject implements Serializable {
 		this.description = description;
 	}
 
-	@Column(name = "Name")
+	@Column(name = "NAME_")
 	public String getName() {
 		return name;
 	}
@@ -71,7 +71,7 @@ public class Subject implements Serializable {
 		this.name = name;
 	}
 
-	@Column(name = "ParentNode")
+	@Column(name = "PARENTNODE_")
 	public String getParentnode() {
 		return parentnode;
 	}
@@ -80,7 +80,7 @@ public class Subject implements Serializable {
 		this.parentnode = parentnode;
 	}
 
-	@Column(name = "Ftype")
+	@Column(name = "FTYPE_")
 	public String getFtype() {
 		return ftype;
 	}

@@ -18,7 +18,7 @@ import org.hibernate.annotations.GenericGenerator;
 import com.buaa.comm.domain.Addressbookdepart;
 
 @Entity
-@Table(name="Comm_AddressBook")
+@Table(name="COMM_ADDRESSBOOK")
 public class  Addressbook implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Addressbook(){}
@@ -27,7 +27,7 @@ public class  Addressbook implements Serializable {
  	}	
 
 	private String oid ;
-
+	
 	private String position ;
 	private String email ;
 	private String fax ;
@@ -35,13 +35,13 @@ public class  Addressbook implements Serializable {
 	private String note ;
 	private String telephone ;
 	private String mobilephone ;
-	private String miji ;
+	private int miji ;
 
 	private Addressbookdepart addressbookdepart;
 
 
 	@Id
-		@Column(name = "Oid", unique = true, nullable = false)
+	@Column(name = "OID_", unique = true, nullable = false)
 	public String getOid() {
 		return oid;
 	}
@@ -49,64 +49,64 @@ public class  Addressbook implements Serializable {
 		this.oid=oid;
 	}
 
-	@Column(name="Position")
+	@Column(name="POSITION_")
 	public String getPosition() {
 		return position;
 	}
 	public void setPosition(String position) {
 		this.position=position;
 	}
-	@Column(name="Email")
+	@Column(name="EMAIL_")
 	public String getEmail() {
 		return email;
 	}
 	public void setEmail(String email) {
 		this.email=email;
 	}
-	@Column(name="Fax")
+	@Column(name="FAX_")
 	public String getFax() {
 		return fax;
 	}
 	public void setFax(String fax) {
 		this.fax=fax;
 	}
-	@Column(name="Name")
+	@Column(name="NAME_")
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name=name;
 	}
-	@Column(name="Note")
+	@Column(name="NOTE_")
 	public String getNote() {
 		return note;
 	}
 	public void setNote(String note) {
 		this.note=note;
 	}
-	@Column(name="telephone")
+	@Column(name="TELEPHONE_")
 	public String getTelephone() {
 		return telephone;
 	}
 	public void setTelephone(String telephone) {
 		this.telephone=telephone;
 	}
-	@Column(name="MobilePhone")
+	@Column(name="MOBILEPHONE_")
 	public String getMobilephone() {
 		return mobilephone;
 	}
 	public void setMobilephone(String mobilephone) {
 		this.mobilephone=mobilephone;
 	}
-	@Column(name="miji")
-	public String getMiji() {
+	@Column(name="MIJI_")
+	public int getMiji() {
 		return miji;
 	}
-	public void setMiji(String miji) {
+	public void setMiji(int miji) {
 		this.miji = miji;
 	}
 	@ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "AddressBookDepart")
+	@JoinColumn(name = "ADDRESSBOOKDEPART_")
     public Addressbookdepart getAddressbookdepart() {
 		return addressbookdepart;
 	}

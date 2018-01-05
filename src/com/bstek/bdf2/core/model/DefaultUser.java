@@ -17,47 +17,47 @@ import com.bstek.bdf2.core.model.Group;
 import com.bstek.bdf2.core.model.Role;
 
 @Entity
-@Table(name="Sys_User")
+@Table(name="SYS_USER")
 public class DefaultUser extends AbstractUser  implements java.io.Serializable{
     private static final long serialVersionUID = -1363793377621174845L;
 	@Id
-	@Column(name="Username",length=60)
+	@Column(name="USERNAME_",length=60)
 	private String username;
-	@Column(name="Cname",length=50,nullable=false)
+	@Column(name="CNAME_",length=50,nullable=false)
 	private String cname;
-    @Column(name="Administrator",nullable=false)
+    @Column(name="ADMINISTRATOR_",nullable=false)
 	private boolean administrator;
-    @Column(name="Birthday")
+    @Column(name="BIRTHDAY_")
 	private Date birthday;
-    @Column(name="CompanyId",length=60,nullable=false)
+    @Column(name="COMPANYID_",length=60,nullable=false)
 	private String companyId;
-    @Column(name="Enabled",nullable=false)
+    @Column(name="ENABLED_",nullable=false)
 	private boolean enabled;
-    @Column(name="Male",nullable=false)
+    @Column(name="MALE_",nullable=false)
 	private boolean male;
-    @Column(name="Password",length=70,nullable=false)
+    @Column(name="PASSWORD_",length=70,nullable=false)
 	private String password;
-    @Column(name="Salt",length=50,nullable=false)
+    @Column(name="SALT_",length=50,nullable=false)
 	private String salt;
-    @Column(name="LeagueMember",nullable=false)
+    @Column(name="LEAGUEMEMBER_",nullable=false)
 	private boolean leagueMember;
-    @Column(name="PartyMember",nullable=false)
+    @Column(name="PARTYMEMBER_",nullable=false)
 	private boolean partyMember;
-    @Column(name="TechnicalLevel",length=50)
+    @Column(name="TECHNICALLEVEL_",length=50)
 	private String technicalLevel;
-    @Column(name="miji",length=50)
-	private String miji;
-    @Column(name="IP",length=50)
+    @Column(name="MIJI_",length=50)
+	private int miji;
+    @Column(name="IP_",length=50)
 	private String ip;
-    @Column(name="LoginCount",length=50)
+    @Column(name="LOGINCOUNT_",length=50)
 	private int loginCount;
-    @Column(name="Lock",length=50)
+    @Column(name="USERLOCK_",length=50)
 	private boolean lock;
-    @Column(name="Department",length=50)
+    @Column(name="DEPARTMENT_",length=50)
    	private String department;
-    @Column(name="Position",length=100)
+    @Column(name="POSITION_",length=100)
    	private String position;
-    @Column(name="AtteAirc",length=50)
+    @Column(name="ATTEAIRC_",length=50)
    	private String atteAirc;
 	@Transient
     private List<IDept> depts;
@@ -150,10 +150,10 @@ public class DefaultUser extends AbstractUser  implements java.io.Serializable{
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
-    public String getMiji() {
+    public int getMiji() {
 		return miji;
 	}
-	public void setMiji(String miji) {
+	public void setMiji(int miji) {
 		this.miji = miji;
 	}
 	/**

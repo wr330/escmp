@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name="Fly_ftypes")
+@Table(name="FLY_FTYPES")
 public class  Ftypes implements Serializable {
 	private static final long serialVersionUID = 1L;
     public Ftypes(){}
@@ -28,7 +28,7 @@ public class  Ftypes implements Serializable {
 	private Collection<Subject> subject;
 	
 	@Id
-	@Column(name = "ftypename", unique = true, nullable = false)
+	@Column(name = "FTYPENAME_", unique = true, nullable = false)
 	public String getFtypename() {
 		return ftypename;
 	}
@@ -36,14 +36,14 @@ public class  Ftypes implements Serializable {
 		this.ftypename=ftypename;
 	}
 	
-	@Column(name="alias")
+	@Column(name="ALIAS_")
 	public String getAlias() {
 		return alias;
 	}
 	public void setAlias(String alias) {
 		this.alias=alias;
 	}
-	@Column(name="moreinfo")
+	@Column(name="MOREINFO_")
 	public String getMoreinfo() {
 		return moreinfo;
 	}

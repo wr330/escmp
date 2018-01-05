@@ -19,7 +19,7 @@ import org.hibernate.annotations.GenericGenerator;
 import java.util.Date;
 
 @Entity
-@Table(name = "Fly_SFfault")
+@Table(name = "FLY_SFFAULT")
 public class Sffault implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -70,9 +70,9 @@ public class Sffault implements Serializable {
 	private String bumen;
 	private String result;
 	private String fdata;
-	private String miji;
+	private int miji;
 
-	@Column(name = "ftype")
+	@Column(name = "FTYPE_")
 	public String getFtype() {
 		return ftype;
 	}
@@ -82,7 +82,7 @@ public class Sffault implements Serializable {
 	}
 
 	@Id
-	@Column(name = "Oid")
+	@Column(name = "OID_")
 	public String getId() {
 		return id;
 	}
@@ -91,7 +91,7 @@ public class Sffault implements Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "name")
+	@Column(name = "NAME_")
 	public String getName() {
 		return name;
 	}
@@ -100,7 +100,7 @@ public class Sffault implements Serializable {
 		this.name = name;
 	}
 
-	@Column(name = "relateBuMen")
+	@Column(name = "RELATEBUMEN_")
 	public String getRelatebumen() {
 		return relatebumen;
 	}
@@ -109,7 +109,7 @@ public class Sffault implements Serializable {
 		this.relatebumen = relatebumen;
 	}
 
-	@Column(name = "type")
+	@Column(name = "TYPE_")
 	public String getType() {
 		return type;
 	}
@@ -118,7 +118,7 @@ public class Sffault implements Serializable {
 		this.type = type;
 	}
 
-	@Column(name = "YuanyinFX")
+	@Column(name = "YUANYINFX_")
 	public String getYuanyinfx() {
 		return yuanyinfx;
 	}
@@ -127,7 +127,7 @@ public class Sffault implements Serializable {
 		this.yuanyinfx = yuanyinfx;
 	}
 
-	@Column(name = "deal")
+	@Column(name = "DEAL_")
 	public String getDeal() {
 		return deal;
 	}
@@ -136,7 +136,7 @@ public class Sffault implements Serializable {
 		this.deal = deal;
 	}
 
-	@Column(name = "qingkuang")
+	@Column(name = "QINGKUANG_")
 	public String getQingkuang() {
 		return qingkuang;
 	}
@@ -145,7 +145,7 @@ public class Sffault implements Serializable {
 		this.qingkuang = qingkuang;
 	}
 
-	@Column(name = "judge")
+	@Column(name = "JUDGE_")
 	public String getJudge() {
 		return judge;
 	}
@@ -154,7 +154,7 @@ public class Sffault implements Serializable {
 		this.judge = judge;
 	}
 
-	@Column(name = "gzfs")
+	@Column(name = "GZFS_")
 	public String getGzfs() {
 		return gzfs;
 	}
@@ -163,7 +163,7 @@ public class Sffault implements Serializable {
 		this.gzfs = gzfs;
 	}
 
-	@Column(name = "partname")
+	@Column(name = "PARTNAME_")
 	public String getPartname() {
 		return partname;
 	}
@@ -172,7 +172,7 @@ public class Sffault implements Serializable {
 		this.partname = partname;
 	}
 
-	@Column(name = "repeat")
+	@Column(name = "REPEAT_")
 	public String getRepeat() {
 		return repeat;
 	}
@@ -181,7 +181,7 @@ public class Sffault implements Serializable {
 		this.repeat = repeat;
 	}
 
-	@Column(name = "summary")
+	@Column(name = "SUMMARY_")
 	public String getSummary() {
 		return summary;
 	}
@@ -190,7 +190,7 @@ public class Sffault implements Serializable {
 		this.summary = summary;
 	}
 
-	@Column(name = "status")
+	@Column(name = "STATUS_")
 	public String getStatus() {
 		return status;
 	}
@@ -199,7 +199,7 @@ public class Sffault implements Serializable {
 		this.status = status;
 	}
 
-	@Column(name = "faulteffect")
+	@Column(name = "FAULTEFFECT_")
 	public String getFaulteffect() {
 		return faulteffect;
 	}
@@ -208,7 +208,7 @@ public class Sffault implements Serializable {
 		this.faulteffect = faulteffect;
 	}
 
-	@Column(name = "system")
+	@Column(name = "SYSTEM_")
 	public String getSystem() {
 		return system;
 	}
@@ -217,7 +217,7 @@ public class Sffault implements Serializable {
 		this.system = system;
 	}
 
-	@Column(name = "foundopp")
+	@Column(name = "FOUNDOPP_")
 	public String getFoundopp() {
 		return foundopp;
 	}
@@ -226,7 +226,7 @@ public class Sffault implements Serializable {
 		this.foundopp = foundopp;
 	}
 
-	@Column(name = "XCcharger")
+	@Column(name = "XCCHARGER_")
 	public String getXccharger() {
 		return xccharger;
 	}
@@ -235,7 +235,7 @@ public class Sffault implements Serializable {
 		this.xccharger = xccharger;
 	}
 
-	@Column(name = "miaoshu")
+	@Column(name = "MIAOSHU_")
 	public String getMiaoshu() {
 		return miaoshu;
 	}
@@ -244,7 +244,7 @@ public class Sffault implements Serializable {
 		this.miaoshu = miaoshu;
 	}
 
-	@Column(name = "date")
+	@Column(name = "SFFAULTDATE_")
 	public Date getDate() {
 		return date;
 	}
@@ -253,7 +253,7 @@ public class Sffault implements Serializable {
 		this.date = date;
 	}
 
-	@Column(name = "laiyuan")
+	@Column(name = "LAIYUAN_")
 	public String getLaiyuan() {
 		return laiyuan;
 	}
@@ -262,7 +262,7 @@ public class Sffault implements Serializable {
 		this.laiyuan = laiyuan;
 	}
 
-	@Column(name = "fighterNo")
+	@Column(name = "FIGHTERNO_")
 	public String getFighterno() {
 		return fighterno;
 	}
@@ -271,7 +271,7 @@ public class Sffault implements Serializable {
 		this.fighterno = fighterno;
 	}
 
-	@Column(name = "partmodel")
+	@Column(name = "PARTMODEL_")
 	public String getPartmodel() {
 		return partmodel;
 	}
@@ -280,7 +280,7 @@ public class Sffault implements Serializable {
 		this.partmodel = partmodel;
 	}
 
-	@Column(name = "YiliuWT")
+	@Column(name = "YILIUWT_")
 	public String getYiliuwt() {
 		return yiliuwt;
 	}
@@ -289,7 +289,7 @@ public class Sffault implements Serializable {
 		this.yiliuwt = yiliuwt;
 	}
 
-	@Column(name = "zongshi")
+	@Column(name = "ZONGSHI_")
 	public String getZongshi() {
 		return zongshi;
 	}
@@ -298,7 +298,7 @@ public class Sffault implements Serializable {
 		this.zongshi = zongshi;
 	}
 
-	@Column(name = "zerenren")
+	@Column(name = "ZERENREN_")
 	public String getZerenren() {
 		return zerenren;
 	}
@@ -307,7 +307,7 @@ public class Sffault implements Serializable {
 		this.zerenren = zerenren;
 	}
 
-	@Column(name = "JiancaNR")
+	@Column(name = "JIANCANR_")
 	public String getJiancanr() {
 		return jiancanr;
 	}
@@ -316,7 +316,7 @@ public class Sffault implements Serializable {
 		this.jiancanr = jiancanr;
 	}
 
-	@Column(name = "inputdate")
+	@Column(name = "INPUTDATE_")
 	public Date getInputdate() {
 		return inputdate;
 	}
@@ -325,7 +325,7 @@ public class Sffault implements Serializable {
 		this.inputdate = inputdate;
 	}
 
-	@Column(name = "pici")
+	@Column(name = "PICI_")
 	public String getPici() {
 		return pici;
 	}
@@ -334,7 +334,7 @@ public class Sffault implements Serializable {
 		this.pici = pici;
 	}
 
-	@Column(name = "danwei")
+	@Column(name = "DANWEI_")
 	public String getDanwei() {
 		return danwei;
 	}
@@ -343,7 +343,7 @@ public class Sffault implements Serializable {
 		this.danwei = danwei;
 	}
 
-	@Column(name = "WaiChangXXMS")
+	@Column(name = "WAICHANGXXMS_")
 	public String getWaichangxxms() {
 		return waichangxxms;
 	}
@@ -352,7 +352,7 @@ public class Sffault implements Serializable {
 		this.waichangxxms = waichangxxms;
 	}
 
-	@Column(name = "GuiLing")
+	@Column(name = "GUILING_")
 	public String getGuiling() {
 		return guiling;
 	}
@@ -361,7 +361,7 @@ public class Sffault implements Serializable {
 		this.guiling = guiling;
 	}
 
-	@Column(name = "relatemajor")
+	@Column(name = "RELATEMAJOR_")
 	public String getRelatemajor() {
 		return relatemajor;
 	}
@@ -370,7 +370,7 @@ public class Sffault implements Serializable {
 		this.relatemajor = relatemajor;
 	}
 
-	@Column(name = "majorsystem")
+	@Column(name = "MAJORSYSTEM_")
 	public String getMajorsystem() {
 		return majorsystem;
 	}
@@ -379,7 +379,7 @@ public class Sffault implements Serializable {
 		this.majorsystem = majorsystem;
 	}
 
-	@Column(name = "repeattime")
+	@Column(name = "REPEATTIME_")
 	public String getRepeattime() {
 		return repeattime;
 	}
@@ -388,7 +388,7 @@ public class Sffault implements Serializable {
 		this.repeattime = repeattime;
 	}
 
-	@Column(name = "fileNo")
+	@Column(name = "FILENO_")
 	public String getFileno() {
 		return fileno;
 	}
@@ -397,7 +397,7 @@ public class Sffault implements Serializable {
 		this.fileno = fileno;
 	}
 
-	@Column(name = "adrs")
+	@Column(name = "ADRS_")
 	public String getAdrs() {
 		return adrs;
 	}
@@ -406,7 +406,7 @@ public class Sffault implements Serializable {
 		this.adrs = adrs;
 	}
 
-	@Column(name = "inputer")
+	@Column(name = "INPUTER_")
 	public String getInputer() {
 		return inputer;
 	}
@@ -415,7 +415,7 @@ public class Sffault implements Serializable {
 		this.inputer = inputer;
 	}
 
-	@Column(name = "XianChangGZ")
+	@Column(name = "XIANCHANGGZ_")
 	public String getXianchanggz() {
 		return xianchanggz;
 	}
@@ -424,7 +424,7 @@ public class Sffault implements Serializable {
 		this.xianchanggz = xianchanggz;
 	}
 
-	@Column(name = "sequence")
+	@Column(name = "SEQUENCE_")
 	public Integer getSequence() {
 		return sequence;
 	}
@@ -433,7 +433,7 @@ public class Sffault implements Serializable {
 		this.sequence = sequence;
 	}
 
-	@Column(name = "gengxinJL")
+	@Column(name = "GENGXINJL_")
 	public String getGengxinjl() {
 		return gengxinjl;
 	}
@@ -442,7 +442,7 @@ public class Sffault implements Serializable {
 		this.gengxinjl = gengxinjl;
 	}
 
-	@Column(name = "bumen")
+	@Column(name = "BUMEN_")
 	public String getBumen() {
 		return bumen;
 	}
@@ -451,7 +451,7 @@ public class Sffault implements Serializable {
 		this.bumen = bumen;
 	}
 
-	@Column(name = "Result")
+	@Column(name = "RESULT_")
 	public String getResult() {
 		return result;
 	}
@@ -460,16 +460,16 @@ public class Sffault implements Serializable {
 		this.result = result;
 	}
 
-	@Column(name = "miji")
-	public String getMiji() {
+	@Column(name = "MIJI_")
+	public int getMiji() {
 		return miji;
 	}
 
-	public void setMiji(String miji) {
+	public void setMiji(int miji) {
 		this.miji = miji;
 	}
 
-	@Column(name = "fdata")
+	@Column(name = "FDATA_")
 	public String getFdata() {
 		return fdata;
 	}
