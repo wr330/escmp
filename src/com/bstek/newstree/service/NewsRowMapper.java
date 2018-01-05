@@ -11,19 +11,19 @@ public class NewsRowMapper implements RowMapper<NewsTree> {
 
 	public NewsTree mapRow(ResultSet rs, int arg1) throws SQLException {
 		NewsTree newsTree = new NewsTree();
-		newsTree.setNodeId(rs.getString("node_id"));
-		newsTree.setNodeTitle(rs.getString("node_title"));
-		newsTree.setNodeContent(rs.getString("node_content"));
-		newsTree.setParentId(rs.getString("parent_id"));
-		newsTree.setCreateDate(rs.getDate("create_date"));
-		newsTree.setUpdateDate(rs.getDate("update_date"));
-		newsTree.setCreateUser(rs.getString("create_user"));
-		newsTree.setUpdateUser(rs.getString("update_user"));
-		newsTree.setStatu(rs.getString("statu"));
-		newsTree.setIsleaf(rs.getString("isleaf"));
-		newsTree.setOrderDate(rs.getTimestamp("order_date"));
-		newsTree.setIcon(rs.getString("icon"));
-		newsTree.setNodeCode(rs.getString("node_code"));
+		newsTree.setNodeId(rs.getString("NODE_ID_"));
+		newsTree.setNodeTitle(rs.getString("NODE_TITLE_"));
+		newsTree.setNodeContent(rs.getString("NODE_CONTENT_"));
+		newsTree.setParentId(rs.getString("PARENT_ID_"));
+		newsTree.setCreateDate(rs.getDate("CREATE_DATE_"));
+		newsTree.setUpdateDate(rs.getDate("UPDATE_DATE_"));
+		newsTree.setCreateUser(rs.getString("CREATE_USER_"));
+		newsTree.setUpdateUser(rs.getString("UPDATE_USER_"));
+		newsTree.setStatu(rs.getString("STATU_"));
+		newsTree.setIsleaf(rs.getString("ISLEAF_"));
+		newsTree.setOrderDate(rs.getTimestamp("ORDER_DATE_"));
+		newsTree.setIcon(rs.getString("ICON_"));
+		newsTree.setNodeCode(rs.getString("NODE_CODE_"));
 		return newsTree;
 	}
 

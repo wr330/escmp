@@ -19,8 +19,8 @@ public class DefaultViewMapServiceImp extends JdbcDao implements ViewMapService 
 	private static final int OPERATION_TYPE_UPDATE = 1;
 
 	public Page<ViewMap> queryViewMap(int pageIndex, int pageSize) throws Exception {
-		String sql = "select * from nrs_view_map";
-		String countSql = "select count(*) from nrs_view_map";
+		String sql = "select * from NRS_VIEW_MAP";
+		String countSql = "select count(*) from NRS_VIEW_MAP";
 		Page<ViewMap> page = new Page<ViewMap>(pageIndex, pageSize);
 		try {
 //			this.paginationQuery(sql, countSql, page, new ViewMapRowMapper());
@@ -32,8 +32,8 @@ public class DefaultViewMapServiceImp extends JdbcDao implements ViewMapService 
 
 	public void queryViewMap(Page<ViewMap> page, Map<String, Object> parameter) throws Exception {
 
-		String sql = "select top 100 percent * from nrs_view_map order by update_date DESC ";
-		String countSql = "select count(*) from nrs_view_map ";
+		String sql = "select top 100 percent * from NRS_VIEW_MAP order by UPDATE_DATE_ DESC ";
+		String countSql = "select count(*) from NRS_VIEW_MAP ";
 		Page<ViewMap> pagination = new Page<ViewMap>(page.getPageNo(), page.getPageSize());
 		try {
 //			this.paginationQuery(sql, countSql, pagination, new ViewMapRowMapper());
@@ -45,8 +45,8 @@ public class DefaultViewMapServiceImp extends JdbcDao implements ViewMapService 
 
 	public void insertViewMap(ViewMap viewMap) throws Exception {
 		setSysIno(viewMap, OPERATION_TYPE_NEW);
-		String sql = " INSERT INTO nrs_view_map " + " ( " + " map_id, " + " map_code, " + " map_path, "
-				+ " node_code, " + " create_date, " + " update_date, " + " create_user, " + " update_user " + " ) "
+		String sql = " INSERT INTO NRS_VIEW_MAP " + " ( " + " MAP_ID_, " + " MAP_CODE_, " + " MAP_PATH_, "
+				+ " NODE_CODE_, " + " CREATE_DATE_, " + " UPDATE_DATE_, " + " CREATE_USER_, " + "UPDATE_USER_ " + " ) "
 				+ " VALUES( " + " ?, " + " ?, " + " ?, " + " ?, " + " ?, " + " ?, " + " ?, " + " ? " + " ) ";
 		this.getJdbcTemplate().update(sql, viewMap.getMapId(), viewMap.getMapCode(), viewMap.getMapPath(),
 				viewMap.getNodeCode(), viewMap.getCreateDate(), viewMap.getUpdateDate(), viewMap.getCreateUser(),
@@ -56,16 +56,16 @@ public class DefaultViewMapServiceImp extends JdbcDao implements ViewMapService 
 
 	public void updateViewMap(ViewMap viewMap) throws Exception {
 		setSysIno(viewMap, OPERATION_TYPE_UPDATE);
-		String sql = " UPDATE nrs_view_map SET " + " map_code = ?, " + " map_path = ?, " + " node_code = ?, "
-				+ " create_date = ?, " + " update_date = ?, " + " create_user = ?, " + " update_user = ? "
-				+ " WHERE map_id = ? ";
+		String sql = " UPDATE NRS_VIEW_MAP SET " + " MAP_CODE_ = ?, " + " MAP_PATH_ = ?, " + " NODE_CODE_ = ?, "
+				+ " CREATE_DATE_ = ?, " + " UPDATE_DATE_ = ?, " + " CREATE_USER_ = ?, " + " UPDATE_USER_ = ? "
+				+ " WHERE MAP_ID_ = ? ";
 		this.getJdbcTemplate().update(sql, viewMap.getMapCode(), viewMap.getMapPath(), viewMap.getNodeCode(),
 				viewMap.getCreateDate(), viewMap.getUpdateDate(), viewMap.getCreateUser(), viewMap.getUpdateUser(),
 				viewMap.getMapId());
 	}
 
 	public void deleteViewMap(ViewMap viewMap) throws Exception {
-		String sql = "delete from nrs_view_map where map_id = ?";
+		String sql = "delete from NRS_VIEW_MAP where MAP_ID_ = ?";
 		this.getJdbcTemplate().update(sql, viewMap.getMapId());
 	}
 
@@ -88,7 +88,7 @@ public class DefaultViewMapServiceImp extends JdbcDao implements ViewMapService 
 	}
 
 	public ViewMap queryViewMapByNodeCode(String code) throws Exception {
-		String sql = "SELECT * FROM NRS_VIEW_MAP WHERE node_code = ? ";
+		String sql = "SELECT * FROM NRS_VIEW_MAP WHERE MAP_CODE_ = ? ";
 		List<ViewMap> list = this.getJdbcTemplate().query(sql, new Object[] { code }, new ViewMapRowMapper());
 		if (list != null && list.size() > 0)
 			return list.get(0);
@@ -97,7 +97,7 @@ public class DefaultViewMapServiceImp extends JdbcDao implements ViewMapService 
 
 	@Override
 	public List<Map<String, Object>> queryExistMapCode(String validateData) throws Exception {
-		String sql = "select * from nrs_view_map where map_code = ? ";
+		String sql = "select * from NRS_VIEW_MAP where MAP_CODE_ = ? ";
 		return this.getJdbcTemplate().queryForList(sql,new Object[]{validateData});
 	}
 

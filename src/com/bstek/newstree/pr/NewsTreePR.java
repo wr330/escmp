@@ -215,7 +215,7 @@ public class NewsTreePR {
 		String validateData = (String) parameter.get("validateData");
 		List<Map<String, Object>> resultsBiz = newsService.queryExistNodeCode(validateData);
 		if(resultsBiz.size()>0){
-			if(StringUtils.hasText(entityId)== false || entityId.equals(resultsBiz.get(0).get("node_id").toString()) == false)
+			if(StringUtils.hasText(entityId)== false || entityId.equals(resultsBiz.get(0).get("NODE_ID_").toString()) == false)
 			return validateData+"已经存在";
 			else
 			return null;

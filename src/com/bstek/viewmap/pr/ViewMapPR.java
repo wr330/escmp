@@ -36,7 +36,7 @@ public class ViewMapPR {
 		String validateData = (String) parameter.get("validateData");
 		List<Map<String, Object>> resultsBiz = viewMapService.queryExistMapCode(validateData);
 		if(resultsBiz.size()>0){
-			if(StringUtils.hasText(entityId)== false || entityId.equals(resultsBiz.get(0).get("map_id").toString()) == false)
+			if(StringUtils.hasText(entityId)== false || entityId.equals(resultsBiz.get(0).get("MAP_ID_").toString()) == false)
 			return validateData+"已经存在";
 			else
 			return null;

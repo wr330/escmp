@@ -13,18 +13,18 @@ public class DataCodeMapper implements RowMapper<DataCode>{
 	public DataCode mapRow(ResultSet rs, int arg1)
 			throws SQLException {
 		DataCode dataCode = new DataCode();
-		dataCode.setDcId(rs.getString("dc_id"));
-		dataCode.setDataName(rs.getString("data_name"));
-		dataCode.setDataCode(rs.getString("data_code"));
-		dataCode.setDataSimpleName(rs.getString("data_simple_name"));
-		dataCode.setDataOrderNo(rs.getInt("data_order_no"));
-		dataCode.setDataParentId(rs.getString("data_parent_id"));
-		dataCode.setBakOne(rs.getString("bak_one"));
-		dataCode.setBakTwo(rs.getString("bak_two"));
-		dataCode.setCreateTime(rs.getTimestamp("create_time"));
-		dataCode.setCreateUsername(rs.getString("create_username"));
-		dataCode.setUpdateTime(rs.getTimestamp("update_time"));
-		dataCode.setUpdateUsername(rs.getString("update_username"));
+		dataCode.setDcId(rs.getString("DC_ID_"));
+		dataCode.setDataName(rs.getString("DATA_NAME_"));
+		dataCode.setDataCode(rs.getString("DATA_CODE_"));
+		dataCode.setDataSimpleName(rs.getString("DATA_SIMPLE_NAME_"));
+		dataCode.setDataOrderNo(rs.getInt("DATA_ORDER_NO_"));
+		dataCode.setDataParentId(rs.getString("DATA_PARENT_ID_"));
+		dataCode.setBakOne(rs.getString("BAK_ONE_"));
+		dataCode.setBakTwo(rs.getString("BAK_TWO_"));
+		dataCode.setCreateTime(rs.getTimestamp("CREATE_TIME_"));
+		dataCode.setCreateUsername(rs.getString("CREATE_USERNAME_"));
+		dataCode.setUpdateTime(rs.getTimestamp("UPDATE_TIME_"));
+		dataCode.setUpdateUsername(rs.getString("UPDATE_USERNAME_"));
 		
 		return dataCode;
 	}

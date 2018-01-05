@@ -29,21 +29,21 @@ public class DefaultDataCodeServiceImp extends JdbcDao implements DataCodeServic
 		String parentId = (String) DoradoContext.getCurrent().getAttribute(
 				DoradoContext.VIEW, "parentId");
 		StringBuffer sql = new StringBuffer(
-				" select top 100 percent * from nrs_data_code where 1=1 ");
+				" select top 100 percent * from NRS_DATA_CODE where 1=1 ");
 		StringBuffer sqlCount = new StringBuffer(
-				" select count(*) from nrs_data_code where 1=1 ");
+				" select count(*) from NRS_DATA_CODE where 1=1 ");
 		List<Object> params = new ArrayList<Object>();
 		if (parameters != null) {
 		
 		}
 
 		if (StringUtils.hasText(parentId)) {
-			sql.append(" and data_parent_id = ? ");
-			sqlCount.append(" and data_parent_id = ? ");
+			sql.append(" and DATA_PARENT_ID_ = ? ");
+			sqlCount.append(" and DATA_PARENT_ID_ = ? ");
 			params.add(parentId);
 		}
 
-		sql.append(" order by data_order_no asc ");
+		sql.append(" order by DATA_ORDER_NO_ asc ");
 
 //		Page<DataCode> pagination = new Page<DataCode>(
 //				page.getPageNo(), page.getPageSize());
@@ -64,8 +64,8 @@ public class DefaultDataCodeServiceImp extends JdbcDao implements DataCodeServic
 	public Collection<DataCode> findDataCodeByParentCode(String code) {
 		Collection<DataCode> c = new ArrayList<DataCode>();
 		if (StringUtils.hasText(code)) {
-			String sql = "select top 100 percent d2.* from nrs_data_code d1, nrs_data_code d2 where " +
-					"d1.data_code = ? and d1.dc_id = d2.data_parent_id order by data_order_no asc";
+			String sql = "select top 100 percent d2.* from NRS_DATA_CODE d1, NRS_DATA_CODE d2 where " +
+					"d1.DATA_CODE_ = ? and d1.DC_ID_ = d2.DATA_PARENT_ID_ order by DATA_ORDER_NO_ asc";
 			c = this.getJdbcTemplate().query(sql, new DataCodeMapper(),
 					new Object[] { code });
 		}
@@ -84,9 +84,9 @@ public class DefaultDataCodeServiceImp extends JdbcDao implements DataCodeServic
 				DoradoContext.VIEW, "parentId");
 		dataCode.setDataParentId(parentId);
 		
-		String sql = "insert into nrs_data_code (dc_id, data_name, data_code, "
-				+ "data_simple_name, data_order_no, data_parent_id, bak_one, "
-				+ "bak_two, create_time, create_username) values (?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into NRS_DATA_CODE (DC_ID_, DATA_NAME_, DATA_CODE_, "
+				+ "DATA_SIMPLE_NAME_, DATA_ORDER_NO_, DATA_PARENT_ID_, BAK_ONE_, "
+				+ "BAK_TWO_, CREATE_TIME_, CREATE_USERNAME_) values (?,?,?,?,?,?,?,?,?,?)";
 		Object args[] = new Object[] { new VMID().toString(),
 				dataCode.getDataName(), dataCode.getDataCode(),
 				dataCode.getDataSimpleName(), dataCode.getDataOrderNo(),
@@ -105,9 +105,9 @@ public class DefaultDataCodeServiceImp extends JdbcDao implements DataCodeServic
 	public void updateDataCode(DataCode dataCode) {
 		dataCode.setUpdateTime(new Date());
 		dataCode.setUpdateUsername(ContextHolder.getLoginUserName());
-		String sql = "update nrs_data_code set data_name=?, data_code=?, "
-				+ "data_simple_name=?, data_order_no=?, data_parent_id=?, bak_one=?, "
-				+ "bak_two=?, update_time=?, update_username=? where dc_id=?";
+		String sql = "update NRS_DATA_CODE set DATA_NAME_=?, DATA_CODE_=?, "
+				+ "DATA_SIMPLE_NAME_=?, DATA_ORDER_NO_=?, DATA_PARENT_ID_=?, BAK_ONE_=?, "
+				+ "BAK_TWO_=?, UPDATE_TIME_=?, UPDATE_USERNAME_=? where DC_ID_=?";
 		Object args[] = new Object[] { dataCode.getDataName(),
 				dataCode.getDataCode(), dataCode.getDataSimpleName(),
 				dataCode.getDataOrderNo(), dataCode.getDataParentId(),
@@ -123,7 +123,7 @@ public class DefaultDataCodeServiceImp extends JdbcDao implements DataCodeServic
 	 * @param id
 	 */
 	public void deleteDataCodeById(String id) {
-		String sql = "delete from nrs_data_code where dc_id=?";
+		String sql = "delete from NRS_DATA_CODE where DC_ID_=?";
 		this.getJdbcTemplate().update(sql, new Object[] { id });
 	}
 

@@ -24,7 +24,7 @@
               <Property name="contentOverflow">hidden</Property>
               <Property name="width">200</Property>
               <Image>
-                <Property name="image">images/home/logo3.png</Property>
+                <Property name="image">images/home/logo6.png</Property>
                 <Property name="hideMode">visibility</Property>
                 <Property name="height">80</Property>
                 <Property name="stretchMode">keepRatio</Property>

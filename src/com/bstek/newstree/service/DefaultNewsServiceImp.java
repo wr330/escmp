@@ -39,12 +39,12 @@ public class DefaultNewsServiceImp extends JdbcDao implements NewsService {
 	public Collection<NewsTree> queryNews(String params) {
 		String sql = "";
 		if (params == null) {
-			sql = "select top 100 percent * from NRS_NEWS_TREE where parent_id is null";
+			sql = "select top 100 percent * from NRS_NEWS_TREE where PARENT_ID_ is null";
 		} else {
-			sql = "select * from NRS_NEWS_TREE where parent_id = '" + params + "'";
+			sql = "select * from NRS_NEWS_TREE where PARENT_ID_ = '" + params + "'";
 		}
 
-		sql += " ORDER BY order_date DESC";
+		sql += " ORDER BY ORDER_DATE_ DESC";
 		return this.getJdbcTemplate().query(sql, new NewsRowMapper());
 	}
 	 /**
@@ -53,9 +53,9 @@ public class DefaultNewsServiceImp extends JdbcDao implements NewsService {
      */
 	public void insertNews(NewsTree newsTree) throws Exception {
 		setSysInfo(newsTree, OPERATION_TYPE_NEW);
-		String sql = " INSERT INTO NRS_NEWS_TREE( " + " node_id, " + " node_title, " + " node_content, "
-				+ " parent_id, " + " create_date, " + " update_date, " + " create_user, " + " update_user, "
-				+ " statu, " + " isleaf, " + " order_date, " + " icon, " + " node_code ) " + " VALUES( " + " ?, "
+		String sql = " INSERT INTO NRS_NEWS_TREE( " + " NODE_ID_, " + " NODE_TITLE_, " + " NODE_CONTENT_, "
+				+ " PARENT_ID_, " + " CREATE_DATE_, " + " UPDATE_DATE_, " + " CREATE_USER_, " + " UPDATE_USER_, "
+				+ " STATU_, " + " ISLEAF_, " + " ORDER_DATE_, " + " ICON_, " + " NODE_CODE_ ) " + " VALUES( " + " ?, "
 				+ " ?, " + " ?, " + " ?, " + " ?, " + " ?, " + " ?, " + " ?, " + " ?, " + " ?, " + " ?, " + " ?, "
 				+ " ?" + ") ";
 		this.getJdbcTemplate().update(sql, newsTree.getNodeId(), newsTree.getNodeTitle(), newsTree.getNodeContent(),
@@ -70,9 +70,9 @@ public class DefaultNewsServiceImp extends JdbcDao implements NewsService {
      */
 	public void modifyNews(NewsTree newsTree) throws Exception {
 		setSysInfo(newsTree, OPERATION_TYPE_UPDATE);
-		String sql = " UPDATE NRS_NEWS_TREE SET  " + " node_title = ?, " + " node_content = ?, " + " parent_id = ?, "
-				+ " create_date = ?, " + " update_date = ?, " + " create_user = ?, " + " update_user = ?, "
-				+ " statu = ?, " + " isleaf = ?, " + " order_date = ?, " + " icon = ?, " + " node_code = ? "
+		String sql = " UPDATE NRS_NEWS_TREE SET  " + " NODE_TITLE_ = ?, " + " NODE_CONTENT_ = ?, " + " PARENT_ID_ = ?, "
+				+ " CREATE_DATE_ = ?, " + " UPDATE_DATE_ = ?, " + " CREATE_USER_ = ?, " + " UPDATE_USER_ = ?, "
+				+ " STATU_ = ?, " + " ISLEAF_ = ?, " + " ORDER_DATE_ = ?, " + " ICON_ = ?, " + " NODE_CODE_ = ? "
 				+ " WHERE node_id = ? ";
 		this.getJdbcTemplate().update(sql, newsTree.getNodeTitle(), newsTree.getNodeContent(), newsTree.getParentId(),
 				newsTree.getCreateDate(), newsTree.getUpdateDate(), newsTree.getCreateUser(), newsTree.getUpdateUser(),
@@ -107,7 +107,7 @@ public class DefaultNewsServiceImp extends JdbcDao implements NewsService {
      * @param nodeId　用于删除的条目的id
      */
 	public void deleteNews(String nodeId) throws Exception {
-		String sql = "DELETE FROM  NRS_NEWS_TREE WHERE node_id = '" + nodeId + "'";
+		String sql = "DELETE FROM  NRS_NEWS_TREE WHERE NODE_ID_ = '" + nodeId + "'";
 		this.getJdbcTemplate().update(sql);
 
 	}
@@ -121,17 +121,17 @@ public class DefaultNewsServiceImp extends JdbcDao implements NewsService {
      */
 	public Page<NewsTree> queryNewsByCurrentCode(int pageIndex, int pageSize, String currentCode)
 			throws Exception {
-		String sql = " SELECT top 100 percent " + " node_id, " + " node_title, " + " node_content, " + " parent_id, "
-				+ " create_date, " + " update_date, " + " create_user, " + " update_user, " + " statu, " + " isleaf, "
-				+ " order_date, " + " icon, " + " node_code " + " FROM " + " NRS_NEWS_TREE WHERE  statu = 'publish' ";
-		String countSql = "SELECT count(*) FROM NRS_NEWS_TREE WHERE  statu = 'publish' ";
+		String sql = " SELECT top 100 percent " + " NODE_ID_, " + " NODE_TITLE_, " + " NODE_CONTENT_, " + " PARENT_ID_, "
+				+ " CREATE_DATE_, " + " UPDATE_DATE_, " + " CREATE_USER_, " + " UPDATE_USER_, " + " STATU_, " + " ISLEAF_, "
+				+ " ORDER_DATE_, " + " ICON_, " + " NODE_CODE_ " + " FROM " + " NRS_NEWS_TREE WHERE  statu = 'publish' ";
+		String countSql = "SELECT count(*) FROM NRS_NEWS_TREE WHERE  STATU_ = 'publish' ";
 		StringBuffer conditionSql = new StringBuffer();
 		List<Object> params = new ArrayList<Object>();
 		if (StringUtils.hasText(currentCode)) {
-			conditionSql.append(" and parent_id in (select node_id from NRS_NEWS_TREE where node_code = ? )");
+			conditionSql.append(" and PARENT_ID_ in (select NODE_ID_ from NRS_NEWS_TREE where NODE_CODE_ = ? )");
 			params.add(currentCode);
 		}
-		String orderStr = " ORDER BY order_date DESC";
+		String orderStr = " ORDER BY ORDER_DATE_ DESC";
 		Page<NewsTree> page = new Page<NewsTree>(pageSize, pageIndex);
 		try {
 //			this.paginationQuery(sql + conditionSql.toString() + orderStr, countSql + conditionSql.toString(),
@@ -149,9 +149,9 @@ public class DefaultNewsServiceImp extends JdbcDao implements NewsService {
      * @return newsTree 筛选返回的结果实体对象
      */
 	public NewsTree getCurrentNewsById(String parentId) throws Exception {
-		String sql = " SELECT " + " node_id, " + " node_title, " + " node_content, " + " parent_id, "
-				+ " create_date, " + " update_date, " + " create_user, " + " update_user, " + " statu, " + " isleaf, "
-				+ " order_date, " + " icon, " + " node_code " + " FROM " + " NRS_NEWS_TREE WHERE node_id = '"
+		String sql = " SELECT " + " node_id_, " + " node_title_, " + " node_content_, " + " parent_id_, "
+				+ " create_date_, " + " update_date_, " + " create_user_, " + " update_user_, " + " statu_, " + " isleaf_, "
+				+ " order_date_, " + " icon_, " + " node_code_ " + " FROM " + " NRS_NEWS_TREE WHERE node_id_ = '"
 				+ parentId + "'";
 		return this.getJdbcTemplate().query(sql, new NewsRowMapper()).get(0);
 	}
@@ -163,14 +163,14 @@ public class DefaultNewsServiceImp extends JdbcDao implements NewsService {
 	public Collection<NewsTree> getCategoryList(String parentId) throws Exception {
 		if (null == parentId)
 			throw new RuntimeException("父ID不能为空");
-		String sql = "select top 100 percent * from NRS_NEWS_TREE where  isleaf = 'false' AND parent_id = '" + parentId + "'"
-				+ " ORDER BY order_date DESC";
+		String sql = "select top 100 percent * from NRS_NEWS_TREE where  ISLEAF_ = 'false' AND PARENT_ID_ = '" + parentId + "'"
+				+ " ORDER BY ORDER_DATE_ DESC";
 		return this.getJdbcTemplate().query(sql, new NewsRowMapper());
 	}
 
 	public String getCurrentKey(NewsTree newsTree) throws Exception {
 		String key = "";
-		String sql = "select * from nrs_news_tree where node_id = ?";
+		String sql = "select * from nrs_news_tree where NODE_ID_ = ?";
 		NewsTree resultNewsTree = newsTree;
 		while ("0".equals(resultNewsTree.getNodeCode()) == false) {
 			key = "/" + resultNewsTree.getNodeCode() + key;
@@ -189,12 +189,12 @@ public class DefaultNewsServiceImp extends JdbcDao implements NewsService {
 	public Collection<NewsTree> queryCategoryTree(String nodeId) throws Exception {
 		String sql = "";
 		if (nodeId == null) {
-			sql = "select top 100 percent * from NRS_NEWS_TREE where parent_id is null";
+			sql = "select top 100 percent * from NRS_NEWS_TREE where PARENT_ID_ is null";
 		} else {
-			sql = "select top 100 percent * from NRS_NEWS_TREE where  isleaf = 'false' and  parent_id = '" + nodeId + "'";
+			sql = "select top 100 percent * from NRS_NEWS_TREE where  ISLEAF_ = 'false' and  PARENT_ID_ = '" + nodeId + "'";
 		}
 
-		sql += "  ORDER BY order_date DESC";
+		sql += "  ORDER BY ORDER_DATE_ DESC";
 		return this.getJdbcTemplate().query(sql, new NewsRowMapper());
 	}
 	 /**
@@ -204,17 +204,17 @@ public class DefaultNewsServiceImp extends JdbcDao implements NewsService {
      */
 	public void queryPaginationNews(Page<NewsTree> page, String nodeId)
 			throws Exception {
-		StringBuffer sql = new StringBuffer("select top 100 percent * from NRS_NEWS_TREE WHERE isleaf = 'true' ");
-		StringBuffer countSql = new StringBuffer("select count(*) from NRS_NEWS_TREE WHERE isleaf = 'true' ");
+		StringBuffer sql = new StringBuffer("select top 100 percent * from NRS_NEWS_TREE WHERE ISLEAF_ = 'true' ");
+		StringBuffer countSql = new StringBuffer("select count(*) from NRS_NEWS_TREE WHERE ISLEAF_ = 'true' ");
 		List<Object> params = new ArrayList<Object>();
 		if(nodeId != null){
 			if(StringUtils.hasText((CharSequence) nodeId)){
-				sql.append(" and parent_id = ? ");
-				countSql.append(" and parent_id = ? ");
+				sql.append(" and PARENT_ID_ = ? ");
+				countSql.append(" and PARENT_ID_ = ? ");
 				params.add(nodeId);
 			}
 		}
-		sql.append("  ORDER BY order_date DESC");
+		sql.append("  ORDER BY ORDER_DATE_ DESC");
 //		Page<NewsTree> pagination = new Page<NewsTree>(page.getPageSize(), page.getPageNo());
 //		this.paginationQuery(sql.toString(), countSql.toString(), params.toArray(), pagination, new NewsRowMapper());	
 		this.pagingQuery(page, sql.toString(), params.toArray(), countSql.toString(), new NewsRowMapper());
@@ -228,21 +228,21 @@ public class DefaultNewsServiceImp extends JdbcDao implements NewsService {
      * @return pagination 返回封装成pagination对象的结果集
      */
 	public void queryPaginationNewsTree(Page<NewsTree> page, String nodeId) throws Exception {
-		StringBuffer sql = new StringBuffer("select top 100 percent * from NRS_NEWS_TREE WHERE 1=1 and node_code not in('news1','news2')");
+		StringBuffer sql = new StringBuffer("select top 100 percent * from NRS_NEWS_TREE WHERE 1=1 and NODE_CODE_ not in('news1','news2')");
 		StringBuffer countSql = new StringBuffer("select count(*) from NRS_NEWS_TREE WHERE 1=1 ");
 		List<Object> params = new ArrayList<Object>();
 		if(nodeId != null){
 			if(StringUtils.hasText((CharSequence) nodeId)){
-				sql.append(" and parent_id = ? ");
-				countSql.append(" and parent_id = ? ");
+				sql.append(" and PARENT_ID_ = ? ");
+				countSql.append(" and PARENT_ID_ = ? ");
 				params.add(nodeId);
 			}
 		}
 		else{
-			sql.append(" and parent_id is null ");
-			countSql.append(" and parent_id is null ");
+			sql.append(" and PARENT_ID_ is null ");
+			countSql.append(" and PARENT_ID_ is null ");
 		}
-		sql.append("  ORDER BY order_date DESC");
+		sql.append("  ORDER BY ORDER_DATE_ DESC");
 //		Page<NewsTree> pagination = new Page<NewsTree>(page.getPageNo(), page.getPageSize());
 //		this.paginationQuery(sql.toString(), countSql.toString(), params.toArray(), pagination, new NewsRowMapper());
 		this.pagingQuery(page, sql.toString(), params.toArray(), countSql.toString(), new NewsRowMapper());
@@ -254,7 +254,7 @@ public class DefaultNewsServiceImp extends JdbcDao implements NewsService {
      * @return list 返回查询的结果集
      */
 	public List<Map<String, Object>> queryExistNodeCode(String validateData) throws Exception {
-		String sql = "select * from nrs_news_tree where node_code = ? ";
+		String sql = "select * from NRS_NEWS_TREE where NODE_CODE_ = ? ";
 		return this.getJdbcTemplate().queryForList(sql,new Object[]{validateData});
 	}
 	 /**
@@ -263,13 +263,13 @@ public class DefaultNewsServiceImp extends JdbcDao implements NewsService {
      * @param nodeId　用于更改的parent_id 
      */
 	public void updateNewsTreeParentId(String oldParent, String nodeId) throws Exception {
-		 String sql = "update nrs_news_tree set parent_id= ? where parent_id= ? ";
+		 String sql = "update NRS_NEWS_TREE set PARENT_ID_= ? where PARENT_ID_ = ? ";
         this.getJdbcTemplate().update(sql, new Object[] { nodeId, oldParent });
 		
 	}
 
 	public List<NewsTree> getMenuList(String rootId) throws Exception {
-		String sql = "select top 100 percent * from nrs_news_tree where parent_id = ? ORDER BY order_date DESC ";
+		String sql = "select top 100 percent * from NRS_NEWS_TREE where PARENT_ID_ = ? ORDER BY ORDER_DATE_ DESC ";
 		return this.getJdbcTemplate().query(sql,new Object[]{rootId}, new NewsRowMapper());
 	}
 	//由newsId获取taskId
@@ -295,24 +295,24 @@ public class DefaultNewsServiceImp extends JdbcDao implements NewsService {
 	@SuppressWarnings({ "deprecation" })
 	public void queryNews(Page<NewsTree> page,String username,Criteria criteria) throws Exception {
 		Map<String, Object> args = new HashMap<String, Object>();
-		StringBuffer coreSql = new StringBuffer(" from nrs_news_tree where parent_id in('classic_news','hot_news') ");
+		StringBuffer coreSql = new StringBuffer(" from NRS_NEWS_TREE where PARENT_ID_ in('classic_news','hot_news') ");
 		if (null != username) {//我的稿件
-			coreSql.append("and create_user=:username");
+			coreSql.append("and CREATE_USER_=:username");
 			args.put("username",username);
 		}
 		else{//稿件汇总
-			coreSql.append("and statu='publish'");
+			coreSql.append("and STATU_='publish'");
 		}
 		if (null != criteria) {
 			ParseResult result = this.parseCriteria(criteria, true, null);
 			if (null != result) {
 				String sql1 = result.getAssemblySql().toString();
-				sql1 = sql1.replaceAll("nodeTitle ", "node_Title ");//防止查询报错
-				sql1 = sql1.replaceAll("parentId ", "parent_Id ");
-				sql1 = sql1.replaceAll("createUser ", "create_User ");
-				sql1 = sql1.replaceAll("createDate ", "create_Date ");
-				sql1 = sql1.replaceAll("orderDate ", "order_Date ");
-				sql1 = sql1.replaceAll("nodeCode ", "node_Code ");
+				sql1 = sql1.replaceAll("nodeTitle ", "NODE_TITLE_ ");//防止查询报错
+				sql1 = sql1.replaceAll("parentId ", "PARENT_ID_ ");
+				sql1 = sql1.replaceAll("createUser ", "CREATE_USER_ ");
+				sql1 = sql1.replaceAll("createDate ", "CREATE_DATE_ ");
+				sql1 = sql1.replaceAll("orderDate ", "ORDER_DATE_ ");
+				sql1 = sql1.replaceAll("nodeCode ", "NODE_CODE_ ");
 				coreSql.append(" and " + sql1);
 				Collection<String> keys = result.getValueMap().keySet();
 				for(String key : keys){
@@ -320,7 +320,7 @@ public class DefaultNewsServiceImp extends JdbcDao implements NewsService {
 				}
 			}
 		}
-		String sql = "select * " + coreSql.toString() + " order by(case statu when 'managerApproving' then 1 when 'ministerApproving' then 2 when 'publish' then 4 else 0 end),order_date desc";
+		String sql = "select * " + coreSql.toString() + " order by(case STATU_ when 'managerApproving' then 1 when 'ministerApproving' then 2 when 'publish' then 4 else 0 end),ORDER_DATE_ desc";
 		NamedParameterJdbcTemplate namedjdbcTemplate=this.getNamedParameterJdbcTemplate();
 		String querySql=this.getDialect(this.getJdbcTemplate()).getPaginationSql(sql, page.getPageNo(), page.getPageSize());
 		String countSql="select count(*) " + coreSql.toString();

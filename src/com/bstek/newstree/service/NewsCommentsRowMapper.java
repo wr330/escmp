@@ -12,11 +12,11 @@ import com.bstek.newstree.domain.NewsComments;
 public class NewsCommentsRowMapper implements RowMapper<NewsComments>{
 	public NewsComments mapRow(ResultSet rs, int arg1) throws SQLException {
 		NewsComments newsComments = new NewsComments();
-		newsComments.setId(rs.getString("Id"));
-		newsComments.setContents(rs.getString("Contents"));
-		newsComments.setUserName(rs.getString("UserName"));
-		newsComments.setDate(rs.getTimestamp("Date"));
-		newsComments.setNodeCode(rs.getString("nodeCode"));
+		newsComments.setId(rs.getString("ID_"));
+		newsComments.setContents(rs.getString("CONTENTS_"));
+		newsComments.setUserName(rs.getString("USERNAME_"));
+		newsComments.setDate(rs.getTimestamp("NRSDATE_"));
+		newsComments.setNodeCode(rs.getString("NODECODE_"));
 		return newsComments;
 	}
 
